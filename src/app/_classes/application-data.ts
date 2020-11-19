@@ -1,12 +1,14 @@
 import {Student} from './student';
 import {Parent} from './parent';
 import {Program} from './program';
-import {Portfolio} from './portfolio';
+import {Payment} from './payment';
+import {EnrollmentAgreement} from './enrollment-agreement';
 
 export class ApplicationData {
   student: Student;
-  parent: Parent;
+  parents: Parent[];
   program: Program;
-  portfolio: Portfolio;
+  enrollmentAgreement: EnrollmentAgreement;
+  payment: Payment;
   isComplete: boolean;
 }

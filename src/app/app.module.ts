@@ -11,6 +11,9 @@ import {SignAndPayComponent} from './components/application/sign-and-pay/sign-an
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import { StudentComponent } from './components/application/personal-info/student/student.component';
 import { ParentComponent } from './components/application/personal-info/parent/parent.component';
+import { EnrollmentAgreementComponent } from './components/application/sign-and-pay/enrollment-agreement/enrollment-agreement.component';
+import { PaymentComponent } from './components/application/sign-and-pay/payment/payment.component';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,11 +24,14 @@ import { ParentComponent } from './components/application/personal-info/parent/p
     PersonalInfoComponent,
     SignAndPayComponent,
     StudentComponent,
-    ParentComponent
+    ParentComponent,
+    EnrollmentAgreementComponent,
+    PaymentComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

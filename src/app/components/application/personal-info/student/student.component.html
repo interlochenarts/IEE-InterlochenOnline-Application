@@ -1,1 +1,186 @@
-<p>Student Information</p>
+<h3>Student Information</h3>
+
+<label for="firstName">Legal First Name</label>
+<div class="default disabledDiv">
+  <input type="text"
+         [(ngModel)]="student.firstName"
+         name="firstName"
+         id="firstName"
+         maxlength="32 "/>
+</div>
+<br/>
+
+<label for="lastName">Legal Last Name</label>
+<div class="default disabledDiv">
+  <input type="text"
+         [(ngModel)]="student.lastName"
+         name="lastName"
+         id="lastName"
+         maxlength="50"/>
+</div>
+<br/>
+
+<label for="nickName">What name would you prefer to be called, if different from your legal first name?</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="student.nickName"
+         name="nickName"
+         id="nickName"
+         maxlength="25"/>
+</div>
+<br/>
+
+<label for="email">Applicant's Email</label>
+<div class="default required">
+  <input type="text"
+         [(ngModel)]="student.email"
+         name="email"
+         id="email"
+         maxlength="50"
+         pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+</div>
+<br/>
+
+<label for="mobilePhone">Mobile Phone</label>
+<div class="default required">
+  <input type="text"
+         [(ngModel)]="student.mobilePhone"
+         name="mobilePhone"
+         maxlength="20"
+         id="mobilePhone"/>
+</div>
+<br/>
+
+<hr>
+
+<button *ngFor="let parent in parents" (click)="copyAddressFrom(parent.mailingAddress)">
+  Copy address from {{parent.firstName}} {{parent.lastName}}
+</button>
+
+<label for="mailingStreet">Mailing Street</label>
+<div class="default required">
+  <input type="text"
+         [(ngModel)]="student.mailingAddress.street"
+         name="mailingStreet"
+         maxlength="255"
+         id="mailingStreet"/>
+</div>
+<br/>
+
+<label for="mailingCity">Mailing City</label>
+<div class="default required ">
+  <input type="text"
+         [(ngModel)]="student.mailingAddress.city"
+         name="mailingCity"
+         maxlength="40"
+         id="mailingCity"/>
+</div>
+<br/>
+
+<label for="mailingCountry">Mailing Country</label>
+<div class="default required ">
+  <div class="select">
+    <select [(ngModel)]="student.mailingAddress.country"
+            name="mailingCountry"
+            id="mailingCountry">
+      <!--      <option *ngFor="let country of countries">{{country}}</option>-->
+    </select>
+  </div>
+</div>
+<br/>
+
+<label for="mailingState">Mailing State</label>
+<div class="default">
+  <div class="select">
+    <select [(ngModel)]="student.mailingAddress.stateProvince"
+            name="mailingState"
+            id="mailingState">
+      <!--      <option *ngFor="let state of filteredStates">{{state}}</option>-->
+    </select>
+  </div>
+</div>
+<br/>
+<label for="mailingPostalCode">Mailing Zip / Postal Code</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="student.mailingAddress.zipPostalCode"
+         name="mailingPostalCode"
+         maxlength="20"
+         id="mailingPostalCode"/>
+</div>
+<br/>
+
+<hr>
+
+<p>Interlochen is committed to inclusion, non-discrimination and creating a safe environment for everyone
+  in our community.</p>
+<label>Gender Identity</label>
+<div class="default required">
+  <div class="form-check form-check-inline" *ngFor="let option of genderIdentityOptions; let i = index">
+    <input type="radio"
+           class="form-check-input"
+           [(ngModel)]="student.genderIdentity"
+           name="genderIdentity"
+           id="genderIdentity{{i}}"
+           value="{{option.value}}"/>
+    <label for="genderIdentity{{i}}" class="form-check-label">{{option.label}}</label>
+  </div>
+</div>
+<br/>
+
+<label for="genderIdentityDetail">Gender Non-Binary Details</label>
+<div class="default"
+     [ngClass]="{required:genderDetailRequired(), disabledDiv:!genderDetailRequired()}">
+        <textarea [disabled]="!genderDetailRequired()"
+                  [(ngModel)]="student.genderIdentityDetails"
+                  name="genderIdentityDetail"
+                  maxlength="255"
+                  id="genderIdentityDetail"></textarea>
+</div>
+
+<br/>
+<iee-date-dropdown label-text="Birth Date"
+                   is-disabled="false"
+                   is-required="true"
+                   form-data-field="formData['Student Information'].birthdate"
+                   starting-year-offset="-20"
+                   ending-year-offset="-5"></iee-date-dropdown>
+<br/>
+
+
+<div>
+  <label for="race">What is this student’s race?</label>
+  <div class="default">
+    <div class="select">
+      <select [(ngModel)]="student.race"
+              name="race"
+              id="race">
+      </select>
+    </div>
+  </div>
+  <br/>
+
+  <label for="raceOther">If race not listed, please specify</label>
+  <div class="default">
+    <input type="text"
+           [(ngModel)]="student.raceOther"
+           name="raceOther"
+           maxlength="255"
+           id="raceOther"/>
+  </div>
+  <br/>
+</div>
+
+<label>Is the student of Hispanic, Latinx, or Spanish origin?</label>
+<div class="default">
+  <div class="form-check form-check-inline" *ngFor="let option of yesNoOptions; let i = index">
+    <input type="radio"
+           class="form-check-input"
+           [(ngModel)]="student.hispanic"
+           name="hispanic"
+           id="hispanic{{i}}"
+           value="{{option.value}}"/>
+    <label for="hispanic{{i}}" class="form-check-label">{{option.label}}</label>
+  </div>
+</div>
+<br/>
