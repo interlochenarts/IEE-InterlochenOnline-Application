@@ -1,0 +1,81 @@
+<label for="firstName">First Name</label>
+<div class="default disabledDiv">
+  <input type="text"
+         [(ngModel)]="parent.firstName"
+         name="firstName"
+         id="firstName"
+         maxlength="32 "/>
+</div>
+
+<label for="lastName">Last Name</label>
+<div class="default disabledDiv">
+  <input type="text"
+         [(ngModel)]="parent.lastName"
+         name="lastName"
+         id="lastName"
+         maxlength="50"/>
+</div>
+
+<label for="email">Email</label>
+<div class="default required">
+  <input type="text"
+         [(ngModel)]="parent.email"
+         name="email"
+         id="email"
+         maxlength="50"
+         pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+</div>
+
+<button *ngIf="student && student.mailingAddress" (click)="copyAddressFromStudent()">
+  Copy address from {{student.firstName}} {{student.lastName}}
+</button>
+
+
+<label for="mailingStreet">Mailing Street</label>
+<div class="default required">
+  <input type="text"
+         [(ngModel)]="parent.mailingAddress.street"
+         name="mailingStreet"
+         maxlength="255"
+         id="mailingStreet"/>
+</div>
+
+<label for="mailingCity">Mailing City</label>
+<div class="default required ">
+  <input type="text"
+         [(ngModel)]="parent.mailingAddress.city"
+         name="mailingCity"
+         maxlength="40"
+         id="mailingCity"/>
+</div>
+
+<label for="mailingCountry">Mailing Country</label>
+<div class="default required ">
+  <div class="select">
+    <select [(ngModel)]="parent.mailingAddress.country"
+            name="mailingCountry"
+            id="mailingCountry">
+      <!--      <option *ngFor="let country of countries">{{country}}</option>-->
+    </select>
+  </div>
+</div>
+
+<label for="mailingState">Mailing State</label>
+<div class="default">
+  <div class="select">
+    <select [(ngModel)]="parent.mailingAddress.stateProvince"
+            name="mailingState"
+            id="mailingState">
+      <!--      <option *ngFor="let state of filteredStates">{{state}}</option>-->
+    </select>
+  </div>
+</div>
+
+<label for="mailingPostalCode">Mailing Zip / Postal Code</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="parent.mailingAddress.zipPostalCode"
+         name="mailingPostalCode"
+         maxlength="20"
+         id="mailingPostalCode"/>
+</div>
