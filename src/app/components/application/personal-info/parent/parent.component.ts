@@ -11,9 +11,22 @@ import {Student} from '../../../../_classes/student';
 export class ParentComponent implements OnInit {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
+  primaryBillingContact: string;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  editParent(parent: Parent): void {
+    parent.editing = true;
+  }
+
+  createParent(): void {
+    const parent: Parent = new Parent();
+    parent.mailingAddress = new Address();
+    parent.editing = true;
+
+    this.parents.push(parent);
   }
 }

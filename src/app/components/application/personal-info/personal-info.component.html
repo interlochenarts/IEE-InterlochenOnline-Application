@@ -1,5 +1,5 @@
 <h2>Personal Information</h2>
 
-<iee-student></iee-student>
+<iee-student [student]="appData.student" [parents]="appData.parents"></iee-student>
 
-<iee-parent></iee-parent>
+<iee-parent [parents]="appData.parents" [student]="appData.student"></iee-parent>

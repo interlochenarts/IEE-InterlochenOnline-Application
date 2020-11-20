@@ -48,7 +48,7 @@
 
 <hr>
 
-<button *ngFor="let parent in parents" (click)="copyAddressFrom(parent.mailingAddress)">
+<button *ngFor="let parent of parents" (click)="copyAddressFrom(parent.mailingAddress)">
   Copy address from {{parent.firstName}} {{parent.lastName}}
 </button>
 

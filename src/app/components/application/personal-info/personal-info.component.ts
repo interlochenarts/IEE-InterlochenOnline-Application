@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ApplicationData} from '../../../_classes/application-data';
 
 @Component({
   selector: 'iee-personal-info',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./personal-info.component.css']
 })
 export class PersonalInfoComponent implements OnInit {
+  appData: ApplicationData;
 
   constructor() { }
 

@@ -23,4 +23,8 @@ export class ParentInfoComponent implements OnInit {
     this.parent.mailingAddress.stateProvince = this.student.mailingAddress.stateProvince;
     this.parent.mailingAddress.zipPostalCode = this.student.mailingAddress.zipPostalCode;
   }
+
+  save(): void {
+    this.parent.editing = false;
+  }
 }
