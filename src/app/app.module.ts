@@ -9,11 +9,13 @@ import {ProgramInfoComponent} from './components/application/program-info/progra
 import {ReviewAndSubmitComponent} from './components/application/review-and-submit/review-and-submit.component';
 import {SignAndPayComponent} from './components/application/sign-and-pay/sign-and-pay.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
-import { StudentComponent } from './components/application/personal-info/student/student.component';
-import { ParentComponent } from './components/application/personal-info/parent/parent.component';
-import { EnrollmentAgreementComponent } from './components/application/sign-and-pay/enrollment-agreement/enrollment-agreement.component';
-import { PaymentComponent } from './components/application/sign-and-pay/payment/payment.component';
+import {StudentComponent} from './components/application/personal-info/student/student.component';
+import {ParentComponent} from './components/application/personal-info/parent/parent.component';
+import {EnrollmentAgreementComponent} from './components/application/sign-and-pay/enrollment-agreement/enrollment-agreement.component';
+import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
 import {FormsModule} from '@angular/forms';
+import {ParentInfoComponent} from './components/application/personal-info/parent/parent-info/parent-info.component';
+import {ParentSearchComponent} from './components/application/personal-info/parent/parent-search/parent-search.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import {FormsModule} from '@angular/forms';
     StudentComponent,
     ParentComponent,
     EnrollmentAgreementComponent,
-    PaymentComponent
+    PaymentComponent,
+    ParentInfoComponent,
+    ParentSearchComponent
   ],
   imports: [
     BrowserModule,

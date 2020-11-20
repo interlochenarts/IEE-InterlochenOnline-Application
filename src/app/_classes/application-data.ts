@@ -6,7 +6,7 @@ import {EnrollmentAgreement} from './enrollment-agreement';
 
 export class ApplicationData {
   student: Student;
-  parents: Parent[];
+  parents: Array<Parent>;
   program: Program;
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
