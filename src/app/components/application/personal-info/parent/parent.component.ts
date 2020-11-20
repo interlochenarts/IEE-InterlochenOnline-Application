@@ -16,6 +16,7 @@ export class ParentComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.parents = this.parents || new Array<Parent>();
   }
 
   editParent(parent: Parent): void {

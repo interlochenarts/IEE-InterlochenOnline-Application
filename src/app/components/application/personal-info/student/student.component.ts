@@ -43,4 +43,10 @@ export class StudentComponent implements OnInit {
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
   }
 
+  showCopyAddressButton(parent: Parent): boolean {
+    return !!(parent
+      && parent.firstName
+      && parent.lastName
+      && parent.mailingAddress);
+  }
 }

@@ -1,8 +1,9 @@
 <h3>Parent Information</h3>
 
 <div *ngFor="let parent of parents">
-  {{parent.firstName}} {{parent.lastName}}
+  {{parent.firstName}} {{parent.lastName}}<br />
   <a (click)="editParent(parent)">Edit</a>
+  <br />
   <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
 </div>
 
@@ -10,14 +11,18 @@
   Add a parent
 </button>
 
-
 <label for="primaryBillingContact">Primary Billing Contact</label>
 <div class="default required">
-  <div class="select">
+  <div class="select" *ngIf="parents && parents.length > 0">
     <select [(ngModel)]="primaryBillingContact"
             name="primaryBillingContact"
-            ng-options="o.value as o.label for o in parentOptionList"
             id="primaryBillingContact">
+      <option *ngFor="let parent of parents" [value]="parent.firstName">
+        {{parent.firstName}} {{parent.lastName}}
+      </option>
     </select>
+  </div>
+  <div *ngIf="!parents || parents.length === 0">
+    Please add a parent
   </div>
 </div>

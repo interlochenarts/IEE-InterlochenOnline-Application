@@ -48,9 +48,11 @@
 
 <hr>
 
-<button *ngFor="let parent of parents" (click)="copyAddressFrom(parent.mailingAddress)">
-  Copy address from {{parent.firstName}} {{parent.lastName}}
-</button>
+<div *ngFor="let parent of parents">
+  <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)">
+    Copy Address from {{parent.firstName}} {{parent.lastName}}
+  </button>
+</div>
 
 <label for="mailingStreet">Mailing Street</label>
 <div class="default required">
