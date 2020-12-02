@@ -1,0 +1,75 @@
+<label for="cardholderName">Cardholder Name</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="cc.cardholderName"
+         name="cardholderName"
+         id="cardholderName"
+         maxlength="20"/>
+</div>
+
+<label for="cardNumber">Card Number</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="cc.cardNumber"
+         name="cardNumber"
+         id="cardNumber"
+         maxlength="18"/>
+</div>
+
+<div class="margin-bottom-sm">
+  <div class="row">
+    <div class="col-6">
+      <label>Expiration date</label>
+      <div class="default">
+        <div class="input-group">
+          <input type="text"
+                 [(ngModel)]="cc.expirationMonth"
+                 name="creditCardExpMonth"
+                 id="creditCardExpMonth"
+                 placeholder="mm"
+                 maxlength="2"
+                 style="width:60px;"
+                 class="text-right"/>
+          <div class="input-group-prepend input-group-append">
+            <span class="input-group-text">/</span>
+          </div>
+          <input type="text"
+                 [(ngModel)]="cc.expirationYear"
+                 name="creditCardExpMonth"
+                 id="creditCardExpYear"
+                 placeholder="yyyy"
+                 style="width:60px;"
+                 maxlength="4"/>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<label for="cvv">CVV Code</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="cc.cvv"
+         name="cvv"
+         id="cvv"
+         maxlength="18"/>
+</div>
+
+<label for="billingZip">Billing Zip</label>
+<div class="default">
+  <input type="text"
+         [(ngModel)]="cc.cvv"
+         name="billingZip"
+         id="billingZip"
+         maxlength="18"/>
+</div>
+
+<div class="text-center" *ngIf="transactionMessage == 'This transaction has been approved.'">
+  <i class="fa fa-check-square-o" style="color:green"></i><span
+  style="color:green"><i> {{transactionMessage}}</i></span>
+</div>
+
+<div class="text-center"
+     *ngIf="transactionMessage != 'This transaction has been approved.' && transactionMessage != null">
+  <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> {{transactionMessage}}</span>
+</div>

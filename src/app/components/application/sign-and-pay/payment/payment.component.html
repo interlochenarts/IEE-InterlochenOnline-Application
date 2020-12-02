@@ -1,1 +1,17 @@
 <h3>Make a Payment</h3>
+
+<label>Payment Method</label>
+<div class="default">
+  <div class="form-check form-check-inline" *ngFor="let enum of PaymentType | keyvalue">
+    <input type="radio"
+           class="form-check-input"
+           [(ngModel)]="paymentType"
+           name="paymentType"
+           id="paymentType_{{enum.key}}"
+           value="{{enum.value}}"/>
+    <label for="paymentType_{{enum.key}}" class="form-check-label">{{enum.value}}</label>
+  </div>
+</div>
+
+<iee-credit-card *ngIf="paymentType === PaymentType.CC"></iee-credit-card>
+<iee-ach *ngIf="paymentType === PaymentType.ACH"></iee-ach>
