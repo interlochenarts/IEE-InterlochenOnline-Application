@@ -1,28 +1,32 @@
-<h3>Parent Information</h3>
+<fieldset>
+  <legend>Parent Information</legend>
 
-<div *ngFor="let parent of parents">
-  {{parent.firstName}} {{parent.lastName}}<br />
-  <a (click)="editParent(parent)">Edit</a>
-  <br />
-  <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
-</div>
-
-<button *ngIf="!parents || parents.length === 0" (click)="createParent()">
-  Add a parent
-</button>
-
-<label for="primaryBillingContact">Primary Billing Contact</label>
-<div class="default required">
-  <div class="select" *ngIf="parents && parents.length > 0">
-    <select [(ngModel)]="primaryBillingContact"
-            name="primaryBillingContact"
-            id="primaryBillingContact">
-      <option *ngFor="let parent of parents" [value]="parent.firstName">
-        {{parent.firstName}} {{parent.lastName}}
-      </option>
-    </select>
+  <div *ngFor="let parent of parents">
+    <fieldset>
+      <legend>{{parent.firstName}} {{parent.lastName}}</legend>
+      <button class="btn btn-default" (click)="editParent(parent)">Edit</button>
+      <br/>
+      <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    </fieldset>
   </div>
-  <div *ngIf="!parents || parents.length === 0">
-    Please add a parent
+
+  <button *ngIf="!parents || parents.length === 0" (click)="createParent()" class="btn btn-default">
+    Add a parent
+  </button>
+
+  <label for="primaryBillingContact">Primary Billing Contact</label>
+  <div class="default required">
+    <div class="select" *ngIf="parents && parents.length > 0">
+      <select [(ngModel)]="primaryBillingContact"
+              name="primaryBillingContact"
+              id="primaryBillingContact">
+        <option *ngFor="let parent of parents" [value]="parent.firstName">
+          {{parent.firstName}} {{parent.lastName}}
+        </option>
+      </select>
+    </div>
+    <div *ngIf="!parents || parents.length === 0">
+      Please add a parent
+    </div>
   </div>
-</div>
+</fieldset>

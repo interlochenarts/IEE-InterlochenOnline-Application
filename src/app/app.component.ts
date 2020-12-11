@@ -1,8 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from './_classes/application-data';
-import {Parent} from './_classes/parent';
-import {Student} from './_classes/student';
-import {Address} from './_classes/address';
+import {ActivatedRoute} from '@angular/router';
+import {AppDataService} from './services/app-data.service';
 
 @Component({
   selector: 'iee-root',
@@ -13,15 +12,25 @@ export class AppComponent implements OnInit {
   title = 'IEE-InterlochenOnline-Application';
 
   appData: ApplicationData;
+  applicationId: string;
 
-  ngOnInit(): void {
-    this.appData = new ApplicationData();
-    this.appData.student = new Student();
-    this.appData.student.mailingAddress = new Address();
-    this.appData.parents = new Array<Parent>();
+  routerLinks = [];
+
+  constructor(private appDataService: AppDataService) {
   }
 
-  onOutletLoaded(component): void {
-    component.appData = this.appData;
+  ngOnInit(): void {
+    this.appDataService.applicationId.asObservable().subscribe(appId => {
+      if (appId) {
+        this.applicationId = appId;
+
+        this.routerLinks = [
+          {routerLink: this.applicationId + '/personal-info', text: 'Personal Information'},
+          {routerLink: this.applicationId + '/program', text: 'Select a Program'},
+          {routerLink: this.applicationId + '/review-and-submit', text: 'Review and Submit'},
+          {routerLink: this.applicationId + '/enrollment', text: 'Pay and Enroll'}
+        ];
+      }
+    });
   }
 }

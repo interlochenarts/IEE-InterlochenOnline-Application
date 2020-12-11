@@ -52,24 +52,24 @@
          [(ngModel)]="cc.cvv"
          name="cvv"
          id="cvv"
-         maxlength="18"/>
+         maxlength="4"/>
 </div>
 
 <label for="billingZip">Billing Zip</label>
 <div class="default">
   <input type="text"
-         [(ngModel)]="cc.cvv"
+         [(ngModel)]="cc.billingZip"
          name="billingZip"
          id="billingZip"
-         maxlength="18"/>
+         maxlength="10"/>
 </div>
 
-<div class="text-center" *ngIf="transactionMessage == 'This transaction has been approved.'">
+<div class="text-center" *ngIf="transactionMessage === 'This transaction has been approved.'">
   <i class="fa fa-check-square-o" style="color:green"></i><span
   style="color:green"><i> {{transactionMessage}}</i></span>
 </div>
 
 <div class="text-center"
-     *ngIf="transactionMessage != 'This transaction has been approved.' && transactionMessage != null">
+     *ngIf="transactionMessage && transactionMessage !== 'This transaction has been approved.'">
   <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> {{transactionMessage}}</span>
 </div>

@@ -4,18 +4,26 @@ import {ProgramInfoComponent} from './components/application/program-info/progra
 import {ReviewAndSubmitComponent} from './components/application/review-and-submit/review-and-submit.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {SignAndPayComponent} from './components/application/sign-and-pay/sign-and-pay.component';
+import {ApplicationComponent} from './components/application/application.component';
 
 const routes: Routes = [
-  {path: 'personal-info', component: PersonalInfoComponent},
-  {path: 'program', component: ProgramInfoComponent},
-  {path: 'review-and-submit', component: ReviewAndSubmitComponent},
-  {path: 'enrollment-agreement', component: SignAndPayComponent}
+  {
+    path: ':appId',
+    component: ApplicationComponent,
+    children: [
+      {path: '', redirectTo: 'personal-info', pathMatch: 'prefix'},
+      {path: 'personal-info', component: PersonalInfoComponent},
+      {path: 'program', component: ProgramInfoComponent},
+      {path: 'review-and-submit', component: ReviewAndSubmitComponent},
+      {path: 'enrollment', component: SignAndPayComponent}
+    ]
+  }
 ];
 
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {useHash: true, paramsInheritanceStrategy: 'always'})
   ],
   exports: [RouterModule]
 })

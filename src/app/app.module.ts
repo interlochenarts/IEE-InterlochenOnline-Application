@@ -16,8 +16,9 @@ import {PaymentComponent} from './components/application/sign-and-pay/payment/pa
 import {FormsModule} from '@angular/forms';
 import {ParentInfoComponent} from './components/application/personal-info/parent/parent-info/parent-info.component';
 import {ParentSearchComponent} from './components/application/personal-info/parent/parent-search/parent-search.component';
-import { CreditCardComponent } from './components/application/sign-and-pay/payment/credit-card/credit-card.component';
-import { AchComponent } from './components/application/sign-and-pay/payment/ach/ach.component';
+import {CreditCardComponent} from './components/application/sign-and-pay/payment/credit-card/credit-card.component';
+import {AchComponent} from './components/application/sign-and-pay/payment/ach/ach.component';
+import {ApplicationComponent} from './components/application/application.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AchComponent } from './components/application/sign-and-pay/payment/ach/
     ParentInfoComponent,
     ParentSearchComponent,
     CreditCardComponent,
-    AchComponent
+    AchComponent,
+    ApplicationComponent
   ],
   imports: [
     BrowserModule,

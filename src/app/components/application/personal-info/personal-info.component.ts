@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
+import {AppDataService} from '../../../services/app-data.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'iee-personal-info',
@@ -7,11 +9,21 @@ import {ApplicationData} from '../../../_classes/application-data';
   styleUrls: ['./personal-info.component.css']
 })
 export class PersonalInfoComponent implements OnInit {
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
+  applicationId: string;
 
-  constructor() { }
+  constructor(private appDataService: AppDataService) { }
 
   ngOnInit(): void {
+    this.appDataService.applicationId.asObservable().subscribe(appId => {
+      if (appId) {
+        this.applicationId = appId;
+      }
+    });
+    this.appDataService.applicationData.asObservable().subscribe(app => {
+      if (app) {
+        this.appData = app;
+      }
+    });
   }
-
 }

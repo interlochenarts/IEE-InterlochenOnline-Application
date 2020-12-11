@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ApplicationData} from '../../../_classes/application-data';
+import {AppDataService} from '../../../services/app-data.service';
 
 @Component({
   selector: 'iee-review-and-submit',
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReviewAndSubmitComponent implements OnInit {
 
-  constructor() { }
+  appData: ApplicationData;
+
+  constructor(private appDataService: AppDataService) { }
 
   ngOnInit(): void {
+    this.appDataService.applicationData.asObservable().subscribe(app => {
+      if (app) {
+        this.appData = app;
+      }
+    });
   }
-
 }

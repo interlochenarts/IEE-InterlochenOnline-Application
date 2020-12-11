@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Student} from '../../../../_classes/student';
 import {Parent} from '../../../../_classes/parent';
 import {Address} from '../../../../_classes/address';
+import {AppDataService} from '../../../../services/app-data.service';
 
 @Component({
   selector: 'iee-student',
@@ -23,12 +24,10 @@ export class StudentComponent implements OnInit {
     {label: 'Non-Binary', value: 'Non-Binary'}
   ];
 
-  constructor() {
+  constructor(private appDataService: AppDataService) {
   }
 
   ngOnInit(): void {
-    this.student = this.student || new Student();
-    this.student.mailingAddress = this.student.mailingAddress || new Address();
   }
 
   genderDetailRequired(): boolean {

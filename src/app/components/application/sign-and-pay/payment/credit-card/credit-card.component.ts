@@ -10,9 +10,11 @@ export class CreditCardComponent implements OnInit {
   @Input() cc: CreditCardPaymentData;
   transactionMessage: string;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    this.cc = this.cc || new CreditCardPaymentData();
   }
 
 }

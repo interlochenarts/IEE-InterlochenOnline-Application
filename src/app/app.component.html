@@ -1,12 +1,21 @@
-<iee-header></iee-header>
+<div class="application">
+  <div class="row">
+    <iee-header class="col-12 pr-0"></iee-header>
+  </div>
 
-<nav>
-  <ul>
-    <li><a routerLink="/personal-info" routerLinkActive="active">Personal Information</a></li>
-    <li><a routerLink="/program" routerLinkActive="active">Select a Program</a></li>
-    <li><a routerLink="/review-and-submit" routerLinkActive="active">Review and Submit</a></li>
-    <li><a routerLink="/enrollment-agreement" routerLinkActive="active">Enrollment Agreement</a></li>
-  </ul>
-</nav>
+  <div class="row">
+    <div class="application-steps col-3">
+      <nav class="well dark">
+        <ul>
+          <li *ngFor="let link of routerLinks">
+            <a [routerLink]="[link.routerLink]" routerLinkActive="active">{{link.text}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
 
-<router-outlet (activate)="onOutletLoaded($event)"></router-outlet>
+    <div class="well col-9">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

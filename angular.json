@@ -5,7 +5,11 @@
   "projects": {
     "IEE-InterlochenOnline-Application": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "less"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "iee",
