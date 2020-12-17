@@ -4,14 +4,16 @@ import {Program} from './program';
 import {Payment} from './payment';
 import {EnrollmentAgreement} from './enrollment-agreement';
 import {Address} from './address';
+import {ProgramData} from './program-data';
 
 export class ApplicationData {
   student: Student;
   parents: Array<Parent>;
-  programs: Array<Program>;
+  programData: ProgramData;
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
   isComplete: boolean;
+  termId: string;
 
   constructor() {
     this.student = new Student();
@@ -19,8 +21,7 @@ export class ApplicationData {
     this.parents = [];
     this.parents.push(new Parent());
     this.parents[0].mailingAddress = new Address();
-    this.programs = [];
-    this.programs.push(new Program());
+    this.programData = new ProgramData();
     this.enrollmentAgreement = new EnrollmentAgreement();
     this.payment = new Payment();
 
@@ -34,7 +35,7 @@ export class ApplicationData {
     appData.student = Student.createFromNestedJson(json.student);
     console.log(json.parents);
     appData.parents = json.parents.map(p => Parent.createFromNestedJson(p));
-    appData.programs = new Array<Program>();
+    appData.programData = ProgramData.createFromNestedJson(json.programData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = new Payment();
 

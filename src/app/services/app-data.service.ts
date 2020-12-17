@@ -21,25 +21,9 @@ export class AppDataService {
         json => {
           if (json !== null) {
             const j = JSON.parse(json);
-            // build academic tracks
-            this.applicationData.next(ApplicationData.createFromNestedJson(j));
-          }
-        },
-        {buffer: false, escape: false}
-      );
-    }
-  }
-
-  public getProgramData(termId: string): void {
-    if (termId && !this.applicationData.getValue()) {
-      Visualforce.remoting.Manager.invokeAction(
-        'IEE_OnlineApplicationController.getProgramData',
-        termId,
-        json => {
-          if (json !== null) {
-            const j = JSON.parse(json);
-            // build academic tracks
-            this.applicationData.next(ApplicationData.createFromNestedJson(j));
+            // build app data
+            const appData = ApplicationData.createFromNestedJson(j);
+            this.applicationData.next(appData);
           }
         },
         {buffer: false, escape: false}
