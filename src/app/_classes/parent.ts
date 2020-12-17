@@ -8,6 +8,7 @@ export class Parent {
   mobilePhone: string;
   mailingAddress: Address;
   editing = false; // used to display/hide this parent's info form
+  verification: string;
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();

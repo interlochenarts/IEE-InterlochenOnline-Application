@@ -13,11 +13,28 @@ export class AppDataService {
 
   constructor() { }
 
-  public getData(applicationId: string): void {
+  public getApplicationData(applicationId: string): void {
     if (applicationId && !this.applicationData.getValue()) {
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getApplicationData',
         applicationId,
+        json => {
+          if (json !== null) {
+            const j = JSON.parse(json);
+            // build academic tracks
+            this.applicationData.next(ApplicationData.createFromNestedJson(j));
+          }
+        },
+        {buffer: false, escape: false}
+      );
+    }
+  }
+
+  public getProgramData(termId: string): void {
+    if (termId && !this.applicationData.getValue()) {
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_OnlineApplicationController.getProgramData',
+        termId,
         json => {
           if (json !== null) {
             const j = JSON.parse(json);

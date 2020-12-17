@@ -17,7 +17,7 @@ export class ApplicationComponent implements OnInit {
       this.applicationId = p.get('appId');
       if (this.applicationId) {
         this.appDataService.applicationId.next(this.applicationId);
-        this.appDataService.getData(this.applicationId);
+        this.appDataService.getApplicationData(this.applicationId);
       }
     });
   }

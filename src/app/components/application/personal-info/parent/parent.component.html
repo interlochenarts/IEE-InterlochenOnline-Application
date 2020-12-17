@@ -1,26 +1,27 @@
-<fieldset>
-  <legend>Parent Information</legend>
-
+<h3 class="mb-3">Parent</h3>
+<div class="nestedForm">
   <div *ngFor="let parent of parents">
-    <fieldset>
-      <legend>{{parent.firstName}} {{parent.lastName}}</legend>
-      <button class="btn btn-default" (click)="editParent(parent)">Edit</button>
-      <br/>
+      <h5>{{parent.firstName}} {{parent.lastName}}</h5>
+      <button class="btn btn-default" (click)="editParent(parent)" *ngIf="!parent.editing">Edit</button>
       <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
-    </fieldset>
+    <hr>
   </div>
 
-  <button *ngIf="!parents || parents.length === 0" (click)="createParent()" class="btn btn-default">
-    Add a parent
-  </button>
+  <div *ngIf="!parents || parents.length === 0">
+    <button (click)="createParent()" class="btn btn-default">
+      Add a parent
+    </button>
+    <hr>
+  </div>
 
   <label for="primaryBillingContact">Primary Billing Contact</label>
   <div class="default required">
-    <div class="select" *ngIf="parents && parents.length > 0">
+    <div class="select">
       <select [(ngModel)]="primaryBillingContact"
+              [attr.disabled]="parents && parents.length > 0"
               name="primaryBillingContact"
               id="primaryBillingContact">
-        <option *ngFor="let parent of parents" [value]="parent.firstName">
+        <option *ngFor="let parent of parents" [value]="parent.contactId">
           {{parent.firstName}} {{parent.lastName}}
         </option>
       </select>
@@ -29,4 +30,4 @@
       Please add a parent
     </div>
   </div>
-</fieldset>
+</div>
