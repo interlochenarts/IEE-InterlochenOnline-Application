@@ -1,10 +1,12 @@
 export class Program {
   id: string;
+  sessionId: string;
   name: string;
   daysOfAttendance: string;
   artsArea: string;
   division: string;
   isSelected = false;
+  appChoiceId: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();

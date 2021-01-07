@@ -1,6 +1,5 @@
 import {Student} from './student';
 import {Parent} from './parent';
-import {Program} from './program';
 import {Payment} from './payment';
 import {EnrollmentAgreement} from './enrollment-agreement';
 import {Address} from './address';
@@ -14,6 +13,7 @@ export class ApplicationData {
   payment: Payment;
   isComplete: boolean;
   termId: string;
+  appId: string;
 
   constructor() {
     this.student = new Student();

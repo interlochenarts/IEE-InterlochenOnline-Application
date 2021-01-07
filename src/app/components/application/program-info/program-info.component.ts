@@ -4,6 +4,8 @@ import {AppDataService} from '../../../services/app-data.service';
 import {ProgramData} from '../../../_classes/program-data';
 import {Program} from '../../../_classes/program';
 
+declare const Visualforce: any;
+
 @Component({
   selector: 'iee-program-info',
   templateUrl: './program-info.component.html',
@@ -49,11 +51,31 @@ export class ProgramInfoComponent implements OnInit {
         program.daysArray.forEach(d => {
           this.daysSelected.add(d);
         });
+
+        Visualforce.remoting.Manager.invokeAction(
+          'IEE_OnlineApplicationController.addAppChoice',
+          this.appData.appId, program.id, program.sessionId,
+          result => {
+            console.log('Saved new program: ' + result);
+            program.appChoiceId = result;
+          },
+          {buffer: false, escape: false}
+        );
+
       } else {
         program.isSelected = false;
         program.daysArray.forEach(d => {
           this.daysSelected.delete(d);
         });
+
+        Visualforce.remoting.Manager.invokeAction(
+          'IEE_OnlineApplicationController.removeAppChoice',
+          this.appData.appId, program.appChoiceId,
+          result => {
+            console.log(result);
+          },
+          {buffer: false, escape: false}
+        );
       }
     }
   }

@@ -30,4 +30,21 @@ export class AppDataService {
       );
     }
   }
+
+  public saveApplication(): void {
+    const appData = this.applicationData.getValue();
+    const appId = this.applicationId.getValue();
+
+    if (appData && appId) {
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_OnlineApplicationController.saveApplication',
+        JSON.stringify(appData),
+        appId,
+        result => {
+          console.log(result);
+        },
+        {buffer: false, escape: false}
+      );
+    }
+  }
 }

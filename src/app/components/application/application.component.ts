@@ -22,4 +22,7 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
+  saveApplication(): void {
+    this.appDataService.saveApplication();
+  }
 }
