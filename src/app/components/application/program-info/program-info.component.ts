@@ -56,8 +56,12 @@ export class ProgramInfoComponent implements OnInit {
           'IEE_OnlineApplicationController.addAppChoice',
           this.appData.appId, program.id, program.sessionId,
           result => {
-            console.log('Saved new program: ' + result);
-            program.appChoiceId = result;
+            if (result.toString().startsWith('ERR')) {
+              console.log(result);
+            } else {
+              console.log('Saved new program: ' + result);
+              program.appChoiceId = result;
+            }
           },
           {buffer: false, escape: false}
         );
