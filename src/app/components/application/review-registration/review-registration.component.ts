@@ -4,10 +4,10 @@ import {AppDataService} from '../../../services/app-data.service';
 
 @Component({
   selector: 'iee-review-and-submit',
-  templateUrl: './review-and-submit.component.html',
-  styleUrls: ['./review-and-submit.component.css']
+  templateUrl: './review-registration.component.html',
+  styleUrls: ['./review-registration.component.css']
 })
-export class ReviewAndSubmitComponent implements OnInit {
+export class ReviewRegistrationComponent implements OnInit {
 
   appData: ApplicationData;
 

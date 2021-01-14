@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
         this.routerLinks = [
           {routerLink: this.applicationId + '/personal-info', text: 'Personal Information'},
           {routerLink: this.applicationId + '/program', text: 'Select a Program'},
-          {routerLink: this.applicationId + '/review-and-submit', text: 'Review and Submit'},
+          {routerLink: this.applicationId + '/review-registration', text: 'Review Registration'},
           {routerLink: this.applicationId + '/enrollment', text: 'Pay and Enroll'}
         ];
       }

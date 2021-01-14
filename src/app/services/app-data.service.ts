@@ -34,6 +34,7 @@ export class AppDataService {
   public saveApplication(): void {
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
+    console.dir(appData);
 
     if (appData && appId) {
       Visualforce.remoting.Manager.invokeAction(

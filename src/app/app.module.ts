@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
 
 import {ProgramInfoComponent} from './components/application/program-info/program-info.component';
-import {ReviewAndSubmitComponent} from './components/application/review-and-submit/review-and-submit.component';
+import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
 import {SignAndPayComponent} from './components/application/sign-and-pay/sign-and-pay.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
@@ -19,11 +19,14 @@ import {ParentSearchComponent} from './components/application/personal-info/pare
 import {CreditCardComponent} from './components/application/sign-and-pay/payment/credit-card/credit-card.component';
 import {AchComponent} from './components/application/sign-and-pay/payment/ach/ach.component';
 import {ApplicationComponent} from './components/application/application.component';
+import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
+import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
+import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ReviewAndSubmitComponent,
+    ReviewRegistrationComponent,
     ProgramInfoComponent,
     HeaderComponent,
     PersonalInfoComponent,
@@ -36,7 +39,10 @@ import {ApplicationComponent} from './components/application/application.compone
     ParentSearchComponent,
     CreditCardComponent,
     AchComponent,
-    ApplicationComponent
+    ApplicationComponent,
+    ProgramReviewComponent,
+    ParentReviewComponent,
+    StudentReviewComponent
   ],
   imports: [
     BrowserModule,
