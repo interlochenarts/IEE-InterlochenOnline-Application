@@ -16,4 +16,15 @@ export class Parent {
 
     return parent;
   }
+
+  public isComplete(): boolean {
+    return !!this.email &&
+      (!!this.mailingAddress &&
+        !!this.mailingAddress.street &&
+        !!this.mailingAddress.city &&
+        !!this.mailingAddress.country &&
+        !!this.mailingAddress.stateProvince &&
+        !!this.mailingAddress.zipPostalCode
+      );
+  }
 }

@@ -1,13 +1,13 @@
-<h3>Student</h3>
+<h3 class="mb-3">Student</h3>
 <div class="nestedForm">
   <h5>{{student.firstName}} {{student.lastName}}</h5>
 
-  <label for="nickName" class="mt-4">What name would you prefer to be called, if different from your legal first name?</label>
-  <div class="default">
+  <label for="preferredName" class="mt-4">What name would you prefer to be called, if different from your legal first name?</label>
+  <div class="default required">
     <input type="text"
            [(ngModel)]="student.preferredName"
            name="nickName"
-           id="nickName"
+           id="preferredName"
            maxlength="25"/>
   </div>
 
@@ -105,7 +105,7 @@
     </div>
   </div>
 
-  <label for="genderIdentityDetail">Gender Non-Binary Details</label>
+  <label for="genderIdentityDetail" class="mt-4">Gender Non-Binary Details</label>
   <div class="default"
        [ngClass]="{required:genderDetailRequired(), disabledDiv:!genderDetailRequired()}">
         <textarea [disabled]="!genderDetailRequired()"
@@ -115,6 +115,10 @@
                   id="genderIdentityDetail"></textarea>
   </div>
 
+  <label for="birthdate" class="mt-4">Birth Date</label>
+  <div class="default required">
+    <input type="text" name="birthdate" id="birthdate" />
+  </div>
   <!--<iee-date-dropdown label-text="Birth Date"-->
   <!--                   is-disabled="false"-->
   <!--                   is-required="true"-->

@@ -25,4 +25,21 @@ export class Student {
 
     return student;
   }
+
+  public isComplete(): boolean {
+    return !!this.preferredName &&
+      !!this.email &&
+      !!this.mobilePhone &&
+      (!!this.mailingAddress &&
+        !!this.mailingAddress.street &&
+        !!this.mailingAddress.city &&
+        !!this.mailingAddress.country &&
+        !!this.mailingAddress.stateProvince &&
+        !!this.mailingAddress.zipPostalCode
+      ) &&
+      !!this.genderIdentity &&
+      (this.genderIdentity !== 'Other' ||
+        (this.genderIdentity === 'Other' && !!this.genderIdentityDetails)) &&
+      !!this.birthdate;
+  }
 }

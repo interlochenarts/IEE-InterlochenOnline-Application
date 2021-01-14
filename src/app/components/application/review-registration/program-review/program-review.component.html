@@ -1,1 +1,9 @@
-<p>program-review works!</p>
+<h3>Programs</h3>
+
+<div *ngFor="let program of programData.appChoices">
+  {{program}}
+</div>
+
+<div *ngIf="!programData.appChoices || programData.appChoices.length === 0">
+  <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> No programs selected</span>
+</div>

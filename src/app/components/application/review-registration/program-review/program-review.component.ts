@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ProgramData} from '../../../../_classes/program-data';
 
 @Component({
   selector: 'iee-program-review',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./program-review.component.less']
 })
 export class ProgramReviewComponent implements OnInit {
+  @Input() programData: ProgramData;
 
   constructor() { }
 

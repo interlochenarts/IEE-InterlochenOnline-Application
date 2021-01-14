@@ -1,1 +1,109 @@
-<p>student-review works!</p>
+<h3>{{student.firstName}} {{student.lastName}}</h3>
+
+<div class="incomplete" *ngIf="!student.isComplete()">
+  Missing data!
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Preferred Name</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.preferredName">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.preferredName">{{student.preferredName}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Email</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.email">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.email">{{student.email}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mobile Phone</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.email">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.email">{{student.email}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mailing Street</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.street">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.street">{{student.mailingAddress.street}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mailing City</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.city">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.city">{{student.mailingAddress.city}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mailing Country</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.country">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.country">{{student.mailingAddress.country}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mailing State</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.stateProvince">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.stateProvince">{{student.mailingAddress.stateProvince}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Mailing Zip / Postal Code</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.zipPostalCode">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.zipPostalCode">{{student.mailingAddress.zipPostalCode}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Gender Identity</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.genderIdentity">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
+</div>
+
+<div class="review my-1 row" *ngIf="student.genderIdentity === 'Non-Binary'">
+  <div class="col-5 hideOverflow">Gender Non-Binary Details</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.genderIdentityDetails">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.genderIdentityDetails">{{student.genderIdentityDetails}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Race</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.race">
+    <span class="reviewError">Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.race">{{student.race}}</div>
+</div>
+
+<div class="review my-1 row" *ngIf="student.race === 'Other'">
+  <div class="col-5 hideOverflow">Other Race</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.raceOther">
+    <span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.raceOther">{{student.raceOther}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Hispanic, Latinx, or Spanish?</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.hispanic">
+    <span class="reviewError">Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.hispanic">{{student.hispanic}}</div>
+</div>
