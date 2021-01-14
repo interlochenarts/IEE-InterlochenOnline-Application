@@ -1,4 +1,4 @@
-<label for="email">Email</label>
+<label for="email" class="mt-4">Email</label>
 <div class="default required">
   <input type="text"
          [(ngModel)]="parent.email"
@@ -12,7 +12,7 @@
   Copy address from student
 </button>
 
-<label for="mailingStreet">Mailing Street</label>
+<label for="mailingStreet" class="mt-4">Mailing Street</label>
 <div class="default required">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.street"
@@ -21,7 +21,7 @@
          id="mailingStreet"/>
 </div>
 
-<label for="mailingCity">Mailing City</label>
+<label for="mailingCity" class="mt-4">Mailing City</label>
 <div class="default required ">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.city"
@@ -30,7 +30,7 @@
          id="mailingCity"/>
 </div>
 
-<label for="mailingCountry">Mailing Country</label>
+<label for="mailingCountry" class="mt-4">Mailing Country</label>
 <div class="default required ">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.country"
@@ -41,7 +41,7 @@
   </div>
 </div>
 
-<label for="mailingState">Mailing State</label>
+<label for="mailingState" class="mt-4">Mailing State</label>
 <div class="default">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<label for="mailingPostalCode">Mailing Zip / Postal Code</label>
+<label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"

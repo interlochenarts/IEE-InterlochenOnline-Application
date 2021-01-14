@@ -2,7 +2,7 @@
 <div class="nestedForm">
   <h5>{{student.firstName}} {{student.lastName}}</h5>
 
-  <label for="nickName">What name would you prefer to be called, if different from your legal first name?</label>
+  <label for="nickName" class="mt-4">What name would you prefer to be called, if different from your legal first name?</label>
   <div class="default">
     <input type="text"
            [(ngModel)]="student.preferredName"
@@ -11,7 +11,7 @@
            maxlength="25"/>
   </div>
 
-  <label for="email">Applicant's Email</label>
+  <label for="email" class="mt-4">Applicant's Email</label>
   <div class="default required">
     <input type="text"
            [(ngModel)]="student.email"
@@ -21,7 +21,7 @@
            pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
   </div>
 
-  <label for="mobilePhone">Mobile Phone</label>
+  <label for="mobilePhone" class="mt-4">Mobile Phone</label>
   <div class="default required">
     <input type="text"
            [(ngModel)]="student.mobilePhone"
@@ -30,7 +30,7 @@
            id="mobilePhone"/>
   </div>
 
-  <hr>
+  <hr class="my-4">
 
   <div *ngFor="let parent of parents">
     <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
@@ -39,7 +39,7 @@
     </button>
   </div>
 
-  <label for="mailingStreet">Mailing Street</label>
+  <label for="mailingStreet" class="mt-4">Mailing Street</label>
   <div class="default required">
     <input type="text"
            [(ngModel)]="student.mailingAddress.street"
@@ -48,7 +48,7 @@
            id="mailingStreet"/>
   </div>
 
-  <label for="mailingCity">Mailing City</label>
+  <label for="mailingCity" class="mt-4">Mailing City</label>
   <div class="default required ">
     <input type="text"
            [(ngModel)]="student.mailingAddress.city"
@@ -57,7 +57,7 @@
            id="mailingCity"/>
   </div>
 
-  <label for="mailingCountry">Mailing Country</label>
+  <label for="mailingCountry" class="mt-4">Mailing Country</label>
   <div class="default required ">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.country"
@@ -68,7 +68,7 @@
     </div>
   </div>
 
-  <label for="mailingState">Mailing State</label>
+  <label for="mailingState" class="mt-4">Mailing State</label>
   <div class="default">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.stateProvince"
@@ -79,7 +79,7 @@
     </div>
   </div>
 
-  <label for="mailingPostalCode">Mailing Zip / Postal Code</label>
+  <label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
   <div class="default">
     <input type="text"
            [(ngModel)]="student.mailingAddress.zipPostalCode"
@@ -88,7 +88,7 @@
            id="mailingPostalCode"/>
   </div>
 
-  <hr>
+  <hr class="my-4">
 
   <p>Interlochen is committed to inclusion, non-discrimination and creating a safe environment for everyone
     in our community.</p>
@@ -124,7 +124,7 @@
 
 
   <div>
-    <label for="race">What is this student’s race?</label>
+    <label for="race" class="mt-4">What is this student’s race?</label>
     <div class="default">
       <div class="select">
         <select [(ngModel)]="student.race"
@@ -134,7 +134,7 @@
       </div>
     </div>
 
-    <label for="raceOther">If race not listed, please specify</label>
+    <label for="raceOther" class="mt-4">If race not listed, please specify</label>
     <div class="default">
       <input type="text"
              [(ngModel)]="student.raceOther"
@@ -144,7 +144,7 @@
     </div>
   </div>
 
-  <label>Is the student of Hispanic, Latinx, or Spanish origin?</label>
+  <label class="mt-4">Is the student of Hispanic, Latinx, or Spanish origin?</label>
   <div class="default">
     <div class="form-check form-check-inline" *ngFor="let option of yesNoOptions; let i = index">
       <input type="radio"

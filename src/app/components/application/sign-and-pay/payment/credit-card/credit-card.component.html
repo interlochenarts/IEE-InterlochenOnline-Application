@@ -1,4 +1,4 @@
-<label for="cardholderName">Cardholder Name</label>
+<label for="cardholderName" class="mt-4">Cardholder Name</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cardholderName"
@@ -7,7 +7,7 @@
          maxlength="20"/>
 </div>
 
-<label for="cardNumber">Card Number</label>
+<label for="cardNumber" class="mt-4">Card Number</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cardNumber"
@@ -16,7 +16,7 @@
          maxlength="18"/>
 </div>
 
-<div class="margin-bottom-sm">
+<div class="my-2">
   <div class="row">
     <div class="col-6">
       <label>Expiration date</label>
@@ -46,7 +46,7 @@
   </div>
 </div>
 
-<label for="cvv">CVV Code</label>
+<label for="cvv" class="mt-4">CVV Code</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cvv"
@@ -55,7 +55,7 @@
          maxlength="4"/>
 </div>
 
-<label for="billingZip">Billing Zip</label>
+<label for="billingZip" class="mt-4">Billing Zip</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.billingZip"
@@ -64,12 +64,12 @@
          maxlength="10"/>
 </div>
 
-<div class="text-center" *ngIf="transactionMessage === 'This transaction has been approved.'">
+<div class="text-center my-2" *ngIf="transactionMessage === 'This transaction has been approved.'">
   <i class="fa fa-check-square-o" style="color:green"></i><span
   style="color:green"><i> {{transactionMessage}}</i></span>
 </div>
 
-<div class="text-center"
+<div class="text-center my-2"
      *ngIf="transactionMessage && transactionMessage !== 'This transaction has been approved.'">
   <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> {{transactionMessage}}</span>
 </div>
