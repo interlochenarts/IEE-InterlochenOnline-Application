@@ -1,9 +1,9 @@
 <h3>Programs</h3>
 
-<div *ngFor="let program of programData.appChoices">
-  {{program}}
+<div *ngFor="let program of selectedPrograms">
+  {{program.name}}
 </div>
 
-<div *ngIf="!programData.appChoices || programData.appChoices.length === 0">
+<div *ngIf="!selectedPrograms || selectedPrograms.length === 0">
   <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> No programs selected</span>
 </div>

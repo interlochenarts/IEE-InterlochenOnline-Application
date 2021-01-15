@@ -4,7 +4,6 @@ export class ProgramData {
   divisions: Array<string>;
   programs: Array<Program>;
   selectedDivision: string;
-  appChoices: Array<string>;
 
   constructor() {
     this.programs = new Array<Program>();

@@ -9,7 +9,7 @@ import {AppDataService} from '../../../services/app-data.service';
 })
 export class ReviewRegistrationComponent implements OnInit {
 
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
 
   constructor(private appDataService: AppDataService) { }
 
