@@ -1,17 +1,110 @@
-<h3 class="mb-3">Parent</h3>
+<header>
+  <div class="row">
+    <div class="col-8">
+      <h3>Parent or Guardian Information</h3>
+    </div>
+    <div class="col-4 text-right">
+      <div class="required inline-block">
+        <div class="instructions">Required</div>
+      </div>
+    </div>
+  </div>
+</header>
+
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
-      <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-      <button class="btn btn-default" (click)="editParent(parent)" *ngIf="!parent.editing">Edit</button>
-      <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    <h5>{{parent.firstName}} {{parent.lastName}}</h5>
+    <button class="btn btn-default" (click)="editParent(parent)" *ngIf="!parent.editing">Edit</button>
+    <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
     <hr>
   </div>
 
-  <div *ngIf="!parents || parents.length === 0">
-    <button (click)="createParent()" class="btn btn-default">
+  <div *ngIf="(!parents || parents.length === 0) && !showParentSearch">
+    <button (click)="searchForParent()" class="btn btn-default">
       Add a parent
     </button>
     <hr>
+  </div>
+
+  <div id="parentSearch" *ngIf="showParentSearch">
+    <h3>Find a Parent</h3>
+    <div class="nestedForm">
+
+      <p>Please use the form below to search for a person in our system.</p>
+
+      <!-- using Aspen maxlength as its shorter than SFDC -->
+      <label for="parentVerificationFirstName">First Name</label>
+      <div class="default required">
+        <input type="text"
+               [(ngModel)]="parentVerification.firstName"
+               name="parentVerificationFirstName"
+               id="parentVerificationFirstName"
+               maxlength="32"/>
+      </div>
+      <br/>
+
+      <label for="parentVerificationLastName">Last Name</label>
+      <div class="default required">
+        <input type="text"
+               [(ngModel)]="parentVerification.lastName"
+               name="parentVerificationLastName"
+               id="parentVerificationLastName"
+               maxlength="50"/>
+      </div>
+      <br/>
+
+      <label for="parentVerificationEmail">Email</label>
+      <div class="default required">
+        <input type="text"
+               [(ngModel)]="parentVerification.email"
+               name="parentVerificationEmail"
+               id="parentVerificationEmail"/>
+      </div>
+      <br/>
+
+      <label for="parentVerificationPhone">Phone</label>
+      <div class="default required">
+        <input type="text"
+               [(ngModel)]="parentVerification.phone"
+               name="parentVerificationPhone"
+               id="parentVerificationPhone"/>
+      </div>
+      <br/>
+
+      <div class="alert alert-danger" *ngIf="searchFormComplete() === false">
+        <i class="fa fa-exclamation-triangle"></i> Please fill in all fields to ensure a match is found.
+      </div>
+
+      <br/>
+
+      <button class="btn btn-primary" type="button"
+              [disabled]="searchFormComplete() === false"
+              [ngClass]="{disabled: searchFormComplete() === false}"
+              (click)="findRelation()">
+        <i class="fa fa-search"></i> Search for an existing person
+      </button>
+      <button class="btn btn-primary" type="button"
+              (click)="clearRelationSearchForm()">
+        <i class="fa fa-ban"></i> Cancel
+      </button>
+    </div>
+
+  </div>
+
+  <div id="parentSearchResult" *ngIf="parentResult">
+    <p>We found {{parentResult.firstNameParent.value}} {{parentResult.lastNameParent.value}}. Is this
+      the correct person? If you choose to add this person, <b>an email will be sent to them asking them to verify that
+        they are a parent or guardian of the applicant</b>. After this verification is complete, you will be able to
+      update or manage their information.
+    </p>
+
+    <button class="btn btn-primary" type="button" (click)="verifyParent()">
+      <i class="fa fa-plus"></i> Yes, Add This Person
+    </button>
+    <button class="btn btn-primary" type="button" (click)="searchForParent()">
+      <i class="fa fa-ban"></i> No, Search Again
+    </button>
+    <i *ngIf="addingUnverifiedParent" class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent
   </div>
 
   <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>

@@ -15,7 +15,6 @@ import {EnrollmentAgreementComponent} from './components/application/sign-and-pa
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
 import {FormsModule} from '@angular/forms';
 import {ParentInfoComponent} from './components/application/personal-info/parent/parent-info/parent-info.component';
-import {ParentSearchComponent} from './components/application/personal-info/parent/parent-search/parent-search.component';
 import {CreditCardComponent} from './components/application/sign-and-pay/payment/credit-card/credit-card.component';
 import {AchComponent} from './components/application/sign-and-pay/payment/ach/ach.component';
 import {ApplicationComponent} from './components/application/application.component';
@@ -36,7 +35,6 @@ import {StudentReviewComponent} from './components/application/review-registrati
     EnrollmentAgreementComponent,
     PaymentComponent,
     ParentInfoComponent,
-    ParentSearchComponent,
     CreditCardComponent,
     AchComponent,
     ApplicationComponent,

@@ -1,4 +1,5 @@
 import {Address} from './address';
+import {ParentVerification} from './parent-verification';
 
 export class Parent {
   contactId: string;
@@ -13,6 +14,15 @@ export class Parent {
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
     Object.assign(parent, json);
+
+    return parent;
+  }
+
+  public static createFromVerificationData(parentVerification: ParentVerification): Parent {
+    const parent = new Parent();
+    parent.firstName = parentVerification.firstName;
+    parent.lastName = parentVerification.lastName;
+    parent.email = parentVerification.email;
 
     return parent;
   }
