@@ -37,4 +37,8 @@ export class Parent {
         !!this.mailingAddress.zipPostalCode
       );
   }
+
+  public get isVerified(): boolean {
+    return this.verification === 'Verified';
+  }
 }

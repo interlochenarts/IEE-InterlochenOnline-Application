@@ -34,7 +34,14 @@ export class ParentComponent implements OnInit {
     parent.editing = true;
   }
 
+  reSendVerification(parent: Parent): void {
+    // TODO: re-send verification email function call
+  }
+
   searchForParent(): void {
+    if (this.parentResult) {
+      delete this.parentResult;
+    }
     this.parentVerification = new ParentVerification();
     this.showParentSearch = true;
   }
@@ -59,6 +66,7 @@ export class ParentComponent implements OnInit {
         result => {
           if (result) {
             this.parentResult = JSON.parse(result);
+            this.showParentSearch = false;
           } else {
             this.parentNotFound = true;
           }
@@ -81,6 +89,7 @@ export class ParentComponent implements OnInit {
         this.parents.push(unverifiedParent);
 
         delete this.parentVerification;
+        delete this.parentResult;
       },
       {buffer: false, escape: false}
     );
