@@ -39,6 +39,7 @@ export class StudentComponent implements OnInit, OnChanges {
 
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
+      this.filterStates();
     });
   }
 
@@ -50,9 +51,8 @@ export class StudentComponent implements OnInit, OnChanges {
 
 
   filterStates(): void {
-    console.log('filtering states on: ' + this.student.mailingAddress.country);
-    const countryCode = this.countryCodes.find(c => c.name === this.student.mailingAddress.country);
-    this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode.id);
+    const countryCode = this.countryCodes.find(c => c.name === this.student?.mailingAddress?.country);
+    this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
   }
 
   genderDetailRequired(): boolean {
@@ -63,6 +63,7 @@ export class StudentComponent implements OnInit, OnChanges {
     this.student.mailingAddress.street = parentAddress.street;
     this.student.mailingAddress.city = parentAddress.city;
     this.student.mailingAddress.country = parentAddress.country;
+    this.filterStates();
     this.student.mailingAddress.stateProvince = parentAddress.stateProvince;
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
   }
