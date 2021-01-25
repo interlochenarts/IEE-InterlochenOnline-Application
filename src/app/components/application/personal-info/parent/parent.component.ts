@@ -64,12 +64,20 @@ export class ParentComponent implements OnInit {
         this.student.contactId,
         JSON.stringify(this.parentVerification),
         result => {
-          if (result) {
+          if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
+            console.log('found parent: ' + this.parentResult);
             this.showParentSearch = false;
           } else {
+            console.log('no parent found, creating new one.');
+            const emptyParent = Parent.createFromVerificationData(this.parentVerification);
+            emptyParent.editing = true;
+            emptyParent.verification = 'Verified';
+            this.parents.push(emptyParent);
             this.parentNotFound = true;
           }
+
+          delete this.parentVerification;
         },
         {buffer: false, escape: false}
       );

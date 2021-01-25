@@ -36,10 +36,14 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     }
   }
 
-
   filterStates(): void {
     const countryCode = this.countryCodes.find(c => c.name === this.parent?.mailingAddress?.country);
     this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
+  }
+
+  zipRequired(): boolean {
+    const countryCode = this.countryCodes.find(c => c.name === this.student?.mailingAddress?.country);
+    return countryCode.zipRequired;
   }
 
   copyAddressFromStudent(): void {

@@ -80,7 +80,7 @@
   </div>
 
   <label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
-  <div class="default">
+  <div class="default" [class]="{required: zipRequired()}">
     <input type="text"
            [(ngModel)]="student.mailingAddress.zipPostalCode"
            name="mailingPostalCode"

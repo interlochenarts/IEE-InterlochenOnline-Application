@@ -3,9 +3,13 @@
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-    <button class="btn btn-default" (click)="editParent(parent)" *ngIf="!parent.editing && parent.isVerified">Edit</button>
-    <button class="btn btn-default" (click)="reSendVerification(parent)" *ngIf="!parent.isVerified">Re-send Verification</button>
-    <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    <button class="btn btn-default" (click)="editParent(parent)"
+            *ngIf="!parent.editing && parent.isVerified">Edit</button>
+    <button class="btn btn-default" (click)="reSendVerification(parent)"
+            *ngIf="!parent.isVerified">Re-send Verification</button>
+    <div>
+      <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    </div>
     <hr>
   </div>
 

@@ -13,6 +13,7 @@ export class Parent {
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
+    parent.mailingAddress = new Address();
     Object.assign(parent, json);
 
     return parent;
@@ -23,6 +24,7 @@ export class Parent {
     parent.firstName = parentVerification.firstName;
     parent.lastName = parentVerification.lastName;
     parent.email = parentVerification.email;
+    parent.mailingAddress = new Address();
 
     return parent;
   }
