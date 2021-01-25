@@ -20,6 +20,9 @@ export class ApplicationComponent implements OnInit {
         this.appDataService.getApplicationData(this.applicationId);
       }
     });
+
+    this.appDataService.getCountryData();
+    this.appDataService.getStateData();
   }
 
   saveApplication(): void {

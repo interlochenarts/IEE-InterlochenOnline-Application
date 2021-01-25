@@ -56,23 +56,25 @@
   </div>
 
   <label for="mailingCountry" class="mt-4">Mailing Country</label>
-  <div class="default required ">
+  <div class="default required">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.country"
+              (ngModelChange)="filterStates()"
               name="mailingCountry"
               id="mailingCountry">
-        <!--      <option *ngFor="let country of countries">{{country}}</option>-->
+        <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
       </select>
     </div>
   </div>
 
   <label for="mailingState" class="mt-4">Mailing State</label>
-  <div class="default">
+  <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.stateProvince"
+              [disabled]="filteredStates.length === 0"
               name="mailingState"
               id="mailingState">
-        <!--      <option *ngFor="let state of filteredStates">{{state}}</option>-->
+        <option *ngFor="let state of filteredStates" [value]="state.name">{{state.name}}</option>
       </select>
     </div>
   </div>
@@ -115,7 +117,7 @@
 
   <label for="birthdate" class="mt-4">Birth Date</label>
   <div class="default required">
-    <input type="text" name="birthdate" id="birthdate" />
+    <input type="text" name="birthdate" id="birthdate"/>
   </div>
   <!--<iee-date-dropdown label-text="Birth Date"-->
   <!--                   is-disabled="false"-->
