@@ -5,6 +5,10 @@ import {Address} from '../../../../_classes/address';
 import {AppDataService} from '../../../../services/app-data.service';
 import {CountryCode} from '../../../../_classes/country-code';
 import {StateCode} from '../../../../_classes/state-code';
+import {ApplicationData} from '../../../../_classes/application-data';
+import {SalesforceOption} from '../../../../_classes/salesforce-option';
+
+declare const Visualforce: any;
 
 @Component({
   selector: 'iee-student',
@@ -17,6 +21,7 @@ export class StudentComponent implements OnInit, OnChanges {
   countryCodes: Array<CountryCode>;
   stateCodes: Array<StateCode>;
   filteredStates: Array<StateCode> = new Array<StateCode>();
+  ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
 
   yesNoOptions = [
     {label: 'Yes', value: 'Yes'},
@@ -41,6 +46,21 @@ export class StudentComponent implements OnInit, OnChanges {
       this.stateCodes = stateCodes;
       this.filterStates();
     });
+
+    this.loadEthnicityOptions();
+  }
+
+  loadEthnicityOptions(): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_DataController.getEthnicityOptions',
+      json => {
+        if (json !== null) {
+          const j = JSON.parse(json);
+          this.ethnicityOptions = j.map(o => SalesforceOption.createFromJson(o));
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   ngOnChanges(): void {

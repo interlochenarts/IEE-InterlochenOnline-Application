@@ -42,6 +42,9 @@ export class ParentComponent implements OnInit {
     if (this.parentResult) {
       delete this.parentResult;
     }
+    if (this.parentVerification) {
+      delete this.parentVerification;
+    }
     this.parentVerification = new ParentVerification();
     this.showParentSearch = true;
   }
@@ -85,11 +88,13 @@ export class ParentComponent implements OnInit {
   }
 
   verifyParent(): void {
+    console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
-      result => {
+      (result: any) => {
+        console.dir(result);
         // `result` is unused because it uses the old data model. We create a new parent from the verification data
         // and add the contact id
         const unverifiedParent = Parent.createFromVerificationData(this.parentVerification);
@@ -104,7 +109,8 @@ export class ParentComponent implements OnInit {
   }
 
   clearRelationSearchForm(): void {
-
+    delete this.parentVerification;
+    this.showParentSearch = false;
   }
 
   searchFormComplete(): boolean {

@@ -134,6 +134,7 @@
         <select [(ngModel)]="student.race"
                 name="race"
                 id="race">
+          <option [value]="option.value" *ngFor="let option of ethnicityOptions">{{option.label}}</option>
         </select>
       </div>
     </div>
