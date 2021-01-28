@@ -4,6 +4,7 @@ import {Parent} from '../../../../_classes/parent';
 import {Student} from '../../../../_classes/student';
 import {ParentVerification} from '../../../../_classes/parent-verification';
 import {LegacyParentResults} from '../../../../_classes/legacy-parent-results';
+import {LegacyData} from '../../../../_classes/legacy-data';
 
 declare const Visualforce: any;
 
@@ -34,7 +35,17 @@ export class ParentComponent implements OnInit {
     parent.editing = true;
   }
 
+  reSendVerification(parent: Parent): void {
+    // TODO: re-send verification email function call
+  }
+
   searchForParent(): void {
+    if (this.parentResult) {
+      delete this.parentResult;
+    }
+    if (this.parentVerification) {
+      delete this.parentVerification;
+    }
     this.parentVerification = new ParentVerification();
     this.showParentSearch = true;
   }
@@ -57,9 +68,16 @@ export class ParentComponent implements OnInit {
         this.student.contactId,
         JSON.stringify(this.parentVerification),
         result => {
-          if (result) {
+          if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
+            console.log('found parent: ' + this.parentResult);
+            this.showParentSearch = false;
           } else {
+            console.log('no parent found, creating new one.');
+            const emptyParent = Parent.createFromVerificationData(this.parentVerification);
+            emptyParent.editing = true;
+            emptyParent.verification = 'Verified';
+            this.parents.push(emptyParent);
             this.parentNotFound = true;
           }
         },
@@ -69,25 +87,33 @@ export class ParentComponent implements OnInit {
   }
 
   verifyParent(): void {
+    console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
+    console.log(JSON.stringify(this.parentVerification));
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
       result => {
-        // `result` is unused because it uses the old data model. We create a new parent from the verification data
-        // and add the contact id
-        const unverifiedParent = Parent.createFromVerificationData(this.parentVerification);
+        console.dir(result);
+        const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
+        for (const key of Object.keys(result)) {
+          legacyParent.set(key, LegacyData.createFromJson(JSON.parse(result[key])));
+        }
+
+        const unverifiedParent = Parent.createFromLegacyData(legacyParent);
         unverifiedParent.contactId = this.parentResult.contactIdParent.value;
         this.parents.push(unverifiedParent);
 
         delete this.parentVerification;
+        delete this.parentResult;
       },
       {buffer: false, escape: false}
     );
   }
 
   clearRelationSearchForm(): void {
-
+    delete this.parentVerification;
+    this.showParentSearch = false;
   }
 
   searchFormComplete(): boolean {
