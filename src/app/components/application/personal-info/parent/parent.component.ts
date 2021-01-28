@@ -16,7 +16,6 @@ declare const Visualforce: any;
 export class ParentComponent implements OnInit {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
-  primaryBillingContact: string;
 
   // parent search
   showParentSearch = false;

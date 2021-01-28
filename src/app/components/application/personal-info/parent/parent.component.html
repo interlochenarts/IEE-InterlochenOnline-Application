@@ -103,7 +103,7 @@
   <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
   <div class="default required">
     <div class="select">
-      <select [(ngModel)]="primaryBillingContact"
+      <select [(ngModel)]="student.billingParentId"
               name="primaryBillingContact"
               id="primaryBillingContact">
         <option *ngFor="let parent of parents" [value]="parent.contactId">

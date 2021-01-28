@@ -8,6 +8,7 @@ export class Student {
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
+  billingParentId: string;
 
   genderIdentity: string;
   genderIdentityDetails: string;
