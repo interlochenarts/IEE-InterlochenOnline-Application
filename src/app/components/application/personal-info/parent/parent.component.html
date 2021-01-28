@@ -6,7 +6,7 @@
     <button class="btn btn-default" (click)="editParent(parent)"
             *ngIf="!parent.editing && parent.isVerified">Edit</button>
     <button class="btn btn-default" (click)="reSendVerification(parent)"
-            *ngIf="!parent.isVerified">Re-send Verification</button>
+            *ngIf="parent && !parent.isVerified && !parent.editing">Re-send Verification</button>
     <div>
       <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
     </div>
@@ -104,7 +104,6 @@
   <div class="default required">
     <div class="select">
       <select [(ngModel)]="primaryBillingContact"
-              [attr.disabled]="parents && parents.length > 0"
               name="primaryBillingContact"
               id="primaryBillingContact">
         <option *ngFor="let parent of parents" [value]="parent.contactId">

@@ -4,6 +4,7 @@ import {Parent} from '../../../../_classes/parent';
 import {Student} from '../../../../_classes/student';
 import {ParentVerification} from '../../../../_classes/parent-verification';
 import {LegacyParentResults} from '../../../../_classes/legacy-parent-results';
+import {LegacyData} from '../../../../_classes/legacy-data';
 
 declare const Visualforce: any;
 
@@ -79,8 +80,6 @@ export class ParentComponent implements OnInit {
             this.parents.push(emptyParent);
             this.parentNotFound = true;
           }
-
-          delete this.parentVerification;
         },
         {buffer: false, escape: false}
       );
@@ -89,15 +88,19 @@ export class ParentComponent implements OnInit {
 
   verifyParent(): void {
     console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
+    console.log(JSON.stringify(this.parentVerification));
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
-      (result: any) => {
+      result => {
         console.dir(result);
-        // `result` is unused because it uses the old data model. We create a new parent from the verification data
-        // and add the contact id
-        const unverifiedParent = Parent.createFromVerificationData(this.parentVerification);
+        const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
+        for (const key of Object.keys(result)) {
+          legacyParent.set(key, LegacyData.createFromJson(JSON.parse(result[key])));
+        }
+
+        const unverifiedParent = Parent.createFromLegacyData(legacyParent);
         unverifiedParent.contactId = this.parentResult.contactIdParent.value;
         this.parents.push(unverifiedParent);
 
