@@ -30,7 +30,7 @@
            id="mobilePhone"/>
   </div>
 
-  <div *ngFor="let parent of parents">
+  <div *ngFor="let parent of parents" class="mt-4">
     <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
             class="btn btn-default">
       Copy Address from {{parent.firstName}} {{parent.lastName}}

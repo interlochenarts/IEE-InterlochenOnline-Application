@@ -14,6 +14,7 @@ export class AppDataService {
   public applicationId = new BehaviorSubject<string>(null);
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
+  public isSaving = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
@@ -68,13 +69,16 @@ export class AppDataService {
     const appId = this.applicationId.getValue();
     console.dir(appData);
 
-    if (appData && appId) {
+    // only save if we have an app and appId. Also wait until previous save is done.
+    if (appData && appId && (this.isSaving.getValue() === false)) {
+      this.isSaving.next(true);
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveApplication',
         JSON.stringify(appData),
         appId,
         result => {
           console.log(result);
+          this.isSaving.next(false);
         },
         {buffer: false, escape: false}
       );
