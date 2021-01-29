@@ -14,6 +14,7 @@ export class ApplicationData {
   isComplete: boolean;
   termId: string;
   appId: string;
+  appName: string;
 
   constructor() {
     this.student = new Student();

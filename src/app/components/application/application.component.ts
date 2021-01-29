@@ -9,6 +9,7 @@ import {AppDataService} from '../../services/app-data.service';
 })
 export class ApplicationComponent implements OnInit {
   applicationId: string;
+  isSaving = false;
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute) { }
 
@@ -23,6 +24,9 @@ export class ApplicationComponent implements OnInit {
 
     this.appDataService.getCountryData();
     this.appDataService.getStateData();
+    this.appDataService.isSaving.asObservable().subscribe(next => {
+      this.isSaving = next;
+    });
   }
 
   saveApplication(): void {

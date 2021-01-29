@@ -2,4 +2,5 @@
   <router-outlet></router-outlet>
 </div>
 
-<a (click)="saveApplication()" href="javascript:void(0);">Save Application</a>
+<a (click)="saveApplication()" href="javascript:void(0);">Save Application</a><i
+  class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
