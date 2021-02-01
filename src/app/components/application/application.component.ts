@@ -58,8 +58,14 @@ export class ApplicationComponent implements OnInit {
     });
   }
 
-  saveApplication(): void {
+  saveAndQuit(): void {
     this.appDataService.saveApplication();
+    this.appDataService.isSaving.asObservable().subscribe(saving => {
+      if (!saving) {
+        // leave app after save
+        window.location.assign('/interlochen');
+      }
+    });
   }
 
   saveAndNext(): void {
