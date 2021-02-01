@@ -7,7 +7,7 @@
     <div class="application-steps col-3">
       <nav class="well dark">
         <ul>
-          <li *ngFor="let link of routerLinks">
+          <li *ngFor="let link of links">
             <a [routerLink]="[link.routerLink]" routerLinkActive="active">{{link.text}}</a>
           </li>
         </ul>
