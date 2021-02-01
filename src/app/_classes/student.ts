@@ -41,6 +41,7 @@ export class Student {
       !!this.genderIdentity &&
       (this.genderIdentity !== 'Other' ||
         (this.genderIdentity === 'Other' && !!this.genderIdentityDetails)) &&
-      !!this.birthdate;
+      !!this.birthdate &&
+      !!this.billingParentId;
   }
 }
