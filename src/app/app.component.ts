@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from './_classes/application-data';
 import {AppDataService} from './services/app-data.service';
+import {RouterLink} from './_classes/router-link';
 
 @Component({
   selector: 'iee-root',
@@ -12,8 +13,7 @@ export class AppComponent implements OnInit {
 
   appData: ApplicationData;
   applicationId: string;
-
-  routerLinks = [];
+  public links = [];
 
   constructor(private appDataService: AppDataService) {
   }
@@ -23,12 +23,14 @@ export class AppComponent implements OnInit {
       if (appId) {
         this.applicationId = appId;
 
-        this.routerLinks = [
-          {routerLink: this.applicationId + '/personal-info', text: 'Personal Information'},
-          {routerLink: this.applicationId + '/program', text: 'Select a Program'},
-          {routerLink: this.applicationId + '/review-registration', text: 'Review Registration'},
-          {routerLink: this.applicationId + '/enrollment', text: 'Pay and Enroll'}
-        ];
+        this.appDataService.routerLinks.next([
+          new RouterLink(this.applicationId + '/personal-info', 'Personal Information'),
+          new RouterLink(this.applicationId + '/program', 'Select a Program'),
+          new RouterLink(this.applicationId + '/review-registration', 'Review Registration'),
+          new RouterLink(this.applicationId + '/enrollment', 'Pay and Enroll')
+        ]);
+
+        this.links = this.appDataService.routerLinks.getValue();
       }
     });
   }

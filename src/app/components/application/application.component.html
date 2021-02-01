@@ -1,6 +1,13 @@
 <div class="well">
   <router-outlet></router-outlet>
 </div>
-
-<a (click)="saveApplication()" href="javascript:void(0);">Save Application</a><i
-  class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
+<div class="text-right">
+  <span *ngIf="showBackLink"><a href="javascript:void(0);"
+                                [ngClass]="{disabled: isSaving}"
+                                (click)="saveAndBack()"><i class="fa fa-arrow-left"></i> Previous Step</a> | </span>
+  <a (click)="saveAndQuit()" [ngClass]="{disabled: isSaving}" href="javascript:void(0);">Save and Quit</a>
+  <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
+  <span *ngIf="showNextLink"> | <a href="javascript:void(0);"
+                                   [ngClass]="{disabled: isSaving}"
+                                   (click)="saveAndNext()">Save & Next <i class="fa fa-arrow-right"></i></a></span>
+</div>

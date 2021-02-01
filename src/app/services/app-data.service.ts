@@ -3,6 +3,7 @@ import {BehaviorSubject} from 'rxjs';
 import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
+import {RouterLink} from '../_classes/router-link';
 
 declare const Visualforce: any;
 
@@ -15,6 +16,7 @@ export class AppDataService {
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
+  public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
 
   constructor() { }
 
