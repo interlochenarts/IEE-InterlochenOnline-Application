@@ -42,7 +42,7 @@ export class StudentComponent implements OnInit, OnChanges {
     const options = new Array<object>();
     const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
 
-    for (let i = 13; i > 0; i--) {
+    for (let i = 13; i >= 0; i--) {
       options.push({
         label: (startYear - i).toString(),
         value: (startYear - i).toString()
@@ -138,9 +138,5 @@ export class StudentComponent implements OnInit, OnChanges {
       && parent.firstName
       && parent.lastName
       && parent.mailingAddress);
-  }
-
-  updateDaysOfMonth(): void {
-
   }
 }
