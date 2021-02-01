@@ -13,7 +13,26 @@ export class Student {
   genderIdentity: string;
   genderIdentityDetails: string;
 
-  birthdate: Date;
+  birthdateYear: string;
+  birthdateMonth: string;
+  birthdateDay: string;
+
+  public get birthdate(): string {
+    if (this.birthdateDay && this.birthdateMonth && this.birthdateYear) {
+      return this.birthdateYear + '-' + this.birthdateMonth + '-' + this.birthdateDay;
+    }
+
+    return null;
+  }
+
+  public set birthdate(value: string) {
+    if (value) {
+      const d = new Date(value);
+      this.birthdateDay = ('0' + d.getDate()).slice(-2);
+      this.birthdateMonth = ('0' + d.getMonth()).slice(-2);
+      this.birthdateYear = '' + d.getFullYear();
+    }
+  }
 
   // Demographics
   race: string;

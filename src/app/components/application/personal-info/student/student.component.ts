@@ -23,6 +23,47 @@ export class StudentComponent implements OnInit, OnChanges {
   filteredStates: Array<StateCode> = new Array<StateCode>();
   ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
 
+  monthOptions = [
+    {label: 'January', value: '01'},
+    {label: 'February', value: '02'},
+    {label: 'March', value: '03'},
+    {label: 'April', value: '04'},
+    {label: 'May', value: '05'},
+    {label: 'June', value: '06'},
+    {label: 'July', value: '07'},
+    {label: 'August', value: '08'},
+    {label: 'September', value: '09'},
+    {label: 'October', value: '10'},
+    {label: 'November', value: '11'},
+    {label: 'December', value: '12'}
+  ];
+
+  get yearOptions(): Array<object> {
+    const options = new Array<object>();
+    const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
+
+    for (let i = 13; i > 0; i--) {
+      options.push({
+        label: (startYear - i).toString(),
+        value: (startYear - i).toString()
+      });
+    }
+    return options;
+  }
+
+  get dayOptions(): Array<object> {
+    const options = new Array<object>();
+    const daysInMonth = new Date(+this.student.birthdateYear, +this.student.birthdateMonth, 0).getDate();
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      options.push({
+        label: ('0' + i).slice(-2),
+        value: ('0' + i).slice(-2)
+      });
+    }
+    return options;
+  }
+
   yesNoOptions = [
     {label: 'Yes', value: 'Yes'},
     {label: 'No', value: 'No'}
@@ -97,5 +138,9 @@ export class StudentComponent implements OnInit, OnChanges {
       && parent.firstName
       && parent.lastName
       && parent.mailingAddress);
+  }
+
+  updateDaysOfMonth(): void {
+
   }
 }

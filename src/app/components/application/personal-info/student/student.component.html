@@ -115,17 +115,18 @@
                   id="genderIdentityDetail"></textarea>
   </div>
 
-  <label for="birthdate" class="mt-4">Birth Date</label>
+  <label class="mt-4">Birth Date</label>
   <div class="default required">
-    <input type="text" name="birthdate" id="birthdate"/>
+    <select id="birthdate_year" (change)="updateDaysOfMonth()" [(ngModel)]="student.birthdateYear">
+      <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
+    </select>
+    <select id="birthdate_month" (change)="updateDaysOfMonth()" [(ngModel)]="student.birthdateMonth">
+      <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
+    </select>
+    <select id="birthdate_day" [(ngModel)]="student.birthdateDay">
+      <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+    </select>
   </div>
-  <!--<iee-date-dropdown label-text="Birth Date"-->
-  <!--                   is-disabled="false"-->
-  <!--                   is-required="true"-->
-  <!--                   form-data-field="formData['Student Information'].birthdate"-->
-  <!--                   starting-year-offset="-20"-->
-  <!--                   ending-year-offset="-5"></iee-date-dropdown>-->
-
 
   <div>
     <label for="race" class="mt-4">What is this student’s race?</label>
