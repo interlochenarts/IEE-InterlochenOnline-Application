@@ -5,7 +5,6 @@ import {Address} from '../../../../_classes/address';
 import {AppDataService} from '../../../../services/app-data.service';
 import {CountryCode} from '../../../../_classes/country-code';
 import {StateCode} from '../../../../_classes/state-code';
-import {ApplicationData} from '../../../../_classes/application-data';
 import {SalesforceOption} from '../../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
@@ -42,7 +41,7 @@ export class StudentComponent implements OnInit, OnChanges {
     const options = new Array<object>();
     const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
 
-    for (let i = 13; i >= 0; i--) {
+    for (let i = 16; i >= 0; i--) {
       options.push({
         label: (startYear - i).toString(),
         value: (startYear - i).toString()

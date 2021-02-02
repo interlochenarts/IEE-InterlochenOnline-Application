@@ -16,23 +16,7 @@ export class Student {
   birthdateYear: string;
   birthdateMonth: string;
   birthdateDay: string;
-
-  public get birthdate(): string {
-    if (this.birthdateDay && this.birthdateMonth && this.birthdateYear) {
-      return this.birthdateYear + '-' + this.birthdateMonth + '-' + this.birthdateDay;
-    }
-
-    return null;
-  }
-
-  public set birthdate(value: string) {
-    if (value) {
-      const d = new Date(value);
-      this.birthdateDay = ('0' + d.getDate()).slice(-2);
-      this.birthdateMonth = ('0' + d.getMonth()).slice(-2);
-      this.birthdateYear = '' + d.getFullYear();
-    }
-  }
+  birthdate: string;
 
   // Demographics
   race: string;
@@ -42,8 +26,22 @@ export class Student {
   public static createFromNestedJson(json: any): Student {
     const student = new Student();
     Object.assign(student, json);
+    if (student.birthdate) {
+      const dateSplit = student.birthdate.split('-');
+      student.birthdateDay = dateSplit[2];
+      student.birthdateMonth = dateSplit[1];
+      student.birthdateYear = dateSplit[0];
+    }
 
     return student;
+  }
+
+  public updateBirthdate(): void {
+    if (this.birthdateYear && this.birthdateMonth && this.birthdateDay) {
+      this.birthdate = `${this.birthdateYear}-${this.birthdateMonth}-${this.birthdateDay}`;
+    } else {
+      this.birthdate = null;
+    }
   }
 
   public isComplete(): boolean {
