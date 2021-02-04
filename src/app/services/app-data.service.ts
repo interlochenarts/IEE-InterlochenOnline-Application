@@ -10,6 +10,7 @@ declare const Visualforce: any;
 export class AppDataService {
   public applicationData = new BehaviorSubject<ApplicationData>(null);
   public applicationId = new BehaviorSubject<string>(null);
+  public transactionId = new BehaviorSubject<string>(null);
 
   constructor() { }
 

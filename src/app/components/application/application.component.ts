@@ -9,6 +9,7 @@ import {AppDataService} from '../../services/app-data.service';
 })
 export class ApplicationComponent implements OnInit {
   applicationId: string;
+  transactionId: string;
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute) { }
 
@@ -18,6 +19,12 @@ export class ApplicationComponent implements OnInit {
       if (this.applicationId) {
         this.appDataService.applicationId.next(this.applicationId);
         this.appDataService.getApplicationData(this.applicationId);
+      }
+      this.transactionId = p.get('txnId');
+      if (this.transactionId) {
+        this.appDataService.transactionId.next(this.transactionId);
+        console.log('WEEE! ' + this.transactionId);
+        // Do some work here to verify the transaction id instead of trusting them?
       }
     });
   }

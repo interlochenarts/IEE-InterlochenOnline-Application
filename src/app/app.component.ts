@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
 
   appData: ApplicationData;
   applicationId: string;
+  transactionId: string;
 
   routerLinks = [];
 
@@ -28,6 +29,18 @@ export class AppComponent implements OnInit {
           {routerLink: this.applicationId + '/program', text: 'Select a Program'},
           {routerLink: this.applicationId + '/review-registration', text: 'Review Registration'},
           {routerLink: this.applicationId + '/enrollment', text: 'Pay and Enroll'}
+        ];
+      }
+    });
+    this.appDataService.transactionId.asObservable().subscribe(trxId => {
+      if (trxId) {
+        this.transactionId = trxId;
+
+        this.routerLinks = [
+          {routerLink: this.applicationId + '/' + this.transactionId + '/personal-info', text: 'Personal Information'},
+          {routerLink: this.applicationId + '/' + this.transactionId + '/program', text: 'Select a Program'},
+          {routerLink: this.applicationId + '/' + this.transactionId + '/review-registration', text: 'Review Registration'},
+          {routerLink: this.applicationId + '/' + this.transactionId + '/enrollment', text: 'Pay and Enroll'}
         ];
       }
     });

@@ -17,6 +17,17 @@ const routes: Routes = [
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'enrollment', component: SignAndPayComponent}
     ]
+  },
+  {
+    path: ':appId/:txnId',
+    component: ApplicationComponent,
+    children: [
+      {path: '', redirectTo: 'personal-info', pathMatch: 'prefix'},
+      {path: 'personal-info', component: PersonalInfoComponent},
+      {path: 'program', component: ProgramInfoComponent},
+      {path: 'review-registration', component: ReviewRegistrationComponent},
+      {path: 'enrollment', component: SignAndPayComponent}
+    ]
   }
 ];
 
