@@ -8,8 +8,7 @@ import {AppDataService} from '../../../services/app-data.service';
   styleUrls: ['./sign-and-pay.component.css']
 })
 export class SignAndPayComponent implements OnInit {
-
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
 
   constructor(private appDataService: AppDataService) { }
 

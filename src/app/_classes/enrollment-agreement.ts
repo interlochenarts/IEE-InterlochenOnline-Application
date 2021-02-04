@@ -1,10 +1,10 @@
 export class EnrollmentAgreement {
-  signature: string;
+  public signature: string;
+  public birthdate: string;
 
   birthdateYear: string;
   birthdateMonth: string;
   birthdateDay: string;
-  birthdate: string;
 
   public updateBirthdate(): void {
     if (this.birthdateYear && this.birthdateMonth && this.birthdateDay) {

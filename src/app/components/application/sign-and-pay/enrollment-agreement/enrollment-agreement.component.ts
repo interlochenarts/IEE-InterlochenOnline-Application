@@ -1,14 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ApplicationData} from '../../../../_classes/application-data';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EnrollmentAgreement} from '../../../../_classes/enrollment-agreement';
+import {AppDataService} from '../../../../services/app-data.service';
 
 @Component({
   selector: 'iee-enrollment-agreement',
   templateUrl: './enrollment-agreement.component.html',
   styleUrls: ['./enrollment-agreement.component.css']
 })
-export class EnrollmentAgreementComponent implements OnInit {
-  @Input() appData: ApplicationData;
+export class EnrollmentAgreementComponent implements OnInit, OnChanges {
+  @Input() enrollmentAgreement: EnrollmentAgreement;
+  applicationId: string;
+  isSigning = false;
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -40,8 +42,8 @@ export class EnrollmentAgreementComponent implements OnInit {
 
   get dayOptions(): Array<object> {
     const options = new Array<object>();
-    const daysInMonth = new Date(+this.appData.enrollmentAgreement.birthdateYear,
-      +this.appData.enrollmentAgreement.birthdateMonth, 0).getDate();
+    const daysInMonth = new Date(+this.enrollmentAgreement.birthdateYear,
+      +this.enrollmentAgreement.birthdateMonth, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
       options.push({
@@ -52,9 +54,25 @@ export class EnrollmentAgreementComponent implements OnInit {
     return options;
   }
 
-  constructor() { }
+  constructor(private appDataService: AppDataService) {
+  }
 
   ngOnInit(): void {
-    this.appData.enrollmentAgreement = this.appData.enrollmentAgreement || new EnrollmentAgreement();
+    this.appDataService.applicationId.asObservable().subscribe(appId => {
+      if (appId) {
+        this.applicationId = appId;
+      }
+    });
+
+    this.appDataService.isSigning.asObservable().subscribe(val => {
+      this.isSigning = val;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+  }
+
+  signEnrollmentAgreement(): void {
+    this.appDataService.signEnrollmentAgreement();
   }
 }
