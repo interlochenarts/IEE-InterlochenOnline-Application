@@ -22,10 +22,10 @@
 
 <div class="review my-1 row">
   <div class="col-5 hideOverflow">Mobile Phone</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.email">
+  <div class="col-7 hideOverflow" *ngIf="!student.mobilePhone">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
-  <div class="col-7 hideOverflow" *ngIf="student.email">{{student.email}}</div>
+  <div class="col-7 hideOverflow" *ngIf="student.mobilePhone">{{student.mobilePhone}}</div>
 </div>
 
 <div class="review my-1 row">
@@ -84,26 +84,17 @@
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentityDetails">{{student.genderIdentityDetails}}</div>
 </div>
 
-<div class="review my-1 row">
+<div class="review my-1 row" *ngIf="student.race">
   <div class="col-5 hideOverflow">Race</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.race">
-    <span class="reviewError">Not Provided</span>
-  </div>
   <div class="col-7 hideOverflow" *ngIf="student.race">{{student.race}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="student.race === 'Other'">
+<div class="review my-1 row" *ngIf="student.race === 'Other' && student.raceOther">
   <div class="col-5 hideOverflow">Other Race</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.raceOther">
-    <span class="reviewError"> Not Provided</span>
-  </div>
   <div class="col-7 hideOverflow" *ngIf="student.raceOther">{{student.raceOther}}</div>
 </div>
 
-<div class="review my-1 row">
+<div class="review my-1 row" *ngIf="student.hispanic">
   <div class="col-5 hideOverflow">Hispanic, Latinx, or Spanish?</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.hispanic">
-    <span class="reviewError">Not Provided</span>
-  </div>
   <div class="col-7 hideOverflow" *ngIf="student.hispanic">{{student.hispanic}}</div>
 </div>
