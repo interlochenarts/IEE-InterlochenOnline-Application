@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {ActivatedRoute} from '@angular/router';
+import {CountryCode} from '../../../_classes/country-code';
 
 @Component({
   selector: 'iee-personal-info',

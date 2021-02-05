@@ -1,7 +1,17 @@
 <div class="well application-progress my-3">
   <div class="row">
-    <div class="col-12">
-      <p>header works!</p>
+    <div class="col-12 col-sm-6 col-md-3 d-flex flex-column justify-content-left">
+      <h5>Interlochen Online</h5>
+      {{appData.student.firstName}} {{appData.appName}}
+    </div>
+    <div class="col-12 col-sm-6 d-flex flex-column justify-content-center my-3 my-sm-0">
+    </div>
+    <div class="col-12 col-md-3 text-center d-flex justify-content-end align-items-center">
+      <span class="mr-2" *ngIf="isSaving"><i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i></span>
+      <button class="btn btn-ghost mr-3"
+              [disabled]="isSaving"
+              [ngClass]="{disabled: isSaving}"
+              (click)="saveApplication()">Save Progress</button>
     </div>
   </div>
 </div>

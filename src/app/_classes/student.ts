@@ -8,11 +8,15 @@ export class Student {
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
+  billingParentId: string;
 
   genderIdentity: string;
   genderIdentityDetails: string;
 
-  birthdate: Date;
+  birthdateYear: string;
+  birthdateMonth: string;
+  birthdateDay: string;
+  birthdate: string;
 
   // Demographics
   race: string;
@@ -22,8 +26,22 @@ export class Student {
   public static createFromNestedJson(json: any): Student {
     const student = new Student();
     Object.assign(student, json);
+    if (student.birthdate) {
+      const dateSplit = student.birthdate.split('-');
+      student.birthdateDay = dateSplit[2];
+      student.birthdateMonth = dateSplit[1];
+      student.birthdateYear = dateSplit[0];
+    }
 
     return student;
+  }
+
+  public updateBirthdate(): void {
+    if (this.birthdateYear && this.birthdateMonth && this.birthdateDay) {
+      this.birthdate = `${this.birthdateYear}-${this.birthdateMonth}-${this.birthdateDay}`;
+    } else {
+      this.birthdate = null;
+    }
   }
 
   public isComplete(): boolean {
@@ -40,6 +58,7 @@ export class Student {
       !!this.genderIdentity &&
       (this.genderIdentity !== 'Other' ||
         (this.genderIdentity === 'Other' && !!this.genderIdentityDetails)) &&
-      !!this.birthdate;
+      !!this.birthdate &&
+      !!this.billingParentId;
   }
 }

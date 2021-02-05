@@ -1,9 +1,9 @@
-<label for="email" class="mt-4">Email</label>
+<label for="parentEmail" class="mt-4">Email</label>
 <div class="default required">
   <input type="text"
          [(ngModel)]="parent.email"
-         name="email"
-         id="email"
+         name="parentEmail"
+         id="parentEmail"
          maxlength="50"
          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
 </div>
@@ -12,53 +12,53 @@
   Copy address from student
 </button>
 
-<label for="mailingStreet" class="mt-4">Mailing Street</label>
+<label for="parentMailingStreet">Mailing Street</label>
 <div class="default required">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.street"
-         name="mailingStreet"
+         name="parentMailingStreet"
          maxlength="255"
-         id="mailingStreet"/>
+         id="parentMailingStreet"/>
 </div>
 
-<label for="mailingCity" class="mt-4">Mailing City</label>
+<label for="parentMailingCity" class="mt-4">Mailing City</label>
 <div class="default required ">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.city"
-         name="mailingCity"
+         name="parentMailingCity"
          maxlength="40"
-         id="mailingCity"/>
+         id="parentMailingCity"/>
 </div>
 
-<label for="mailingCountry" class="mt-4">Mailing Country</label>
+<label for="parentMailingCountry" class="mt-4">Mailing Country</label>
 <div class="default required ">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.country"
-            name="mailingCountry"
-            id="mailingCountry">
-      <!--      <option *ngFor="let country of countries">{{country}}</option>-->
+            name="parentMailingCountry"
+            id="parentMailingCountry">
+            <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
     </select>
   </div>
 </div>
 
-<label for="mailingState" class="mt-4">Mailing State</label>
+<label for="parentMailingState" class="mt-4">Mailing State</label>
 <div class="default">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
-            name="mailingState"
-            id="mailingState">
-      <!--      <option *ngFor="let state of filteredStates">{{state}}</option>-->
+            name="parentMailingState"
+            id="parentMailingState">
+            <option *ngFor="let state of filteredStates" [value]="state.name">{{state.name}}</option>
     </select>
   </div>
 </div>
 
-<label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
-<div class="default">
+<label for="parentMailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
+<div class="default" [class]="{required: zipRequired()}">
   <input type="text"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"
-         name="mailingPostalCode"
+         name="parentMailingPostalCode"
          maxlength="20"
-         id="mailingPostalCode"/>
+         id="parentMailingPostalCode"/>
 </div>
 
 <button class="btn btn-default my-3" (click)="save()">Save parent</button>

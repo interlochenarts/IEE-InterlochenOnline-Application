@@ -11,9 +11,9 @@ export class ApplicationData {
   programData: ProgramData;
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
-  isComplete: boolean;
   termId: string;
   appId: string;
+  appName: string;
 
   constructor() {
     this.student = new Student();
@@ -24,8 +24,6 @@ export class ApplicationData {
     this.programData = new ProgramData();
     this.enrollmentAgreement = new EnrollmentAgreement();
     this.payment = new Payment();
-
-    this.isComplete = false;
   }
 
   public static createFromNestedJson(json: any): ApplicationData {
@@ -40,5 +38,12 @@ export class ApplicationData {
     appData.payment = new Payment();
 
     return appData;
+  }
+
+  public isComplete(): boolean {
+    return this.student.isComplete() &&
+      this.parents.length > 0 &&
+      this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(), true) &&
+      this.programData.programs.length > 0;
   }
 }

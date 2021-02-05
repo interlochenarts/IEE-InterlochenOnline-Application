@@ -1,21 +1,15 @@
-<header>
-  <div class="row">
-    <div class="col-8">
-      <h3>Parent or Guardian Information</h3>
-    </div>
-    <div class="col-4 text-right">
-      <div class="required inline-block">
-        <div class="instructions">Required</div>
-      </div>
-    </div>
-  </div>
-</header>
+<h3 class="mb-3">Parent or Guardian</h3>
 
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-    <button class="btn btn-default" (click)="editParent(parent)" *ngIf="!parent.editing">Edit</button>
-    <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    <button class="btn btn-default" (click)="editParent(parent)"
+            *ngIf="!parent.editing && parent.isVerified">Edit</button>
+    <button class="btn btn-default" (click)="reSendVerification(parent)"
+            *ngIf="parent && !parent.isVerified && !parent.editing">Re-send Verification</button>
+    <div>
+      <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    </div>
     <hr>
   </div>
 
@@ -23,16 +17,15 @@
     <button (click)="searchForParent()" class="btn btn-default">
       Add a parent
     </button>
-    <hr>
   </div>
 
   <div id="parentSearch" *ngIf="showParentSearch">
-    <h3>Find a Parent</h3>
+    <h4>Find a Parent</h4>
     <div class="nestedForm">
 
       <p>Please use the form below to search for a person in our system.</p>
 
-      <!-- using Aspen maxlength as its shorter than SFDC -->
+      <!-- using Aspen maxlength as it's shorter than SFDC -->
       <label for="parentVerificationFirstName">First Name</label>
       <div class="default required">
         <input type="text"
@@ -77,13 +70,13 @@
 
       <br/>
 
-      <button class="btn btn-primary" type="button"
+      <button class="btn btn-primary mr-2 d-inline-block" type="button"
               [disabled]="searchFormComplete() === false"
               [ngClass]="{disabled: searchFormComplete() === false}"
               (click)="findRelation()">
         <i class="fa fa-search"></i> Search for an existing person
       </button>
-      <button class="btn btn-primary" type="button"
+      <button class="btn btn-primary ml-2 d-inline-block" type="button"
               (click)="clearRelationSearchForm()">
         <i class="fa fa-ban"></i> Cancel
       </button>
@@ -98,10 +91,10 @@
       update or manage their information.
     </p>
 
-    <button class="btn btn-primary" type="button" (click)="verifyParent()">
+    <button class="btn btn-primary mr-2 d-inline-block" type="button" (click)="verifyParent()">
       <i class="fa fa-plus"></i> Yes, Add This Person
     </button>
-    <button class="btn btn-primary" type="button" (click)="searchForParent()">
+    <button class="btn btn-primary ml-2 d-inline-block" type="button" (click)="searchForParent()">
       <i class="fa fa-ban"></i> No, Search Again
     </button>
     <i *ngIf="addingUnverifiedParent" class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent
@@ -110,8 +103,7 @@
   <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
   <div class="default required">
     <div class="select">
-      <select [(ngModel)]="primaryBillingContact"
-              [attr.disabled]="parents && parents.length > 0"
+      <select [(ngModel)]="student.billingParentId"
               name="primaryBillingContact"
               id="primaryBillingContact">
         <option *ngFor="let parent of parents" [value]="parent.contactId">

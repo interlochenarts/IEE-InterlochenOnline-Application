@@ -30,9 +30,7 @@
            id="mobilePhone"/>
   </div>
 
-  <hr class="my-4">
-
-  <div *ngFor="let parent of parents">
+  <div *ngFor="let parent of parents" class="mt-4">
     <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
             class="btn btn-default">
       Copy Address from {{parent.firstName}} {{parent.lastName}}
@@ -58,29 +56,31 @@
   </div>
 
   <label for="mailingCountry" class="mt-4">Mailing Country</label>
-  <div class="default required ">
+  <div class="default required">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.country"
+              (ngModelChange)="filterStates()"
               name="mailingCountry"
               id="mailingCountry">
-        <!--      <option *ngFor="let country of countries">{{country}}</option>-->
+        <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
       </select>
     </div>
   </div>
 
   <label for="mailingState" class="mt-4">Mailing State</label>
-  <div class="default">
+  <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.stateProvince"
+              [disabled]="filteredStates.length === 0"
               name="mailingState"
               id="mailingState">
-        <!--      <option *ngFor="let state of filteredStates">{{state}}</option>-->
+        <option *ngFor="let state of filteredStates" [value]="state.name">{{state.name}}</option>
       </select>
     </div>
   </div>
 
   <label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
-  <div class="default">
+  <div class="default" [class]="{required: zipRequired()}">
     <input type="text"
            [(ngModel)]="student.mailingAddress.zipPostalCode"
            name="mailingPostalCode"
@@ -115,17 +115,35 @@
                   id="genderIdentityDetail"></textarea>
   </div>
 
-  <label for="birthdate" class="mt-4">Birth Date</label>
+  <label class="mt-4">Birth Date</label>
   <div class="default required">
-    <input type="text" name="birthdate" id="birthdate" />
+    <div class="form-group row">
+      <div class="col-12 col-md-4">
+        <label for="birthdate_year">Year</label>
+        <div class="select">
+          <select id="birthdate_year" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate()">
+            <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_month">Month</label>
+        <div class="select">
+          <select id="birthdate_month" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate()">
+            <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_day">Day</label>
+        <div class="select">
+          <select id="birthdate_day" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
+            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
-  <!--<iee-date-dropdown label-text="Birth Date"-->
-  <!--                   is-disabled="false"-->
-  <!--                   is-required="true"-->
-  <!--                   form-data-field="formData['Student Information'].birthdate"-->
-  <!--                   starting-year-offset="-20"-->
-  <!--                   ending-year-offset="-5"></iee-date-dropdown>-->
-
 
   <div>
     <label for="race" class="mt-4">What is this student’s race?</label>
@@ -134,6 +152,7 @@
         <select [(ngModel)]="student.race"
                 name="race"
                 id="race">
+          <option [value]="option.value" *ngFor="let option of ethnicityOptions">{{option.label}}</option>
         </select>
       </div>
     </div>
