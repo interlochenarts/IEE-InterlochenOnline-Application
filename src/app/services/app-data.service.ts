@@ -71,7 +71,6 @@ export class AppDataService {
   public saveApplication(): void {
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
-    console.log(JSON.stringify(appData));
 
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {

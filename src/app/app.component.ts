@@ -34,4 +34,8 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  saveApplication(): void {
+    this.appDataService.saveApplication();
+  }
 }
