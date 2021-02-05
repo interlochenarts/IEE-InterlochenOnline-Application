@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
 
   appData: ApplicationData;
   applicationId: string;
-  public links = [];
+  links = [];
 
   constructor(private appDataService: AppDataService) {
   }
@@ -24,10 +24,10 @@ export class AppComponent implements OnInit {
         this.applicationId = appId;
 
         this.appDataService.routerLinks.next([
-          new RouterLink(this.applicationId + '/personal-info', 'Personal Information'),
-          new RouterLink(this.applicationId + '/program', 'Select a Program'),
-          new RouterLink(this.applicationId + '/review-registration', 'Review Registration'),
-          new RouterLink(this.applicationId + '/enrollment', 'Pay and Enroll')
+          new RouterLink('/' + this.applicationId + '/personal-info', 'Personal Information'),
+          new RouterLink('/' + this.applicationId + '/program', 'Select a Program'),
+          new RouterLink('/' + this.applicationId + '/review-registration', 'Review Registration'),
+          new RouterLink('/' + this.applicationId + '/enrollment', 'Pay and Enroll')
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();

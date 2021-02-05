@@ -1,4 +1,11 @@
-<h3>{{student.firstName}} {{student.lastName}}</h3>
+<div class="row">
+  <div class="col-8">
+    <h4>{{student.firstName}} {{student.lastName}}</h4>
+  </div>
+  <div class="col-4 text-right">
+    <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+  </div>
+</div>
 
 <div class="incomplete" *ngIf="!student.isComplete()">
   Missing data!
