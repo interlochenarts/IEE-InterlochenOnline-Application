@@ -2,14 +2,14 @@
 
 <label>Payment Method</label>
 <div class="default">
-  <div class="form-check form-check-inline" *ngFor="let enum of PaymentType | keyvalue">
+  <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
     <input type="radio"
            class="form-check-input"
            [(ngModel)]="paymentType"
            name="paymentType"
-           id="paymentType_{{enum.key}}"
-           value="{{enum.value}}"/>
-    <label for="paymentType_{{enum.key}}" class="form-check-label">{{enum.value}}</label>
+           id="paymentType_{{pt.key}}"
+           value="{{pt.value}}"/>
+    <label for="paymentType_{{pt.key}}" class="form-check-label">{{pt.value}}</label>
   </div>
 </div>
 

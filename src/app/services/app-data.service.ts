@@ -4,6 +4,7 @@ import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
 import {RouterLink} from '../_classes/router-link';
+import {error} from '@angular/compiler/src/util';
 
 declare const Visualforce: any;
 
@@ -17,6 +18,7 @@ export class AppDataService {
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
+  public isSigning = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
 
   constructor() { }
@@ -86,6 +88,32 @@ export class AppDataService {
         },
         {buffer: false, escape: false}
       );
+    }
+  }
+
+  public signEnrollmentAgreement(): void {
+    console.log('signing agreement');
+    const appData = this.applicationData.getValue();
+    const appId = this.applicationId.getValue();
+
+    console.log(JSON.stringify(appData.enrollmentAgreement));
+    console.log(appId);
+
+    // only save if we have an app and appId. Also wait until previous save is done.
+    if (appData && appId && (this.isSigning.getValue() === false)) {
+      this.isSigning.next(true);
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_OnlineApplicationController.submitSignature',
+        appId,
+        JSON.stringify(appData),
+        result => {
+          console.log(result);
+          this.isSigning.next(false);
+        },
+        {buffer: false, escape: false}
+      );
+    } else {
+      console.error('Missing appData or appId, or signing already in progress');
     }
   }
 }
