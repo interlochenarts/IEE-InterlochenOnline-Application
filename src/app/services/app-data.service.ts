@@ -33,6 +33,7 @@ export class AppDataService {
             // build app data
             const appData = ApplicationData.createFromNestedJson(j);
             this.applicationData.next(appData);
+            console.dir(appData);
           }
         },
         {buffer: false, escape: false}

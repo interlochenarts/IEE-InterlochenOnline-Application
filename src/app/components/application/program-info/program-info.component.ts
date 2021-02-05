@@ -3,6 +3,7 @@ import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {ProgramData} from '../../../_classes/program-data';
 import {Program} from '../../../_classes/program';
+import {SalesforceOption} from '../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
 
@@ -38,6 +39,25 @@ export class ProgramInfoComponent implements OnInit {
       }
     });
 
+  }
+
+  get sortedDivisions(): Array<SalesforceOption> {
+    const divisions = Array<SalesforceOption>();
+    for (const k of this.appData.programData.divisions.keys()) {
+      const opt = new SalesforceOption();
+      opt.label = this.appData.programData.divisions.get(k);
+      opt.value = k;
+      divisions.push(opt);
+    }
+
+    divisions.sort((a, b) => {
+      const firstDigitA = +a.label[a.label.search(/\d/)];
+      const firstDigitB = +a.label[b.label.search(/\d/)];
+
+      return firstDigitA - firstDigitB;
+    });
+
+    return divisions;
   }
 
   get programsBySelectedDivision(): Array<Program> {

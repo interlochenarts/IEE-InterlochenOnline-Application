@@ -7,7 +7,7 @@
     <select [(ngModel)]="appData.programData.selectedDivision"
             name="selectedDivision"
             id="selectedDivision">
-      <option *ngFor="let division of appData.programData.divisions" [value]="division">{{division}}</option>
+      <option *ngFor="let division of sortedDivisions" [value]="division.value">{{division.label}}</option>
     </select>
   </div>
 </div>
