@@ -87,13 +87,11 @@ export class ParentComponent implements OnInit {
 
   verifyParent(): void {
     console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
-    console.log(JSON.stringify(this.parentVerification));
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
       result => {
-        console.dir(result);
         const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
         for (const key of Object.keys(result)) {
           legacyParent.set(key, LegacyData.createFromJson(JSON.parse(result[key])));

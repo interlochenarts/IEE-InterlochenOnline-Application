@@ -77,7 +77,7 @@ export class ProgramInfoComponent implements OnInit {
           this.appData.appId, program.id, program.sessionId,
           result => {
             if (result.toString().startsWith('ERR')) {
-              console.log(result);
+              console.error(result);
             } else {
               console.log('Saved new program: ' + result);
               program.appChoiceId = result;
