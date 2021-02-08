@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
-import {ActivatedRoute} from '@angular/router';
-import {CountryCode} from '../../../_classes/country-code';
 
 @Component({
   selector: 'iee-personal-info',
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.css']
 })
-export class PersonalInfoComponent implements OnInit {
+export class PersonalInfoComponent implements OnInit, OnDestroy {
   appData: ApplicationData = new ApplicationData();
   applicationId: string;
+  autoSaveIntervalId: number;
+  saveTime: Date;
 
   constructor(private appDataService: AppDataService) { }
 
@@ -26,5 +26,14 @@ export class PersonalInfoComponent implements OnInit {
         this.appData = app;
       }
     });
+
+    this.autoSaveIntervalId = setInterval(() => {
+      this.appDataService.saveApplication();
+      this.saveTime = new Date();
+    }, 30000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.autoSaveIntervalId);
   }
 }
