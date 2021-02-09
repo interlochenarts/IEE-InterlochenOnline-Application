@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
+import {Parent} from '../../../_classes/parent';
+
+declare const Visualforce: any;
 
 @Component({
   selector: 'iee-sign-and-pay',
@@ -10,6 +13,7 @@ import {AppDataService} from '../../../services/app-data.service';
 export class SignAndPayComponent implements OnInit {
   appData: ApplicationData = new ApplicationData();
   userType = 'student';
+  credentialStatus: string;
 
   constructor(private appDataService: AppDataService) { }
 
@@ -25,5 +29,21 @@ export class SignAndPayComponent implements OnInit {
     this.appDataService.userType.asObservable().subscribe(type => {
       this.userType = type;
     });
+  }
+
+  sendParentCredentials(parent: Parent): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_UserUtilityController.sendUserLoginByContactId',
+      parent.contactId, this.appData.student.contactId, 'Adult',
+      (result: string) => {
+        if (result.includes('@')) {
+          this.credentialStatus = 'Credentials sent to ' + result;
+        } else {
+          console.error(result);
+          this.credentialStatus = 'Sorry. Something went wrong.';
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 }
