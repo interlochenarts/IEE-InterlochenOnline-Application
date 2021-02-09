@@ -5,6 +5,8 @@ import {CountryCode} from '../../../../../_classes/country-code';
 import {StateCode} from '../../../../../_classes/state-code';
 import {AppDataService} from '../../../../../services/app-data.service';
 
+declare const Visualforce: any;
+
 @Component({
   selector: 'iee-parent-info',
   templateUrl: './parent-info.component.html',
@@ -57,6 +59,17 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   }
 
   save(): void {
-    this.parent.editing = false;
+    this.parent.isEditing = false;
+    this.parent.isSaving = true;
+
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.saveParent',
+      JSON.stringify(this.parent), this.student.contactId,
+      result => {
+        this.parent.isSaving = false;
+        console.log(result);
+      },
+      {buffer: false, escape: false}
+    );
   }
 }

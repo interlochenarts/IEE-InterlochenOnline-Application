@@ -9,7 +9,8 @@ export class Parent {
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
-  editing = false; // used to display/hide this parent's info form
+  isEditing = false; // used to display/hide this parent's info form
+  isSaving = false; // used to block future saves of this parent
   verification: string;
 
   public static createFromNestedJson(json: any): Parent {

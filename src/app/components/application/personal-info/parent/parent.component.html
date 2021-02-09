@@ -3,7 +3,7 @@
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-    <div *ngIf="!parent.editing">
+    <div *ngIf="!parent.isEditing">
       <button class="btn btn-default" (click)="editParent(parent)"
               *ngIf="parent.isVerified">Edit
       </button>
@@ -14,7 +14,7 @@
          (click)="removeParent(parent.contactId)">Remove {{parent.firstName}}</a>
       <span *ngIf="parent.contactId === deletingParentId">Deleting <i class="fa fa-spinner fa-fw fa-pulse"></i></span>
     </div>
-    <div *ngIf="parent.editing">
+    <div *ngIf="parent.isEditing">
       <iee-parent-info [parent]="parent" [student]="student"></iee-parent-info>
     </div>
     <hr>

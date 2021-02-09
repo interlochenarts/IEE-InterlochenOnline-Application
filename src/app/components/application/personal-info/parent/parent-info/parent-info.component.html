@@ -61,4 +61,6 @@
          id="parentMailingPostalCode"/>
 </div>
 
-<button class="btn btn-default my-3" (click)="save()">Save parent</button>
+<button class="btn btn-default my-3" (click)="save()" [disabled]="parent.isSaving">Save parent</button>
+<span *ngIf="parent.isSaving">Saving <i class="fa fa-spinner fa-pulse fa-fw"></i></span>
+
