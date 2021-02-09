@@ -53,8 +53,6 @@ export class ApplicationComponent implements OnInit {
       this.transactionId = p.get('txnId');
       if (this.transactionId) {
         this.appDataService.transactionId.next(this.transactionId);
-        console.log('WEEE! ' + this.transactionId);
-        // Do some work here to verify the transaction id instead of trusting them?
       }
     });
 
