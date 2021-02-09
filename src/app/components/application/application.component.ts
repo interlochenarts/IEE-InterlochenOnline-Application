@@ -29,7 +29,7 @@ export class ApplicationComponent implements OnInit {
       this.routerLinks = links;
 
       if (event instanceof NavigationEnd) {
-        this.routerIndex = links.findIndex(l => '/' + l.routerLink === event.urlAfterRedirects);
+        this.routerIndex = links.findIndex(l => l.routerLink === event.urlAfterRedirects);
         this.showBackLink = this.routerIndex !== 0;
         this.showNextLink = this.routerIndex !== (links.length - 1);
       }
