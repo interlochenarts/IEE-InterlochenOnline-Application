@@ -4,12 +4,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border: 2px solid #a7e6fb;
+  border: 1px solid #cccccc;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.7, 1);
   cursor: pointer;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
   padding: 0.5em;
 }
 .checkbox-container h4 {
@@ -35,14 +32,5 @@
 }
 .checkbox-container .checkbox label.disabled {
   cursor: not-allowed;
-}
-.detail-link {
-  position: relative;
-  top: 10px;
-  color: darkgray;
-  font-size: 1.3em;
-}
-.full-year {
-  font-size: 0.65em;
 }
 /*# sourceMappingURL=program-info.component.css.map */
