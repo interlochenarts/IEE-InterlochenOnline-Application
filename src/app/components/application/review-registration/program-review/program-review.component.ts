@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {ProgramData} from '../../../../_classes/program-data';
 import {Program} from '../../../../_classes/program';
+import {RouterLink} from '../../../../_classes/router-link';
 
 @Component({
   selector: 'iee-program-review',
@@ -9,6 +10,7 @@ import {Program} from '../../../../_classes/program';
 })
 export class ProgramReviewComponent implements OnInit, OnChanges {
   @Input() programData: ProgramData = new ProgramData();
+  @Input() link: RouterLink;
   selectedPrograms: Array<Program>;
 
   constructor() { }

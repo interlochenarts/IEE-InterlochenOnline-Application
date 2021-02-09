@@ -1,4 +1,11 @@
-<h3>Programs</h3>
+<div class="row">
+  <div class="col-8">
+    <h4>Programs</h4>
+  </div>
+  <div class="col-4 text-right">
+    <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+  </div>
+</div>
 
 <div *ngFor="let program of selectedPrograms">
   {{program.name}}

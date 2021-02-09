@@ -3,6 +3,7 @@ import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {ProgramData} from '../../../_classes/program-data';
 import {Program} from '../../../_classes/program';
+import {SalesforceOption} from '../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
 
@@ -16,6 +17,8 @@ export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;
   anyProgramUpdating = false;
   daysSelected: Set<string> = new Set<string>();
+  selectedArtsArea = '';
+  sortedArtsAreas: Array<SalesforceOption> = [];
 
   constructor(private appDataService: AppDataService) {
   }
@@ -33,6 +36,8 @@ export class ProgramInfoComponent implements OnInit {
           }
         });
 
+        this.filterArtsAreas();
+
       } else {
         this.appData = new ApplicationData();
       }
@@ -40,8 +45,37 @@ export class ProgramInfoComponent implements OnInit {
 
   }
 
-  get programsBySelectedDivision(): Array<Program> {
-    return this.appData.programData.programs.filter(p => p.division === this.appData.programData.selectedDivision);
+  get sortedDivisions(): Array<SalesforceOption> {
+    const divisions = Array<SalesforceOption>();
+    for (const k of this.appData.programData.divisions.keys()) {
+      const opt = new SalesforceOption(this.appData.programData.divisions.get(k), k, false);
+      divisions.push(opt);
+    }
+
+    divisions.sort((a, b) => {
+      const firstDigitA = +a.label[a.label.search(/\d/)];
+      const firstDigitB = +a.label[b.label.search(/\d/)];
+
+      return firstDigitA - firstDigitB;
+    });
+
+    return divisions;
+  }
+
+  get filteredPrograms(): Array<Program> {
+    return this.appData.programData.programs.filter(p =>
+      (p.division === this.appData.programData.selectedDivision) &&
+      (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
+  }
+
+  filterArtsAreas(): void {
+    this.selectedArtsArea = '';
+    const artsAreaSet: Set<string> = new Set<string>();
+    this.filteredPrograms.forEach(p => {
+      artsAreaSet.add(p.artsArea);
+    });
+    this.sortedArtsAreas = Array.from(artsAreaSet).map(aa => new SalesforceOption(aa, aa, false));
+    this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
   }
 
   clickProgram(program: Program): void {
@@ -57,7 +91,7 @@ export class ProgramInfoComponent implements OnInit {
           this.appData.appId, program.id, program.sessionId,
           result => {
             if (result.toString().startsWith('ERR')) {
-              console.log(result);
+              console.error(result);
             } else {
               console.log('Saved new program: ' + result);
               program.appChoiceId = result;

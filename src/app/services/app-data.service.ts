@@ -72,8 +72,6 @@ export class AppDataService {
   public saveApplication(): void {
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
-    console.dir(appData);
-    console.log(JSON.stringify(appData));
 
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {
@@ -95,9 +93,6 @@ export class AppDataService {
     console.log('signing agreement');
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
-
-    console.log(JSON.stringify(appData.enrollmentAgreement));
-    console.log(appId);
 
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSigning.getValue() === false)) {

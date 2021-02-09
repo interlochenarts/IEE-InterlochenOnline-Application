@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Student} from '../../../../_classes/student';
+import {RouterLink} from '../../../../_classes/router-link';
 
 @Component({
   selector: 'iee-student-review',
@@ -8,6 +9,7 @@ import {Student} from '../../../../_classes/student';
 })
 export class StudentReviewComponent implements OnInit {
   @Input() student: Student;
+  @Input() link: RouterLink;
 
   constructor() { }
 

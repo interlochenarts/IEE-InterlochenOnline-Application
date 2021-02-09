@@ -5,15 +5,27 @@
 <div class="default">
   <div class="select">
     <select [(ngModel)]="appData.programData.selectedDivision"
+            (change)="filterArtsAreas()"
             name="selectedDivision"
             id="selectedDivision">
-      <option *ngFor="let division of appData.programData.divisions" [value]="division">{{division}}</option>
+      <option *ngFor="let division of sortedDivisions" [value]="division.value">{{division.label}}</option>
     </select>
   </div>
 </div>
 
+<label for="selectedArtsArea" class="mt-4">Arts Area</label>
+<div class="default">
+  <div class="select">
+    <select [(ngModel)]="selectedArtsArea"
+            name="selectedArtsArea"
+            id="selectedArtsArea">
+      <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
+              [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
+    </select>
+  </div>
+</div>
 
-<div *ngFor="let program of programsBySelectedDivision" class="checkbox-container col-12 align-items-center d-flex my-3"
+<div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program)"
      [ngClass]="{disabled: program.isDisabled(daysSelected)}">
   <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
