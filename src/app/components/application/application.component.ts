@@ -28,12 +28,7 @@ export class ApplicationComponent implements OnInit {
       this.routerLinks = links;
 
       if (event instanceof NavigationEnd) {
-        // console.dir(event);
-        // console.dir(links);
-        // console.dir(this.routerLinks);
         this.routerIndex = links.findIndex(l => '/' + l.routerLink === event.urlAfterRedirects);
-        // console.log('links[] length: ' + links.length);
-        // console.log('index: ' + routerIndex);
         this.showBackLink = this.routerIndex !== 0;
         this.showNextLink = this.routerIndex !== (links.length - 1);
       }

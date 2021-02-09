@@ -23,8 +23,10 @@ export class ParentComponent implements OnInit {
   parentResult: LegacyParentResults;
   parentNotFound = false;
   addingUnverifiedParent = false;
+  deletingParentId = 'none';
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
     this.parents = this.parents || new Array<Parent>();
@@ -35,7 +37,16 @@ export class ParentComponent implements OnInit {
   }
 
   reSendVerification(parent: Parent): void {
-    // TODO: re-send verification email function call
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_CampApplication_ParentController.sendVerificationEmail',
+      this.student.contactId, parent.contactId,
+      result => {
+        if (result !== 'Email Sent') {
+          console.error('ERROR: Failed to send verification email');
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   searchForParent(): void {
@@ -87,16 +98,18 @@ export class ParentComponent implements OnInit {
 
   verifyParent(): void {
     console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
-    console.log(JSON.stringify(this.parentVerification));
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
       result => {
         console.dir(result);
+        const obj = JSON.parse(result);
+
         const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
-        for (const key of Object.keys(result)) {
-          legacyParent.set(key, LegacyData.createFromJson(JSON.parse(result[key])));
+        for (const key of Object.keys(obj)) {
+          console.dir(key);
+          legacyParent.set(key, LegacyData.createFromJson(obj[key]));
         }
 
         const unverifiedParent = Parent.createFromLegacyData(legacyParent);
@@ -120,5 +133,24 @@ export class ParentComponent implements OnInit {
       !!this.parentVerification.firstName &&
       !!this.parentVerification.lastName &&
       !!this.parentVerification.phone;
+  }
+
+  removeParent(parentContactId: string): void {
+    this.deletingParentId = parentContactId;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_CampApplication_ParentController.removeParent',
+      parentContactId, this.student.contactId,
+      result => {
+        if (result === true) {
+          console.log('removed parent');
+          const pi = this.parents.findIndex(p => p.contactId === parentContactId);
+          this.parents.splice(pi, 1);
+        } else {
+          console.error('Could not delete parent: ' + parentContactId);
+        }
+        this.deletingParentId = 'none';
+      },
+      {buffer: false, escape: false}
+    );
   }
 }

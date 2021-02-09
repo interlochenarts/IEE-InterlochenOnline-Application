@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Parent} from '../../../../_classes/parent';
+import {RouterLink} from '../../../../_classes/router-link';
 
 @Component({
   selector: 'iee-parent-review',
@@ -8,6 +9,7 @@ import {Parent} from '../../../../_classes/parent';
 })
 export class ParentReviewComponent implements OnInit {
   @Input() parents: Array<Parent>;
+  @Input() link: RouterLink;
 
   constructor() { }
 

@@ -36,4 +36,8 @@ export class Program {
 
     return false;
   }
+
+  get artsAreaList(): Array<string> {
+    return this.artsArea.split(';');
+  }
 }

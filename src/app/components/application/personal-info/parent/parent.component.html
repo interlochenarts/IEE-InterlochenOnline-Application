@@ -7,13 +7,15 @@
             *ngIf="!parent.editing && parent.isVerified">Edit</button>
     <button class="btn btn-default" (click)="reSendVerification(parent)"
             *ngIf="parent && !parent.isVerified && !parent.editing">Re-send Verification</button>
+    <a class="mx-3" href="javascript:void(0);" (click)="removeParent(parent.contactId)">Remove {{parent.firstName}}</a>
+    <span *ngIf="parent.contactId === deletingParentId">Deleting <i class="fa fa-spinner fa-fw fa-pulse"></i></span>
     <div>
       <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
     </div>
     <hr>
   </div>
 
-  <div *ngIf="(!parents || parents.length === 0) && !showParentSearch">
+  <div *ngIf="(!parents || parents.length === 0) && !showParentSearch && !parentResult">
     <button (click)="searchForParent()" class="btn btn-default">
       Add a parent
     </button>
