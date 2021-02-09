@@ -40,6 +40,7 @@ export class SignAndPayComponent implements OnInit {
           this.credentialStatus = 'Credentials sent to ' + result;
         } else {
           console.error(result);
+          this.credentialStatus = 'Sorry. Something went wrong.';
         }
       },
       {buffer: false, escape: false}
