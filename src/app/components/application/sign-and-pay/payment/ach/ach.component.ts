@@ -12,7 +12,6 @@ declare const Visualforce: any;
 })
 export class AchComponent implements OnInit {
   @Input() achPaymentData: AchPaymentData;
-  appData: ApplicationData = new ApplicationData();
   applicationId: string;
   linkFACTS: string;
 
@@ -41,11 +40,6 @@ export class AchComponent implements OnInit {
           },
           {buffer: false, escape: false}
         );
-      }
-    });
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
       }
     });
   }
