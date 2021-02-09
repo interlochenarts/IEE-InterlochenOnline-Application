@@ -33,7 +33,7 @@ export class ParentComponent implements OnInit {
   }
 
   editParent(parent: Parent): void {
-    parent.editing = true;
+    parent.isEditing = true;
   }
 
   reSendVerification(parent: Parent): void {
@@ -63,7 +63,7 @@ export class ParentComponent implements OnInit {
   createParent(): void {
     const parent: Parent = new Parent();
     parent.mailingAddress = new Address();
-    parent.editing = true;
+    parent.isEditing = true;
 
     this.parents.push(parent);
   }
@@ -85,7 +85,7 @@ export class ParentComponent implements OnInit {
           } else {
             console.log('no parent found, creating new one.');
             const emptyParent = Parent.createFromVerificationData(this.parentVerification);
-            emptyParent.editing = true;
+            emptyParent.isEditing = true;
             emptyParent.verification = 'Verified';
             this.parents.push(emptyParent);
             this.parentNotFound = true;
