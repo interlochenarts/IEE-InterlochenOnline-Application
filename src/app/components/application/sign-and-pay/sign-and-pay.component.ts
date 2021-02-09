@@ -9,6 +9,7 @@ import {AppDataService} from '../../../services/app-data.service';
 })
 export class SignAndPayComponent implements OnInit {
   appData: ApplicationData = new ApplicationData();
+  userType = 'student';
 
   constructor(private appDataService: AppDataService) { }
 
@@ -17,6 +18,12 @@ export class SignAndPayComponent implements OnInit {
       if (app) {
         this.appData = app;
       }
+    });
+
+    this.appDataService.getUserType();
+
+    this.appDataService.userType.asObservable().subscribe(type => {
+      this.userType = type;
     });
   }
 }

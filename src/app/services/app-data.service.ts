@@ -15,6 +15,7 @@ export class AppDataService {
   public applicationData = new BehaviorSubject<ApplicationData>(null);
   public applicationId = new BehaviorSubject<string>(null);
   public transactionId = new BehaviorSubject<string>(null);
+  public userType = new BehaviorSubject<string>(null);
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
@@ -39,6 +40,16 @@ export class AppDataService {
         {buffer: false, escape: false}
       );
     }
+  }
+
+  public getUserType(): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.getUserType',
+      (userType: string) => {
+        this.userType.next(userType);
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   public getCountryData(): void {
