@@ -39,10 +39,10 @@ export class AppComponent implements OnInit {
         this.transactionId = trxId;
 
         this.appDataService.routerLinks.next([
-          {routerLink: this.applicationId + '/' + this.transactionId + '/personal-info', text: 'Personal Information'},
-          {routerLink: this.applicationId + '/' + this.transactionId + '/program', text: 'Select a Program'},
-          {routerLink: this.applicationId + '/' + this.transactionId + '/review-registration', text: 'Review Registration'},
-          {routerLink: this.applicationId + '/' + this.transactionId + '/enrollment', text: 'Pay and Enroll'}
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/personal-info', 'Personal Information'),
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/program', 'Select a Program'),
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/review-registration', 'Review Registration'),
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/enrollment', 'Pay and Enroll')
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
