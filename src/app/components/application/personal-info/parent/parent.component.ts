@@ -37,7 +37,16 @@ export class ParentComponent implements OnInit {
   }
 
   reSendVerification(parent: Parent): void {
-    // TODO: re-send verification email function call
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_CampApplication_ParentController.sendVerificationEmail',
+      this.student.contactId, parent.contactId,
+      result => {
+        if (result !== 'Email Sent') {
+          console.error('ERROR: Failed to send verification email');
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   searchForParent(): void {
