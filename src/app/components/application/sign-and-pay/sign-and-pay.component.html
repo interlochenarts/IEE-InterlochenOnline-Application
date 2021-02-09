@@ -1,5 +1,11 @@
-<iee-payment></iee-payment>
+<div *ngIf="userType === 'parent'">
+  <iee-payment></iee-payment>
 
-<hr class="my-4" />
+  <hr class="my-4"/>
 
-<iee-enrollment-agreement [enrollmentAgreement]="appData.enrollmentAgreement"></iee-enrollment-agreement>
+  <iee-enrollment-agreement [enrollmentAgreement]="appData.enrollmentAgreement"></iee-enrollment-agreement>
+</div>
+
+<div *ngIf="userType === 'student'">
+  A parent must fill out this page.
+</div>
