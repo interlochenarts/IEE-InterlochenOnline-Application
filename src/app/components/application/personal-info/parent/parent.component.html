@@ -3,14 +3,19 @@
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-    <button class="btn btn-default" (click)="editParent(parent)"
-            *ngIf="!parent.editing && parent.isVerified">Edit</button>
-    <button class="btn btn-default" (click)="reSendVerification(parent)"
-            *ngIf="parent && !parent.isVerified && !parent.editing">Re-send Verification</button>
-    <a class="mx-3" href="javascript:void(0);" (click)="removeParent(parent.contactId)">Remove {{parent.firstName}}</a>
-    <span *ngIf="parent.contactId === deletingParentId">Deleting <i class="fa fa-spinner fa-fw fa-pulse"></i></span>
-    <div>
-      <iee-parent-info *ngIf="parent.editing" [parent]="parent" [student]="student"></iee-parent-info>
+    <div *ngIf="!parent.editing">
+      <button class="btn btn-default" (click)="editParent(parent)"
+              *ngIf="parent.isVerified">Edit
+      </button>
+      <button class="btn btn-default" (click)="reSendVerification(parent)"
+              *ngIf="parent && !parent.isVerified">Re-send Verification
+      </button>
+      <a class="mx-3" href="javascript:void(0);"
+         (click)="removeParent(parent.contactId)">Remove {{parent.firstName}}</a>
+      <span *ngIf="parent.contactId === deletingParentId">Deleting <i class="fa fa-spinner fa-fw fa-pulse"></i></span>
+    </div>
+    <div *ngIf="parent.editing">
+      <iee-parent-info [parent]="parent" [student]="student"></iee-parent-info>
     </div>
     <hr>
   </div>
