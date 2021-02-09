@@ -11,6 +11,7 @@ import {combineLatest} from 'rxjs';
 })
 export class ApplicationComponent implements OnInit {
   applicationId: string;
+  transactionId: string;
   isSaving = false;
   routerLinks: Array<RouterLink> = new Array<RouterLink>();
   routerIndex = -1;
@@ -43,6 +44,10 @@ export class ApplicationComponent implements OnInit {
         this.appDataService.getApplicationData(this.applicationId);
       } else {
         console.error('ERROR: No Application ID found.');
+      }
+      this.transactionId = p.get('txnId');
+      if (this.transactionId) {
+        this.appDataService.transactionId.next(this.transactionId);
       }
     });
 

@@ -14,6 +14,7 @@ declare const Visualforce: any;
 export class AppDataService {
   public applicationData = new BehaviorSubject<ApplicationData>(null);
   public applicationId = new BehaviorSubject<string>(null);
+  public transactionId = new BehaviorSubject<string>(null);
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
