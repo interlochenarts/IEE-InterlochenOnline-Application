@@ -7,6 +7,7 @@ export class Program {
   division: string;
   isSelected = false;
   appChoiceId: string;
+  sessionDates: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();

@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EnrollmentAgreement} from '../../../../_classes/enrollment-agreement';
 import {AppDataService} from '../../../../services/app-data.service';
+import {Program} from '../../../../_classes/program';
 
 declare const Visualforce: any;
 
@@ -11,6 +12,9 @@ declare const Visualforce: any;
 })
 export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   @Input() enrollmentAgreement: EnrollmentAgreement;
+  @Input() programs: Array<Program> = [];
+  @Input() termName: string;
+  @Input() applicantName: string;
   applicationId: string;
   isSigning = false;
   loggedInUserName: string;
