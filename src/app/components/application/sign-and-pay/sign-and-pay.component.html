@@ -7,7 +7,12 @@
 </div>
 
 <div *ngIf="userType === 'student'">
-  A parent or guardian must fill out this page.
+  <p>This page may only be accessed by a parent(s) or guardian(s). Parent(s) or guardian(s) must log in with
+    their unique credentials in order to complete this section and are advised not to share their username and password
+    with the student applicant.
+  </p>
+
+  <p>Click here to send your parent or guardian their unique parent or guardian credentials.</p>
   <div *ngFor="let parent of appData.parents" class="my-4">
     <button
       class="btn btn-primary"
