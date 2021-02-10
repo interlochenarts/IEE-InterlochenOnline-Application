@@ -1,0 +1,14 @@
+<table border="1" width="95%" class="mx-auto my-4">
+  <thead>
+  <tr>
+    <th class="p-2">Program</th>
+    <th class="p-2">Session Dates</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let p of programs">
+    <td class="p-2">{{p.name}}
+    <td class="p-2">{{p.sessionDates}}</td>
+  </tr>
+  </tbody>
+</table>

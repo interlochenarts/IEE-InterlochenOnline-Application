@@ -3,7 +3,8 @@
 
   <hr class="my-4"/>
 
-  <iee-enrollment-agreement [enrollmentAgreement]="appData.enrollmentAgreement"></iee-enrollment-agreement>
+  <iee-enrollment-agreement [enrollmentAgreement]="appData.enrollmentAgreement" [termName]="appData.termName"
+                            [applicantName]="applicantName" [programs]="selectedPrograms"></iee-enrollment-agreement>
 </div>
 
 <div *ngIf="userType === 'student'">

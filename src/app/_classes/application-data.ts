@@ -12,6 +12,7 @@ export class ApplicationData {
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
   termId: string;
+  termName: string;
   appId: string;
   appName: string;
 

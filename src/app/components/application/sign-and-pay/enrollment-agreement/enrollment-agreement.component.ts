@@ -1,6 +1,9 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {EnrollmentAgreement} from '../../../../_classes/enrollment-agreement';
 import {AppDataService} from '../../../../services/app-data.service';
+import {Program} from '../../../../_classes/program';
+
+declare const Visualforce: any;
 
 @Component({
   selector: 'iee-enrollment-agreement',
@@ -9,8 +12,12 @@ import {AppDataService} from '../../../../services/app-data.service';
 })
 export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   @Input() enrollmentAgreement: EnrollmentAgreement;
+  @Input() programs: Array<Program> = [];
+  @Input() termName: string;
+  @Input() applicantName: string;
   applicationId: string;
   isSigning = false;
+  loggedInUserName: string;
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -67,12 +74,32 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     this.appDataService.isSigning.asObservable().subscribe(val => {
       this.isSigning = val;
     });
+
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.getUserName',
+      (userName: string) => {
+        this.loggedInUserName = userName;
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {
   }
 
   signEnrollmentAgreement(): void {
-    this.appDataService.signEnrollmentAgreement();
+    if (this.enrollmentAgreement.isComplete()) {
+      this.appDataService.signEnrollmentAgreement();
+    }
+  }
+
+  public canClickCheckbox(): boolean {
+    return this.enrollmentAgreement.canCheckAcceptance();
+  }
+
+  onClickCheckbox(): void {
+    if (this.canClickCheckbox()) {
+      this.enrollmentAgreement.acceptanceChecked = this.enrollmentAgreement.acceptanceChecked !== true;
+    }
   }
 }

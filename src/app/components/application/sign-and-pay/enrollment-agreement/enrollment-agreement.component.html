@@ -1,6 +1,17 @@
-<h3>Sign Enrollment Agreement</h3>
+<h3>Interlochen Online Enrollment Agreement for {{termName}}</h3>
+
+<div class="text-center">
+  <b>Student Name: {{applicantName}}</b>
+</div>
+
+<iee-ea-header [programs]="programs"></iee-ea-header>
 
 <iee-ea-text></iee-ea-text>
+
+<label for="signature" class="mt-4">Parent</label>
+<div class="default">
+  {{loggedInUserName}}
+</div>
 
 <label for="signature" class="mt-4">Signature</label>
 <div class="default required">
@@ -44,5 +55,24 @@
   </div>
 </div>
 
-<button class="btn btn-primary" (click)="signEnrollmentAgreement()">Register</button>
+<div class="row check-description my-4"
+     [ngClass]="{disabled: canClickCheckbox() === false, clickable: canClickCheckbox()}"
+     (click)="onClickCheckbox()">
+  <div class="col-2 col-md-1 text-right">
+    <div class="checkbox">
+      <input type="checkbox" [checked]="enrollmentAgreement.acceptanceChecked"/>
+      <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-4"></i></label>
+    </div>
+  </div>
+  <div class="col-10 col-md-11">
+    <div class="no-select nudge-down">
+      By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a legal
+      document.
+    </div>
+  </div>
+</div>
+
+<button class="btn btn-primary" [ngClass]="{disabled: !enrollmentAgreement.isComplete()}"
+        (click)="signEnrollmentAgreement()">Register
+</button>
 <span *ngIf="isSigning"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>
