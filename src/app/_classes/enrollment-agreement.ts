@@ -1,6 +1,7 @@
 export class EnrollmentAgreement {
   public signature: string;
   public birthdate: string;
+  public acceptanceChecked: boolean;
 
   birthdateYear: string;
   birthdateMonth: string;
@@ -12,5 +13,13 @@ export class EnrollmentAgreement {
     } else {
       this.birthdate = null;
     }
+  }
+
+  public canCheckAcceptance(): boolean {
+    return !!this.signature && !!this.birthdate;
+  }
+
+  public isComplete(): boolean {
+    return !!this.signature && !!this.birthdate && this.acceptanceChecked;
   }
 }
