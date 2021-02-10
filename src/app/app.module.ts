@@ -21,6 +21,7 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
+import { EaTextComponent } from './components/application/sign-and-pay/enrollment-agreement/ea-text/ea-text.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {StudentReviewComponent} from './components/application/review-registrati
     ApplicationComponent,
     ProgramReviewComponent,
     ParentReviewComponent,
-    StudentReviewComponent
+    StudentReviewComponent,
+    EaTextComponent
   ],
   imports: [
     BrowserModule,
