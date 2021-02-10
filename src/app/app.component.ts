@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
           new RouterLink('/' + this.applicationId + '/personal-info', 'Personal Information'),
           new RouterLink('/' + this.applicationId + '/program', 'Select a Program'),
           new RouterLink('/' + this.applicationId + '/review-registration', 'Review Registration'),
-          new RouterLink('/' + this.applicationId + '/enrollment', 'Pay and Enroll')
+          new RouterLink('/' + this.applicationId + '/enrollment', 'Register')
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/personal-info', 'Personal Information'),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/program', 'Select a Program'),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/review-registration', 'Review Registration'),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/enrollment', 'Pay and Enroll')
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/enrollment', 'Register')
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
