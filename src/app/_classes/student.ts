@@ -56,8 +56,6 @@ export class Student {
         !!this.mailingAddress.zipPostalCode
       ) &&
       !!this.genderIdentity &&
-      (this.genderIdentity !== 'Other' ||
-        (this.genderIdentity === 'Other' && !!this.genderIdentityDetails)) &&
       !!this.birthdate &&
       !!this.billingParentId;
   }

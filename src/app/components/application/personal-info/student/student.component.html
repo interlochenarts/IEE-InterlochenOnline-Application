@@ -104,16 +104,6 @@
     </div>
   </div>
 
-  <label for="genderIdentityDetail" class="mt-4">Gender Non-Binary Details</label>
-  <div class="default"
-       [ngClass]="{required:genderDetailRequired(), disabledDiv:!genderDetailRequired()}">
-        <textarea [disabled]="!genderDetailRequired()"
-                  [(ngModel)]="student.genderIdentityDetails"
-                  name="genderIdentityDetail"
-                  maxlength="255"
-                  id="genderIdentityDetail"></textarea>
-  </div>
-
   <label class="mt-4">Birth Date</label>
   <div class="default required">
     <div class="form-group row">
