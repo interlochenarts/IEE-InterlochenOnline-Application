@@ -83,14 +83,6 @@
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="student.genderIdentity === 'Non-Binary'">
-  <div class="col-5 hideOverflow">Gender Non-Binary Details</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.genderIdentityDetails">
-    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
-  </div>
-  <div class="col-7 hideOverflow" *ngIf="student.genderIdentityDetails">{{student.genderIdentityDetails}}</div>
-</div>
-
 <div class="review my-1 row" *ngIf="student.race">
   <div class="col-5 hideOverflow">Race</div>
   <div class="col-7 hideOverflow" *ngIf="student.race">{{student.race}}</div>
