@@ -4,6 +4,7 @@ export class ProgramData {
   divisions: Map<string, string>;
   programs: Array<Program>;
   selectedDivision: string;
+  gradeInSchool: string;
 
   constructor() {
     this.programs = new Array<Program>();
@@ -18,5 +19,19 @@ export class ProgramData {
     programData.divisions = new Map(Object.entries(json.divisions));
 
     return programData;
+  }
+
+  get divisionGradeMap(): Map<number, string> {
+    const map = new Map<number, string>();
+
+    for (const key of this.divisions.keys()) {
+      const divisionName = this.divisions.get(key);
+      const numbers: RegExpMatchArray = divisionName.match(/\d+/g);
+      for (let i = parseInt(numbers[0], 10); i <= parseInt(numbers[1], 10); i++) {
+        map.set(i, key);
+      }
+    }
+
+    return map;
   }
 }
