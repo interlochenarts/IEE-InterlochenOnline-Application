@@ -1,11 +1,22 @@
 <h3>Choose a Program</h3>
 
-
-<label for="selectedDivision" class="mt-4">Division</label>
+<label for="selectedGrade" class="mt-4">Current Grade in School</label>
 <div class="default">
   <div class="select">
+    <select [(ngModel)]="appData.programData.gradeInSchool"
+            (change)="updateSelectedDivision()"
+            name="selectedGrade"
+            id="selectedGrade">
+      <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
+    </select>
+  </div>
+</div>
+
+<label for="selectedDivision" class="mt-4">Division</label>
+<div class="default disabledDiv">
+  <div class="select">
     <select [(ngModel)]="appData.programData.selectedDivision"
-            (change)="filterArtsAreas()"
+            disabled
             name="selectedDivision"
             id="selectedDivision">
       <option *ngFor="let division of sortedDivisions" [value]="division.value">{{division.label}}</option>
@@ -19,7 +30,7 @@
     <select [(ngModel)]="selectedArtsArea"
             name="selectedArtsArea"
             id="selectedArtsArea">
-      <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
+      <option *ngFor="let artsArea of filteredArtsAreas" [value]="artsArea.value"
               [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
     </select>
   </div>
