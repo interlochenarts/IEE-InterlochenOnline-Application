@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-8">
-    <h4>Programs</h4>
+    <h4>Selected Programs</h4>
   </div>
   <div class="col-4 text-right">
     <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
@@ -8,7 +8,7 @@
 </div>
 
 <div *ngFor="let program of selectedPrograms">
-  {{program.name}}
+  {{program.name}} - {{program.daysDisplay}}
 </div>
 
 <div *ngIf="!selectedPrograms || selectedPrograms.length === 0">
