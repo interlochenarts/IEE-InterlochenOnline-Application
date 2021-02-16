@@ -30,6 +30,7 @@ export class ParentComponent implements OnInit {
 
   ngOnInit(): void {
     this.parents = this.parents || new Array<Parent>();
+    this.setDefaultBillingParent();
   }
 
   editParent(parent: Parent): void {
@@ -66,6 +67,13 @@ export class ParentComponent implements OnInit {
     parent.isEditing = true;
 
     this.parents.push(parent);
+    this.setDefaultBillingParent();
+  }
+
+  setDefaultBillingParent(): void {
+    if (this.student && this.parents.length === 1) {
+      this.student.billingParentId = this.parents[0].contactId;
+    }
   }
 
   findRelation(): void {
