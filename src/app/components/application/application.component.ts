@@ -17,6 +17,7 @@ export class ApplicationComponent implements OnInit {
   routerIndex = -1;
   showBackLink = false;
   showNextLink = true;
+  showSaveAndQuit = true;
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute,
               private router: Router) {
@@ -32,6 +33,7 @@ export class ApplicationComponent implements OnInit {
         this.routerIndex = links.findIndex(l => l.routerLink === event.urlAfterRedirects);
         this.showBackLink = this.routerIndex !== 0;
         this.showNextLink = this.routerIndex !== (links.length - 1);
+        this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
       }
     });
   }
