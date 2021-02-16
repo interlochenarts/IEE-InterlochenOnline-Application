@@ -136,6 +136,7 @@ export class StudentComponent implements OnInit, OnChanges {
     return !!(parent
       && parent.firstName
       && parent.lastName
-      && parent.mailingAddress);
+      && parent.mailingAddress
+      && parent.mailingAddress.hasAddress());
   }
 }
