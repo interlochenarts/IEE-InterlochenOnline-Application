@@ -1,7 +1,12 @@
+<div class="mt-4">
+  <p>Amount owed: {{(appData.payment.amountOwed + appData.payment.ccFee) | currency:'USD'}}</p>
+  <p>Credit Card payments have a fee of {{appData.payment.ccPercent}}% added.</p>
+</div>
 <label for="cardholderName" class="mt-4">Cardholder Name</label>
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cardholderName"
+         [disabled]="disableSubmit()"
          name="cardholderName"
          id="cardholderName"
          maxlength="20"/>
@@ -11,6 +16,7 @@
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cardNumber"
+         [disabled]="disableSubmit()"
          name="cardNumber"
          id="cardNumber"
          maxlength="18"/>
@@ -24,6 +30,7 @@
         <div class="input-group">
           <input type="text"
                  [(ngModel)]="cc.expirationMonth"
+                 [disabled]="disableSubmit()"
                  name="creditCardExpMonth"
                  id="creditCardExpMonth"
                  placeholder="mm"
@@ -35,6 +42,7 @@
           </div>
           <input type="text"
                  [(ngModel)]="cc.expirationYear"
+                 [disabled]="disableSubmit()"
                  name="creditCardExpMonth"
                  id="creditCardExpYear"
                  placeholder="yyyy"
@@ -50,6 +58,7 @@
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.cvv"
+         [disabled]="disableSubmit()"
          name="cvv"
          id="cvv"
          maxlength="4"/>
@@ -59,16 +68,17 @@
 <div class="default">
   <input type="text"
          [(ngModel)]="cc.billingZip"
+         [disabled]="disableSubmit()"
          name="billingZip"
          id="billingZip"
          maxlength="10"/>
 </div>
 
-<button class="btn btn-primary mt-4" (click)="submitCC()">Pay Tuition</button>
+<button class="btn btn-primary mt-4" (click)="submitCC()" [disabled]="disableSubmit()">Pay Tuition</button>
 
-<div class="text-center my-2" *ngIf="transactionMessage === 'This transaction has been approved.'">
+<div class="text-center my-2" *ngIf="appData.payment.tuitionPaid || transactionMessage === 'This transaction has been approved.'">
   <i class="fa fa-check-square-o" style="color:green"></i><span
-  style="color:green"><i> {{transactionMessage}}</i></span>
+  style="color:green"><i> This transaction has been approved.</i></span>
 </div>
 
 <div class="text-center my-2"

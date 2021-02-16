@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CreditCardPaymentData} from '../../../../../_classes/credit-card-payment-data';
 import {AppDataService} from '../../../../../services/app-data.service';
+import {ApplicationData} from '../../../../../_classes/application-data';
 
 declare const Visualforce: any;
 
@@ -12,17 +13,17 @@ declare const Visualforce: any;
 export class CreditCardComponent implements OnInit {
   @Input() cc: CreditCardPaymentData;
   transactionMessage: string;
-  applicationId: string;
+  appData: ApplicationData;
+  isSubmitting: boolean;
 
   constructor(private appDataService: AppDataService) {
   }
 
   ngOnInit(): void {
     this.cc = this.cc || new CreditCardPaymentData();
-
-    this.appDataService.applicationId.asObservable().subscribe(appId => {
-      if (appId) {
-        this.applicationId = appId;
+    this.appDataService.applicationData.asObservable().subscribe(appData => {
+      if (appData) {
+        this.appData = appData;
       }
     });
   }
@@ -31,17 +32,22 @@ export class CreditCardComponent implements OnInit {
     if (this.cc.isMissingInputs()) {
       this.transactionMessage = 'Required fields missing.';
     } else {
-      if (this.applicationId) {
+      if (this.appData.appId) {
+        this.isSubmitting = true;
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.submitCC',
-          this.applicationId, JSON.stringify(this.cc),
+          this.appData.appId, JSON.stringify(this.cc),
           result => {
             if (result !== null) {
               console.log(result);
               this.transactionMessage = result;
+              if (this.transactionMessage === 'This transaction has been approved.') {
+                this.appData.payment.tuitionPaid = true;
+              }
             } else {
               this.transactionMessage = 'An Error has occurred.  Your payment may have been processed, do not try again.  Please contact support@interlochen.org before proceeding';
             }
+            this.isSubmitting = false;
           },
           {buffer: false, escape: false}
         );
@@ -49,6 +55,10 @@ export class CreditCardComponent implements OnInit {
         this.transactionMessage = 'An Error has occurred.  Your payment may have been processed, do not try again.  Please contact support@interlochen.org before proceeding';
       }
     }
+  }
+
+  disableSubmit(): boolean {
+    return this.isSubmitting || this.appData.payment.tuitionPaid || this.appData.payment.paidOnLoad;
   }
 
 }

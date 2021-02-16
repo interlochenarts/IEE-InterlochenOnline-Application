@@ -1,11 +1,15 @@
 <h3>Make a Payment</h3>
 
-<label>Payment Method</label>
-<div class="default">
+<div class="default" *ngIf="paymentReceived">
+  You have already paid your tuition.
+</div>
+<div class="default" *ngIf="!paymentReceived">
+  <label>Payment Method</label>
   <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
     <input type="radio"
            class="form-check-input"
            [(ngModel)]="paymentType"
+           [disabled]="appData.payment.tuitionPaid"
            name="paymentType"
            id="paymentType_{{pt.key}}"
            value="{{pt.value}}"/>
@@ -13,5 +17,5 @@
   </div>
 </div>
 
-<iee-credit-card *ngIf="paymentType === PaymentType.CC"></iee-credit-card>
-<iee-ach *ngIf="paymentType === PaymentType.ACH"></iee-ach>
+<iee-credit-card *ngIf="!paymentReceived && paymentType === PaymentType.CC"></iee-credit-card>
+<iee-ach *ngIf="!paymentReceived && paymentType === PaymentType.ACH"></iee-ach>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PaymentType} from '../../../../_enums/payment-type.enum';
 import {AppDataService} from '../../../../services/app-data.service';
+import {ApplicationData} from '../../../../_classes/application-data';
 
 declare const Visualforce: any;
 
@@ -14,24 +15,25 @@ export class PaymentComponent implements OnInit {
   paymentType: PaymentType = PaymentType.CC;
   paymentReceived = false;
   transactionId: string;
-  applicationId: string;
+  appData: ApplicationData;
 
   constructor(private appDataService: AppDataService) { }
 
   ngOnInit(): void {
-    this.appDataService.applicationId.asObservable().subscribe(appId => {
-      if (appId) {
-        this.applicationId = appId;
+    this.appDataService.applicationData.asObservable().subscribe(appData => {
+      if (appData) {
+        this.appData = appData;
+        this.paymentReceived = appData.payment.paidOnLoad ? appData.payment.paidOnLoad : this.paymentReceived;
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
       if (trxId && this.transactionId !== trxId) {
         this.transactionId = trxId;
-        console.log('Checking transactionId ' + trxId + ' for app ' + this.applicationId);
+        console.log('Checking transactionId ' + trxId + ' for app ' + this.appData.appId);
         // search salesforce for the transaction to see if it's real
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.checkTransaction',
-          this.applicationId,
+          this.appData.appId,
           this.transactionId,
           result => {
             if (result && result !== 'null') {
