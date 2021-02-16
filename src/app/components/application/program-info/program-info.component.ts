@@ -58,9 +58,8 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision);
+    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision)
   }
-
 
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p =>
