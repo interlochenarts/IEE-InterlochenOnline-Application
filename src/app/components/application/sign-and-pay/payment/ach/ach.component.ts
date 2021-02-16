@@ -12,7 +12,7 @@ declare const Visualforce: any;
 })
 export class AchComponent implements OnInit {
   @Input() achPaymentData: AchPaymentData;
-  applicationId: string;
+  appData: ApplicationData;
   linkFACTS: string;
 
   constructor(private appDataService: AppDataService) { }
@@ -20,20 +20,20 @@ export class AchComponent implements OnInit {
   ngOnInit(): void {
     this.achPaymentData = this.achPaymentData || new AchPaymentData();
 
-    this.appDataService.applicationId.asObservable().subscribe(appId => {
-      if (appId) {
-        this.applicationId = appId;
+    this.appDataService.applicationData.asObservable().subscribe(appData => {
+      if (appData) {
+        this.appData = appData;
         // Get FACTS link
-        console.log('getting FACTS link for app ' + this.applicationId);
+        console.log('getting FACTS link for app ' + this.appData.appId);
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.getLinkFACTS',
-          this.applicationId,
+          this.appData.appId,
           result => {
             if (result && result !== 'null') {
               this.linkFACTS = result;
               console.log('got facts link! ' + this.linkFACTS);
             } else {
-              console.log('error getting FACTS link for app id: ' + this.applicationId);
+              console.log('error getting FACTS link for app id: ' + this.appData.appId);
               console.dir(result);
               this.linkFACTS = '#';
             }
@@ -43,5 +43,4 @@ export class AchComponent implements OnInit {
       }
     });
   }
-
 }
