@@ -127,7 +127,7 @@
         <label for="birthdate_day">Day</label>
         <div class="select">
           <select id="birthdate_day" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
-            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+            <option *ngFor="let day of getDayOptions()" [value]="day.value">{{day.label}}</option>
           </select>
         </div>
       </div>

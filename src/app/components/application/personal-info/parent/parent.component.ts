@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Address} from '../../../../_classes/address';
 import {Parent} from '../../../../_classes/parent';
 import {Student} from '../../../../_classes/student';
@@ -13,7 +13,7 @@ declare const Visualforce: any;
   templateUrl: './parent.component.html',
   styleUrls: ['./parent.component.css']
 })
-export class ParentComponent implements OnInit {
+export class ParentComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
 
@@ -30,6 +30,9 @@ export class ParentComponent implements OnInit {
 
   ngOnInit(): void {
     this.parents = this.parents || new Array<Parent>();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
     this.setDefaultBillingParent();
   }
 
@@ -59,15 +62,6 @@ export class ParentComponent implements OnInit {
     }
     this.parentVerification = new ParentVerification();
     this.showParentSearch = true;
-  }
-
-  createParent(): void {
-    const parent: Parent = new Parent();
-    parent.mailingAddress = new Address();
-    parent.isEditing = true;
-
-    this.parents.push(parent);
-    this.setDefaultBillingParent();
   }
 
   setDefaultBillingParent(): void {
@@ -123,6 +117,8 @@ export class ParentComponent implements OnInit {
         const unverifiedParent = Parent.createFromLegacyData(legacyParent);
         unverifiedParent.contactId = this.parentResult.contactIdParent.value;
         this.parents.push(unverifiedParent);
+
+        this.setDefaultBillingParent();
 
         delete this.parentVerification;
         delete this.parentResult;

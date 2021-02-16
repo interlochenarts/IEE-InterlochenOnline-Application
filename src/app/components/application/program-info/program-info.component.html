@@ -12,27 +12,21 @@
   </div>
 </div>
 
-<label for="selectedDivision" class="mt-4">Division</label>
-<div class="default disabledDiv">
-  <div class="select">
-    <select [(ngModel)]="appData.programData.selectedDivision"
-            disabled
-            name="selectedDivision"
-            id="selectedDivision">
-      <option *ngFor="let division of sortedDivisions" [value]="division.value">{{division.label}}</option>
-    </select>
-  </div>
-</div>
-
 <label for="selectedArtsArea" class="mt-4">Arts Area</label>
 <div class="default">
   <div class="select">
     <select [(ngModel)]="selectedArtsArea"
             name="selectedArtsArea"
             id="selectedArtsArea">
-      <option *ngFor="let artsArea of filteredArtsAreas" [value]="artsArea.value"
+      <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
               [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
     </select>
+  </div>
+</div>
+
+<div class="col-12 my-4" *ngIf="this.appData.programData.selectedDivision">
+  <div class="row">
+    <h5>Programs for {{selectedDivisionDescription}}</h5>
   </div>
 </div>
 

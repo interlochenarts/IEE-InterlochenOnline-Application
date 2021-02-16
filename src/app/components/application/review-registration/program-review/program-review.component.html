@@ -7,8 +7,10 @@
   </div>
 </div>
 
-<div *ngFor="let program of selectedPrograms">
-  {{program.name}} - {{program.daysDisplay}}
+<div *ngFor="let program of selectedPrograms" class="my-2">
+  <div><b>{{program.name}}</b></div>
+  <div class="ml-4">Session: {{program.sessionDates}}</div>
+  <div class="ml-4">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
 <div *ngIf="!selectedPrograms || selectedPrograms.length === 0">

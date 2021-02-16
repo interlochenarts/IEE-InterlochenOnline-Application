@@ -21,6 +21,7 @@ export class StudentComponent implements OnInit, OnChanges {
   stateCodes: Array<StateCode>;
   filteredStates: Array<StateCode> = new Array<StateCode>();
   ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -36,32 +37,6 @@ export class StudentComponent implements OnInit, OnChanges {
     {label: 'November', value: '11'},
     {label: 'December', value: '12'}
   ];
-
-  get yearOptions(): Array<object> {
-    const options = new Array<object>();
-    const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
-
-    for (let i = 16; i >= 0; i--) {
-      options.push({
-        label: (startYear - i).toString(),
-        value: (startYear - i).toString()
-      });
-    }
-    return options;
-  }
-
-  get dayOptions(): Array<object> {
-    const options = new Array<object>();
-    const daysInMonth = new Date(+this.student.birthdateYear, +this.student.birthdateMonth, 0).getDate();
-
-    for (let i = 1; i <= daysInMonth; i++) {
-      options.push({
-        label: ('0' + i).slice(-2),
-        value: ('0' + i).slice(-2)
-      });
-    }
-    return options;
-  }
 
   yesNoOptions = [
     {label: 'Yes', value: 'Yes'},
@@ -88,6 +63,7 @@ export class StudentComponent implements OnInit, OnChanges {
     });
 
     this.loadEthnicityOptions();
+    this.yearOptions = this.getYearOptions();
   }
 
   loadEthnicityOptions(): void {
@@ -103,10 +79,37 @@ export class StudentComponent implements OnInit, OnChanges {
     );
   }
 
+  getDayOptions(): Array<object> {
+    const options = new Array<object>();
+    const daysInMonth = new Date(+this.student.birthdateYear, +this.student.birthdateMonth, 0).getDate();
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      options.push({
+        label: ('0' + i).slice(-2),
+        value: ('0' + i).slice(-2)
+      });
+    }
+    return options;
+  }
+
   ngOnChanges(): void {
     if (this.student && this.stateCodes) {
       this.filterStates();
     }
+  }
+
+  getYearOptions(): Array<SalesforceOption> {
+    const options = new Array<SalesforceOption>();
+    const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
+
+    for (let i = 16; i >= 0; i--) {
+      options.push(new SalesforceOption(
+        (startYear - i).toString(),
+        (startYear - i).toString(),
+        false
+      ));
+    }
+    return options;
   }
 
   filterStates(): void {
