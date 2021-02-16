@@ -16,6 +16,7 @@ export class ProgramInfoComponent implements OnInit {
   anyProgramUpdating = false;
   daysSelected: Set<string> = new Set<string>();
   selectedArtsArea = '';
+  sortedArtsAreas: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -48,6 +49,7 @@ export class ProgramInfoComponent implements OnInit {
           }
         });
 
+        this.updateArtsAreas();
       } else {
         this.appData = new ApplicationData();
       }
@@ -55,22 +57,10 @@ export class ProgramInfoComponent implements OnInit {
 
   }
 
-  get sortedDivisions(): Array<SalesforceOption> {
-    const divisions = Array<SalesforceOption>();
-    for (const k of this.appData.programData.divisions.keys()) {
-      const opt = new SalesforceOption(this.appData.programData.divisions.get(k), k, false);
-      divisions.push(opt);
-    }
-
-    divisions.sort((a, b) => {
-      const firstNumA = +a.label[a.label.search(/\d/)];
-      const firstNumB = +a.label[b.label.search(/\d/)];
-
-      return firstNumA - firstNumB;
-    });
-
-    return divisions;
+  get selectedDivisionDescription(): string {
+    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision);
   }
+
 
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p =>
@@ -78,23 +68,22 @@ export class ProgramInfoComponent implements OnInit {
       (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
   }
 
-  get filteredArtsAreas(): Array<SalesforceOption> {
+  updateArtsAreas(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
       artsAreaSet.add(p.artsArea);
     });
 
-    const sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
-    sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
-
-    return sortedArtsAreas;
+    this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
+    this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
   }
 
   updateSelectedDivision(): void {
     const grade = this.appData.programData.gradeInSchool;
     const gradeNumber = grade.match(/\d+/);
     this.appData.programData.selectedDivision = this.appData.programData.divisionGradeMap.get(+gradeNumber);
+    this.updateArtsAreas();
   }
 
   clickProgram(program: Program): void {
