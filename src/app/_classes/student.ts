@@ -32,6 +32,7 @@ export class Student {
       student.birthdateMonth = dateSplit[1];
       student.birthdateYear = dateSplit[0];
     }
+    student.mailingAddress = Address.createFromJson(json.mailingAddress);
 
     return student;
   }

@@ -8,7 +8,7 @@
          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
 </div>
 
-<button class="btn btn-default my-3" *ngIf="student && student.mailingAddress" (click)="copyAddressFromStudent()">
+<button class="btn btn-default my-3" *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()" (click)="copyAddressFromStudent()">
   Copy address from student
 </button>
 

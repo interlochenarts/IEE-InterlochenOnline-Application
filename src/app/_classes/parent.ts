@@ -15,8 +15,8 @@ export class Parent {
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
-    parent.mailingAddress = new Address();
     Object.assign(parent, json);
+    parent.mailingAddress = Address.createFromJson(json.mailingAddress);
 
     return parent;
   }

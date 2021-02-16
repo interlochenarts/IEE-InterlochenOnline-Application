@@ -85,7 +85,7 @@ export class ProgramInfoComponent implements OnInit {
       artsAreaSet.add(p.artsArea);
     });
 
-    const sortedArtsAreas = Array.from(artsAreaSet).map(aa => new SalesforceOption(aa, aa, false));
+    const sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
     sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
 
     return sortedArtsAreas;

@@ -1,17 +1,11 @@
-<div class="row">
-  <div class="col-8">
-    <h4>Parents</h4>
-  </div>
-  <div class="col-4 text-right">
-    <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
-  </div>
-</div>
-
 <div *ngFor="let parent of parents">
-  <h5>{{parent.firstName}} {{parent.lastName}}</h5>
-
-  <div class="incomplete" *ngIf="!parent.isComplete()">
-    Missing data!
+  <div class="row">
+    <div class="col-8">
+      <h4>Parent/Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
+    </div>
+    <div class="col-4 text-right">
+      <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+    </div>
   </div>
 
   <div class="review my-1 row">
