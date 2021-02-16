@@ -36,8 +36,6 @@ export class ApplicationData {
     appData.programData = ProgramData.createFromNestedJson(json.programData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
-    console.log('appData');
-    console.dir(appData);
 
     return appData;
   }
