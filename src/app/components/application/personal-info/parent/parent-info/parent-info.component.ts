@@ -24,35 +24,42 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.appDataService.countryData.asObservable().subscribe(countryCodes => {
       this.countryCodes = countryCodes;
+      this.filterStates(this.parent?.mailingAddress?.country);
     });
 
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
-      this.filterStates();
+      this.filterStates(this.parent?.mailingAddress?.country);
     });
   }
 
-  ngOnChanges(): void {
-    if (this.student && this.stateCodes) {
-      this.filterStates();
+  ngOnChanges(event): void {
+    if (this.parent && this.stateCodes) {
+      this.filterStates(this.parent.mailingAddress?.country);
     }
   }
 
-  filterStates(): void {
-    const countryCode = this.countryCodes.find(c => c.name === this.parent?.mailingAddress?.country);
+  filterStates(event: string): void {
+    const countryCode = this.countryCodes.find(c => c.name === event);
     this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
   }
 
   zipRequired(): boolean {
-    const countryCode = this.countryCodes.find(c => c.name === this.student?.mailingAddress?.country);
-    return countryCode.zipRequired;
+    const countryCode = this.countryCodes?.find(c => c.name === this.parent?.mailingAddress?.country);
+    return countryCode?.zipRequired;
+  }
+
+  clearState(event: string): void {
+    if (event !== this.parent.mailingAddress.country) {
+      this.parent.mailingAddress.stateProvince = null;
+    }
   }
 
   copyAddressFromStudent(): void {
     this.parent.mailingAddress.street = this.student.mailingAddress.street;
     this.parent.mailingAddress.city = this.student.mailingAddress.city;
     this.parent.mailingAddress.country = this.student.mailingAddress.country;
-    this.filterStates();
+    this.filterStates(this.parent.mailingAddress.country);
     this.parent.mailingAddress.stateProvince = this.student.mailingAddress.stateProvince;
     this.parent.mailingAddress.zipPostalCode = this.student.mailingAddress.zipPostalCode;
 

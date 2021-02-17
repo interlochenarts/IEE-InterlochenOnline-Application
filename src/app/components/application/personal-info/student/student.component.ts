@@ -59,7 +59,6 @@ export class StudentComponent implements OnInit, OnChanges {
 
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
-      this.filterStates();
     });
 
     this.loadEthnicityOptions();
@@ -94,7 +93,7 @@ export class StudentComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.student && this.stateCodes) {
-      this.filterStates();
+      this.filterStates(this.student.mailingAddress?.country);
     }
   }
 
@@ -112,8 +111,8 @@ export class StudentComponent implements OnInit, OnChanges {
     return options;
   }
 
-  filterStates(): void {
-    const countryCode = this.countryCodes.find(c => c.name === this.student?.mailingAddress?.country);
+  filterStates(event: string): void {
+    const countryCode = this.countryCodes.find(c => c.name === event);
     this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
   }
 
@@ -122,15 +121,17 @@ export class StudentComponent implements OnInit, OnChanges {
     return countryCode?.zipRequired;
   }
 
-  genderDetailRequired(): boolean {
-    return this.student.genderIdentity === 'Non-Binary';
+  clearState(event: string): void {
+    if (event !== this.student.mailingAddress.country) {
+      this.student.mailingAddress.stateProvince = null;
+    }
   }
 
   copyAddressFrom(parentAddress: Address): void {
     this.student.mailingAddress.street = parentAddress.street;
     this.student.mailingAddress.city = parentAddress.city;
     this.student.mailingAddress.country = parentAddress.country;
-    this.filterStates();
+    this.filterStates(this.student.mailingAddress.country);
     this.student.mailingAddress.stateProvince = parentAddress.stateProvince;
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
   }
