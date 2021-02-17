@@ -3,6 +3,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';
 import {RouterLink} from '../../_classes/router-link';
 import {combineLatest} from 'rxjs';
+import {ApplicationData} from '../../_classes/application-data';
 
 @Component({
   selector: 'iee-application',
@@ -17,7 +18,9 @@ export class ApplicationComponent implements OnInit {
   routerIndex = -1;
   showBackLink = false;
   showNextLink = true;
+  disableNextLink = false;
   showSaveAndQuit = true;
+  applicationData: ApplicationData = new ApplicationData();
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute,
               private router: Router) {
@@ -34,6 +37,8 @@ export class ApplicationComponent implements OnInit {
         this.showBackLink = this.routerIndex !== 0;
         this.showNextLink = this.routerIndex !== (links.length - 1);
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
+
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review') && !this.applicationData.isComplete;
       }
     });
   }
@@ -58,6 +63,11 @@ export class ApplicationComponent implements OnInit {
     this.appDataService.isSaving.asObservable().subscribe(next => {
       this.isSaving = next;
     });
+    this.appDataService.applicationData.asObservable().subscribe(appData => {
+      if (appData) {
+        this.applicationData = appData;
+      }
+    });
   }
 
   saveAndQuit(): void {
@@ -71,7 +81,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   saveAndNext(): void {
-    if (this.isSaving === false) {
+    if (this.isSaving === false && this.disableNextLink === false) {
       this.router.navigate([this.routerLinks[this.routerIndex + 1].routerLink]);
       this.appDataService.saveApplication();
     }
@@ -82,5 +92,9 @@ export class ApplicationComponent implements OnInit {
       this.router.navigate([this.routerLinks[this.routerIndex - 1].routerLink]);
       this.appDataService.saveApplication();
     }
+  }
+
+  canRegister(): boolean {
+    return this.applicationData.isComplete;
   }
 }

@@ -42,7 +42,7 @@
 </div>
 
 <label for="parentMailingState" class="mt-4">Mailing State</label>
-<div class="default">
+<div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
             name="parentMailingState"
