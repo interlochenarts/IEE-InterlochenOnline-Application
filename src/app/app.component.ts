@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from './_classes/application-data';
 import {AppDataService} from './services/app-data.service';
 import {RouterLink} from './_classes/router-link';
+import {CountryCode} from './_classes/country-code';
+import {StateCode} from './_classes/state-code';
 
 @Component({
   selector: 'iee-root',
@@ -15,6 +17,9 @@ export class AppComponent implements OnInit {
   applicationId: string;
   transactionId: string;
   links: Array<RouterLink> = [];
+
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
 
   constructor(private appDataService: AppDataService) {
   }

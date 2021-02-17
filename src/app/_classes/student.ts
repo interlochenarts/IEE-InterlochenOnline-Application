@@ -1,4 +1,6 @@
 import {Address} from './address';
+import {CountryCode} from './country-code';
+import {StateCode} from './state-code';
 
 export class Student {
   contactId: string;
@@ -45,7 +47,10 @@ export class Student {
     }
   }
 
-  public isComplete(): boolean {
+  public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    const countryCode = this.getCountryCode(countryCodes);
+    const states = this.getStates(countryCode, stateCodes);
+
     return !!this.preferredName &&
       !!this.email &&
       !!this.mobilePhone &&
@@ -53,11 +58,19 @@ export class Student {
         !!this.mailingAddress.street &&
         !!this.mailingAddress.city &&
         !!this.mailingAddress.country &&
-        !!this.mailingAddress.stateProvince &&
-        !!this.mailingAddress.zipPostalCode
+        (states.length > 0 ? !!this.mailingAddress.stateProvince : true) &&
+        (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true)
       ) &&
       !!this.genderIdentity &&
       !!this.birthdate &&
       !!this.billingParentId;
+  }
+
+  private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {
+    return countryCodes.find(c => c.name === this.mailingAddress?.country) || new CountryCode();
+  }
+
+  private getStates(countryCode: CountryCode, stateCodes: Array<StateCode>): Array<StateCode> {
+    return stateCodes.filter(s => s.countryId === countryCode?.id);
   }
 }

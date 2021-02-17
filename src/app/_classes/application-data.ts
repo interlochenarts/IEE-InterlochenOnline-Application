@@ -4,6 +4,8 @@ import {Payment} from './payment';
 import {EnrollmentAgreement} from './enrollment-agreement';
 import {Address} from './address';
 import {ProgramData} from './program-data';
+import {CountryCode} from './country-code';
+import {StateCode} from './state-code';
 
 export class ApplicationData {
   student: Student;
@@ -40,10 +42,10 @@ export class ApplicationData {
     return appData;
   }
 
-  get isComplete(): boolean {
-    return this.student.isComplete() &&
+  public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    return this.student.isComplete(countryCodes, stateCodes) &&
       this.parents.length > 0 &&
-      this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(), true) &&
+      this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
       this.programData.programs.length > 0;
   }
 }
