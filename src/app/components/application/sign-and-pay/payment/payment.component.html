@@ -1,23 +1,31 @@
 <h3>Make a Payment</h3>
 
-<div class="default" *ngIf="paymentReceived">
-  You have already paid your tuition.
+<div *ngIf="isLoading">
+  <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i> Loading...
 </div>
-<div *ngIf="!paymentReceived">
-  <label>Payment Method</label>
-  <div class="default">
-    <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
-      <input type="radio"
-             class="form-check-input"
-             [(ngModel)]="paymentType"
-             [disabled]="appData.payment.tuitionPaid"
-             name="paymentType"
-             id="paymentType_{{pt.key}}"
-             value="{{pt.value}}"/>
-      <label for="paymentType_{{pt.key}}" class="form-check-label">{{pt.value}}</label>
+<div *ngIf="!isLoading">
+  <div class="default" *ngIf="paymentReceived">
+    You have already paid your tuition.
+  </div>
+  <div *ngIf="this.appData.payment.amountOwed === 0.00">
+    You must choose a program before you can pay.
+  </div>
+  <div *ngIf="!paymentReceived && canPay()">
+    <label>Payment Method</label>
+    <div class="default">
+      <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
+        <input type="radio"
+               class="form-check-input"
+               [(ngModel)]="paymentType"
+               [disabled]="appData.payment.tuitionPaid"
+               name="paymentType"
+               id="paymentType_{{pt.key}}"
+               value="{{pt.value}}"/>
+        <label for="paymentType_{{pt.key}}" class="form-check-label">{{pt.value}}</label>
+      </div>
     </div>
   </div>
-</div>
 
-<iee-credit-card *ngIf="!paymentReceived && paymentType === PaymentType.CC"></iee-credit-card>
-<iee-ach *ngIf="!paymentReceived && paymentType === PaymentType.ACH"></iee-ach>
+  <iee-credit-card *ngIf="canPay() && paymentType === PaymentType.CC"></iee-credit-card>
+  <iee-ach *ngIf="canPay() && paymentType === PaymentType.ACH"></iee-ach>
+</div>

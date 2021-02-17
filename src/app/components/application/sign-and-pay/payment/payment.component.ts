@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PaymentType} from '../../../../_enums/payment-type.enum';
 import {AppDataService} from '../../../../services/app-data.service';
 import {ApplicationData} from '../../../../_classes/application-data';
+import {Payment} from '../../../../_classes/payment';
 
 declare const Visualforce: any;
 
@@ -16,6 +17,7 @@ export class PaymentComponent implements OnInit {
   paymentReceived = false;
   transactionId: string;
   appData: ApplicationData;
+  isLoading: boolean;
 
   constructor(private appDataService: AppDataService) { }
 
@@ -24,10 +26,23 @@ export class PaymentComponent implements OnInit {
       if (appData) {
         this.appData = appData;
         this.paymentReceived = appData.payment.paidOnLoad ? appData.payment.paidOnLoad : this.paymentReceived;
+        this.isLoading = true;
+        // Load payment info in case they picked programs since the data was last loaded
+        Visualforce.remoting.Manager.invokeAction(
+          'IEE_OnlineApplicationController.getPaymentJSON',
+          this.appData.appId,
+          result => {
+            if (result && result !== 'null') {
+              this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+            }
+            this.isLoading = false;
+          },
+          {buffer: false, escape: false}
+        );
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
-      if (trxId && this.transactionId !== trxId) {
+      if (trxId && this.transactionId !== trxId && this.appData) {
         this.transactionId = trxId;
         console.log('Checking transactionId ' + trxId + ' for app ' + this.appData.appId);
         // search salesforce for the transaction to see if it's real
@@ -47,5 +62,8 @@ export class PaymentComponent implements OnInit {
         );
       }
     });
+  }
+  canPay(): boolean {
+    return !this.paymentReceived && this.appData.payment.amountOwed !== 0.00;
   }
 }
