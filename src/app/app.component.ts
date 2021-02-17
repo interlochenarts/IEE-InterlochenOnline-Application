@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  linkDisabled(appData: ApplicationData): boolean {
-    return !appData.isComplete;
+  linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    return !appData.isComplete(countryCodes, stateCodes);
   }
 }

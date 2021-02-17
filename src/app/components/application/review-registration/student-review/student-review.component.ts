@@ -19,28 +19,31 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStateCodes: Array<StateCode> = [];
+  countryCode: CountryCode = new CountryCode();
 
   constructor(private appDataService: AppDataService) {
     appDataService.countryData.asObservable().subscribe(countries => {
       this.countryCodes = countries;
+      this.countryCode = this.getCountryCode(this.student);
     });
     appDataService.stateData.asObservable().subscribe(states => {
       this.stateCodes = states;
+      this.countryCode = this.getCountryCode(this.student);
     });
   }
 
   ngOnInit(): void {
     this.filterStates();
+    this.countryCode = this.getCountryCode(this.student);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.filterStates();
+    this.countryCode = this.getCountryCode(this.student);
   }
 
-
   showZipError(): boolean {
-    const countryCode = this.getCountryCode(this.student);
-    return (countryCode.zipRequired ? !this.student.mailingAddress.zipPostalCode : false);
+    return (this.countryCode.zipRequired ? !this.student.mailingAddress.zipPostalCode : false);
   }
 
   showStateError(): boolean {
@@ -53,7 +56,7 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   }
 
   private getCountryCode(student: Student): CountryCode {
-    return this.countryCodes.find(c => c.name === student.mailingAddress?.country) || new CountryCode();
+    return this.countryCodes.find(c => c.name === student?.mailingAddress?.country) || new CountryCode();
   }
 
   private getStates(countryCode: CountryCode): Array<StateCode> {

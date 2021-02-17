@@ -15,8 +15,8 @@ declare const Visualforce: any;
 export class ParentInfoComponent implements OnInit, OnChanges {
   @Input() parent: Parent;
   @Input() student: Student;
-  countryCodes: Array<CountryCode>;
-  stateCodes: Array<StateCode>;
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
 
   constructor(private appDataService: AppDataService) { }
