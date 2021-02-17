@@ -8,7 +8,10 @@
       <nav class="well dark">
         <ul>
           <li *ngFor="let link of links">
-            <a [routerLink]="[link.routerLink]" routerLinkActive="active" (click)="saveApplication()">{{link.text}}</a>
+            <a [routerLink]="[link.routerLink]" routerLinkActive="active"
+               [ngClass]="{disabled: link.disabled(appData)}"
+               [tabIndex]="link.disabled(appData) ? -1 : 0"
+               (click)="saveApplication(link.disabled(appData))">{{link.text}}</a>
           </li>
         </ul>
       </nav>

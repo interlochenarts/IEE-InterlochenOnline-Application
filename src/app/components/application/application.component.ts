@@ -3,6 +3,7 @@ import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';
 import {RouterLink} from '../../_classes/router-link';
 import {combineLatest} from 'rxjs';
+import {ApplicationData} from '../../_classes/application-data';
 
 @Component({
   selector: 'iee-application',
@@ -18,6 +19,7 @@ export class ApplicationComponent implements OnInit {
   showBackLink = false;
   showNextLink = true;
   showSaveAndQuit = true;
+  applicationData: ApplicationData = new ApplicationData();
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute,
               private router: Router) {
@@ -58,6 +60,11 @@ export class ApplicationComponent implements OnInit {
     this.appDataService.isSaving.asObservable().subscribe(next => {
       this.isSaving = next;
     });
+    this.appDataService.applicationData.asObservable().subscribe(appData => {
+      if (appData) {
+        this.applicationData = appData;
+      }
+    });
   }
 
   saveAndQuit(): void {
@@ -82,5 +89,9 @@ export class ApplicationComponent implements OnInit {
       this.router.navigate([this.routerLinks[this.routerIndex - 1].routerLink]);
       this.appDataService.saveApplication();
     }
+  }
+
+  canRegister(): boolean {
+    return this.applicationData.isComplete;
   }
 }

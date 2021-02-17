@@ -40,7 +40,7 @@ export class ApplicationData {
     return appData;
   }
 
-  public isComplete(): boolean {
+  get isComplete(): boolean {
     return this.student.isComplete() &&
       this.parents.length > 0 &&
       this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(), true) &&
