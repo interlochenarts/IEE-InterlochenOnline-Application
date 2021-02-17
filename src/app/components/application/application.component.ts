@@ -18,6 +18,7 @@ export class ApplicationComponent implements OnInit {
   routerIndex = -1;
   showBackLink = false;
   showNextLink = true;
+  disableNextLink = false;
   showSaveAndQuit = true;
   applicationData: ApplicationData = new ApplicationData();
 
@@ -36,6 +37,8 @@ export class ApplicationComponent implements OnInit {
         this.showBackLink = this.routerIndex !== 0;
         this.showNextLink = this.routerIndex !== (links.length - 1);
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
+
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review') && !this.applicationData.isComplete;
       }
     });
   }
@@ -78,7 +81,7 @@ export class ApplicationComponent implements OnInit {
   }
 
   saveAndNext(): void {
-    if (this.isSaving === false) {
+    if (this.isSaving === false && this.disableNextLink === false) {
       this.router.navigate([this.routerLinks[this.routerIndex + 1].routerLink]);
       this.appDataService.saveApplication();
     }
