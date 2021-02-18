@@ -3,12 +3,14 @@ import {Program} from './program';
 export class ProgramData {
   divisions: Map<string, string>;
   programs: Array<Program>;
+  sessions: Array<string>;
   selectedDivision: string;
   gradeInSchool: string;
 
   constructor() {
     this.programs = new Array<Program>();
     this.divisions = new Map<string, string>();
+    this.sessions = new Array<string>();
   }
 
   public static createFromNestedJson(json: any): ProgramData {

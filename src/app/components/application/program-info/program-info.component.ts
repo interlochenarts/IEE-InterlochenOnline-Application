@@ -16,7 +16,9 @@ export class ProgramInfoComponent implements OnInit {
   anyProgramUpdating = false;
   daysSelected: Set<string> = new Set<string>();
   selectedArtsArea = '';
+  selectedSession = '';
   sortedArtsAreas: Array<SalesforceOption> = [];
+  sortedSessions: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -50,6 +52,7 @@ export class ProgramInfoComponent implements OnInit {
         });
 
         this.updateArtsAreas();
+        this.updateSessions();
       } else {
         this.appData = new ApplicationData();
       }
@@ -58,12 +61,13 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision)
+    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision);
   }
 
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p =>
       (p.division === this.appData.programData.selectedDivision) &&
+      (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
       (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
   }
 
@@ -76,6 +80,12 @@ export class ProgramInfoComponent implements OnInit {
 
     this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
     this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
+  }
+
+  updateSessions(): void {
+    this.selectedSession = '';
+    this.sortedSessions = this.appData.programData.sessions.map(s => new SalesforceOption(s, s, false));
+    this.sortedSessions.unshift(new SalesforceOption('All', '', true));
   }
 
   updateSelectedDivision(): void {
