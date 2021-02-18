@@ -1,3 +1,5 @@
+import {SalesforceOption} from './salesforce-option';
+
 export class Program {
   id: string;
   sessionId: string;
@@ -10,6 +12,7 @@ export class Program {
   sessionDates: string;
   sessionName: string;
   programOptions: string;
+  selectedInstrument: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -28,8 +31,8 @@ export class Program {
     return this.daysOfAttendance?.split(';');
   }
 
-  get programOptionsArray(): Array<string> {
-    return this.programOptions?.split(';');
+  get programOptionsArray(): Array<SalesforceOption> {
+    return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
   public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>): boolean {

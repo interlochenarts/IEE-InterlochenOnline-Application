@@ -45,7 +45,7 @@
 </div>
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
-     (click)="clickProgram(program)"
+     (click)="clickProgram(program, instrumentModal)"
      [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
   <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
     <input type="checkbox" [id]="program.id" [name]="program.id"
@@ -65,12 +65,21 @@
   </div>
 </div>
 
-<div class="modal fade" id="instrumentModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
+<ng-template #instrumentModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+  </div>
+  <div class="modal-body">
+    <div class="select">
+      <select [(ngModel)]="modalInstrumentChoice"
+              name="selectedInstrument"
+              id="selectedInstrument">
+        <option *ngFor="let instrument of selectedProgramInstruments" [value]="instrument.value"
+                [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
+      </select>
     </div>
   </div>
-</div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+  </div>
+</ng-template>
