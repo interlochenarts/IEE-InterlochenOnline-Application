@@ -21,6 +21,15 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   filteredStateCodes: Array<StateCode> = [];
   countryCode: CountryCode = new CountryCode();
 
+  get formattedBirthdate(): string {
+    if (this.student.birthdate) {
+      const [year, month, day] = this.student.birthdate.split('-');
+      return `${+day}/${+month}/${year}`;
+    }
+
+    return null;
+  }
+
   constructor(private appDataService: AppDataService) {
     appDataService.countryData.asObservable().subscribe(countries => {
       this.countryCodes = countries;
