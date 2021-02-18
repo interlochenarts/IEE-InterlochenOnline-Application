@@ -46,12 +46,12 @@
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program)"
-     [ngClass]="{disabled: program.isDisabled(daysSelected)}">
+     [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
   <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelected)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelected)}">
+           [disabled]="program.isDisabled(daysSelected, selectedProgramSessions)">
+    <label [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
       <i class="fa fa-check pl-4"></i>
     </label>
   </div>

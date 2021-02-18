@@ -27,18 +27,23 @@ export class Program {
     return this.daysOfAttendance?.split(';');
   }
 
-  public isDisabled(daysSelected: Set<string>): boolean {
+  public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>): boolean {
     if (this.isSelected) {
       return false;
     }
 
+    let daySelected = false;
+    let sessionSelected = false;
     for (const d of daysSelected) {
       if (this.daysArray.includes(d)) {
-        return true;
+        daySelected = true;
+      }
+      if (Array.from(selectedSessions).includes(this.sessionName)) {
+        sessionSelected = true;
       }
     }
 
-    return false;
+    return daysSelected && sessionSelected;
   }
 
   get artsAreaList(): Array<string> {

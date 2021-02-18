@@ -35,6 +35,15 @@ export class ProgramInfoComponent implements OnInit {
     new SalesforceOption('12th', '12th', false),
   ];
 
+
+  get selectedProgramSessions(): Set<string> {
+    const selected = new Set<string>();
+    this.appData.programData.programs.filter((p: Program) => p.isSelected).forEach(p => {
+      selected.add(p.sessionName);
+    });
+    return selected;
+  }
+
   constructor(private appDataService: AppDataService) {
   }
 
@@ -96,7 +105,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program): void {
-    if (!program.isDisabled(this.daysSelected)) {
+    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions)) {
       if (!program.isSelected) {
         program.isSelected = true;
         program.daysArray.forEach(d => {
