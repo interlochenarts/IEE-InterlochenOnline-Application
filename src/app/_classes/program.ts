@@ -18,7 +18,7 @@ export class Program {
   }
 
   get daysDisplay(): string {
-    return this.daysArray.reduce((prev: string, curr: string, index: number, array: string[]): string => {
+    return this.daysArray?.reduce((prev: string, curr: string, index: number, array: string[]): string => {
       return prev + (index === array.length - 1 ? ', & ' : ', ') + curr;
     });
   }
