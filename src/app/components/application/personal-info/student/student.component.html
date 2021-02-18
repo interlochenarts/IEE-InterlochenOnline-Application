@@ -57,8 +57,8 @@
   <label for="mailingCountry" class="mt-4">Mailing Country</label>
   <div class="default required">
     <div class="select">
-      <select [(ngModel)]="student.mailingAddress.country"
-              (ngModelChange)="filterStates()"
+      <select (ngModelChange)="filterStates($event); clearState($event)"
+              [(ngModel)]="student.mailingAddress.country"
               name="mailingCountry"
               id="mailingCountry">
         <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>

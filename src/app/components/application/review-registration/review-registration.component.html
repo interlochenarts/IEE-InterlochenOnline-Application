@@ -2,6 +2,6 @@
 <iee-student-review [student]="appData.student" [link]="routerLinks[0]" class="my-3 block"></iee-student-review>
 <iee-parent-review [parents]="appData.parents" [link]="routerLinks[0]" class="my-3 block"></iee-parent-review>
 <iee-program-review [programData]="appData.programData" [link]="routerLinks[1]" class="my-3 block"></iee-program-review>
-<div class="alert alert-danger" *ngIf="appData && !appData.isComplete">
+<div class="alert alert-danger" *ngIf="appData && !appData.isComplete(countryCodes, stateCodes)">
   Please fill out all sections before completing your registration.
 </div>

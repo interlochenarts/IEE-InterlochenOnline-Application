@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from './_classes/application-data';
 import {AppDataService} from './services/app-data.service';
 import {RouterLink} from './_classes/router-link';
+import {CountryCode} from './_classes/country-code';
+import {StateCode} from './_classes/state-code';
 
 @Component({
   selector: 'iee-root',
@@ -16,6 +18,9 @@ export class AppComponent implements OnInit {
   transactionId: string;
   links: Array<RouterLink> = [];
 
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
+
   constructor(private appDataService: AppDataService) {
   }
 
@@ -24,6 +29,12 @@ export class AppComponent implements OnInit {
       if (appData) {
         this.appData = appData;
       }
+    });
+    this.appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
+    });
+    this.appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
     });
 
     this.appDataService.applicationId.asObservable().subscribe(appId => {
@@ -70,7 +81,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  linkDisabled(appData: ApplicationData): boolean {
-    return !appData.isComplete;
+  linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    return !appData.isComplete(countryCodes, stateCodes);
   }
 }

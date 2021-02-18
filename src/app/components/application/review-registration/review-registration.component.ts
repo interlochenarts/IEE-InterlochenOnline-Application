@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {RouterLink} from '../../../_classes/router-link';
+import {CountryCode} from '../../../_classes/country-code';
+import {StateCode} from '../../../_classes/state-code';
 
 @Component({
   selector: 'iee-review-and-submit',
@@ -11,6 +13,8 @@ import {RouterLink} from '../../../_classes/router-link';
 export class ReviewRegistrationComponent implements OnInit {
 
   appData: ApplicationData = new ApplicationData();
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
   routerLinks = new Array<RouterLink>();
 
   constructor(private appDataService: AppDataService) { }
@@ -26,6 +30,13 @@ export class ReviewRegistrationComponent implements OnInit {
       if (rl) {
         this.routerLinks = rl;
       }
+    });
+
+    this.appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
+    this.appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
     });
   }
 }

@@ -1,19 +1,61 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {Parent} from '../../../../_classes/parent';
 import {RouterLink} from '../../../../_classes/router-link';
+import {CountryCode} from '../../../../_classes/country-code';
+import {StateCode} from '../../../../_classes/state-code';
+import {AppDataService} from '../../../../services/app-data.service';
 
 @Component({
   selector: 'iee-parent-review',
   templateUrl: './parent-review.component.html',
   styleUrls: ['./parent-review.component.less']
 })
-export class ParentReviewComponent implements OnInit {
+export class ParentReviewComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() link: RouterLink;
 
-  constructor() { }
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
+  filteredStateCodesByParent: Map<string, Array<StateCode>> = new Map<string, Array<StateCode>>();
 
-  ngOnInit(): void {
+  constructor(private appDataService: AppDataService) {
+    appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
+    appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
+    });
   }
 
+  ngOnInit(): void {
+    this.filterStates();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.filterStates();
+  }
+
+  showZipError(parent: Parent): boolean {
+    const countryCode = this.getCountryCode(parent);
+    return (countryCode.zipRequired ? !parent.mailingAddress.zipPostalCode : false);
+  }
+
+  showStateError(parent: Parent): boolean {
+    const states = this.filteredStateCodesByParent.get(parent.contactId);
+    return (states.length > 0 ? !parent.mailingAddress.stateProvince : false);
+  }
+
+  private filterStates(): void {
+    for (const p of this.parents) {
+      this.filteredStateCodesByParent.set(p.contactId, this.getStates(this.getCountryCode(p)));
+    }
+  }
+
+  private getCountryCode(parent: Parent): CountryCode {
+    return this.countryCodes.find(c => c.name === parent.mailingAddress?.country) || new CountryCode();
+  }
+
+  private getStates(countryCode: CountryCode): Array<StateCode> {
+    return this.stateCodes.filter(s => s.countryId === countryCode?.id);
+  }
 }

@@ -4,6 +4,8 @@ import {AppDataService} from '../../services/app-data.service';
 import {RouterLink} from '../../_classes/router-link';
 import {combineLatest} from 'rxjs';
 import {ApplicationData} from '../../_classes/application-data';
+import {StateCode} from '../../_classes/state-code';
+import {CountryCode} from '../../_classes/country-code';
 
 @Component({
   selector: 'iee-application',
@@ -22,8 +24,11 @@ export class ApplicationComponent implements OnInit {
   showSaveAndQuit = true;
   applicationData: ApplicationData = new ApplicationData();
 
-  constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute,
-              private router: Router) {
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
+
+
+  constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute, private router: Router) {
 
     const linkObservable = this.appDataService.routerLinks.asObservable();
     const routerEvents = router.events;
@@ -38,8 +43,16 @@ export class ApplicationComponent implements OnInit {
         this.showNextLink = this.routerIndex !== (links.length - 1);
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
 
-        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review') && !this.applicationData.isComplete;
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
+          && !this.applicationData.isComplete(this.countryCodes, this.stateCodes);
       }
+    });
+
+    appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
+    appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
     });
   }
 
@@ -59,7 +72,14 @@ export class ApplicationComponent implements OnInit {
     });
 
     this.appDataService.getCountryData();
+    this.appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
     this.appDataService.getStateData();
+    this.appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
+    });
+
     this.appDataService.isSaving.asObservable().subscribe(next => {
       this.isSaving = next;
     });
@@ -95,6 +115,6 @@ export class ApplicationComponent implements OnInit {
   }
 
   canRegister(): boolean {
-    return this.applicationData.isComplete;
+    return this.applicationData.isComplete(this.countryCodes, this.stateCodes);
   }
 }

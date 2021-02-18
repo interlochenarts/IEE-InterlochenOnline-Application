@@ -1,6 +1,8 @@
 import {Address} from './address';
 import {ParentVerification} from './parent-verification';
 import {LegacyData} from './legacy-data';
+import {CountryCode} from './country-code';
+import {StateCode} from './state-code';
 
 export class Parent {
   contactId: string;
@@ -47,18 +49,31 @@ export class Parent {
     return parent;
   }
 
-  public isComplete(): boolean {
+  public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    const countryCode = this.getCountryCode(countryCodes);
+    const states = this.getStates(countryCode, stateCodes);
+
     return !!this.email &&
       (!!this.mailingAddress &&
         !!this.mailingAddress.street &&
         !!this.mailingAddress.city &&
         !!this.mailingAddress.country &&
-        !!this.mailingAddress.stateProvince &&
-        !!this.mailingAddress.zipPostalCode
+        (states.length > 0 ? !!this.mailingAddress.stateProvince : true) &&
+        (countryCode ?
+          (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true) :
+          false)
       );
   }
 
   public get isVerified(): boolean {
     return this.verification === 'Verified';
+  }
+
+  private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {
+    return countryCodes.find(c => c.name === this.mailingAddress?.country);
+  }
+
+  private getStates(countryCode: CountryCode, stateCodes: Array<StateCode>): Array<StateCode> {
+    return stateCodes.filter(s => s.countryId === countryCode?.id);
   }
 }

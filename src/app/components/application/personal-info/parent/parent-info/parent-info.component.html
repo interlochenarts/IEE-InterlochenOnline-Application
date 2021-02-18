@@ -33,7 +33,8 @@
 <label for="parentMailingCountry" class="mt-4">Mailing Country</label>
 <div class="default required ">
   <div class="select">
-    <select [(ngModel)]="parent.mailingAddress.country"
+    <select (ngModelChange)="filterStates($event); clearState($event)"
+            [(ngModel)]="parent.mailingAddress.country"
             name="parentMailingCountry"
             id="parentMailingCountry">
             <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
@@ -45,6 +46,7 @@
 <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
+            [disabled]="filteredStates.length === 0"
             name="parentMailingState"
             id="parentMailingState">
             <option *ngFor="let state of filteredStates" [value]="state.name">{{state.name}}</option>
