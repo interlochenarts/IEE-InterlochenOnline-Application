@@ -59,7 +59,9 @@ export class Parent {
         !!this.mailingAddress.city &&
         !!this.mailingAddress.country &&
         (states.length > 0 ? !!this.mailingAddress.stateProvince : true) &&
-        (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true)
+        (countryCode ?
+          (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true) :
+          false)
       );
   }
 
@@ -68,7 +70,7 @@ export class Parent {
   }
 
   private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {
-    return countryCodes.find(c => c.name === this.mailingAddress?.country) || new CountryCode();
+    return countryCodes.find(c => c.name === this.mailingAddress?.country);
   }
 
   private getStates(countryCode: CountryCode, stateCodes: Array<StateCode>): Array<StateCode> {

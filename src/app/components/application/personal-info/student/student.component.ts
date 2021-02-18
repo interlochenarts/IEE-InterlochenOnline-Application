@@ -55,10 +55,12 @@ export class StudentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.appDataService.countryData.asObservable().subscribe(countryCodes => {
       this.countryCodes = countryCodes;
+      this.filterStates(this.student?.mailingAddress?.country);
     });
 
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
+      this.filterStates(this.student?.mailingAddress?.country);
     });
 
     this.loadEthnicityOptions();

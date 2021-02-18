@@ -43,12 +43,21 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   }
 
   showZipError(): boolean {
+    this.countryCode = this.getCountryCode(this.student);
     return (this.countryCode.zipRequired ? !this.student.mailingAddress.zipPostalCode : false);
+  }
+
+  showZip(): boolean {
+    return this.countryCode.zipRequired;
   }
 
   showStateError(): boolean {
     this.filterStates();
     return (this.filteredStateCodes.length > 0 ? !this.student.mailingAddress.stateProvince : false);
+  }
+
+  showState(): boolean {
+    return this.filteredStateCodes.length > 0;
   }
 
   private filterStates(): void {

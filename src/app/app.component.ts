@@ -30,6 +30,12 @@ export class AppComponent implements OnInit {
         this.appData = appData;
       }
     });
+    this.appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
+    });
+    this.appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
 
     this.appDataService.applicationId.asObservable().subscribe(appId => {
       if (appId) {

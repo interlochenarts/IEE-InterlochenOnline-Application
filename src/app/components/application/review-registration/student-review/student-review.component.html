@@ -55,7 +55,7 @@
   <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.country">{{student.mailingAddress.country}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="filteredStateCodes.length > 0">
+<div class="review my-1 row" *ngIf="showState()">
   <div class="col-5 hideOverflow">Mailing State</div>
   <div class="col-7 hideOverflow" *ngIf="showStateError()">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
@@ -63,7 +63,7 @@
   <div class="col-7 hideOverflow" *ngIf="student.mailingAddress && student.mailingAddress.stateProvince">{{student.mailingAddress.stateProvince}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="countryCode.zipRequired">
+<div class="review my-1 row" *ngIf="showZip()">
   <div class="col-5 hideOverflow">Mailing Zip / Postal Code</div>
   <div class="col-7 hideOverflow" *ngIf="showZipError()">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
@@ -77,6 +77,14 @@
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Birth Date</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.birthdate">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.birthdate">{{student.birthdate}}</div>
 </div>
 
 <div class="review my-1 row" *ngIf="student.race">

@@ -43,7 +43,8 @@ export class ApplicationComponent implements OnInit {
         this.showNextLink = this.routerIndex !== (links.length - 1);
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
 
-        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review') && !this.applicationData.isComplete;
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
+          && !this.applicationData.isComplete(this.countryCodes, this.stateCodes);
       }
     });
 
