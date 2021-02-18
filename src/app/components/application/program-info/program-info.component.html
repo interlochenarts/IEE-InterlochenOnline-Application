@@ -24,6 +24,20 @@
   </div>
 </div>
 
+<div *ngIf="appData.programData.sessions.length > 1">
+  <label for="selectedSession" class="mt-4">Session</label>
+  <div class="default">
+    <div class="select">
+      <select [(ngModel)]="selectedSession"
+              name="selectedSession"
+              id="selectedSession">
+        <option *ngFor="let session of sortedSessions" [value]="session.value"
+                [defaultSelected]="session.defaultValue">{{session.label}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
 <div class="col-12 my-4" *ngIf="this.appData.programData.selectedDivision">
   <div class="row">
     <h5>Programs for {{selectedDivisionDescription}}</h5>
@@ -32,12 +46,12 @@
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program)"
-     [ngClass]="{disabled: program.isDisabled(daysSelected)}">
+     [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
   <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelected)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelected)}">
+           [disabled]="program.isDisabled(daysSelected, selectedProgramSessions)">
+    <label [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
       <i class="fa fa-check pl-4"></i>
     </label>
   </div>
@@ -46,6 +60,7 @@
   </div>
   <div class="col-9 col-md-8 description">
     <h4>{{program.name}}</h4>
-    Meets on {{program.daysDisplay}}
+    <div>{{program.sessionDates}}</div>
+    <div>Meets on {{program.daysDisplay}}</div>
   </div>
 </div>

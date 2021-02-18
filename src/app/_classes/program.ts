@@ -8,6 +8,7 @@ export class Program {
   isSelected = false;
   appChoiceId: string;
   sessionDates: string;
+  sessionName: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -17,25 +18,32 @@ export class Program {
   }
 
   get daysDisplay(): string {
-    return this.daysOfAttendance.replace(';', ' & ');
+    return this.daysArray?.reduce((prev: string, curr: string, index: number, array: string[]): string => {
+      return prev + (index === array.length - 1 ? ', & ' : ', ') + curr;
+    });
   }
 
   get daysArray(): Array<string> {
-    return this.daysOfAttendance.split(';');
+    return this.daysOfAttendance?.split(';');
   }
 
-  public isDisabled(daysSelected: Set<string>): boolean {
+  public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>): boolean {
     if (this.isSelected) {
       return false;
     }
 
+    let daySelected = false;
+    let sessionSelected = false;
     for (const d of daysSelected) {
       if (this.daysArray.includes(d)) {
-        return true;
+        daySelected = true;
+      }
+      if (Array.from(selectedSessions).includes(this.sessionName)) {
+        sessionSelected = true;
       }
     }
 
-    return false;
+    return daysSelected && sessionSelected;
   }
 
   get artsAreaList(): Array<string> {

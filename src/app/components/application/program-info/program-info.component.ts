@@ -16,7 +16,9 @@ export class ProgramInfoComponent implements OnInit {
   anyProgramUpdating = false;
   daysSelected: Set<string> = new Set<string>();
   selectedArtsArea = '';
+  selectedSession = '';
   sortedArtsAreas: Array<SalesforceOption> = [];
+  sortedSessions: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -32,6 +34,15 @@ export class ProgramInfoComponent implements OnInit {
     new SalesforceOption('11th', '11th', false),
     new SalesforceOption('12th', '12th', false),
   ];
+
+
+  get selectedProgramSessions(): Set<string> {
+    const selected = new Set<string>();
+    this.appData.programData.programs.filter((p: Program) => p.isSelected).forEach(p => {
+      selected.add(p.sessionName);
+    });
+    return selected;
+  }
 
   constructor(private appDataService: AppDataService) {
   }
@@ -50,6 +61,7 @@ export class ProgramInfoComponent implements OnInit {
         });
 
         this.updateArtsAreas();
+        this.updateSessions();
       } else {
         this.appData = new ApplicationData();
       }
@@ -58,12 +70,13 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision)
+    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision);
   }
 
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p =>
       (p.division === this.appData.programData.selectedDivision) &&
+      (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
       (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
   }
 
@@ -78,6 +91,12 @@ export class ProgramInfoComponent implements OnInit {
     this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
   }
 
+  updateSessions(): void {
+    this.selectedSession = '';
+    this.sortedSessions = this.appData.programData.sessions.map(s => new SalesforceOption(s, s, false));
+    this.sortedSessions.unshift(new SalesforceOption('All', '', true));
+  }
+
   updateSelectedDivision(): void {
     const grade = this.appData.programData.gradeInSchool;
     const gradeNumber = grade.match(/\d+/);
@@ -86,7 +105,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program): void {
-    if (!program.isDisabled(this.daysSelected)) {
+    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions)) {
       if (!program.isSelected) {
         program.isSelected = true;
         program.daysArray.forEach(d => {
