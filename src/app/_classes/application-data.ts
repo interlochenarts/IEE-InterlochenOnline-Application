@@ -46,6 +46,6 @@ export class ApplicationData {
     return this.student.isComplete(countryCodes, stateCodes) &&
       this.parents.length > 0 &&
       this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
-      this.programData.programs.length > 0;
+      this.programData.programs.filter(p => p.isSelected).length > 0;
   }
 }
