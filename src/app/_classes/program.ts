@@ -9,6 +9,7 @@ export class Program {
   appChoiceId: string;
   sessionDates: string;
   sessionName: string;
+  programOptions: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -25,6 +26,10 @@ export class Program {
 
   get daysArray(): Array<string> {
     return this.daysOfAttendance?.split(';');
+  }
+
+  get programOptionsArray(): Array<string> {
+    return this.programOptions?.split(';');
   }
 
   public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>): boolean {

@@ -20,6 +20,8 @@ export class ProgramInfoComponent implements OnInit {
   sortedArtsAreas: Array<SalesforceOption> = [];
   sortedSessions: Array<SalesforceOption> = [];
 
+  selectedProgramInstruments: Array<string> = [];
+
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
     new SalesforceOption('2nd', '2nd', false),
@@ -111,6 +113,9 @@ export class ProgramInfoComponent implements OnInit {
         program.daysArray.forEach(d => {
           this.daysSelected.add(d);
         });
+
+        this.selectedProgramInstruments = program.programOptionsArray;
+        document.getElementById('instrumentModal').modal();
 
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.addAppChoice',
