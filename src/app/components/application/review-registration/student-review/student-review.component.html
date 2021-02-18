@@ -81,10 +81,10 @@
 
 <div class="review my-1 row">
   <div class="col-5 hideOverflow">Birth Date</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.birthdate">
+  <div class="col-7 hideOverflow" *ngIf="!formattedBirthdate">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
-  <div class="col-7 hideOverflow" *ngIf="student.birthdate">{{student.birthdate}}</div>
+  <div class="col-7 hideOverflow" *ngIf="formattedBirthdate">{{formattedBirthdate}}</div>
 </div>
 
 <div class="review my-1 row" *ngIf="student.race">
