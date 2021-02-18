@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
@@ -22,7 +23,7 @@ import {ProgramReviewComponent} from './components/application/review-registrati
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
 import {EaTextComponent} from './components/application/sign-and-pay/enrollment-agreement/ea-text/ea-text.component';
-import { EaHeaderComponent } from './components/application/sign-and-pay/enrollment-agreement/ea-header/ea-header.component';
+import {EaHeaderComponent} from './components/application/sign-and-pay/enrollment-agreement/ea-header/ea-header.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { EaHeaderComponent } from './components/application/sign-and-pay/enrollm
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

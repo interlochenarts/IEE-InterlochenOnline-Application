@@ -3,6 +3,7 @@ import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {Program} from '../../../_classes/program';
 import {SalesforceOption} from '../../../_classes/salesforce-option';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 declare const Visualforce: any;
 
@@ -19,6 +20,9 @@ export class ProgramInfoComponent implements OnInit {
   selectedSession = '';
   sortedArtsAreas: Array<SalesforceOption> = [];
   sortedSessions: Array<SalesforceOption> = [];
+  modalInstrumentChoice: string;
+
+  selectedProgramInstruments: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -44,7 +48,7 @@ export class ProgramInfoComponent implements OnInit {
     return selected;
   }
 
-  constructor(private appDataService: AppDataService) {
+  constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
@@ -104,43 +108,62 @@ export class ProgramInfoComponent implements OnInit {
     this.updateArtsAreas();
   }
 
-  clickProgram(program: Program): void {
+  clickProgram(program: Program, modal): void {
     if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions)) {
       if (!program.isSelected) {
-        program.isSelected = true;
-        program.daysArray.forEach(d => {
-          this.daysSelected.add(d);
-        });
-
-        Visualforce.remoting.Manager.invokeAction(
-          'IEE_OnlineApplicationController.addAppChoice',
-          this.appData.appId, program.id, program.sessionId,
-          result => {
-            if (result.toString().startsWith('ERR')) {
-              console.error(result);
-            } else {
-              console.log('Saved new program: ' + result);
-              program.appChoiceId = result;
-            }
-          },
-          {buffer: false, escape: false}
-        );
-
+        if (program.artsArea === 'Music') {
+          // if music, ask for instrument
+          this.selectedProgramInstruments = program.programOptionsArray;
+          this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
+            .then(instrumentResult => {
+              program.selectedInstrument = instrumentResult;
+              this.saveProgram(program);
+            }, reason => {
+              console.dir(`Not Saving: Instrument closed (${reason})`);
+            });
+        } else {
+          // if not music, just save
+          this.saveProgram(program);
+        }
       } else {
-        program.isSelected = false;
-        program.daysArray.forEach(d => {
-          this.daysSelected.delete(d);
-        });
-
-        Visualforce.remoting.Manager.invokeAction(
-          'IEE_OnlineApplicationController.removeAppChoice',
-          this.appData.appId, program.appChoiceId,
-          result => {
-            console.log(result);
-          },
-          {buffer: false, escape: false}
-        );
+        this.removeProgram(program);
       }
     }
+  }
+
+  private saveProgram(program: Program): void {
+    program.isSelected = true;
+    program.daysArray.forEach(d => {
+      this.daysSelected.add(d);
+    });
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.addAppChoice',
+      this.appData.appId, program.id, program.sessionId,
+      (program.selectedInstrument ? program.selectedInstrument : ''),
+      result => {
+        if (result.toString().startsWith('ERR')) {
+          console.error(result);
+        } else {
+          console.log('Saved new program: ' + result);
+          program.appChoiceId = result;
+        }
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  private removeProgram(program: Program): void {
+    program.isSelected = false;
+    program.daysArray.forEach(d => {
+      this.daysSelected.delete(d);
+    });
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.removeAppChoice',
+      this.appData.appId, program.appChoiceId,
+      result => {
+        console.log(result);
+      },
+      {buffer: false, escape: false}
+    );
   }
 }
