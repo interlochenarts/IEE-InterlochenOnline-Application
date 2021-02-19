@@ -40,7 +40,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
 
   getYearOptions(): Array<SalesforceOption> {
     const options = new Array<SalesforceOption>();
-    const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
+    const startYear = new Date().getFullYear() - 14;
 
     for (let i = 100; i >= 0; i--) {
       options.push(new SalesforceOption(
@@ -66,6 +66,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   }
 
   constructor(private appDataService: AppDataService) {
+    this.yearOptions = this.getYearOptions();
   }
 
   ngOnInit(): void {
@@ -86,8 +87,6 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
       },
       {buffer: false, escape: false}
     );
-
-    this.getYearOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
