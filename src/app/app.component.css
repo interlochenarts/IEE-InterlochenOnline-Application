@@ -6,4 +6,8 @@ a.disabled {
   cursor: not-allowed;
   user-select: none;
 }
+a.active {
+  background: #fff;
+  font-weight: bold;
+}
 /*# sourceMappingURL=app.component.css.map */
