@@ -13,7 +13,7 @@ declare const Visualforce: any;
 export class CreditCardComponent implements OnInit {
   @Input() cc: CreditCardPaymentData;
   transactionMessage: string;
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
   isSubmitting: boolean;
 
   constructor(private appDataService: AppDataService) {

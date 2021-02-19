@@ -12,7 +12,7 @@ declare const Visualforce: any;
 })
 export class AchComponent implements OnInit {
   @Input() achPaymentData: AchPaymentData;
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
   linkFACTS: string;
 
   constructor(private appDataService: AppDataService) { }

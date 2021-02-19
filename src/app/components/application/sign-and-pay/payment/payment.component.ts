@@ -16,7 +16,7 @@ export class PaymentComponent implements OnInit {
   paymentType: PaymentType = PaymentType.CC;
   paymentReceived = false;
   transactionId: string;
-  appData: ApplicationData;
+  appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
 
   constructor(private appDataService: AppDataService) { }

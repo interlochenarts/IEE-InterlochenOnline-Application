@@ -7,7 +7,7 @@
   <div class="default" *ngIf="paymentReceived">
     You have already paid your tuition.
   </div>
-  <div *ngIf="this.appData.payment.amountOwed === 0.00">
+  <div *ngIf="appData.payment.amountOwed === 0.00">
     You must choose a program before you can pay.
   </div>
   <div *ngIf="!paymentReceived && canPay()">

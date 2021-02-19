@@ -3,6 +3,7 @@ import {EnrollmentAgreement} from '../../../../_classes/enrollment-agreement';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Program} from '../../../../_classes/program';
 import {Payment} from '../../../../_classes/payment';
+import {SalesforceOption} from '../../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
 
@@ -21,6 +22,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   isSigning = false;
   loggedInUserName: string;
 
+  yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   monthOptions = [
     {label: 'January', value: '01'},
     {label: 'February', value: '02'},
@@ -36,23 +38,23 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     {label: 'December', value: '12'}
   ];
 
-  get yearOptions(): Array<object> {
-    const options = new Array<object>();
-    const startYear = new Date().getFullYear() - 4;
+  getYearOptions(): Array<SalesforceOption> {
+    const options = new Array<SalesforceOption>();
+    const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
 
     for (let i = 100; i >= 0; i--) {
-      options.push({
-        label: (startYear - i).toString(),
-        value: (startYear - i).toString()
-      });
+      options.push(new SalesforceOption(
+        (startYear - i).toString(),
+        (startYear - i).toString(),
+        false
+      ));
     }
     return options;
   }
 
-  get dayOptions(): Array<object> {
+  getDayOptions(): Array<object> {
     const options = new Array<object>();
-    const daysInMonth = new Date(+this.enrollmentAgreement.birthdateYear,
-      +this.enrollmentAgreement.birthdateMonth, 0).getDate();
+    const daysInMonth = new Date(+this.enrollmentAgreement.birthdateYear, +this.enrollmentAgreement.birthdateMonth, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
       options.push({
@@ -84,6 +86,8 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
       },
       {buffer: false, escape: false}
     );
+
+    this.getYearOptions();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
