@@ -72,7 +72,12 @@
   </div>
 </div>
 
-<button class="btn btn-primary" [ngClass]="{disabled: !enrollmentAgreement.isComplete()}"
+<div class="alert alert-danger" *ngIf="!payment.tuitionPaid">
+  Please pay your registration fee above before completing your registration.
+</div>
+
+<button class="btn btn-primary"
+        [ngClass]="{disabled: !enrollmentAgreement.isComplete() || !payment.tuitionPaid}"
         (click)="signEnrollmentAgreement()">Register
 </button>
 <span *ngIf="isSigning"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>
