@@ -1,10 +1,10 @@
 <div class="application">
   <div class="row">
-    <iee-header class="col-12 pr-0"></iee-header>
+    <iee-header class="col-12"></iee-header>
   </div>
 
   <div class="row">
-    <div class="application-steps col-3">
+    <div class="application-steps col-12 col-md-3">
       <nav class="well dark">
         <ul>
           <li *ngFor="let link of links">
@@ -17,7 +17,7 @@
       </nav>
     </div>
 
-    <div class="col-9 p-0">
+    <div class="col-12 col-md-9">
       <router-outlet></router-outlet>
     </div>
   </div>
