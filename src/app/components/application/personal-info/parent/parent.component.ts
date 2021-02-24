@@ -45,8 +45,11 @@ export class ParentComponent implements OnInit, OnChanges {
       'IEE_CampApplication_ParentController.sendVerificationEmail',
       this.student.contactId, parent.contactId,
       result => {
-        if (result !== 'Email Sent') {
+        if (!result.includes('@')) {
           console.error('ERROR: Failed to send verification email');
+        } else {
+          parent.verificationSent = true;
+          parent.email = result;
         }
       },
       {buffer: false, escape: false}

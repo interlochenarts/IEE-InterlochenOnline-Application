@@ -14,6 +14,7 @@ export class Parent {
   isEditing = false; // used to display/hide this parent's info form
   isSaving = false; // used to block future saves of this parent
   verification: string;
+  verificationSent: boolean;
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
