@@ -13,6 +13,9 @@
       <a class="mx-3" href="javascript:void(0);"
          (click)="removeParent(parent.contactId)">Remove</a>
       <span *ngIf="parent.contactId === deletingParentId"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
+      <div *ngIf="parent.verificationSent" class="alert alert-warning my-2">
+        Verification email sent to {{parent.email}}
+      </div>
     </div>
     <div *ngIf="parent.isEditing">
       <div *ngIf="parentNotFound">{{parent.firstName}} {{parent.lastName}} was not found in our system. Please fill out
