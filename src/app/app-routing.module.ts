@@ -11,8 +11,8 @@ const routes: Routes = [
     path: ':appId',
     component: ApplicationComponent,
     children: [
-      {path: '', redirectTo: 'personal-info', pathMatch: 'prefix'},
-      {path: 'personal-info', component: PersonalInfoComponent},
+      {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
+      {path: 'student-info', component: PersonalInfoComponent},
       {path: 'program', component: ProgramInfoComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'enrollment', component: SignAndPayComponent}
@@ -22,8 +22,8 @@ const routes: Routes = [
     path: ':appId/:txnId',
     component: ApplicationComponent,
     children: [
-      {path: '', redirectTo: 'personal-info', pathMatch: 'prefix'},
-      {path: 'personal-info', component: PersonalInfoComponent},
+      {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
+      {path: 'student-info', component: PersonalInfoComponent},
       {path: 'program', component: ProgramInfoComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'enrollment', component: SignAndPayComponent}
