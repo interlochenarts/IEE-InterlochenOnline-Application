@@ -13,7 +13,7 @@
       <a class="mx-3" href="javascript:void(0);"
          (click)="removeParent(parent.contactId)">Remove</a>
       <span *ngIf="parent.contactId === deletingParentId"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
-      <div *ngIf="parent.verificationSent" class="alert alert-warning my-2">
+      <div *ngIf="parent.verificationSent" class="alert alert-warning my-3">
         Verification email sent to {{parent.email}}
       </div>
     </div>

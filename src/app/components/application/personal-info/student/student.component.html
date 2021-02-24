@@ -73,7 +73,7 @@
               [disabled]="filteredStates.length === 0"
               name="mailingState"
               id="mailingState">
-        <option *ngFor="let state of filteredStates" [value]="state.name">{{state.name}}</option>
+        <option *ngFor="let state of filteredStates" [value]="state.isoCode">{{state.name}}</option>
       </select>
     </div>
   </div>
