@@ -61,6 +61,14 @@
          *ngIf="parent.mailingAddress && parent.mailingAddress.zipPostalCode">{{parent.mailingAddress.zipPostalCode}}</div>
   </div>
 </div>
+<div class="review my-4 row">
+  <div class="col-5 hideOverflow">Billing Parent</div>
+  <div class="col-7 hideOverflow" *ngIf="!getBillingParentString()">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow"
+       *ngIf="getBillingParentString()">{{getBillingParentString()}}</div>
+</div>
 <div *ngIf="parents.length === 0" class="alert alert-danger">
   Please <a [routerLink]="[link.routerLink]" class="alert-link">add a parent</a> before completing your registration.
 </div>
