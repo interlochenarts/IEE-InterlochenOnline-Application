@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
         this.applicationId = appId;
 
         this.appDataService.routerLinks.next([
-          new RouterLink('/' + this.applicationId + '/personal-info', 'Personal Information',
+          new RouterLink('/' + this.applicationId + '/student-info', 'Student Information',
             () => false),
           new RouterLink('/' + this.applicationId + '/program', 'Select a Program',
             () => false),
@@ -60,7 +60,7 @@ export class AppComponent implements OnInit {
         this.transactionId = trxId;
 
         this.appDataService.routerLinks.next([
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/personal-info', 'Personal Information',
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/student-info', 'Student Information',
             () => false),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/program', 'Select a Program',
             () => false),
