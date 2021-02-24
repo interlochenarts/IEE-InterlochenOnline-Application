@@ -116,7 +116,7 @@ export class AppDataService {
           console.log(result);
           this.isSigning.next(false);
           // leave app after save
-          window.location.assign('/interlochen/IEE_OnlineLanding?appId=' + appData.appId);
+          window.location.assign('/interlochen/IEE_OnlineSubmitted?id=' + appData.appId);
         },
         {buffer: false, escape: false}
       );
