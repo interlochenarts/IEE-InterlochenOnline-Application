@@ -98,7 +98,7 @@ export class ProgramInfoComponent implements OnInit {
 
   updateSessions(): void {
     this.selectedSession = '';
-    this.sortedSessions = this.appData.programData.sessions.map(s => new SalesforceOption(s, s, false));
+    this.sortedSessions = this.appData.programData.sessions.sort().map(s => new SalesforceOption(s, s, false));
     this.sortedSessions.unshift(new SalesforceOption('All', '', true));
   }
 
