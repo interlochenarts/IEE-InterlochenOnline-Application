@@ -3,7 +3,7 @@ import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
 import {Program} from '../../../_classes/program';
 import {SalesforceOption} from '../../../_classes/salesforce-option';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 declare const Visualforce: any;
 
@@ -66,6 +66,7 @@ export class ProgramInfoComponent implements OnInit {
 
         this.updateArtsAreas();
         this.updateSessions();
+        this.updateSelectedDivision();
       } else {
         this.appData = new ApplicationData();
       }
