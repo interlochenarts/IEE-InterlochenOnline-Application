@@ -83,7 +83,6 @@ export class ParentComponent implements OnInit, OnChanges {
           if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
             console.log('found parent: ' + this.parentResult);
-            this.showParentSearch = false;
           } else {
             console.log('no parent found, creating new one.');
             const emptyParent = Parent.createFromVerificationData(this.parentVerification);
@@ -92,6 +91,7 @@ export class ParentComponent implements OnInit, OnChanges {
             this.parents.push(emptyParent);
             this.parentNotFound = true;
           }
+          this.showParentSearch = false;
         },
         {buffer: false, escape: false}
       );
@@ -99,6 +99,7 @@ export class ParentComponent implements OnInit, OnChanges {
   }
 
   verifyParent(): void {
+    this.addingUnverifiedParent = true;
     console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
@@ -122,6 +123,8 @@ export class ParentComponent implements OnInit, OnChanges {
 
         delete this.parentVerification;
         delete this.parentResult;
+
+        this.addingUnverifiedParent = false;
       },
       {buffer: false, escape: false}
     );
