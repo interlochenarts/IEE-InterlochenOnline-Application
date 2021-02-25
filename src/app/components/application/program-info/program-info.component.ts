@@ -112,7 +112,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions)) {
+    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid)) {
       if (!program.isSelected) {
         if (program.artsArea === 'Music') {
           // if music, ask for instrument
