@@ -48,7 +48,7 @@
       <div class="select">
         <select id="birthdate_day" [(ngModel)]="enrollmentAgreement.birthdateDay"
                 (change)="enrollmentAgreement.updateBirthdate()">
-          <option *ngFor="let day of getDayOptions()" [value]="day.value">{{day.label}}</option>
+          <option *ngFor="let day of updateDayOptions()" [value]="day.value">{{day.label}}</option>
         </select>
       </div>
     </div>
