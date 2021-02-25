@@ -3,6 +3,7 @@ import {AppDataService} from '../../../../services/app-data.service';
 import {SalesforceOption} from '../../../../_classes/salesforce-option';
 import {Parent} from '../../../../_classes/parent';
 import {ApplicationData} from '../../../../_classes/application-data';
+import {Program} from '../../../../_classes/program';
 
 declare const Visualforce: any;
 
@@ -19,6 +20,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   loggedInUserName: string;
   userType: string;
   credentialStatus: string;
+  selectedPrograms: Array<Program> = [];
 
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
@@ -52,18 +54,20 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   }
 
   updateDayOptions(): void {
-    const options = new Array<SalesforceOption>();
-    const daysInMonth = new Date(+this.appData.enrollmentAgreement.birthdateYear,
-      +this.appData.enrollmentAgreement.birthdateMonth, 0).getDate();
+    if (this.appData) {
+      const options = new Array<SalesforceOption>();
+      const daysInMonth = new Date(+this.appData.enrollmentAgreement.birthdateYear,
+        +this.appData.enrollmentAgreement.birthdateMonth, 0).getDate();
 
-    for (let i = 1; i <= daysInMonth; i++) {
-      options.push(new SalesforceOption(
-        ('0' + i).slice(-2),
-        ('0' + i).slice(-2),
-        false
-      ));
+      for (let i = 1; i <= daysInMonth; i++) {
+        options.push(new SalesforceOption(
+          ('0' + i).slice(-2),
+          ('0' + i).slice(-2),
+          false
+        ));
+      }
+      this.dayOptions = options;
     }
-    this.dayOptions = options;
   }
 
   constructor(private appDataService: AppDataService) {
@@ -78,8 +82,11 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     });
 
     this.appDataService.applicationData.asObservable().subscribe(app => {
-      this.appData = app;
-      this.studentName = this.appData.student.firstName + ' ' + this.appData.student.lastName;
+      if (app) {
+        this.appData = app;
+        this.studentName = this.appData.student.firstName + ' ' + this.appData.student.lastName;
+        this.selectedPrograms = this.appData.programData.programs.filter(p => p.isSelected);
+      }
     });
 
     this.appDataService.isSigning.asObservable().subscribe(val => {
