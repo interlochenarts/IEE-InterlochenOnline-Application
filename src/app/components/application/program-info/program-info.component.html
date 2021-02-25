@@ -54,7 +54,7 @@
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program, instrumentModal)"
      [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions, appData.payment.tuitionPaid)}">
-  <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
+  <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
            [disabled]="program.isDisabled(daysSelected, selectedProgramSessions, appData.payment.tuitionPaid)">
@@ -62,7 +62,7 @@
       <i class="fa fa-check pl-4"></i>
     </label>
   </div>
-  <div class="checkbox col-3 col-md-2" *ngIf="anyProgramUpdating">
+  <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
     <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
   </div>
   <div class="col-9 col-md-8 description">
@@ -75,6 +75,9 @@
 <ng-template #instrumentModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
+      <span aria-hidden="true">×</span>
+    </button>
   </div>
   <div class="modal-body">
     <div class="select">
@@ -87,6 +90,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button type="button" class="btn btn-outline-dark" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
   </div>
 </ng-template>

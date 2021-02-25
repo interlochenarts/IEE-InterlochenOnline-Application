@@ -14,7 +14,6 @@ declare const Visualforce: any;
 })
 export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;
-  anyProgramUpdating = false;
   daysSelected: Set<string> = new Set<string>();
   selectedArtsArea = '';
   selectedSession = '';
@@ -58,7 +57,7 @@ export class ProgramInfoComponent implements OnInit {
 
         this.appData.programData.programs.forEach(p => {
           if (p.isSelected) {
-            p.daysArray.forEach(d => {
+            p.daysArray?.forEach(d => {
               this.daysSelected.add(d);
             });
           }
@@ -112,7 +111,8 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid)) {
+    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid) && !program.isSaving) {
+      program.isSaving = true;
       if (!program.isSelected) {
         if (program.artsArea === 'Music') {
           // if music, ask for instrument
@@ -121,8 +121,10 @@ export class ProgramInfoComponent implements OnInit {
             .then(instrumentResult => {
               program.selectedInstrument = instrumentResult;
               this.saveProgram(program);
+              delete this.modalInstrumentChoice;
             }, reason => {
               console.dir(`Not Saving: Instrument closed (${reason})`);
+              program.isSaving = false;
             });
         } else {
           // if not music, just save
@@ -136,7 +138,7 @@ export class ProgramInfoComponent implements OnInit {
 
   private saveProgram(program: Program): void {
     program.isSelected = true;
-    program.daysArray.forEach(d => {
+    program.daysArray?.forEach(d => {
       this.daysSelected.add(d);
     });
     Visualforce.remoting.Manager.invokeAction(
@@ -150,6 +152,7 @@ export class ProgramInfoComponent implements OnInit {
           console.log('Saved new program: ' + result);
           program.appChoiceId = result;
         }
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );
@@ -157,7 +160,7 @@ export class ProgramInfoComponent implements OnInit {
 
   private removeProgram(program: Program): void {
     program.isSelected = false;
-    program.daysArray.forEach(d => {
+    program.daysArray?.forEach(d => {
       this.daysSelected.delete(d);
     });
     Visualforce.remoting.Manager.invokeAction(
@@ -165,6 +168,7 @@ export class ProgramInfoComponent implements OnInit {
       this.appData.appId, program.appChoiceId,
       result => {
         console.log(result);
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );
