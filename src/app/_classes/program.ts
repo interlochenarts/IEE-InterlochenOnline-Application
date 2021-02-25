@@ -13,6 +13,7 @@ export class Program {
   sessionName: string;
   programOptions: string;
   selectedInstrument: string;
+  isSaving = false;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -49,7 +50,7 @@ export class Program {
     let daySelected = false;
     let sessionSelected = false;
     for (const d of daysSelected) {
-      if (this.daysArray.includes(d)) {
+      if (this.daysArray?.includes(d)) {
         daySelected = true;
       }
       if (Array.from(selectedSessions).includes(this.sessionName)) {

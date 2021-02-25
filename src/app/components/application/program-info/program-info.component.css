@@ -33,4 +33,7 @@
 .checkbox-container .checkbox label.disabled {
   cursor: not-allowed;
 }
+button.disabled {
+  cursor: not-allowed;
+}
 /*# sourceMappingURL=program-info.component.css.map */
