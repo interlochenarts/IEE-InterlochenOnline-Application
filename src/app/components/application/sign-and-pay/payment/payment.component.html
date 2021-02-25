@@ -5,10 +5,37 @@
 </div>
 <div *ngIf="!isLoading">
   <div class="default" *ngIf="paymentReceived">
-    You have already paid your tuition.
+    You have already paid your registration fee.
   </div>
-  <div *ngIf="appData.payment.amountOwed === 0.00">
+  <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0">
     You must choose a program before you can pay.
+  </div>
+  <div *ngIf="!paymentReceived && appData.payment.spendableCredit > 0" class="mb-4">
+    <label>Would you like to apply your Interlochen Arts Camp credit of
+      {{(appData.payment.spendableCredit | currency:'USD')}} towards your registration fee?</label>
+    <div class="default">
+      <div class="form-check form-check-inline">
+        <input type="radio"
+               class="form-check-input"
+               [(ngModel)]="appData.payment.useCredit"
+               [disabled]="appData.payment.tuitionPaid"
+               name="useCredit_Yes"
+               id="useCredit_Yes"
+               [value]="true"/>
+        <label for="useCredit_Yes" class="form-check-label">Yes</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input type="radio"
+               class="form-check-input"
+               [(ngModel)]="appData.payment.useCredit"
+               [disabled]="appData.payment.tuitionPaid"
+               name="useCredit_No"
+               id="useCredit_No"
+               [value]="false"/>
+        <label for="useCredit_No" class="form-check-label">No</label>
+      </div>
+    </div>
+    <button *ngIf="feeCoveredByCredit" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
   </div>
   <div *ngIf="!paymentReceived && canPay()">
     <label>Payment Method</label>
@@ -27,5 +54,5 @@
   </div>
 
   <iee-credit-card *ngIf="canPay() && paymentType === PaymentType.CC"></iee-credit-card>
-  <iee-ach *ngIf="canPay() && paymentType === PaymentType.ACH"></iee-ach>
+  <iee-ach *ngIf="canPay() && paymentType === PaymentType.ACH" [useCredit]="appData.payment.useCredit"></iee-ach>
 </div>

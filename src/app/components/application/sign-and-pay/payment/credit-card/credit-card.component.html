@@ -1,5 +1,5 @@
 <div class="mt-4">
-  <p>Amount owed: {{(appData.payment.amountOwed + appData.payment.ccFee) | currency:'USD'}}</p>
+  <p>Amount owed: {{(ccAmount) | currency:'USD'}}</p>
   <p>Credit Card payments have a fee of {{appData.payment.ccPercent}}% added.</p>
 </div>
 <label for="cardholderName" class="mt-4">Cardholder Name</label>
