@@ -75,6 +75,7 @@ export class PaymentComponent implements OnInit {
         if (result && result !== 'null') {
           this.appData.payment.amountOwed -= result;
           this.appData.payment.credits -= result;
+          this.appData.payment.appliedCredits += result;
           // Only set tuition paid if this actually covered the fee completely
           if (this.appData.payment.amountOwed <= 0) {
             this.appData.payment.tuitionPaid = true;
