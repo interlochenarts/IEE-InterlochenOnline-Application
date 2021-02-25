@@ -64,6 +64,31 @@ export class PaymentComponent implements OnInit {
     });
   }
   canPay(): boolean {
-    return !this.paymentReceived && this.appData.payment.amountOwed !== 0.00;
+    return !this.paymentReceived && this.appData.payment.amountOwed !== 0.00 && !this.feeCoveredByCredit;
+  }
+  confirmCredit(): void {
+    // Do VF here to call confirmCredit function, set .credit to response.. add to applied? figure out new owed?
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.confirmCredit',
+      this.appData.appId, this.appData.payment.useCredit,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment.amountOwed -= result;
+          this.appData.payment.credits -= result;
+          // Only set tuition paid if this actually covered the fee completely
+          if (this.appData.payment.amountOwed <= 0) {
+            this.appData.payment.tuitionPaid = true;
+            this.paymentReceived = true;
+          }
+        } else {
+          console.log('error applying Credits for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  get feeCoveredByCredit(): boolean {
+    return this.appData.payment.useCredit && this.appData.payment.credits >= this.appData.payment.amountOwed;
   }
 }

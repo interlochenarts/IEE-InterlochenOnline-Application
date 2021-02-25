@@ -36,7 +36,7 @@ export class CreditCardComponent implements OnInit {
         this.isSubmitting = true;
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.submitCC',
-          this.appData.appId, JSON.stringify(this.cc),
+          this.appData.appId, JSON.stringify(this.cc), this.appData.payment.useCredit,
           result => {
             if (result !== null) {
               console.log(result);
@@ -59,6 +59,13 @@ export class CreditCardComponent implements OnInit {
 
   disableSubmit(): boolean {
     return this.isSubmitting || this.appData.payment.tuitionPaid || this.appData.payment.paidOnLoad;
+  }
+  get ccAmount(): number {
+    // Assigned for convenience and because linting was yelling at me
+    const amountOwed = this.appData.payment.amountOwed;
+    const spendableCredit = this.appData.payment.spendableCredit;
+    const newAmount = this.appData.payment.useCredit ? amountOwed - spendableCredit : amountOwed;
+    return newAmount + (newAmount * (this.appData.payment.ccPercent / 100));
   }
 
 }
