@@ -125,6 +125,7 @@ export class ProgramInfoComponent implements OnInit {
             }, reason => {
               console.dir(`Not Saving: Instrument closed (${reason})`);
               program.isSaving = false;
+              delete this.modalInstrumentChoice;
             });
         } else {
           // if not music, just save
