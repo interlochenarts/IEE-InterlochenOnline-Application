@@ -35,7 +35,13 @@ export class Program {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>): boolean {
+  public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>, feePaid: boolean): boolean {
+    // disable everything if fee already paid
+    if (feePaid) {
+      return true;
+    }
+
+    // allow changes to selected
     if (this.isSelected) {
       return false;
     }
