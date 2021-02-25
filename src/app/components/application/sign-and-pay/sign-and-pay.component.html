@@ -1,8 +1,4 @@
 <div *ngIf="userType === 'parent'">
-  <iee-payment></iee-payment>
-
-  <hr class="my-4"/>
-
   <iee-enrollment-agreement [enrollmentAgreement]="appData.enrollmentAgreement" [termName]="appData.termName"
                             [payment]="appData.payment" [applicantName]="applicantName"
                             [programs]="selectedPrograms"></iee-enrollment-agreement>
