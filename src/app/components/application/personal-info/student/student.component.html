@@ -110,7 +110,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_year">Year</label>
         <div class="select">
-          <select id="birthdate_year" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate()">
+          <select id="birthdate_year" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
           </select>
         </div>
@@ -118,7 +118,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_month">Month</label>
         <div class="select">
-          <select id="birthdate_month" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate()">
+          <select id="birthdate_month" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
           </select>
         </div>
@@ -127,7 +127,7 @@
         <label for="birthdate_day">Day</label>
         <div class="select">
           <select id="birthdate_day" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
-            <option *ngFor="let day of getDayOptions()" [value]="day.value">{{day.label}}</option>
+            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
           </select>
         </div>
       </div>

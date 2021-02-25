@@ -23,6 +23,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   loggedInUserName: string;
 
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   monthOptions = [
     {label: 'January', value: '01'},
     {label: 'February', value: '02'},
@@ -52,17 +53,19 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     return options;
   }
 
-  getDayOptions(): Array<object> {
-    const options = new Array<object>();
+  updateDayOptions(): void {
+    const options = new Array<SalesforceOption>();
     const daysInMonth = new Date(+this.enrollmentAgreement.birthdateYear, +this.enrollmentAgreement.birthdateMonth, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
-      options.push({
-        label: ('0' + i).slice(-2),
-        value: ('0' + i).slice(-2)
-      });
+      options.push(new SalesforceOption(
+        ('0' + i).slice(-2),
+        ('0' + i).slice(-2),
+        false
+      ));
     }
-    return options;
+
+    this.dayOptions = options;
   }
 
   constructor(private appDataService: AppDataService) {
