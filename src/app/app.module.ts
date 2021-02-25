@@ -8,7 +8,6 @@ import {HeaderComponent} from './components/header/header.component';
 
 import {ProgramInfoComponent} from './components/application/program-info/program-info.component';
 import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
-import {SignAndPayComponent} from './components/application/sign-and-pay/sign-and-pay.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
 import {ParentComponent} from './components/application/personal-info/parent/parent.component';
@@ -32,7 +31,6 @@ import {EaHeaderComponent} from './components/application/sign-and-pay/enrollmen
     ProgramInfoComponent,
     HeaderComponent,
     PersonalInfoComponent,
-    SignAndPayComponent,
     StudentComponent,
     ParentComponent,
     EnrollmentAgreementComponent,
