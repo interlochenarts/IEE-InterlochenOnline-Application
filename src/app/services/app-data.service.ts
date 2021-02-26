@@ -34,10 +34,8 @@ export class AppDataService {
         applicationId,
         json => {
           if (json !== null) {
-            const j = JSON.parse(json);
             // build app data
-            const appData = ApplicationData.createFromNestedJson(j);
-            this.applicationData.next(appData);
+            this.applicationData.next(ApplicationData.createFromNestedJson(JSON.parse(json)));
           }
         },
         {buffer: false, escape: false}
@@ -95,7 +93,14 @@ export class AppDataService {
         JSON.stringify(appData),
         appId,
         result => {
-          console.log(result);
+          if (result !== null) {
+            console.dir(JSON.parse(result));
+            // fix missing parent contact IDs if we just created one with this save
+            const resultApp = ApplicationData.createFromNestedJson((JSON.parse(result)));
+            resultApp.parents.forEach((p: Parent, i) => {
+              appData.parents[i].contactId = p.contactId;
+            });
+          }
           this.isSaving.next(false);
         },
         {buffer: false, escape: false}

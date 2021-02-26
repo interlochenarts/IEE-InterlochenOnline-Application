@@ -23,6 +23,7 @@
       </div>
       <iee-parent-info [parent]="parent" [student]="student"></iee-parent-info>
     </div>
+    <div *ngIf="parent.isSaving">Saving <i class="fa fa-spinner fa-pulse fa-fw"></i></div>
     <hr>
   </div>
 
@@ -125,7 +126,7 @@
       </select>
     </div>
     <div *ngIf="!parents || parents.length === 0">
-      Please add a parent
+      Please add a parent.
     </div>
   </div>
 </div>
