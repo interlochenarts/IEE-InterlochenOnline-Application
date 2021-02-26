@@ -5,6 +5,8 @@ import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
 import {RouterLink} from '../_classes/router-link';
 import {error} from '@angular/compiler/src/util';
+import {Parent} from '../_classes/parent';
+import {Student} from '../_classes/student';
 
 declare const Visualforce: any;
 
@@ -21,6 +23,7 @@ export class AppDataService {
   public isSaving = new BehaviorSubject<boolean>(false);
   public isSigning = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
+  public credentialStatus = new BehaviorSubject<string>(null);
 
   constructor() { }
 
@@ -123,5 +126,21 @@ export class AppDataService {
     } else {
       console.error('Missing appData or appId, or signing already in progress');
     }
+  }
+
+  public sendParentCredentials(parent: Parent, student: Student): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_UserUtilityController.sendUserLoginByContactId',
+      parent.contactId, student.contactId, 'Adult',
+      (result: string) => {
+        if (result.includes('@')) {
+          this.credentialStatus.next('Credentials sent to ' + result);
+        } else {
+          console.error(result);
+          this.credentialStatus.next('Sorry. Something went wrong.');
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 }

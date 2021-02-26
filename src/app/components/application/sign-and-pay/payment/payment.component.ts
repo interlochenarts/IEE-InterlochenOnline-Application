@@ -3,6 +3,7 @@ import {PaymentType} from '../../../../_enums/payment-type.enum';
 import {AppDataService} from '../../../../services/app-data.service';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {Payment} from '../../../../_classes/payment';
+import {Parent} from '../../../../_classes/parent';
 
 declare const Visualforce: any;
 
@@ -19,7 +20,15 @@ export class PaymentComponent implements OnInit {
   appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
 
-  constructor(private appDataService: AppDataService) { }
+  userType = 'student';
+  credentialStatus: string;
+
+  get feeCoveredByCredit(): boolean {
+    return this.appData.payment.useCredit && this.appData.payment.credits >= this.appData.payment.amountOwed;
+  }
+
+  constructor(private appDataService: AppDataService) {
+  }
 
   ngOnInit(): void {
     this.appDataService.applicationData.asObservable().subscribe(appData => {
@@ -62,10 +71,20 @@ export class PaymentComponent implements OnInit {
         );
       }
     });
+
+    this.appDataService.getUserType();
+    this.appDataService.userType.asObservable().subscribe(type => {
+      this.userType = type;
+    });
+    this.appDataService.credentialStatus.asObservable().subscribe(status => {
+      this.credentialStatus = status;
+    });
   }
+
   canPay(): boolean {
     return !this.paymentReceived && this.appData.payment.amountOwed !== 0.00 && !this.feeCoveredByCredit;
   }
+
   confirmCredit(): void {
     // Do VF here to call confirmCredit function, set .credit to response.. add to applied? figure out new owed?
     Visualforce.remoting.Manager.invokeAction(
@@ -89,7 +108,8 @@ export class PaymentComponent implements OnInit {
       {buffer: false, escape: false}
     );
   }
-  get feeCoveredByCredit(): boolean {
-    return this.appData.payment.useCredit && this.appData.payment.credits >= this.appData.payment.amountOwed;
+
+  sendParentCredentials(parent: Parent): void {
+    this.appDataService.sendParentCredentials(parent, this.appData.student);
   }
 }
