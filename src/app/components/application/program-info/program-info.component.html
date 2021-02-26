@@ -15,7 +15,7 @@
 <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
   <div class="select">
     <select [(ngModel)]="appData.programData.gradeInSchool"
-            (change)="updateSelectedDivision(); clearSelectedPrograms()"
+            (change)="updateSelectedDivision()"
             name="selectedGrade"
             [disabled]="appData.payment.tuitionPaid"
             id="selectedGrade">
