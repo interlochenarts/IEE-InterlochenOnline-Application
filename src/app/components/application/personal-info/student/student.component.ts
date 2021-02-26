@@ -97,8 +97,11 @@ export class StudentComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    if (this.student && this.stateCodes) {
-      this.filterStates(this.student.mailingAddress?.country);
+    if (this.student) {
+      if (this.stateCodes) {
+        this.filterStates(this.student.mailingAddress?.country);
+      }
+      this.updateDayOptions();
     }
   }
 
