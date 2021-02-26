@@ -110,6 +110,12 @@ export class ProgramInfoComponent implements OnInit {
     this.updateArtsAreas();
   }
 
+  clearSelectedPrograms(): void {
+    this.appData.programData.programs.filter(p => p.isSelected).forEach(p => {
+      this.removeProgram(p);
+    });
+  }
+
   clickProgram(program: Program, modal): void {
     if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid) && !program.isSaving) {
       program.isSaving = true;
