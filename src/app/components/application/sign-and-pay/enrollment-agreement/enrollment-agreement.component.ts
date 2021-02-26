@@ -86,6 +86,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
         this.appData = app;
         this.studentName = this.appData.student.firstName + ' ' + this.appData.student.lastName;
         this.selectedPrograms = this.appData.programData.programs.filter(p => p.isSelected);
+        this.updateDayOptions();
       }
     });
 
