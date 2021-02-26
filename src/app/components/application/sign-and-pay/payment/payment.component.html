@@ -44,24 +44,8 @@
       </div>
       <button *ngIf="feeCoveredByCredit" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
     </div>
-    <div *ngIf="!paymentReceived && canPay()">
-      <label>Payment Method</label>
-      <div class="default">
-        <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
-          <input type="radio"
-                 class="form-check-input"
-                 [(ngModel)]="paymentType"
-                 [disabled]="appData.payment.tuitionPaid"
-                 name="paymentType"
-                 id="paymentType_{{pt.key}}"
-                 value="{{pt.value}}"/>
-          <label for="paymentType_{{pt.key}}" class="form-check-label">{{pt.value}}</label>
-        </div>
-      </div>
-    </div>
 
-    <iee-credit-card *ngIf="canPay() && paymentType === PaymentType.CC"></iee-credit-card>
-    <iee-ach *ngIf="canPay() && paymentType === PaymentType.ACH" [useCredit]="appData.payment.useCredit"></iee-ach>
+    <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
   </div>
 </div>
 

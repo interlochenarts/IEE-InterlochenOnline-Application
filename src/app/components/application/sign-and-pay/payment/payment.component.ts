@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {PaymentType} from '../../../../_enums/payment-type.enum';
 import {AppDataService} from '../../../../services/app-data.service';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {Payment} from '../../../../_classes/payment';
@@ -13,8 +12,6 @@ declare const Visualforce: any;
   styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-  PaymentType = PaymentType;
-  paymentType: PaymentType = PaymentType.CC;
   paymentReceived = false;
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
