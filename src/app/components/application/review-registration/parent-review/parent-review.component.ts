@@ -6,6 +6,8 @@ import {StateCode} from '../../../../_classes/state-code';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Student} from '../../../../_classes/student';
 
+declare const Visualforce: any;
+
 @Component({
   selector: 'iee-parent-review',
   templateUrl: './parent-review.component.html',
@@ -52,8 +54,24 @@ export class ParentReviewComponent implements OnInit, OnChanges {
       return null;
     } else {
       const billingParent: Parent = this.parents.find(p => p.contactId === this.student.billingParentId);
-      return `${billingParent.firstName} ${billingParent.lastName}`;
+      return billingParent.isVerified ? `${billingParent.firstName} ${billingParent.lastName}` : null;
     }
+  }
+
+  reSendVerification(parent: Parent): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_CampApplication_ParentController.sendVerificationEmail',
+      this.student.contactId, parent.contactId,
+      result => {
+        if (!result.includes('@')) {
+          console.error('ERROR: Failed to send verification email');
+        } else {
+          parent.verificationSent = true;
+          parent.email = parent.email == null ? result : parent.email;
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   private filterStates(): void {
