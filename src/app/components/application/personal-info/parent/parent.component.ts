@@ -16,6 +16,7 @@ declare const Visualforce: any;
 export class ParentComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
+  @Input() isParent: boolean;
 
   // parent search
   showParentSearch = false;
