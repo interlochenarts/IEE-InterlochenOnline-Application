@@ -8,7 +8,7 @@
     </div>
     <div *ngIf="!parent.isEditing">
       <button class="btn btn-default" (click)="editParent(parent)"
-              *ngIf="parent.isVerified">Edit
+              *ngIf="parent.isVerified">Update {{parent.firstName}}'s Contact Information
       </button>
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
@@ -18,6 +18,9 @@
       <span *ngIf="parent.contactId === deletingParentId"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
       <div *ngIf="parent.verificationSent" class="alert alert-info my-3">
         Verification email sent to {{parent.email}}
+      </div>
+      <div *ngIf="parent.isVerified && !parent.isComplete(countryCodes,stateCodes)" class="my-2">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{parent.firstName}}'s contact information is incomplete.</span>
       </div>
     </div>
     <div *ngIf="parent.isEditing">

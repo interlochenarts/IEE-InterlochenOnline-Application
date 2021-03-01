@@ -5,6 +5,8 @@ import {Student} from '../../../../_classes/student';
 import {ParentVerification} from '../../../../_classes/parent-verification';
 import {LegacyParentResults} from '../../../../_classes/legacy-parent-results';
 import {LegacyData} from '../../../../_classes/legacy-data';
+import {CountryCode} from '../../../../_classes/country-code';
+import {StateCode} from '../../../../_classes/state-code';
 
 declare const Visualforce: any;
 
@@ -17,6 +19,8 @@ export class ParentComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
   @Input() isParent: boolean;
+  @Input() countryCodes: Array<CountryCode> = [];
+  @Input() stateCodes: Array<StateCode> = [];
 
   // parent search
   showParentSearch = false;
