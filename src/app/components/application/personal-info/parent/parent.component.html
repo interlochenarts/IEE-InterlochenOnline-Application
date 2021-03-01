@@ -3,6 +3,9 @@
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
+    <div *ngIf="parent && !parent.isVerified">
+      <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
+    </div>
     <div *ngIf="!parent.isEditing">
       <button class="btn btn-default" (click)="editParent(parent)"
               *ngIf="parent.isVerified">Edit
