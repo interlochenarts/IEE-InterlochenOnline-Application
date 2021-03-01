@@ -2,6 +2,9 @@
   <div class="row">
     <div class="col-8">
       <h4>Parent/Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
+      <div *ngIf="parent && !parent.isVerified">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
+      </div>
     </div>
     <div class="col-4 text-right">
       <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
