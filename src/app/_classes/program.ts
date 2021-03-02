@@ -58,7 +58,7 @@ export class Program {
       }
     }
 
-    return daysSelected && sessionSelected;
+    return daySelected && sessionSelected;
   }
 
   get artsAreaList(): Array<string> {
