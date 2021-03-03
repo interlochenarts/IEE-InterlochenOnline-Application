@@ -14,7 +14,7 @@ declare const Visualforce: any;
 })
 export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;
-  daysSelected: Set<string> = new Set<string>();
+  daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedArtsArea = '';
   selectedSession = '';
   sortedArtsAreas: Array<SalesforceOption> = [];
@@ -38,15 +38,6 @@ export class ProgramInfoComponent implements OnInit {
     new SalesforceOption('12th', '12th', false),
   ];
 
-
-  get selectedProgramSessions(): Set<string> {
-    const selected = new Set<string>();
-    this.appData.programData.programs.filter((p: Program) => p.isSelected).forEach(p => {
-      selected.add(p.sessionName);
-    });
-    return selected;
-  }
-
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
@@ -57,9 +48,7 @@ export class ProgramInfoComponent implements OnInit {
 
         this.appData.programData.programs.forEach(p => {
           if (p.isSelected) {
-            p.daysArray?.forEach(d => {
-              this.daysSelected.add(d);
-            });
+            this.addDaysSelected(p);
           }
         });
 
@@ -122,7 +111,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid) && !program.isSaving) {
+    if (!program.isDisabled(this.daysSelectedBySession, this.appData.payment.tuitionPaid) && !program.isSaving) {
       program.isSaving = true;
       if (!program.isSelected) {
         if (program.artsAreaList[0] === 'Music') {
@@ -148,11 +137,17 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
+  private addDaysSelected(p: Program): void {
+    p.daysArray?.forEach(d => {
+      const daysSelected: Set<string> = this.daysSelectedBySession.get(p.sessionName) || new Set<string>();
+      daysSelected.add(d);
+      this.daysSelectedBySession.set(p.sessionName, daysSelected);
+    });
+  }
+
   private saveProgram(program: Program): void {
     program.isSelected = true;
-    program.daysArray?.forEach(d => {
-      this.daysSelected.add(d);
-    });
+    this.addDaysSelected(program);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       this.appData.appId, program.id, program.sessionId,
@@ -172,9 +167,11 @@ export class ProgramInfoComponent implements OnInit {
 
   private removeProgram(program: Program): void {
     program.isSelected = false;
+    const daysSelected = this.daysSelectedBySession.get(program.sessionName);
     program.daysArray?.forEach(d => {
-      this.daysSelected.delete(d);
+      daysSelected.delete(d);
     });
+    this.daysSelectedBySession.set(program.sessionName, daysSelected);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoice',
       this.appData.appId, program.appChoiceId,

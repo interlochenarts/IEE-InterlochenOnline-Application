@@ -5,6 +5,9 @@
   <div class="col-4 text-right">
     <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
   </div>
+  <div class="col-12" *ngIf="programData?.selectedDivision === 'High School'">
+    In addition to your Monday through Thursday arts program you can also add on an academic program on Fridays.
+  </div>
 </div>
 
 <div *ngFor="let program of selectedPrograms" class="my-2">

@@ -36,7 +36,7 @@ export class Program {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelected: Set<string>, selectedSessions: Set<string>, feePaid: boolean): boolean {
+  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean): boolean {
     // disable everything if fee already paid
     if (feePaid) {
       return true;
@@ -48,17 +48,15 @@ export class Program {
     }
 
     let daySelected = false;
-    let sessionSelected = false;
+    // if no days selected for a session, return a set instead of null
+    const daysSelected = daysSelectedBySession.get(this.sessionName) || new Set<string>();
     for (const d of daysSelected) {
       if (this.daysArray?.includes(d)) {
         daySelected = true;
       }
-      if (Array.from(selectedSessions).includes(this.sessionName)) {
-        sessionSelected = true;
-      }
     }
 
-    return daySelected && sessionSelected;
+    return daySelected;
   }
 
   get artsAreaList(): Array<string> {
