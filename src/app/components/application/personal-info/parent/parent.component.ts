@@ -113,7 +113,7 @@ export class ParentComponent implements OnInit, OnChanges {
               parentSaveResult => {
                 emptyParent.isSaving = false;
                 if (parentSaveResult.startsWith('ERR')) {
-                  console.dir('ERROR: Could not save parent');
+                  console.error('ERROR: Could not save parent');
                 } else {
                   emptyParent.contactId = parentSaveResult;
                 }
