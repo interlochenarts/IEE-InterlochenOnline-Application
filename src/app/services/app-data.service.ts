@@ -85,21 +85,26 @@ export class AppDataService {
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
 
+    const appDataCopy = ApplicationData.createFromNestedJson(JSON.parse(JSON.stringify(appData)));
+    appDataCopy.parents = appDataCopy.parents.filter(p => !p.isDeleting);
+
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {
       this.isSaving.next(true);
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveApplication',
-        JSON.stringify(appData),
+        JSON.stringify(appDataCopy),
         appId,
         result => {
           if (result !== null) {
             console.dir(JSON.parse(result));
             // fix missing parent contact IDs if we just created one with this save
-            const resultApp = ApplicationData.createFromNestedJson((JSON.parse(result)));
-            resultApp.parents.forEach((p: Parent, i) => {
-              appData.parents[i].contactId = p.contactId;
+            const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));
+            resultApp.parents.forEach((p: Parent) => {
+              // match on first name because I can't think of anything better
+              appData.parents.find(ap => ap.firstName === p.firstName).contactId = p.contactId;
             });
+            console.dir(appData.parents);
           }
           this.isSaving.next(false);
         },
