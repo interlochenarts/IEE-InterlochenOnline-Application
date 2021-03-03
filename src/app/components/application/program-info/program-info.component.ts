@@ -81,14 +81,14 @@ export class ProgramInfoComponent implements OnInit {
     return this.appData.programData.programs.filter(p =>
       (p.division === this.appData.programData.selectedDivision) &&
       (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-      (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
+      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true));
   }
 
   updateArtsAreas(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
-      artsAreaSet.add(p.artsArea);
+      artsAreaSet.add(p.artsAreaList[0]);
     });
 
     this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
@@ -125,7 +125,7 @@ export class ProgramInfoComponent implements OnInit {
     if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions, this.appData.payment.tuitionPaid) && !program.isSaving) {
       program.isSaving = true;
       if (!program.isSelected) {
-        if (program.artsArea === 'Music') {
+        if (program.artsAreaList[0] === 'Music') {
           // if music, ask for instrument
           this.selectedProgramInstruments = program.programOptionsArray;
           this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
