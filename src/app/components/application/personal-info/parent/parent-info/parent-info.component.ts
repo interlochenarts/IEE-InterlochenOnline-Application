@@ -75,8 +75,11 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       JSON.stringify(this.parent), this.student.contactId,
       result => {
         this.parent.isSaving = false;
-        this.parent.contactId = result;
-        // console.log(result);
+        if (result.startsWith('ERR')) {
+          console.dir('ERROR: Could not save parent');
+        } else {
+          this.parent.contactId = result;
+        }
       },
       {buffer: false, escape: false}
     );

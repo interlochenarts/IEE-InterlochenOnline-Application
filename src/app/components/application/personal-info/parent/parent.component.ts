@@ -112,10 +112,11 @@ export class ParentComponent implements OnInit, OnChanges {
               JSON.stringify(emptyParent), this.student.contactId,
               parentSaveResult => {
                 emptyParent.isSaving = false;
-                emptyParent.contactId = parentSaveResult;
-                // console.log(result);
-
-                console.dir(this.parents);
+                if (parentSaveResult.startsWith('ERR')) {
+                  console.dir('ERROR: Could not save parent');
+                } else {
+                  emptyParent.contactId = parentSaveResult;
+                }
               },
               {buffer: false, escape: false}
             );
@@ -172,6 +173,7 @@ export class ParentComponent implements OnInit, OnChanges {
   }
 
   removeParent(parentContactId: string): void {
+    console.log(`removing ${parentContactId}`);
     const pi = this.parents.findIndex(p => p.contactId === parentContactId);
     if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
       this.deletingParentId = parentContactId;
