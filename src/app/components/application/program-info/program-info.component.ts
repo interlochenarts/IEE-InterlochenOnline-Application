@@ -123,7 +123,7 @@ export class ProgramInfoComponent implements OnInit {
               this.saveProgram(program);
               delete this.modalInstrumentChoice;
             }, reason => {
-              console.dir(`Not Saving: Instrument closed (${reason})`);
+              // console.log(`Not Saving: Instrument closed (${reason})`);
               program.isSaving = false;
               delete this.modalInstrumentChoice;
             });
@@ -156,7 +156,7 @@ export class ProgramInfoComponent implements OnInit {
         if (result.toString().startsWith('ERR')) {
           console.error(result);
         } else {
-          console.log('Saved new program: ' + result);
+          // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
         }
         program.isSaving = false;
@@ -176,7 +176,7 @@ export class ProgramInfoComponent implements OnInit {
       'IEE_OnlineApplicationController.removeAppChoice',
       this.appData.appId, program.appChoiceId,
       result => {
-        console.log(result);
+        // console.log(result);
         program.isSaving = false;
       },
       {buffer: false, escape: false}
