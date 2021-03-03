@@ -52,9 +52,10 @@
   </div>
 </div>
 
-<div class="col-12 my-4" *ngIf="this.appData.programData.selectedDivision">
+<div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
   <div class="row">
     <h5>Programs for {{selectedDivisionDescription}}</h5>
+    <p *ngIf="appData.programData.selectedDivision === 'High School'">In addition to your Monday through Thursday arts program you can also add on an academic program on Fridays.</p>
   </div>
 </div>
 
