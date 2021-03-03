@@ -12,6 +12,6 @@ export class EaHeaderComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.dir(this.programs);
+    // console.dir(this.programs);
   }
 }
