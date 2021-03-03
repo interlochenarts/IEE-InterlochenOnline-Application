@@ -96,9 +96,9 @@ export class ParentComponent implements OnInit, OnChanges {
         result => {
           if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
-            console.log('found parent: ' + this.parentResult);
+            // console.log('found parent: ' + this.parentResult);
           } else {
-            console.log('no parent found, creating new one.');
+            // console.log('no parent found, creating new one.');
             const emptyParent = Parent.createFromVerificationData(this.parentVerification);
             emptyParent.isEditing = true;
             emptyParent.verification = 'Verified';
@@ -114,18 +114,18 @@ export class ParentComponent implements OnInit, OnChanges {
 
   verifyParent(): void {
     this.addingUnverifiedParent = true;
-    console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
+    // console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
       result => {
-        console.dir(result);
+        // console.dir(result);
         const obj = JSON.parse(result);
 
         const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
         for (const key of Object.keys(obj)) {
-          console.dir(key);
+          // console.dir(key);
           legacyParent.set(key, LegacyData.createFromJson(obj[key]));
         }
 
@@ -166,7 +166,7 @@ export class ParentComponent implements OnInit, OnChanges {
         parentContactId, this.student.contactId,
         result => {
           if (result === true) {
-            console.log('removed parent');
+            // console.log('removed parent');
             this.parents.splice(pi, 1);
           } else {
             console.error('Could not delete parent: ' + parentContactId);

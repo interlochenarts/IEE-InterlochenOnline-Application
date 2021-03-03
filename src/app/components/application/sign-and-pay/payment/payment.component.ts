@@ -50,7 +50,7 @@ export class PaymentComponent implements OnInit {
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
       if (trxId && this.transactionId !== trxId && this.appData) {
         this.transactionId = trxId;
-        console.log('Checking transactionId ' + trxId + ' for app ' + this.appData.appId);
+        // console.log('Checking transactionId ' + trxId + ' for app ' + this.appData.appId);
         // search salesforce for the transaction to see if it's real
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.checkTransaction',
@@ -60,7 +60,7 @@ export class PaymentComponent implements OnInit {
             if (result && result !== 'null') {
               this.paymentReceived = true;
             } else {
-              console.log('no transaction found with id: ' + this.transactionId);
+              console.error('no transaction found with id: ' + this.transactionId);
               this.paymentReceived = false;
             }
           },
@@ -98,7 +98,7 @@ export class PaymentComponent implements OnInit {
             this.paymentReceived = true;
           }
         } else {
-          console.log('error applying Credits for app id: ' + this.appData.appId);
+          console.error('error applying Credits for app id: ' + this.appData.appId);
           console.dir(result);
         }
       },

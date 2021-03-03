@@ -4,7 +4,6 @@ import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
 import {RouterLink} from '../_classes/router-link';
-import {error} from '@angular/compiler/src/util';
 import {Parent} from '../_classes/parent';
 import {Student} from '../_classes/student';
 
@@ -97,14 +96,12 @@ export class AppDataService {
         appId,
         result => {
           if (result !== null) {
-            console.dir(JSON.parse(result));
             // fix missing parent contact IDs if we just created one with this save
             const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));
             resultApp.parents.forEach((p: Parent) => {
               // match on first name because I can't think of anything better
               appData.parents.find(ap => ap.firstName === p.firstName).contactId = p.contactId;
             });
-            console.dir(appData.parents);
           }
           this.isSaving.next(false);
         },
@@ -114,7 +111,7 @@ export class AppDataService {
   }
 
   public signEnrollmentAgreement(): void {
-    console.log('signing agreement');
+    // console.log('signing agreement');
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
 
@@ -126,7 +123,7 @@ export class AppDataService {
         appId,
         JSON.stringify(appData),
         result => {
-          console.log(result);
+          // console.log(result);
           this.isSigning.next(false);
           // leave app after save
           window.location.assign('/interlochen/IEE_OnlineSubmitted?id=' + appData.appId);
