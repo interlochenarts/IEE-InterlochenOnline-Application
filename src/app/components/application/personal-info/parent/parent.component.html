@@ -14,8 +14,10 @@
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
       <a class="mx-3" href="javascript:void(0);" *ngIf="!isParent"
+         [ngClass]="{disabled: isSaving || parent.isSaving}"
          (click)="removeParent(parent.contactId)">Remove</a>
       <span *ngIf="parent.contactId === deletingParentId"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
+      <span *ngIf="isSaving || parent.isSaving"><i class="fa fa-spinner fa-fw fa-pulse"></i> Saving</span>
       <div *ngIf="parent.verificationSent" class="alert alert-info my-3">
         Verification email sent to {{parent.email}}
       </div>
@@ -27,9 +29,8 @@
       <div *ngIf="parentNotFound">{{parent.firstName}} {{parent.lastName}} was not found in our system. Please fill out
         the form below to add them.
       </div>
-      <iee-parent-info [parent]="parent" [student]="student"></iee-parent-info>
+      <iee-parent-info [parent]="parent" [student]="student" [isSaving]="isSaving"></iee-parent-info>
     </div>
-    <div *ngIf="parent.isSaving">Saving <i class="fa fa-spinner fa-pulse fa-fw"></i></div>
     <hr>
   </div>
 

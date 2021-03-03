@@ -7,6 +7,7 @@ import {LegacyParentResults} from '../../../../_classes/legacy-parent-results';
 import {LegacyData} from '../../../../_classes/legacy-data';
 import {CountryCode} from '../../../../_classes/country-code';
 import {StateCode} from '../../../../_classes/state-code';
+import {AppDataService} from '../../../../services/app-data.service';
 
 declare const Visualforce: any;
 
@@ -29,12 +30,17 @@ export class ParentComponent implements OnInit, OnChanges {
   parentNotFound = false;
   addingUnverifiedParent = false;
   deletingParentId = 'none';
+  isSaving = false;
 
-  constructor() {
+  constructor(private appDataService: AppDataService) {
   }
 
   ngOnInit(): void {
     this.parents = this.parents || new Array<Parent>();
+
+    this.appDataService.isSaving.asObservable().subscribe(saving => {
+      this.isSaving = saving;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -151,21 +157,25 @@ export class ParentComponent implements OnInit, OnChanges {
   }
 
   removeParent(parentContactId: string): void {
-    this.deletingParentId = parentContactId;
-    Visualforce.remoting.Manager.invokeAction(
-      'IEE_CampApplication_ParentController.removeParent',
-      parentContactId, this.student.contactId,
-      result => {
-        if (result === true) {
-          console.log('removed parent');
-          const pi = this.parents.findIndex(p => p.contactId === parentContactId);
-          this.parents.splice(pi, 1);
-        } else {
-          console.error('Could not delete parent: ' + parentContactId);
-        }
-        this.deletingParentId = 'none';
-      },
-      {buffer: false, escape: false}
-    );
+    const pi = this.parents.findIndex(p => p.contactId === parentContactId);
+    if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
+      this.deletingParentId = parentContactId;
+      this.parents[pi].isDeleting = true;
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_CampApplication_ParentController.removeParent',
+        parentContactId, this.student.contactId,
+        result => {
+          if (result === true) {
+            console.log('removed parent');
+            this.parents.splice(pi, 1);
+          } else {
+            console.error('Could not delete parent: ' + parentContactId);
+            this.parents[pi].isDeleting = false;
+          }
+          this.deletingParentId = 'none';
+        },
+        {buffer: false, escape: false}
+      );
+    }
   }
 }
