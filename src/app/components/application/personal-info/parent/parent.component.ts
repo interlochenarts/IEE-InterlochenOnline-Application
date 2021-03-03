@@ -104,6 +104,21 @@ export class ParentComponent implements OnInit, OnChanges {
             emptyParent.verification = 'Verified';
             this.parents.push(emptyParent);
             this.parentNotFound = true;
+
+            // save parent on create
+            emptyParent.isSaving = true;
+            Visualforce.remoting.Manager.invokeAction(
+              'IEE_OnlineApplicationController.saveParent',
+              JSON.stringify(emptyParent), this.student.contactId,
+              parentSaveResult => {
+                emptyParent.isSaving = false;
+                emptyParent.contactId = parentSaveResult;
+                // console.log(result);
+
+                console.dir(this.parents);
+              },
+              {buffer: false, escape: false}
+            );
           }
           this.showParentSearch = false;
         },
