@@ -4,7 +4,8 @@ import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
 import {RouterLink} from '../_classes/router-link';
-import {error} from '@angular/compiler/src/util';
+import {Parent} from '../_classes/parent';
+import {Student} from '../_classes/student';
 
 declare const Visualforce: any;
 
@@ -21,6 +22,7 @@ export class AppDataService {
   public isSaving = new BehaviorSubject<boolean>(false);
   public isSigning = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
+  public credentialStatus = new BehaviorSubject<string>(null);
 
   constructor() { }
 
@@ -31,10 +33,8 @@ export class AppDataService {
         applicationId,
         json => {
           if (json !== null) {
-            const j = JSON.parse(json);
             // build app data
-            const appData = ApplicationData.createFromNestedJson(j);
-            this.applicationData.next(appData);
+            this.applicationData.next(ApplicationData.createFromNestedJson(JSON.parse(json)));
           }
         },
         {buffer: false, escape: false}
@@ -84,15 +84,25 @@ export class AppDataService {
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
 
+    const appDataCopy = ApplicationData.createFromNestedJson(JSON.parse(JSON.stringify(appData)));
+    appDataCopy.parents = appDataCopy.parents.filter(p => !p.isDeleting);
+
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {
       this.isSaving.next(true);
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveApplication',
-        JSON.stringify(appData),
+        JSON.stringify(appDataCopy),
         appId,
         result => {
-          console.log(result);
+          if (result !== null) {
+            // fix missing parent contact IDs if we just created one with this save
+            const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));
+            resultApp.parents.forEach((p: Parent) => {
+              // match on first name because I can't think of anything better
+              appData.parents.find(ap => ap.firstName === p.firstName).contactId = p.contactId;
+            });
+          }
           this.isSaving.next(false);
         },
         {buffer: false, escape: false}
@@ -101,7 +111,7 @@ export class AppDataService {
   }
 
   public signEnrollmentAgreement(): void {
-    console.log('signing agreement');
+    // console.log('signing agreement');
     const appData = this.applicationData.getValue();
     const appId = this.applicationId.getValue();
 
@@ -113,15 +123,31 @@ export class AppDataService {
         appId,
         JSON.stringify(appData),
         result => {
-          console.log(result);
+          // console.log(result);
           this.isSigning.next(false);
           // leave app after save
-          window.location.assign('/interlochen/IEE_OnlineLanding?appId=' + appData.appId);
+          window.location.assign('/interlochen/IEE_OnlineSubmitted?id=' + appData.appId);
         },
         {buffer: false, escape: false}
       );
     } else {
       console.error('Missing appData or appId, or signing already in progress');
     }
+  }
+
+  public sendParentCredentials(parent: Parent, student: Student): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_UserUtilityController.sendUserLoginByContactId',
+      parent.contactId, student.contactId, 'Adult',
+      (result: string) => {
+        if (result.includes('@')) {
+          this.credentialStatus.next('Credentials sent to ' + result);
+        } else {
+          console.error(result);
+          this.credentialStatus.next('Sorry. Something went wrong.');
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 }

@@ -48,7 +48,9 @@ export class AppComponent implements OnInit {
             () => false),
           new RouterLink('/' + this.applicationId + '/review-registration', 'Review Registration',
             () => false),
-          new RouterLink('/' + this.applicationId + '/enrollment', 'Complete Registration',
+          new RouterLink('/' + this.applicationId + '/pay-registration', 'Pay Registration',
+            this.linkDisabled),
+          new RouterLink('/' + this.applicationId + '/sign', 'Complete Registration',
             this.linkDisabled)
         ]);
 
@@ -66,7 +68,9 @@ export class AppComponent implements OnInit {
             () => false),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/review-registration', 'Review Registration',
             () => false),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/enrollment', 'Complete Registration',
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/pay-registration', 'Pay Registration',
+            this.linkDisabled),
+          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/sign', 'Complete Registration',
             this.linkDisabled)
         ]);
 

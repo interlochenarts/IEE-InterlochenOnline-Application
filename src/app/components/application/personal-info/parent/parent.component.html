@@ -3,19 +3,33 @@
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
+    <div *ngIf="parent && !parent.isVerified">
+      <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
+    </div>
     <div *ngIf="!parent.isEditing">
       <button class="btn btn-default" (click)="editParent(parent)"
-              *ngIf="parent.isVerified">Edit
+              *ngIf="parent.isVerified">Update {{parent.firstName}}'s Contact Information
       </button>
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
-      <a class="mx-3" href="javascript:void(0);"
+      <a class="mx-3" href="javascript:void(0);" *ngIf="!isParent"
+         [ngClass]="{disabled: isSaving || parent.isSaving}"
          (click)="removeParent(parent.contactId)">Remove</a>
-      <span *ngIf="parent.contactId === deletingParentId">Deleting <i class="fa fa-spinner fa-fw fa-pulse"></i></span>
+      <span *ngIf="parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
+      <span *ngIf="(isSaving || parent.isSaving) && !parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Saving</span>
+      <div *ngIf="parent.verificationSent" class="alert alert-info my-3">
+        Verification email sent to {{parent.email}}
+      </div>
+      <div *ngIf="parent.isVerified && !parent.isComplete(countryCodes,stateCodes)" class="my-2">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{parent.firstName}}'s contact information is incomplete.</span>
+      </div>
     </div>
     <div *ngIf="parent.isEditing">
-      <iee-parent-info [parent]="parent" [student]="student"></iee-parent-info>
+      <div *ngIf="parentNotFound">{{parent.firstName}} {{parent.lastName}} was not found in our system. Please fill out
+        the form below to add them.
+      </div>
+      <iee-parent-info [parent]="parent" [student]="student" [isSaving]="isSaving"></iee-parent-info>
     </div>
     <hr>
   </div>
@@ -104,7 +118,7 @@
     <button class="btn btn-primary ml-2 d-inline-block" type="button" (click)="searchForParent()">
       <i class="fa fa-ban"></i> No, Search Again
     </button>
-    <i *ngIf="addingUnverifiedParent" class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent
+    <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent</span>
   </div>
 
   <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
@@ -119,7 +133,7 @@
       </select>
     </div>
     <div *ngIf="!parents || parents.length === 0">
-      Please add a parent
+      Please add a parent.
     </div>
   </div>
 </div>

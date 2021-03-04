@@ -19,7 +19,7 @@
 
 <hr>
 
-<iee-parent [parents]="appData.parents" [student]="appData.student"></iee-parent>
+<iee-parent [parents]="appData.parents" [student]="appData.student" [isParent]="isParent" [countryCodes]="countryCodes" [stateCodes]="stateCodes"></iee-parent>
 
 <div class="row my-3" *ngIf="saveTime">
   <div class="col-12 text-right">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>

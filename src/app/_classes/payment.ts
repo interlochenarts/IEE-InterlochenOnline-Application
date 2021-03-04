@@ -5,11 +5,17 @@ export class Payment {
   credits: number;
   ccFee: number;
   ccPercent: number;
+  appliedCredits: number;
+  spendableCredit: number;
+  useCredit: boolean;
 
   public static createFromNestedJson(json: any): Payment {
     const payment = new Payment();
     Object.assign(payment, json);
-
+    // Don't let them use more credit than they owe
+    payment.spendableCredit = payment.credits > 0 && payment.credits > payment.amountOwed ? payment.amountOwed : payment.credits;
+    // Always default to false, even if they have already applied credit
+    payment.useCredit = false;
     return payment;
   }
 }

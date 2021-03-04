@@ -22,6 +22,7 @@ export class StudentComponent implements OnInit, OnChanges {
   filteredStates: Array<StateCode> = new Array<StateCode>();
   ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -80,22 +81,27 @@ export class StudentComponent implements OnInit, OnChanges {
     );
   }
 
-  getDayOptions(): Array<object> {
-    const options = new Array<object>();
+  updateDayOptions(): void {
+    const options = new Array<SalesforceOption>();
     const daysInMonth = new Date(+this.student.birthdateYear, +this.student.birthdateMonth, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
-      options.push({
-        label: ('0' + i).slice(-2),
-        value: ('0' + i).slice(-2)
-      });
+      options.push(new SalesforceOption(
+        ('0' + i).slice(-2),
+        ('0' + i).slice(-2),
+        false
+      ));
     }
-    return options;
+
+    this.dayOptions = options;
   }
 
   ngOnChanges(): void {
-    if (this.student && this.stateCodes) {
-      this.filterStates(this.student.mailingAddress?.country);
+    if (this.student) {
+      if (this.stateCodes) {
+        this.filterStates(this.student.mailingAddress?.country);
+      }
+      this.updateDayOptions();
     }
   }
 

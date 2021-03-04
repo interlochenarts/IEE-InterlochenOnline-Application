@@ -1,83 +1,113 @@
-<h3 class="text-center">Interlochen Online Enrollment Agreement<br/>for {{termName}}</h3>
-
-<div class="text-center">
-  <b>Student Name: {{applicantName}}</b>
-</div>
-
-<iee-ea-header [programs]="programs"></iee-ea-header>
-
-<iee-ea-text></iee-ea-text>
-
-<label for="signature" class="mt-4">Parent</label>
-<div class="default">
-  {{loggedInUserName}}
-</div>
-
-<label for="signature" class="mt-4">Signature</label>
-<div class="default required">
-  <input type="text"
-         [(ngModel)]="enrollmentAgreement.signature"
-         name="signature"
-         maxlength="255"
-         id="signature"/>
-</div>
-
-<label class="mt-4">Enter your Birthdate</label>
-<div class="default required">
-  <div class="form-group row">
-    <div class="col-12 col-md-4">
-      <label for="birthdate_year">Year</label>
-      <div class="select">
-        <select id="birthdate_year" [(ngModel)]="enrollmentAgreement.birthdateYear"
-                (change)="enrollmentAgreement.updateBirthdate()">
-          <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
-        </select>
-      </div>
+<header>
+  <div class="row">
+    <div class="col-12">
+      <h3>Complete Registration</h3>
     </div>
-    <div class="col-12 col-md-4">
-      <label for="birthdate_month">Month</label>
-      <div class="select">
-        <select id="birthdate_month" [(ngModel)]="enrollmentAgreement.birthdateMonth"
-                (change)="enrollmentAgreement.updateBirthdate()">
-          <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
-        </select>
+  </div>
+</header>
+
+<div *ngIf="userType === 'parent'">
+  <h3 class="text-center">Interlochen Online Enrollment Agreement<br/>for {{appData.termName}}</h3>
+
+  <div class="text-center">
+    <b>Student Name: {{studentName}}</b>
+  </div>
+
+  <iee-ea-header [programs]="selectedPrograms"></iee-ea-header>
+
+  <iee-ea-text></iee-ea-text>
+
+  <label for="signature" class="mt-4">Parent</label>
+  <div class="default">
+    {{loggedInUserName}}
+  </div>
+
+  <label for="signature" class="mt-4">Signature</label>
+  <div class="default required">
+    <input type="text"
+           [(ngModel)]="appData.enrollmentAgreement.signature"
+           name="signature"
+           maxlength="255"
+           id="signature"/>
+  </div>
+
+  <label class="mt-4">Enter your Birthdate</label>
+  <div class="default required">
+    <div class="form-group row">
+      <div class="col-12 col-md-4">
+        <label for="birthdate_year">Year</label>
+        <div class="select">
+          <select id="birthdate_year" [(ngModel)]="appData.enrollmentAgreement.birthdateYear"
+                  (change)="appData.enrollmentAgreement.updateBirthdate(); updateDayOptions()">
+            <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
+          </select>
+        </div>
       </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <label for="birthdate_day">Day</label>
-      <div class="select">
-        <select id="birthdate_day" [(ngModel)]="enrollmentAgreement.birthdateDay"
-                (change)="enrollmentAgreement.updateBirthdate()">
-          <option *ngFor="let day of getDayOptions()" [value]="day.value">{{day.label}}</option>
-        </select>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_month">Month</label>
+        <div class="select">
+          <select id="birthdate_month" [(ngModel)]="appData.enrollmentAgreement.birthdateMonth"
+                  (change)="appData.enrollmentAgreement.updateBirthdate(); updateDayOptions()">
+            <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_day">Day</label>
+        <div class="select">
+          <select id="birthdate_day" [(ngModel)]="appData.enrollmentAgreement.birthdateDay"
+                  (change)="appData.enrollmentAgreement.updateBirthdate()">
+            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="row check-description my-4"
-     [ngClass]="{disabled: canClickCheckbox() === false, clickable: canClickCheckbox()}"
-     (click)="onClickCheckbox()">
-  <div class="col-2 col-md-1 text-right">
-    <div class="checkbox">
-      <input type="checkbox" [checked]="enrollmentAgreement.acceptanceChecked"/>
-      <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-4"></i></label>
+  <div class="row check-description my-4"
+       [ngClass]="{disabled: canClickCheckbox() === false, clickable: canClickCheckbox()}"
+       (click)="onClickCheckbox()">
+    <div class="col-2 col-md-1 text-right">
+      <div class="checkbox">
+        <input type="checkbox" [checked]="appData.enrollmentAgreement.acceptanceChecked"/>
+        <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-4"></i></label>
+      </div>
+    </div>
+    <div class="col-10 col-md-11">
+      <div class="no-select nudge-down">
+        By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a
+        legal
+        document.
+      </div>
     </div>
   </div>
-  <div class="col-10 col-md-11">
-    <div class="no-select nudge-down">
-      By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a legal
-      document.
-    </div>
+
+  <div class="alert alert-danger" *ngIf="!appData.payment.tuitionPaid">
+    Please pay your registration fee before completing your registration.
+  </div>
+
+  <button class="btn btn-primary"
+          [ngClass]="{disabled: !appData.enrollmentAgreement.isComplete() || !appData.payment.tuitionPaid}"
+          [disabled]="!appData.enrollmentAgreement.isComplete() || !appData.payment.tuitionPaid"
+          (click)="signEnrollmentAgreement()">Register
+  </button>
+  <span *ngIf="isSigning"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>
+</div>
+
+<div *ngIf="userType === 'student'">
+  <p>This page may only be accessed by a parent(s) or guardian(s). Parent(s) or guardian(s) must log in with
+    their unique credentials in order to complete this section and are advised not to share their username and password
+    with the student applicant.
+  </p>
+
+  <p>Click here to send your parent or guardian their unique parent or guardian credentials.</p>
+  <div *ngFor="let parent of appData.parents" class="my-4">
+    <button
+      class="btn btn-primary"
+      (click)="sendParentCredentials(parent)">Send login information
+      to {{parent.firstName}} {{parent.lastName}}</button>
+  </div>
+  <div class="alert alert-info my-4" *ngIf="credentialStatus">
+    {{credentialStatus}}
   </div>
 </div>
-
-<div class="alert alert-danger" *ngIf="!payment.tuitionPaid">
-  Please pay your registration fee above before completing your registration.
-</div>
-
-<button class="btn btn-primary"
-        [ngClass]="{disabled: !enrollmentAgreement.isComplete() || !payment.tuitionPaid}"
-        (click)="signEnrollmentAgreement()">Register
-</button>
-<span *ngIf="isSigning"><i class="fa fa-spinner fa-pulse fa-fw"></i></span>

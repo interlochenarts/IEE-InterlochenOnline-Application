@@ -92,7 +92,7 @@
   <div class="col-7 hideOverflow" *ngIf="student.race">{{student.race}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="student.race === 'Other' && student.raceOther">
+<div class="review my-1 row" *ngIf="student.raceOther">
   <div class="col-5 hideOverflow">Other Race</div>
   <div class="col-7 hideOverflow" *ngIf="student.raceOther">{{student.raceOther}}</div>
 </div>

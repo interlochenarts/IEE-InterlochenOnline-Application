@@ -1,31 +1,67 @@
-<h3>Make a Payment</h3>
-
-<div *ngIf="isLoading">
-  <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i> Loading...
-</div>
-<div *ngIf="!isLoading">
-  <div class="default" *ngIf="paymentReceived">
-    You have already paid your tuition.
-  </div>
-  <div *ngIf="appData.payment.amountOwed === 0.00">
-    You must choose a program before you can pay.
-  </div>
-  <div *ngIf="!paymentReceived && canPay()">
-    <label>Payment Method</label>
-    <div class="default">
-      <div class="form-check form-check-inline" *ngFor="let pt of PaymentType | keyvalue">
-        <input type="radio"
-               class="form-check-input"
-               [(ngModel)]="paymentType"
-               [disabled]="appData.payment.tuitionPaid"
-               name="paymentType"
-               id="paymentType_{{pt.key}}"
-               value="{{pt.value}}"/>
-        <label for="paymentType_{{pt.key}}" class="form-check-label">{{pt.value}}</label>
-      </div>
+<header>
+  <div class="row">
+    <div class="col-12">
+      <h3>Make a Payment</h3>
     </div>
   </div>
+</header>
 
-  <iee-credit-card *ngIf="canPay() && paymentType === PaymentType.CC"></iee-credit-card>
-  <iee-ach *ngIf="canPay() && paymentType === PaymentType.ACH"></iee-ach>
+<div *ngIf="userType === 'parent'">
+  <div *ngIf="isLoading">
+    <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i> Loading...
+  </div>
+  <div *ngIf="!isLoading">
+    <div class="default" *ngIf="paymentReceived">
+      You have already paid your registration fee.
+    </div>
+    <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0">
+      You must choose a program before you can pay.
+    </div>
+    <div *ngIf="!paymentReceived && appData.payment.spendableCredit > 0" class="mb-4">
+      <label>Would you like to apply your Interlochen Arts Camp credit of
+        {{(appData.payment.spendableCredit | currency:'USD')}} towards your registration fee?</label>
+      <div class="default">
+        <div class="form-check form-check-inline">
+          <input type="radio"
+                 class="form-check-input"
+                 [(ngModel)]="appData.payment.useCredit"
+                 [disabled]="appData.payment.tuitionPaid"
+                 name="useCredit_Yes"
+                 id="useCredit_Yes"
+                 [value]="true"/>
+          <label for="useCredit_Yes" class="form-check-label">Yes</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input type="radio"
+                 class="form-check-input"
+                 [(ngModel)]="appData.payment.useCredit"
+                 [disabled]="appData.payment.tuitionPaid"
+                 name="useCredit_No"
+                 id="useCredit_No"
+                 [value]="false"/>
+          <label for="useCredit_No" class="form-check-label">No</label>
+        </div>
+      </div>
+      <button *ngIf="feeCoveredByCredit" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
+    </div>
+
+    <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
+  </div>
+</div>
+
+<div *ngIf="userType === 'student'">
+  <p>This page may only be accessed by a parent(s) or guardian(s). Parent(s) or guardian(s) must log in with
+    their unique credentials in order to complete this section and are advised not to share their username and password
+    with the student applicant.
+  </p>
+
+  <p>Click here to send your parent or guardian their unique parent or guardian credentials.</p>
+  <div *ngFor="let parent of appData.parents" class="my-4">
+    <button class="btn btn-primary"
+            (click)="sendParentCredentials(parent)">
+      Send login information to {{parent.firstName}} {{parent.lastName}}</button>
+  </div>
+  <div class="alert alert-info my-4" *ngIf="credentialStatus">
+    {{credentialStatus}}
+  </div>
 </div>

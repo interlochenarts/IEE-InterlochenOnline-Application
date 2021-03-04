@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ApplicationData} from '../../../_classes/application-data';
 import {AppDataService} from '../../../services/app-data.service';
+import {CountryCode} from '../../../_classes/country-code';
+import {StateCode} from '../../../_classes/state-code';
 
 @Component({
   selector: 'iee-personal-info',
@@ -12,6 +14,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   applicationId: string;
   autoSaveIntervalId: number;
   saveTime: Date;
+  isParent: boolean;
+
+  countryCodes: Array<CountryCode> = [];
+  stateCodes: Array<StateCode> = [];
 
   constructor(private appDataService: AppDataService) { }
 
@@ -25,6 +31,16 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
       if (app) {
         this.appData = app;
       }
+    });
+    this.appDataService.stateData.asObservable().subscribe(states => {
+      this.stateCodes = states;
+    });
+    this.appDataService.countryData.asObservable().subscribe(countries => {
+      this.countryCodes = countries;
+    });
+    this.appDataService.getUserType();
+    this.appDataService.userType.asObservable().subscribe(type => {
+      this.isParent = type === 'parent';
     });
 
     this.autoSaveIntervalId = setInterval(() => {

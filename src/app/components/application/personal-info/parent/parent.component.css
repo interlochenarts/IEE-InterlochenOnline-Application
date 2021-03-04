@@ -1,0 +1,6 @@
+a.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  user-select: none;
+}
+/*# sourceMappingURL=parent.component.css.map */

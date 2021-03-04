@@ -1,11 +1,23 @@
-<h3>Choose a Program</h3>
+<header>
+  <div class="row">
+    <div class="col-12">
+      <h3>Select a Program</h3>
+    </div>
+  </div>
+</header>
+
+
+<div class="alert alert-warning" *ngIf="appData.payment.tuitionPaid">
+  Registration Fee has already been paid. No more changes are allowed to program choices.
+</div>
 
 <label for="selectedGrade" class="mt-4">Current Grade in School</label>
-<div class="default">
+<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
   <div class="select">
     <select [(ngModel)]="appData.programData.gradeInSchool"
             (change)="updateSelectedDivision()"
             name="selectedGrade"
+            [disabled]="appData.payment.tuitionPaid"
             id="selectedGrade">
       <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
     </select>
@@ -13,10 +25,11 @@
 </div>
 
 <label for="selectedArtsArea" class="mt-4">Arts Area</label>
-<div class="default">
+<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
   <div class="select">
     <select [(ngModel)]="selectedArtsArea"
             name="selectedArtsArea"
+            [disabled]="appData.payment.tuitionPaid"
             id="selectedArtsArea">
       <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
               [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
@@ -26,10 +39,11 @@
 
 <div *ngIf="appData.programData.sessions.length > 1">
   <label for="selectedSession" class="mt-4">Session</label>
-  <div class="default">
+  <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
     <div class="select">
       <select [(ngModel)]="selectedSession"
               name="selectedSession"
+              [disabled]="appData.payment.tuitionPaid"
               id="selectedSession">
         <option *ngFor="let session of sortedSessions" [value]="session.value"
                 [defaultSelected]="session.defaultValue">{{session.label}}</option>
@@ -38,24 +52,25 @@
   </div>
 </div>
 
-<div class="col-12 my-4" *ngIf="this.appData.programData.selectedDivision">
+<div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
   <div class="row">
     <h5>Programs for {{selectedDivisionDescription}}</h5>
+    <p *ngIf="appData.programData.selectedDivision === 'High School'">In addition to your Monday through Thursday arts program you can also add on an academic program on Fridays.</p>
   </div>
 </div>
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program, instrumentModal)"
-     [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
-  <div class="checkbox col-3 col-md-2" *ngIf="!anyProgramUpdating">
+     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)}">
+  <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelected, selectedProgramSessions)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelected, selectedProgramSessions)}">
+           [disabled]="program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)">
+    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)}">
       <i class="fa fa-check pl-4"></i>
     </label>
   </div>
-  <div class="checkbox col-3 col-md-2" *ngIf="anyProgramUpdating">
+  <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
     <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
   </div>
   <div class="col-9 col-md-8 description">
@@ -68,6 +83,9 @@
 <ng-template #instrumentModal let-modal>
   <div class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
+      <span aria-hidden="true">×</span>
+    </button>
   </div>
   <div class="modal-body">
     <div class="select">
@@ -80,6 +98,6 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button type="button" class="btn btn-outline-dark" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
   </div>
 </ng-template>
