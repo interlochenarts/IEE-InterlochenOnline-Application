@@ -43,7 +43,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     const options = new Array<SalesforceOption>();
     const startYear = new Date().getFullYear() - 14;
 
-    for (let i = 100; i >= 0; i--) {
+    for (let i = 0; i <= 100; i++) {
       options.push(new SalesforceOption(
         (startYear - i).toString(),
         (startYear - i).toString(),
