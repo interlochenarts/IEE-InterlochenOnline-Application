@@ -109,7 +109,7 @@ export class StudentComponent implements OnInit, OnChanges {
     const options = new Array<SalesforceOption>();
     const startYear = new Date().getFullYear() - 4; // might start doing kindergarten, so start with 4 yr olds
 
-    for (let i = 16; i >= 0; i--) {
+    for (let i = 0; i <= 16; i++) {
       options.push(new SalesforceOption(
         (startYear - i).toString(),
         (startYear - i).toString(),
