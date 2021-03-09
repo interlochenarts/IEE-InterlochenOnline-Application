@@ -8,6 +8,9 @@ export class Payment {
   appliedCredits: number;
   spendableCredit: number;
   useCredit: boolean;
+  waiverCode: string;
+  waiverDescription: string;
+  appliedWaivers: number;
 
   public static createFromNestedJson(json: any): Payment {
     const payment = new Payment();

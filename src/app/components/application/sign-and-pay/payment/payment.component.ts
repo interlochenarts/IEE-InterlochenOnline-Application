@@ -16,6 +16,7 @@ export class PaymentComponent implements OnInit {
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
+  enteredCode: string;
 
   userType = 'student';
   credentialStatus: string;
@@ -104,6 +105,27 @@ export class PaymentComponent implements OnInit {
       },
       {buffer: false, escape: false}
     );
+  }
+  applyCode(): void {
+    this.isLoading = true;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.applyFeeWaiver',
+      this.appData.appId, this.enteredCode,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          console.dir(this.appData.payment);
+        } else {
+          console.error('error applying code for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+        this.isLoading = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  get codeDisabled(): boolean {
+    return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription !== 'Waiver code not valid';
   }
 
   sendParentCredentials(parent: Parent): void {
