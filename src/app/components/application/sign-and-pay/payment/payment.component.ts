@@ -125,7 +125,7 @@ export class PaymentComponent implements OnInit {
     );
   }
   get codeDisabled(): boolean {
-    return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription !== 'Waiver code not valid';
+    return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied';
   }
 
   sendParentCredentials(parent: Parent): void {

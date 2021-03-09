@@ -63,8 +63,9 @@
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{appData.payment.waiverDescription}}</span>
       </div>
     </div>
-    <div *ngIf="codeDisabled" class="mb-4">
-      <p>Code Applied: {{appData.payment.waiverCode}}</p>
+    <div *ngIf="codeDisabled && canPay()" class="mb-4">
+      <p class="mb-1">Code Applied: {{appData.payment.waiverCode}}</p>
+      <p>Discount Amount: {{appData.payment.appliedWaivers | currency:'USD'}}</p>
     </div>
 
 
