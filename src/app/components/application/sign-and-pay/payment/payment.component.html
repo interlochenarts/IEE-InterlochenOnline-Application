@@ -42,9 +42,9 @@
           <label for="useCredit_No" class="form-check-label">No</label>
         </div>
       </div>
-      <button *ngIf="feeCoveredByCredit" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
     </div>
 
+    <div *ngIf="!paymentReceived"><p>Amount owed: {{achAmount | currency:'USD'}}</p></div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
       <label for="email">Discount Code</label>
       <div class="default">
@@ -63,12 +63,12 @@
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{appData.payment.waiverDescription}}</span>
       </div>
     </div>
-    <div *ngIf="codeDisabled && canPay()" class="mb-4">
+    <div *ngIf="codeDisabled && !appData.payment.tuitionPaid" class="mb-4">
       <p class="mb-1">Code Applied: {{appData.payment.waiverCode}}</p>
       <p>Discount Amount: {{appData.payment.appliedWaivers | currency:'USD'}}</p>
     </div>
 
-
+    <button *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
   </div>
 </div>

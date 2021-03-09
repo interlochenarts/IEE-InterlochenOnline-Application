@@ -32,12 +32,6 @@ export class AchComponent implements OnInit, OnChanges {
     this.linkFACTS = null;
     this.getFACTSLink();
   }
-  get achAmount(): number {
-    // Assigned for convenience and because linting was yelling at me
-    const amountOwed = this.appData.payment.amountOwed;
-    const spendableCredit = this.appData.payment.spendableCredit;
-    return this.appData.payment.useCredit ? amountOwed - spendableCredit : amountOwed;
-  }
   getFACTSLink(): void {
     if (this.appData.payment != null && this.appData.payment.useCredit != null) {
       // Get FACTS link

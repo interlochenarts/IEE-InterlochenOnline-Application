@@ -127,6 +127,12 @@ export class PaymentComponent implements OnInit {
   get codeDisabled(): boolean {
     return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied';
   }
+  get achAmount(): number {
+    // Assigned for convenience and because linting was yelling at me
+    const amountOwed = this.appData.payment.amountOwed;
+    const spendableCredit = this.appData.payment.spendableCredit;
+    return this.appData.payment.useCredit ? amountOwed - spendableCredit : amountOwed;
+  }
 
   sendParentCredentials(parent: Parent): void {
     this.appDataService.sendParentCredentials(parent, this.appData.student);
