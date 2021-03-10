@@ -13,10 +13,12 @@ declare const Visualforce: any;
 })
 export class PaymentComponent implements OnInit {
   paymentReceived = false;
+  hasCode = false;
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
   enteredCode: string;
+  totalTuition: number;
 
   userType = 'student';
   credentialStatus: string;
@@ -41,6 +43,9 @@ export class PaymentComponent implements OnInit {
           result => {
             if (result && result !== 'null') {
               this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+              this.hasCode = this.appData.payment.waiverCode != null;
+              this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
+              this.totalTuition += this.appData.payment.amountOwed;
             }
             this.isLoading = false;
           },

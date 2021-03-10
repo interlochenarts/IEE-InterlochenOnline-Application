@@ -12,7 +12,7 @@
   </div>
   <div *ngIf="!isLoading">
     <div class="default" *ngIf="paymentReceived">
-      You have already paid your registration fee.
+      You have paid your registration fee of {{appData.payment.amountPaid | currency:'USD'}}.
     </div>
     <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0">
       You must choose a program before you can pay.
@@ -44,28 +44,38 @@
       </div>
     </div>
 
-    <div *ngIf="!paymentReceived"><p>Amount owed: {{achAmount | currency:'USD'}}</p></div>
+    <div *ngIf="!paymentReceived">
+      <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
+      <p class="mb-0" *ngIf="this.appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}}</p>
+      <p class="mb-0" *ngIf="this.appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
+      <p class="mb-0" *ngIf="this.appData.payment.spendableCredit > 0 && appData.payment.useCredit">Credit Amount: -{{appData.payment.spendableCredit | currency:'USD'}}</p>
+      <strong><p>Amount owed: {{achAmount | currency:'USD'}}</p></strong>
+    </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
-      <label for="email">Discount Code</label>
-      <div class="default">
-        <input type="text"
-               [(ngModel)]="enteredCode"
-               name="email"
-               id="email"
-               maxlength="50"
-               pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+      <label for="have-code">I have a discount code</label>
+      <input class="ml-1" name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
+      <div *ngIf="hasCode">
+        <label for="code">Discount Code</label>
+        <div class="default">
+          <input type="text"
+                 [(ngModel)]="enteredCode"
+                 name="code"
+                 id="code"
+                 maxlength="50"
+                 pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+          <button (click)="applyCode()"
+                  class="btn btn-default ml-2">
+            Apply
+          </button>
+        </div>
       </div>
-      <button (click)="applyCode()"
-              class="btn btn-default mt-4">
-        Apply
-      </button>
       <div *ngIf="appData.payment.waiverDescription" class="mt-2">
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{appData.payment.waiverDescription}}</span>
       </div>
     </div>
     <div *ngIf="codeDisabled && !appData.payment.tuitionPaid" class="mb-4">
       <p class="mb-1">Code Applied: {{appData.payment.waiverCode}}</p>
-      <p>Discount Amount: {{appData.payment.appliedWaivers | currency:'USD'}}</p>
+<!--      <p>Discount Amount: {{appData.payment.appliedWaivers | currency:'USD'}}</p>-->
     </div>
 
     <button *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>

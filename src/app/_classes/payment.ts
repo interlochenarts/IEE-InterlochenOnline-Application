@@ -2,6 +2,7 @@ export class Payment {
   tuitionPaid: boolean;
   paidOnLoad: boolean;
   amountOwed: number;
+  amountPaid: number;
   credits: number;
   ccFee: number;
   ccPercent: number;
