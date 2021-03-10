@@ -14,6 +14,7 @@ declare const Visualforce: any;
 export class PaymentComponent implements OnInit {
   paymentReceived = false;
   hasCode = false;
+  useCredit = false;
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
@@ -113,13 +114,14 @@ export class PaymentComponent implements OnInit {
   }
   applyCode(): void {
     this.isLoading = true;
+    this.useCredit = this.appData.payment.useCredit;
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.applyFeeWaiver',
       this.appData.appId, this.enteredCode,
       result => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
-          console.dir(this.appData.payment);
+          this.appData.payment.useCredit = this.useCredit;
         } else {
           console.error('error applying code for app id: ' + this.appData.appId);
           console.dir(result);
