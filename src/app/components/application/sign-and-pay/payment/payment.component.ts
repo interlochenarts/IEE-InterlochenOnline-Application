@@ -122,6 +122,7 @@ export class PaymentComponent implements OnInit {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
+          this.paymentReceived = this.appData.payment.tuitionPaid;
         } else {
           console.error('error applying code for app id: ' + this.appData.appId);
           console.dir(result);
