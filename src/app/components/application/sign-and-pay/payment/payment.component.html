@@ -11,15 +11,15 @@
     <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i> Loading...
   </div>
   <div *ngIf="!isLoading">
-    <div class="default" *ngIf="paymentReceived">
+    <div class="default mb-2" *ngIf="paymentReceived">
       You have paid your registration fee of {{appData.payment.amountPaid | currency:'USD'}}.
     </div>
     <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0">
       You must choose a program before you can pay.
     </div>
-    <div *ngIf="!paymentReceived">
+    <div>
       <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
-      <p class="mb-0" *ngIf="this.appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
+      <p class="mb-0" *ngIf="this.appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i *ngIf="!paymentReceived" (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
       <p class="mb-0" *ngIf="this.appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
       <p class="mb-0" *ngIf="this.appData.payment.spendableCredit > 0 && appData.payment.useCredit">Credit Amount: -{{appData.payment.spendableCredit | currency:'USD'}}</p>
       <strong><p>Amount owed: {{achAmount | currency:'USD'}}</p></strong>

@@ -46,7 +46,7 @@ export class PaymentComponent implements OnInit {
               this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
               this.hasCode = this.appData.payment.waiverCode != null;
               this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
-              this.totalTuition += this.appData.payment.amountOwed;
+              this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
             }
             this.isLoading = false;
           },
