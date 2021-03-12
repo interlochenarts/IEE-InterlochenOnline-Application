@@ -2,12 +2,16 @@ export class Payment {
   tuitionPaid: boolean;
   paidOnLoad: boolean;
   amountOwed: number;
+  amountPaid: number;
   credits: number;
   ccFee: number;
   ccPercent: number;
   appliedCredits: number;
   spendableCredit: number;
   useCredit: boolean;
+  waiverCode: string;
+  waiverDescription: string;
+  appliedWaivers: number;
 
   public static createFromNestedJson(json: any): Payment {
     const payment = new Payment();

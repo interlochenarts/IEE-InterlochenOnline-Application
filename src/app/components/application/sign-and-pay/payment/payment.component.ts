@@ -13,9 +13,13 @@ declare const Visualforce: any;
 })
 export class PaymentComponent implements OnInit {
   paymentReceived = false;
+  hasCode = false;
+  useCredit = false;
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
   isLoading: boolean;
+  enteredCode: string;
+  totalTuition: number;
 
   userType = 'student';
   credentialStatus: string;
@@ -40,6 +44,9 @@ export class PaymentComponent implements OnInit {
           result => {
             if (result && result !== 'null') {
               this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+              this.hasCode = this.appData.payment.waiverCode != null;
+              this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
+              this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
             }
             this.isLoading = false;
           },
@@ -104,6 +111,56 @@ export class PaymentComponent implements OnInit {
       },
       {buffer: false, escape: false}
     );
+  }
+  applyCode(): void {
+    this.isLoading = true;
+    this.useCredit = this.appData.payment.useCredit;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.applyFeeWaiver',
+      this.appData.appId, this.enteredCode,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          this.appData.payment.useCredit = this.useCredit;
+          this.paymentReceived = this.appData.payment.tuitionPaid;
+        } else {
+          console.error('error applying code for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+        this.isLoading = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  removeCode(): void {
+    this.isLoading = true;
+    this.useCredit = this.appData.payment.useCredit;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.removeFeeWaiver',
+      this.appData.appId,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          this.appData.payment.useCredit = this.useCredit;
+          this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.enteredCode = null;
+        } else {
+          console.error('error removing code for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+        this.isLoading = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  get codeDisabled(): boolean {
+    return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied';
+  }
+  get achAmount(): number {
+    // Assigned for convenience and because linting was yelling at me
+    const amountOwed = this.appData.payment.amountOwed;
+    const spendableCredit = this.appData.payment.spendableCredit;
+    return this.appData.payment.useCredit ? amountOwed - spendableCredit : amountOwed;
   }
 
   sendParentCredentials(parent: Parent): void {
