@@ -132,6 +132,26 @@ export class PaymentComponent implements OnInit {
       {buffer: false, escape: false}
     );
   }
+  removeCode(): void {
+    this.isLoading = true;
+    this.useCredit = this.appData.payment.useCredit;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.removeFeeWaiver',
+      this.appData.appId,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          this.appData.payment.useCredit = this.useCredit;
+          this.paymentReceived = this.appData.payment.tuitionPaid;
+        } else {
+          console.error('error removing code for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+        this.isLoading = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
   get codeDisabled(): boolean {
     return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied';
   }

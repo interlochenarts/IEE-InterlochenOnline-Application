@@ -17,6 +17,13 @@
     <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0">
       You must choose a program before you can pay.
     </div>
+    <div *ngIf="!paymentReceived">
+      <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
+      <p class="mb-0" *ngIf="this.appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
+      <p class="mb-0" *ngIf="this.appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
+      <p class="mb-0" *ngIf="this.appData.payment.spendableCredit > 0 && appData.payment.useCredit">Credit Amount: -{{appData.payment.spendableCredit | currency:'USD'}}</p>
+      <strong><p>Amount owed: {{achAmount | currency:'USD'}}</p></strong>
+    </div>
     <div *ngIf="!paymentReceived && appData.payment.spendableCredit > 0" class="mb-4">
       <label>Would you like to apply your Interlochen Arts Camp credit of
         {{(appData.payment.spendableCredit | currency:'USD')}} towards your registration fee?</label>
@@ -42,14 +49,10 @@
           <label for="useCredit_No" class="form-check-label">No</label>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="!paymentReceived">
-      <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
-      <p class="mb-0" *ngIf="this.appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}}</p>
-      <p class="mb-0" *ngIf="this.appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
-      <p class="mb-0" *ngIf="this.appData.payment.spendableCredit > 0 && appData.payment.useCredit">Credit Amount: -{{appData.payment.spendableCredit | currency:'USD'}}</p>
-      <strong><p>Amount owed: {{achAmount | currency:'USD'}}</p></strong>
+      <div *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0">
+        <p class="mt-4">Applying your credit balance of {{(appData.payment.spendableCredit | currency:'USD')}} will reduce your amount owed to $0.00.</p>
+        <button class="btn btn-primary" (click)="confirmCredit()">Apply Credit</button>
+      </div>
     </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
       <label for="have-code">I have a discount code</label>
@@ -73,12 +76,6 @@
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{appData.payment.waiverDescription}}</span>
       </div>
     </div>
-    <div *ngIf="codeDisabled && !appData.payment.tuitionPaid" class="mb-4">
-      <p class="mb-1">Code Applied: {{appData.payment.waiverCode}}</p>
-<!--      <p>Discount Amount: {{appData.payment.appliedWaivers | currency:'USD'}}</p>-->
-    </div>
-
-    <button *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0" class="btn btn-primary mt-4" (click)="confirmCredit()">Confirm</button>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
   </div>
 </div>
