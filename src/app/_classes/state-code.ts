@@ -8,8 +8,8 @@ export class StateCode {
     const state = new StateCode();
     state.name = json.Name;
     state.id = json.Id;
-    state.isoCode = json.VanaHCM__ISO_Code__c;
-    state.countryId = json.VanaHCM__Country_Codes_State__c;
+    state.isoCode = json.ISO_Code__c;
+    state.countryId = json.Country_Code__c;
 
     return state;
   }
