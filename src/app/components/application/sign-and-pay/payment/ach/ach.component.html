@@ -1,5 +1,4 @@
 <div class="mb-2 mt-4" *ngIf="!appData.payment.paidOnLoad">
-  <p>Amount owed: {{achAmount | currency:'USD'}}</p>
   <p>Clicking the payment button will take you to our payment processor. Once your payment is complete you will be redirected back to this page.</p>
   <a class="btn btn-primary" [attr.href]="linkFACTS" [ngClass]="{'disabled' : !linkFACTS}" target="_self">Pay Fee Now</a>
 </div>
