@@ -13,7 +13,9 @@ export class Parent {
   mailingAddress: Address;
   isEditing = false; // used to display/hide this parent's info form
   isSaving = false; // used to block future saves of this parent
+  isDeleting = false; // used to prevent saves from re-adding deleting parents
   verification: string;
+  verificationSent: boolean;
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();

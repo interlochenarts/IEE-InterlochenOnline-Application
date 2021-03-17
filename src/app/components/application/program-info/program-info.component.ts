@@ -14,8 +14,7 @@ declare const Visualforce: any;
 })
 export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;
-  anyProgramUpdating = false;
-  daysSelected: Set<string> = new Set<string>();
+  daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedArtsArea = '';
   selectedSession = '';
   sortedArtsAreas: Array<SalesforceOption> = [];
@@ -39,15 +38,6 @@ export class ProgramInfoComponent implements OnInit {
     new SalesforceOption('12th', '12th', false),
   ];
 
-
-  get selectedProgramSessions(): Set<string> {
-    const selected = new Set<string>();
-    this.appData.programData.programs.filter((p: Program) => p.isSelected).forEach(p => {
-      selected.add(p.sessionName);
-    });
-    return selected;
-  }
-
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
@@ -58,9 +48,7 @@ export class ProgramInfoComponent implements OnInit {
 
         this.appData.programData.programs.forEach(p => {
           if (p.isSelected) {
-            p.daysArray.forEach(d => {
-              this.daysSelected.add(d);
-            });
+            this.addDaysSelected(p);
           }
         });
 
@@ -82,14 +70,14 @@ export class ProgramInfoComponent implements OnInit {
     return this.appData.programData.programs.filter(p =>
       (p.division === this.appData.programData.selectedDivision) &&
       (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-      (this.selectedArtsArea ? p.artsArea === this.selectedArtsArea : true));
+      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true));
   }
 
   updateArtsAreas(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
-      artsAreaSet.add(p.artsArea);
+      artsAreaSet.add(p.artsAreaList[0]);
     });
 
     this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
@@ -98,29 +86,46 @@ export class ProgramInfoComponent implements OnInit {
 
   updateSessions(): void {
     this.selectedSession = '';
-    this.sortedSessions = this.appData.programData.sessions.map(s => new SalesforceOption(s, s, false));
+    console.dir(this.appData.programData.sessionDates);
+    this.sortedSessions = this.appData.programData.sessions.sort()
+      .map(s => new SalesforceOption(s + ': ' + this.appData.programData.sessionDates.get(s), s, false));
     this.sortedSessions.unshift(new SalesforceOption('All', '', true));
   }
 
   updateSelectedDivision(): void {
+    const originalDivision: string = this.appData?.programData?.selectedDivision;
     const grade = this.appData.programData.gradeInSchool;
     const gradeNumber = grade.match(/\d+/);
     this.appData.programData.selectedDivision = this.appData.programData.divisionGradeMap.get(+gradeNumber);
+    if (originalDivision && (originalDivision !== this.appData.programData.selectedDivision)) {
+      this.clearSelectedPrograms();
+    }
     this.updateArtsAreas();
   }
 
+  clearSelectedPrograms(): void {
+    this.appData.programData.programs.filter(p => p.isSelected).forEach(p => {
+      p.isSaving = true;
+      this.removeProgram(p);
+    });
+  }
+
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelected, this.selectedProgramSessions)) {
+    if (!program.isDisabled(this.daysSelectedBySession, this.appData.payment.tuitionPaid) && !program.isSaving) {
+      program.isSaving = true;
       if (!program.isSelected) {
-        if (program.artsArea === 'Music') {
+        if (program.artsAreaList[0] === 'Music') {
           // if music, ask for instrument
           this.selectedProgramInstruments = program.programOptionsArray;
           this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
             .then(instrumentResult => {
               program.selectedInstrument = instrumentResult;
               this.saveProgram(program);
+              delete this.modalInstrumentChoice;
             }, reason => {
-              console.dir(`Not Saving: Instrument closed (${reason})`);
+              // console.log(`Not Saving: Instrument closed (${reason})`);
+              program.isSaving = false;
+              delete this.modalInstrumentChoice;
             });
         } else {
           // if not music, just save
@@ -132,11 +137,17 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
+  private addDaysSelected(p: Program): void {
+    p.daysArray?.forEach(d => {
+      const daysSelected: Set<string> = this.daysSelectedBySession.get(p.sessionName) || new Set<string>();
+      daysSelected.add(d);
+      this.daysSelectedBySession.set(p.sessionName, daysSelected);
+    });
+  }
+
   private saveProgram(program: Program): void {
     program.isSelected = true;
-    program.daysArray.forEach(d => {
-      this.daysSelected.add(d);
-    });
+    this.addDaysSelected(program);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       this.appData.appId, program.id, program.sessionId,
@@ -145,9 +156,10 @@ export class ProgramInfoComponent implements OnInit {
         if (result.toString().startsWith('ERR')) {
           console.error(result);
         } else {
-          console.log('Saved new program: ' + result);
+          // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
         }
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );
@@ -155,14 +167,17 @@ export class ProgramInfoComponent implements OnInit {
 
   private removeProgram(program: Program): void {
     program.isSelected = false;
-    program.daysArray.forEach(d => {
-      this.daysSelected.delete(d);
+    const daysSelected = this.daysSelectedBySession.get(program.sessionName);
+    program.daysArray?.forEach(d => {
+      daysSelected.delete(d);
     });
+    this.daysSelectedBySession.set(program.sessionName, daysSelected);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoice',
       this.appData.appId, program.appChoiceId,
       result => {
-        console.log(result);
+        // console.log(result);
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );

@@ -15,6 +15,7 @@ declare const Visualforce: any;
 export class ParentInfoComponent implements OnInit, OnChanges {
   @Input() parent: Parent;
   @Input() student: Student;
+  @Input() isSaving: boolean;
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
@@ -74,7 +75,11 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       JSON.stringify(this.parent), this.student.contactId,
       result => {
         this.parent.isSaving = false;
-        console.log(result);
+        if (result.startsWith('ERR')) {
+          console.error('ERROR: Could not save parent');
+        } else {
+          this.parent.contactId = result;
+        }
       },
       {buffer: false, escape: false}
     );

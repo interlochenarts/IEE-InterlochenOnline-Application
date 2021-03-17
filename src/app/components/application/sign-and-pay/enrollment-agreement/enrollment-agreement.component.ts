@@ -1,9 +1,9 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {EnrollmentAgreement} from '../../../../_classes/enrollment-agreement';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AppDataService} from '../../../../services/app-data.service';
-import {Program} from '../../../../_classes/program';
-import {Payment} from '../../../../_classes/payment';
 import {SalesforceOption} from '../../../../_classes/salesforce-option';
+import {Parent} from '../../../../_classes/parent';
+import {ApplicationData} from '../../../../_classes/application-data';
+import {Program} from '../../../../_classes/program';
 
 declare const Visualforce: any;
 
@@ -13,16 +13,17 @@ declare const Visualforce: any;
   styleUrls: ['./enrollment-agreement.component.css']
 })
 export class EnrollmentAgreementComponent implements OnInit, OnChanges {
-  @Input() enrollmentAgreement: EnrollmentAgreement;
-  @Input() payment: Payment;
-  @Input() programs: Array<Program> = [];
-  @Input() termName: string;
-  @Input() applicantName: string;
+  studentName: string;
+  appData: ApplicationData = new ApplicationData();
   applicationId: string;
   isSigning = false;
   loggedInUserName: string;
+  userType: string;
+  credentialStatus: string;
+  selectedPrograms: Array<Program> = [];
 
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   monthOptions = [
     {label: 'January', value: '01'},
     {label: 'February', value: '02'},
@@ -42,7 +43,7 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     const options = new Array<SalesforceOption>();
     const startYear = new Date().getFullYear() - 14;
 
-    for (let i = 100; i >= 0; i--) {
+    for (let i = 0; i <= 100; i++) {
       options.push(new SalesforceOption(
         (startYear - i).toString(),
         (startYear - i).toString(),
@@ -52,17 +53,21 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
     return options;
   }
 
-  getDayOptions(): Array<object> {
-    const options = new Array<object>();
-    const daysInMonth = new Date(+this.enrollmentAgreement.birthdateYear, +this.enrollmentAgreement.birthdateMonth, 0).getDate();
+  updateDayOptions(): void {
+    if (this.appData) {
+      const options = new Array<SalesforceOption>();
+      const daysInMonth = new Date(+this.appData.enrollmentAgreement.birthdateYear,
+        +this.appData.enrollmentAgreement.birthdateMonth, 0).getDate();
 
-    for (let i = 1; i <= daysInMonth; i++) {
-      options.push({
-        label: ('0' + i).slice(-2),
-        value: ('0' + i).slice(-2)
-      });
+      for (let i = 1; i <= daysInMonth; i++) {
+        options.push(new SalesforceOption(
+          ('0' + i).slice(-2),
+          ('0' + i).slice(-2),
+          false
+        ));
+      }
+      this.dayOptions = options;
     }
-    return options;
   }
 
   constructor(private appDataService: AppDataService) {
@@ -76,8 +81,26 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
       }
     });
 
+    this.appDataService.applicationData.asObservable().subscribe(app => {
+      if (app) {
+        this.appData = app;
+        this.studentName = this.appData.student.firstName + ' ' + this.appData.student.lastName;
+        this.selectedPrograms = this.appData.programData.programs.filter(p => p.isSelected);
+        this.updateDayOptions();
+      }
+    });
+
     this.appDataService.isSigning.asObservable().subscribe(val => {
       this.isSigning = val;
+    });
+
+    this.appDataService.getUserType();
+    this.appDataService.userType.asObservable().subscribe(type => {
+      this.userType = type;
+    });
+
+    this.appDataService.credentialStatus.asObservable().subscribe(status => {
+      this.credentialStatus = status;
     });
 
     Visualforce.remoting.Manager.invokeAction(
@@ -93,18 +116,22 @@ export class EnrollmentAgreementComponent implements OnInit, OnChanges {
   }
 
   signEnrollmentAgreement(): void {
-    if (this.enrollmentAgreement.isComplete()) {
+    if (this.appData.enrollmentAgreement.isComplete()) {
       this.appDataService.signEnrollmentAgreement();
     }
   }
 
-  public canClickCheckbox(): boolean {
-    return this.enrollmentAgreement.canCheckAcceptance();
+  canClickCheckbox(): boolean {
+    return this.appData.enrollmentAgreement.canCheckAcceptance();
   }
 
   onClickCheckbox(): void {
     if (this.canClickCheckbox()) {
-      this.enrollmentAgreement.acceptanceChecked = this.enrollmentAgreement.acceptanceChecked !== true;
+      this.appData.enrollmentAgreement.acceptanceChecked = this.appData.enrollmentAgreement.acceptanceChecked !== true;
     }
+  }
+
+  sendParentCredentials(parent: Parent): void {
+    this.appDataService.sendParentCredentials(parent, this.appData.student);
   }
 }

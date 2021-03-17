@@ -4,6 +4,7 @@ export class ProgramData {
   divisions: Map<string, string>;
   programs: Array<Program>;
   sessions: Array<string>;
+  sessionDates: Map<string, string>;
   selectedDivision: string;
   gradeInSchool: string;
 
@@ -11,6 +12,7 @@ export class ProgramData {
     this.programs = new Array<Program>();
     this.divisions = new Map<string, string>();
     this.sessions = new Array<string>();
+    this.sessionDates = new Map<string, string>();
   }
 
   public static createFromNestedJson(json: any): ProgramData {
@@ -19,6 +21,7 @@ export class ProgramData {
 
     programData.programs = json.programs.map(p => Program.createFromNestedJson(p));
     programData.divisions = new Map(Object.entries(json.divisions));
+    programData.sessionDates = new Map(Object.entries(json.sessionDates));
 
     return programData;
   }

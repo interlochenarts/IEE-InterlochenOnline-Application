@@ -8,7 +8,6 @@ import {HeaderComponent} from './components/header/header.component';
 
 import {ProgramInfoComponent} from './components/application/program-info/program-info.component';
 import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
-import {SignAndPayComponent} from './components/application/sign-and-pay/sign-and-pay.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
 import {ParentComponent} from './components/application/personal-info/parent/parent.component';
@@ -16,7 +15,6 @@ import {EnrollmentAgreementComponent} from './components/application/sign-and-pa
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
 import {FormsModule} from '@angular/forms';
 import {ParentInfoComponent} from './components/application/personal-info/parent/parent-info/parent-info.component';
-import {CreditCardComponent} from './components/application/sign-and-pay/payment/credit-card/credit-card.component';
 import {AchComponent} from './components/application/sign-and-pay/payment/ach/ach.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
@@ -32,13 +30,11 @@ import {EaHeaderComponent} from './components/application/sign-and-pay/enrollmen
     ProgramInfoComponent,
     HeaderComponent,
     PersonalInfoComponent,
-    SignAndPayComponent,
     StudentComponent,
     ParentComponent,
     EnrollmentAgreementComponent,
     PaymentComponent,
     ParentInfoComponent,
-    CreditCardComponent,
     AchComponent,
     ApplicationComponent,
     ProgramReviewComponent,

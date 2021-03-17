@@ -1,4 +1,4 @@
-<div *ngFor="let parent of parents">
+<div *ngFor="let parent of parents" class="my-4">
   <div class="row">
     <div class="col-8">
       <h4>Parent/Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
@@ -8,56 +8,83 @@
     </div>
   </div>
 
-  <div class="review my-1 row">
-    <div class="col-5 hideOverflow">Email</div>
-    <div class="col-7 hideOverflow" *ngIf="!parent.email">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  <div *ngIf="parent && !parent.isVerified" class="row my-4">
+    <div class="col-8">
+      <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
+      <div *ngIf="parent.verificationSent" class="alert alert-info my-3">
+        Verification email sent to {{parent.email}}
+      </div>
     </div>
-    <div class="col-7 hideOverflow" *ngIf="parent.email">{{parent.email}}</div>
+    <div class="col-4 text-right">
+      <button class="btn btn-default" (click)="reSendVerification(parent)">Re-send Verification</button>
+    </div>
   </div>
 
-  <div class="review my-1 row">
-    <div class="col-5 hideOverflow">Mailing Street</div>
-    <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.street">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  <div *ngIf="parent && parent.isVerified">
+    <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Email</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.email">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow" *ngIf="parent.email">{{parent.email}}</div>
     </div>
-    <div class="col-7 hideOverflow"
-         *ngIf="parent.mailingAddress && parent.mailingAddress.street">{{parent.mailingAddress.street}}</div>
-  </div>
 
-  <div class="review my-1 row">
-    <div class="col-5 hideOverflow">Mailing City</div>
-    <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.city">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+    <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Mailing Street</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.street">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow"
+           *ngIf="parent.mailingAddress && parent.mailingAddress.street">{{parent.mailingAddress.street}}</div>
     </div>
-    <div class="col-7 hideOverflow"
-         *ngIf="parent.mailingAddress && parent.mailingAddress.city">{{parent.mailingAddress.city}}</div>
-  </div>
 
-  <div class="review my-1 row">
-    <div class="col-5 hideOverflow">Mailing Country</div>
-    <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.country">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+    <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Mailing City</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.city">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow"
+           *ngIf="parent.mailingAddress && parent.mailingAddress.city">{{parent.mailingAddress.city}}</div>
     </div>
-    <div class="col-7 hideOverflow"
-         *ngIf="parent.mailingAddress && parent.mailingAddress.country">{{parent.mailingAddress.country}}</div>
-  </div>
 
-  <div class="review my-1 row" *ngIf="filteredStateCodesByParent.get(parent.contactId).length > 0">
-    <div class="col-5 hideOverflow">Mailing State</div>
-    <div class="col-7 hideOverflow" *ngIf="showStateError(parent)">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+    <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Mailing Country</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.country">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow"
+           *ngIf="parent.mailingAddress && parent.mailingAddress.country">{{parent.mailingAddress.country}}</div>
     </div>
-    <div class="col-7 hideOverflow"
-         *ngIf="parent.mailingAddress && parent.mailingAddress.stateProvince">{{parent.mailingAddress.stateProvince}}</div>
-  </div>
 
-  <div class="review my-1 row">
-    <div class="col-5 hideOverflow">Mailing Zip / Postal Code</div>
-    <div class="col-7 hideOverflow" *ngIf="showZipError(parent)">
-      <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+    <div class="review my-1 row" *ngIf="filteredStateCodesByParent.get(parent.contactId).length > 0">
+      <div class="col-5 hideOverflow">Mailing State</div>
+      <div class="col-7 hideOverflow" *ngIf="showStateError(parent)">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow"
+           *ngIf="parent.mailingAddress && parent.mailingAddress.stateProvince">{{parent.mailingAddress.stateProvince}}</div>
     </div>
-    <div class="col-7 hideOverflow"
-         *ngIf="parent.mailingAddress && parent.mailingAddress.zipPostalCode">{{parent.mailingAddress.zipPostalCode}}</div>
+
+    <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Mailing Zip / Postal Code</div>
+      <div class="col-7 hideOverflow" *ngIf="showZipError(parent)">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow"
+           *ngIf="parent.mailingAddress && parent.mailingAddress.zipPostalCode">{{parent.mailingAddress.zipPostalCode}}</div>
+    </div>
   </div>
+</div>
+
+<div class="review my-4 row">
+  <div class="col-5 hideOverflow">Billing Parent</div>
+  <div class="col-7 hideOverflow" *ngIf="!getBillingParentString()">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow"
+       *ngIf="getBillingParentString()">{{getBillingParentString()}}</div>
+</div>
+
+<div *ngIf="parents.length === 0" class="alert alert-danger">
+  Please <a [routerLink]="[link.routerLink]" class="alert-link">add a parent</a> before completing your registration.
 </div>

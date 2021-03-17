@@ -5,6 +5,9 @@ import {Student} from '../../../../_classes/student';
 import {ParentVerification} from '../../../../_classes/parent-verification';
 import {LegacyParentResults} from '../../../../_classes/legacy-parent-results';
 import {LegacyData} from '../../../../_classes/legacy-data';
+import {CountryCode} from '../../../../_classes/country-code';
+import {StateCode} from '../../../../_classes/state-code';
+import {AppDataService} from '../../../../services/app-data.service';
 
 declare const Visualforce: any;
 
@@ -16,6 +19,9 @@ declare const Visualforce: any;
 export class ParentComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
+  @Input() isParent: boolean;
+  @Input() countryCodes: Array<CountryCode> = [];
+  @Input() stateCodes: Array<StateCode> = [];
 
   // parent search
   showParentSearch = false;
@@ -24,12 +30,17 @@ export class ParentComponent implements OnInit, OnChanges {
   parentNotFound = false;
   addingUnverifiedParent = false;
   deletingParentId = 'none';
+  isSaving = false;
 
-  constructor() {
+  constructor(private appDataService: AppDataService) {
   }
 
   ngOnInit(): void {
     this.parents = this.parents || new Array<Parent>();
+
+    this.appDataService.isSaving.asObservable().subscribe(saving => {
+      this.isSaving = saving;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,8 +56,11 @@ export class ParentComponent implements OnInit, OnChanges {
       'IEE_CampApplication_ParentController.sendVerificationEmail',
       this.student.contactId, parent.contactId,
       result => {
-        if (result !== 'Email Sent') {
+        if (!result.includes('@')) {
           console.error('ERROR: Failed to send verification email');
+        } else {
+          parent.verificationSent = true;
+          parent.email = result;
         }
       },
       {buffer: false, escape: false}
@@ -82,16 +96,32 @@ export class ParentComponent implements OnInit, OnChanges {
         result => {
           if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
-            console.log('found parent: ' + this.parentResult);
-            this.showParentSearch = false;
+            // console.log('found parent: ' + this.parentResult);
           } else {
-            console.log('no parent found, creating new one.');
+            // console.log('no parent found, creating new one.');
             const emptyParent = Parent.createFromVerificationData(this.parentVerification);
             emptyParent.isEditing = true;
             emptyParent.verification = 'Verified';
             this.parents.push(emptyParent);
             this.parentNotFound = true;
+
+            // save parent on create
+            emptyParent.isSaving = true;
+            Visualforce.remoting.Manager.invokeAction(
+              'IEE_OnlineApplicationController.saveParent',
+              JSON.stringify(emptyParent), this.student.contactId,
+              parentSaveResult => {
+                emptyParent.isSaving = false;
+                if (parentSaveResult.startsWith('ERR')) {
+                  console.error('ERROR: Could not save parent');
+                } else {
+                  emptyParent.contactId = parentSaveResult;
+                }
+              },
+              {buffer: false, escape: false}
+            );
           }
+          this.showParentSearch = false;
         },
         {buffer: false, escape: false}
       );
@@ -99,18 +129,19 @@ export class ParentComponent implements OnInit, OnChanges {
   }
 
   verifyParent(): void {
-    console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
+    this.addingUnverifiedParent = true;
+    // console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
       result => {
-        console.dir(result);
+        // console.dir(result);
         const obj = JSON.parse(result);
 
         const legacyParent: Map<string, LegacyData> = new Map<string, LegacyData>();
         for (const key of Object.keys(obj)) {
-          console.dir(key);
+          // console.dir(key);
           legacyParent.set(key, LegacyData.createFromJson(obj[key]));
         }
 
@@ -122,6 +153,8 @@ export class ParentComponent implements OnInit, OnChanges {
 
         delete this.parentVerification;
         delete this.parentResult;
+
+        this.addingUnverifiedParent = false;
       },
       {buffer: false, escape: false}
     );
@@ -140,21 +173,26 @@ export class ParentComponent implements OnInit, OnChanges {
   }
 
   removeParent(parentContactId: string): void {
-    this.deletingParentId = parentContactId;
-    Visualforce.remoting.Manager.invokeAction(
-      'IEE_CampApplication_ParentController.removeParent',
-      parentContactId, this.student.contactId,
-      result => {
-        if (result === true) {
-          console.log('removed parent');
-          const pi = this.parents.findIndex(p => p.contactId === parentContactId);
-          this.parents.splice(pi, 1);
-        } else {
-          console.error('Could not delete parent: ' + parentContactId);
-        }
-        this.deletingParentId = 'none';
-      },
-      {buffer: false, escape: false}
-    );
+    console.log(`removing ${parentContactId}`);
+    const pi = this.parents.findIndex(p => p.contactId === parentContactId);
+    if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
+      this.deletingParentId = parentContactId;
+      this.parents[pi].isDeleting = true;
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_CampApplication_ParentController.removeParent',
+        parentContactId, this.student.contactId,
+        result => {
+          if (result === true) {
+            // console.log('removed parent');
+            this.parents.splice(pi, 1);
+          } else {
+            console.error('Could not delete parent: ' + parentContactId);
+            this.parents[pi].isDeleting = false;
+          }
+          this.deletingParentId = 'none';
+        },
+        {buffer: false, escape: false}
+      );
+    }
   }
 }

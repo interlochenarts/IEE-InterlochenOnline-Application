@@ -4,6 +4,9 @@ import {RouterLink} from '../../../../_classes/router-link';
 import {CountryCode} from '../../../../_classes/country-code';
 import {StateCode} from '../../../../_classes/state-code';
 import {AppDataService} from '../../../../services/app-data.service';
+import {Student} from '../../../../_classes/student';
+
+declare const Visualforce: any;
 
 @Component({
   selector: 'iee-parent-review',
@@ -12,6 +15,7 @@ import {AppDataService} from '../../../../services/app-data.service';
 })
 export class ParentReviewComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
+  @Input() student: Student;
   @Input() link: RouterLink;
 
   countryCodes: Array<CountryCode> = [];
@@ -43,6 +47,31 @@ export class ParentReviewComponent implements OnInit, OnChanges {
   showStateError(parent: Parent): boolean {
     const states = this.filteredStateCodesByParent.get(parent.contactId);
     return (states.length > 0 ? !parent.mailingAddress.stateProvince : false);
+  }
+
+  getBillingParentString(): string {
+    if (!this.student.billingParentId) {
+      return null;
+    } else {
+      const billingParent: Parent = this.parents.find(p => p.contactId === this.student.billingParentId);
+      return billingParent.isVerified ? `${billingParent.firstName} ${billingParent.lastName}` : null;
+    }
+  }
+
+  reSendVerification(parent: Parent): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_CampApplication_ParentController.sendVerificationEmail',
+      this.student.contactId, parent.contactId,
+      result => {
+        if (!result.includes('@')) {
+          console.error('ERROR: Failed to send verification email');
+        } else {
+          parent.verificationSent = true;
+          parent.email = parent.email == null ? result : parent.email;
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   private filterStates(): void {
