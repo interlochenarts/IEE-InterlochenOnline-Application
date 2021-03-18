@@ -12,7 +12,7 @@
 </div>
 
 <label for="selectedGrade" class="mt-4">Current Grade in School</label>
-<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
+<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
   <div class="select">
     <select [(ngModel)]="appData.programData.gradeInSchool"
             (change)="updateSelectedDivision()"
