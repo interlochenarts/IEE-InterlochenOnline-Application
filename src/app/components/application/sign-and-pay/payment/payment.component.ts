@@ -36,7 +36,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;
-        this.paymentReceived = appData.payment.paidOnLoad ? appData.payment.paidOnLoad : this.paymentReceived;
+        this.paymentReceived = appData.payment.paidOnLoad && !appData.isRegistered ? appData.payment.paidOnLoad : this.paymentReceived;
         this.isLoading = true;
         // Load payment info in case they picked programs since the data was last loaded
         Visualforce.remoting.Manager.invokeAction(
