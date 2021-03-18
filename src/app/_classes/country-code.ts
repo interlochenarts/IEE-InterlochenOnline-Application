@@ -8,7 +8,7 @@ export class CountryCode {
   public static createFromJson(json: any): CountryCode {
     const country = new CountryCode();
     country.id = json.Id;
-    country.name = json.VanaHCM__Country_Description__c;
+    country.name = json.Description__c;
     country.zipRequired = json.Zip_Postal_Code_required__c;
 
     return country;
