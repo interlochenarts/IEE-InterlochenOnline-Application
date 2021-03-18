@@ -111,7 +111,8 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelectedBySession, this.appData.payment.tuitionPaid) && !program.isSaving) {
+    if (!program.isDisabled(this.daysSelectedBySession,
+      this.appData.payment.tuitionPaid && !this.appData.isRegistered) && !program.isSaving) {
       program.isSaving = true;
       if (!program.isSelected) {
         if (program.artsAreaList[0] === 'Music') {
