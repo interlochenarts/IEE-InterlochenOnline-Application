@@ -95,7 +95,7 @@ export class ProgramInfoComponent implements OnInit {
   updateSelectedDivision(): void {
     const originalDivision: string = this.appData?.programData?.selectedDivision;
     const grade = this.appData.programData.gradeInSchool;
-    const gradeNumber = grade.match(/\d+/);
+    const gradeNumber = grade?.match(/\d+/);
     this.appData.programData.selectedDivision = this.appData.programData.divisionGradeMap.get(+gradeNumber);
     if (originalDivision && (originalDivision !== this.appData.programData.selectedDivision)) {
       this.clearSelectedPrograms();
