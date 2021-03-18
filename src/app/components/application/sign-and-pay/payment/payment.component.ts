@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {AppDataService} from '../../../../services/app-data.service';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {Payment} from '../../../../_classes/payment';
@@ -11,7 +11,7 @@ declare const Visualforce: any;
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.css']
 })
-export class PaymentComponent implements OnInit {
+export class PaymentComponent implements OnInit, OnDestroy {
   paymentReceived = false;
   hasCode = false;
   useCredit = false;
@@ -20,6 +20,7 @@ export class PaymentComponent implements OnInit {
   isLoading: boolean;
   enteredCode: string;
   totalTuition: number;
+  timer: number;
 
   userType = 'student';
   credentialStatus: string;
@@ -57,22 +58,8 @@ export class PaymentComponent implements OnInit {
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
       if (trxId && this.transactionId !== trxId && this.appData) {
         this.transactionId = trxId;
-        // console.log('Checking transactionId ' + trxId + ' for app ' + this.appData.appId);
-        // search salesforce for the transaction to see if it's real
-        Visualforce.remoting.Manager.invokeAction(
-          'IEE_OnlineApplicationController.checkTransaction',
-          this.appData.appId,
-          this.transactionId,
-          result => {
-            if (result && result !== 'null') {
-              this.paymentReceived = true;
-            } else {
-              console.error('no transaction found with id: ' + this.transactionId);
-              this.paymentReceived = false;
-            }
-          },
-          {buffer: false, escape: false}
-        );
+        this.isLoading = true;
+        this.timer = setInterval(() => this.checkPayment(), 1500);
       }
     });
 
@@ -83,6 +70,11 @@ export class PaymentComponent implements OnInit {
     this.appDataService.credentialStatus.asObservable().subscribe(status => {
       this.credentialStatus = status;
     });
+  }
+  ngOnDestroy(): void {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   }
 
   canPay(): boolean {
@@ -165,5 +157,27 @@ export class PaymentComponent implements OnInit {
 
   sendParentCredentials(parent: Parent): void {
     this.appDataService.sendParentCredentials(parent, this.appData.student);
+  }
+  checkPayment(): void {
+    this.isLoading = true;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.getPaymentJSON',
+      this.appData.appId,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          this.hasCode = this.appData.payment.waiverCode != null;
+          this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
+          this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
+          if (this.appData.payment.amountOwed <= 0) {
+            clearInterval(this.timer);
+            this.appData.payment.tuitionPaid = true;
+            this.paymentReceived = true;
+            this.isLoading = false;
+          }
+        }
+      },
+      {buffer: false, escape: false}
+    );
   }
 }
