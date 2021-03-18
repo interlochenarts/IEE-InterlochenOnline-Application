@@ -7,7 +7,7 @@
 </header>
 
 
-<div class="alert alert-warning" *ngIf="appData.payment.tuitionPaid">
+<div class="alert alert-warning" *ngIf="appData.payment.tuitionPaid && !appData.registered">
   Registration Fee has already been paid. No more changes are allowed to program choices.
 </div>
 
@@ -25,11 +25,11 @@
 </div>
 
 <label for="selectedArtsArea" class="mt-4">Arts Area</label>
-<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
+<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid && !appData.registered}">
   <div class="select">
     <select [(ngModel)]="selectedArtsArea"
             name="selectedArtsArea"
-            [disabled]="appData.payment.tuitionPaid"
+            [disabled]="appData.payment.tuitionPaid && !appData.registered"
             id="selectedArtsArea">
       <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
               [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
@@ -39,11 +39,11 @@
 
 <div *ngIf="appData.programData.sessions.length > 1">
   <label for="selectedSession" class="mt-4">Session</label>
-  <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid}">
+  <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid && !appData.registered}">
     <div class="select">
       <select [(ngModel)]="selectedSession"
               name="selectedSession"
-              [disabled]="appData.payment.tuitionPaid"
+              [disabled]="appData.payment.tuitionPaid && !appData.registered"
               id="selectedSession">
         <option *ngFor="let session of sortedSessions" [value]="session.value"
                 [defaultSelected]="session.defaultValue">{{session.label}}</option>
@@ -61,12 +61,12 @@
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program, instrumentModal)"
-     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)}">
+     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid && !appData.registered)}">
   <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid)}">
+           [disabled]="program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid && !appData.registered)">
+    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, appData.payment.tuitionPaid && !appData.registered)}">
       <i class="fa fa-check pl-4"></i>
     </label>
   </div>
