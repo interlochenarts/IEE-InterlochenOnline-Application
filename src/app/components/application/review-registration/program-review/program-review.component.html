@@ -11,7 +11,10 @@
 </div>
 
 <div *ngFor="let program of selectedPrograms" class="my-2">
-  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b></div>
+  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+    <span *ngIf="isRegistered && !program.isRegistered"> - <span class="new-program">New</span></span>
+    <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
+  </div>
   <div class="ml-3">Session: {{program.sessionDates}} </div>
   <div class="ml-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
