@@ -17,6 +17,7 @@ export class ParentReviewComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
   @Input() link: RouterLink;
+  @Input() locked: boolean;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
