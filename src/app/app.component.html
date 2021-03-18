@@ -8,7 +8,7 @@
       <nav class="well dark">
         <ul>
           <li *ngFor="let link of links">
-            <a *ngIf="link.show"
+            <a *ngIf="link.show(appData)"
                [routerLink]="[link.routerLink]" routerLinkActive="active"
                [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}"
                [tabIndex]="link.disabled(appData, countryCodes, stateCodes) ? -1 : 0"
