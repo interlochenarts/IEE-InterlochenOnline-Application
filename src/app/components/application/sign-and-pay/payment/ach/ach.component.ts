@@ -38,7 +38,7 @@ export class AchComponent implements OnInit, OnChanges {
       // console.log('getting FACTS link for app ' + this.appData.appId);
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getLinkFACTS',
-        this.appData.appId, this.appData.payment.useCredit,
+        this.appData.appId, this.appData.payment.useCredit, this.appData.isRegistered,
         result => {
           if (result && result !== 'null') {
             this.linkFACTS = result;
