@@ -44,6 +44,10 @@ export class ParentReviewComponent implements OnInit, OnChanges {
     return (countryCode.zipRequired ? !parent.mailingAddress.zipPostalCode : false);
   }
 
+  showZip(parent: Parent): boolean {
+    return this.getCountryCode(parent).zipRequired;
+  }
+
   showStateError(parent: Parent): boolean {
     const states = this.filteredStateCodesByParent.get(parent.contactId);
     return (states.length > 0 ? !parent.mailingAddress.stateProvince : false);
