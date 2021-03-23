@@ -11,6 +11,7 @@ import {RouterLink} from '../../../../_classes/router-link';
 export class ProgramReviewComponent implements OnInit, OnChanges {
   @Input() programData: ProgramData = new ProgramData();
   @Input() link: RouterLink;
+  @Input() isRegistered: boolean;
   selectedPrograms: Array<Program>;
 
   constructor() { }

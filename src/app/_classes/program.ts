@@ -8,6 +8,7 @@ export class Program {
   artsArea: string;
   division: string;
   isSelected = false;
+  isRegistered = false;
   appChoiceId: string;
   sessionDates: string;
   sessionName: string;
@@ -38,7 +39,7 @@ export class Program {
 
   public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean): boolean {
     // disable everything if fee already paid
-    if (feePaid) {
+    if (feePaid || this.isRegistered) {
       return true;
     }
 
