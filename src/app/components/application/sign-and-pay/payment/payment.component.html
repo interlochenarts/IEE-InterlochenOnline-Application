@@ -20,7 +20,7 @@
     <div>
       <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
       <p class="mb-0" *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">Previous Registration: -{{appData.payment.amountPaid | currency:'USD'}}</p>
-      <p class="mb-0" *ngIf="appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i *ngIf="!paymentReceived" (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
+      <p class="mb-0" *ngIf="appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
       <p class="mb-0" *ngIf="appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
       <p class="mb-0" *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">Credit Amount: -{{appData.payment.spendableCredit | currency:'USD'}}</p>
       <p><strong>Amount owed: {{achAmount | currency:'USD'}}</strong></p>
