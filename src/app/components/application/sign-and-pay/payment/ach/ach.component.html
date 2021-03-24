@@ -1,4 +1,5 @@
 <div class="mb-2 mt-4" *ngIf="!appData.payment.paidOnLoad">
+  <p><i>Once registered, Interlochen Online programs are not refundable, though in some cases we may be able to apply payment to another Interlochen program. If you have any questions, please contact us at <a href="mailto:online@interlochen.org" target="_blank">online@interlochen.org</a> before completing registration.</i></p>
   <p>Clicking the payment button will take you to our payment processor. Once your payment is complete you will be redirected back to this page.</p>
   <a class="btn btn-primary" [attr.href]="linkFACTS" [ngClass]="{'disabled' : !linkFACTS}" target="_self">Pay Fee Now</a>
 </div>

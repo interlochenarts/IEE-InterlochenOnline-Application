@@ -65,7 +65,7 @@
            *ngIf="parent.mailingAddress && parent.mailingAddress.stateProvince">{{parent.mailingAddress.stateProvince}}</div>
     </div>
 
-    <div class="review my-1 row">
+    <div class="review my-1 row" *ngIf="showZip(parent)">
       <div class="col-5 hideOverflow">Mailing Zip / Postal Code</div>
       <div class="col-7 hideOverflow" *ngIf="showZipError(parent)">
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
