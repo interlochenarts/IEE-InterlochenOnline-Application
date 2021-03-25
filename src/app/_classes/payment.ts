@@ -12,6 +12,7 @@ export class Payment {
   waiverCode: string;
   waiverDescription: string;
   appliedWaivers: number;
+  hasWaiverTransactions: boolean;
 
   public static createFromNestedJson(json: any): Payment {
     const payment = new Payment();

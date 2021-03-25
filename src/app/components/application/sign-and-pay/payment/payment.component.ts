@@ -88,6 +88,8 @@ export class PaymentComponent implements OnInit, OnDestroy {
       this.appData.appId, this.appData.payment.useCredit,
       result => {
         if (result && result !== 'null') {
+          this.useCredit = false;
+          this.appData.payment.useCredit = false;
           this.appData.payment.amountOwed -= result;
           this.appData.payment.credits -= result;
           this.appData.payment.appliedCredits += result;
