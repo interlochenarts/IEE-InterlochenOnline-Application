@@ -17,7 +17,7 @@
     <select [(ngModel)]="appData.programData.gradeInSchool"
             (change)="updateSelectedDivision()"
             name="selectedGrade"
-            [disabled]="appData.payment.tuitionPaid"
+            [disabled]="appData.payment.tuitionPaid || appData.isRegistered"
             id="selectedGrade">
       <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
     </select>
