@@ -15,7 +15,7 @@
       You have paid your registration fee of {{appData.payment.amountPaid | currency:'USD'}}.
     </div>
     <div class="default mb-2" *ngIf="paymentReceived && transactionId != null">
-      You have paid your registration fee of {{appData.payment.payments[0] | currency:'USD'}}.
+      You have paid your registration fee of {{appData.payment.payments[0].split('&')[0] | currency:'USD'}}.
     </div>
     <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0 && appData.payment.appliedWaivers <= 0">
       You must choose a program before you can pay.
@@ -23,7 +23,7 @@
     <div>
       <p class="mb-0">Total tuition: {{totalTuition | currency:'USD'}}</p>
       <div *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
-        <p class="mb-0" *ngFor="let payment of appData.payment.payments" >Previous Registration: -{{payment | currency:'USD'}}</p>
+        <p class="mb-0" *ngFor="let payment of appData.payment.payments" >Registration Paid {{payment.split('&')[1] | date:'short'}}: -{{payment.split('&')[0] | currency:'USD'}}</p>
       </div>
       <p class="mb-0" *ngIf="appData.payment.appliedWaivers > 0">Discount Amount: -{{appData.payment.appliedWaivers | currency:'USD'}} <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></p>
       <p class="mb-0" *ngIf="appData.payment.appliedCredits > 0">Credit Amount: -{{appData.payment.appliedCredits | currency:'USD'}}</p>
