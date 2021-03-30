@@ -4,6 +4,7 @@ import {AppDataService} from '../../../services/app-data.service';
 import {Program} from '../../../_classes/program';
 import {SalesforceOption} from '../../../_classes/salesforce-option';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Payment} from '../../../_classes/payment';
 
 declare const Visualforce: any;
 
@@ -140,8 +141,9 @@ export class ProgramInfoComponent implements OnInit {
   get programsDisabled(): boolean {
     const unRegisteredPrograms = this.appData.programData.programs.filter(
       program => (program.isSelected && !program.isRegistered)).length > 0;
+    const programSaving = this.appData.programData.programs.filter(program => program.isSaving).length > 0;
     return (this.appData.payment.tuitionPaid && !this.appData.isRegistered) ||
-      (this.appData.isRegistered && unRegisteredPrograms && this.appData.payment.amountOwed === 0);
+      (this.appData.isRegistered && unRegisteredPrograms && !programSaving && this.appData.payment.amountOwed === 0);
   }
   private addDaysSelected(p: Program): void {
     p.daysArray?.forEach(d => {
@@ -164,6 +166,17 @@ export class ProgramInfoComponent implements OnInit {
         } else {
           // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            this.appData.appId,
+            payment => {
+              if (payment && payment !== 'null') {
+                this.appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+            },
+            {buffer: false, escape: false}
+          );
         }
         program.isSaving = false;
       },
