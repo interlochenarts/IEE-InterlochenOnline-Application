@@ -33,6 +33,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.transactionId = null;
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;

@@ -137,7 +137,12 @@ export class ProgramInfoComponent implements OnInit {
       }
     }
   }
-
+  get programsDisabled(): boolean {
+    const unRegisteredPrograms = this.appData.programData.programs.filter(
+      program => (program.isSelected && !program.isRegistered)).length > 0;
+    return (this.appData.payment.tuitionPaid && !this.appData.isRegistered) ||
+      (this.appData.isRegistered && unRegisteredPrograms && this.appData.payment.amountOwed === 0);
+  }
   private addDaysSelected(p: Program): void {
     p.daysArray?.forEach(d => {
       const daysSelected: Set<string> = this.daysSelectedBySession.get(p.sessionName) || new Set<string>();

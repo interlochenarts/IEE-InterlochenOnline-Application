@@ -3,6 +3,7 @@ export class Payment {
   paidOnLoad: boolean;
   amountOwed: number;
   amountPaid: number;
+  payments: Array<string>;
   credits: number;
   ccFee: number;
   ccPercent: number;
