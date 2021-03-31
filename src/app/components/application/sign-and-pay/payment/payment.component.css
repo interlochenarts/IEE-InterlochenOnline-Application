@@ -6,3 +6,7 @@
 .remove {
   cursor: pointer;
 }
+
+.table td {
+  padding: 0.25rem;
+}
