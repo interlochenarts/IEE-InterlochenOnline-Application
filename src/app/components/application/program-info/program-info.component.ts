@@ -67,10 +67,10 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get filteredPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p =>
-      (p.division === this.appData.programData.selectedDivision) &&
+    return this.appData.programData.programs.filter(p => p.isSelected ||
+      ((p.division === this.appData.programData.selectedDivision) &&
       (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true));
+      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }
 
   updateArtsAreas(): void {
