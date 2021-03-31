@@ -4,6 +4,7 @@ export class Payment {
   amountOwed: number;
   amountPaid: number;
   payments: Array<string>;
+  creditPayments: Array<string>;
   credits: number;
   ccFee: number;
   ccPercent: number;
