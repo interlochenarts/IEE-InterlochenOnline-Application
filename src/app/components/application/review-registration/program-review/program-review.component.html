@@ -18,7 +18,14 @@
   <div class="ml-3">Session: {{program.sessionDates}} </div>
   <div class="ml-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
+<div *ngFor="let program of registeredPrograms" class="my-2">
+  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+    - Registered
+  </div>
+  <div class="ml-3">Session: {{program.sessionDates}} </div>
+  <div class="ml-3">Meeting Days: {{program.daysDisplay}}</div>
+</div>
 
-<div *ngIf="!selectedPrograms || selectedPrograms.length === 0">
+<div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
   <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> No programs selected</span>
 </div>
