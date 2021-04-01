@@ -15,6 +15,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   autoSaveIntervalId: number;
   saveTime: Date;
   isParent: boolean;
+  userContactId: string;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
@@ -41,6 +42,10 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.appDataService.getUserType();
     this.appDataService.userType.asObservable().subscribe(type => {
       this.isParent = type === 'parent';
+    });
+    this.appDataService.getUserContactId();
+    this.appDataService.userContactId.asObservable().subscribe(contactId => {
+      this.userContactId = contactId;
     });
 
     this.autoSaveIntervalId = setInterval(() => {
