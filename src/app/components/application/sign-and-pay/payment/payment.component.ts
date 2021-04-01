@@ -33,10 +33,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.transactionId = null;
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;
-        this.paymentReceived = appData.payment.paidOnLoad ? appData.payment.paidOnLoad : this.paymentReceived;
+        this.paymentReceived = appData.payment.paidOnLoad && !appData.isRegistered ? appData.payment.paidOnLoad : this.paymentReceived;
         this.isLoading = true;
         // Load payment info in case they picked programs since the data was last loaded
         Visualforce.remoting.Manager.invokeAction(
@@ -88,6 +89,8 @@ export class PaymentComponent implements OnInit, OnDestroy {
       this.appData.appId, this.appData.payment.useCredit,
       result => {
         if (result && result !== 'null') {
+          this.useCredit = false;
+          this.appData.payment.useCredit = false;
           this.appData.payment.amountOwed -= result;
           this.appData.payment.credits -= result;
           this.appData.payment.appliedCredits += result;
