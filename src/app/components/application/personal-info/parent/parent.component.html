@@ -13,7 +13,7 @@
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
-      <a class="mx-3" href="javascript:void(0);" *ngIf="!isParent"
+      <a class="mx-3" href="javascript:void(0);" *ngIf="parent.contactId !== userContactId"
          [ngClass]="{disabled: isSaving || parent.isSaving}"
          (click)="removeParent(parent.contactId)">Remove</a>
       <span *ngIf="parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
