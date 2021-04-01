@@ -121,9 +121,9 @@
     <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent</span>
   </div>
 
-  <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
+  <label *ngIf="parents.length > 1" for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
   <div class="default required">
-    <div class="select">
+    <div *ngIf="parents.length > 1" class="select">
       <select [(ngModel)]="student.billingParentId"
               name="primaryBillingContact"
               id="primaryBillingContact">
