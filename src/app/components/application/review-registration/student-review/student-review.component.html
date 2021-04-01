@@ -3,7 +3,7 @@
     <h4>Student: {{student.firstName}} {{student.lastName}}</h4>
   </div>
   <div class="col-4 text-right">
-    <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+    <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
   </div>
 </div>
 

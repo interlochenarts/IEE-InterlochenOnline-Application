@@ -3,6 +3,8 @@ export class Payment {
   paidOnLoad: boolean;
   amountOwed: number;
   amountPaid: number;
+  payments: Array<string>;
+  creditPayments: Array<string>;
   credits: number;
   ccFee: number;
   ccPercent: number;
@@ -12,6 +14,7 @@ export class Payment {
   waiverCode: string;
   waiverDescription: string;
   appliedWaivers: number;
+  hasWaiverTransactions: boolean;
 
   public static createFromNestedJson(json: any): Payment {
     const payment = new Payment();

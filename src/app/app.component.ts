@@ -43,15 +43,15 @@ export class AppComponent implements OnInit {
 
         this.appDataService.routerLinks.next([
           new RouterLink('/' + this.applicationId + '/student-info', 'Student Information',
-            () => false),
+            () => false, this.linkShow),
           new RouterLink('/' + this.applicationId + '/program', 'Select a Program',
-            () => false),
+            () => false, () => true),
           new RouterLink('/' + this.applicationId + '/review-registration', 'Review Registration',
-            () => false),
+            () => false, () => true),
           new RouterLink('/' + this.applicationId + '/pay-registration', 'Pay Registration',
-            this.linkDisabled),
+            this.linkDisabled, () => true),
           new RouterLink('/' + this.applicationId + '/sign', 'Complete Registration',
-            this.linkDisabled)
+            this.linkDisabled, () => true)
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
@@ -63,15 +63,15 @@ export class AppComponent implements OnInit {
 
         this.appDataService.routerLinks.next([
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/student-info', 'Student Information',
-            () => false),
+            () => false, this.linkShow),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/program', 'Select a Program',
-            () => false),
+            () => false, () => true),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/review-registration', 'Review Registration',
-            () => false),
+            () => false, () => true),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/pay-registration', 'Pay Registration',
-            this.linkDisabled),
+            this.linkDisabled, () => true),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/sign', 'Complete Registration',
-            this.linkDisabled)
+            this.linkDisabled, () => true)
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
@@ -86,6 +86,10 @@ export class AppComponent implements OnInit {
   }
 
   linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    return !appData.isComplete(countryCodes, stateCodes);
+    return !appData.isComplete(countryCodes, stateCodes) ||
+      (appData.isRegistered && appData.programData.programs.filter(program => (program.isSelected && !program.isRegistered)).length === 0);
+  }
+  linkShow(appData: ApplicationData): boolean {
+    return !appData.isRegistered;
   }
 }
