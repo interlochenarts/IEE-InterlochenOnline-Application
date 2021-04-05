@@ -17,6 +17,8 @@ export class ApplicationData {
   termName: string;
   appId: string;
   appName: string;
+  appStatus: string;
+  isRegistered: boolean;
 
   constructor() {
     this.student = new Student();
@@ -38,6 +40,7 @@ export class ApplicationData {
     appData.programData = ProgramData.createFromNestedJson(json.programData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
+    appData.isRegistered = appData.appStatus === 'Registered';
 
     return appData;
   }

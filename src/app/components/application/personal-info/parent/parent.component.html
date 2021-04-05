@@ -13,7 +13,7 @@
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
-      <a class="mx-3" href="javascript:void(0);" *ngIf="!isParent"
+      <a class="mx-3" href="javascript:void(0);" *ngIf="parent.contactId !== userContactId"
          [ngClass]="{disabled: isSaving || parent.isSaving}"
          (click)="removeParent(parent.contactId)">Remove</a>
       <span *ngIf="parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
@@ -121,9 +121,9 @@
     <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent</span>
   </div>
 
-  <label for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
+  <label *ngIf="parents.length > 1" for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
   <div class="default required">
-    <div class="select">
+    <div *ngIf="parents.length > 1" class="select">
       <select [(ngModel)]="student.billingParentId"
               name="primaryBillingContact"
               id="primaryBillingContact">

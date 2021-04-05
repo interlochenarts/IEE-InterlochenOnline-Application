@@ -4,6 +4,7 @@ import {AppDataService} from '../../../services/app-data.service';
 import {Program} from '../../../_classes/program';
 import {SalesforceOption} from '../../../_classes/salesforce-option';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Payment} from '../../../_classes/payment';
 
 declare const Visualforce: any;
 
@@ -67,10 +68,10 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get filteredPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p =>
-      (p.division === this.appData.programData.selectedDivision) &&
+    return this.appData.programData.programs.filter(p => p.isSelected ||
+      ((p.division === this.appData.programData.selectedDivision) &&
       (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true));
+      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }
 
   updateArtsAreas(): void {
@@ -104,14 +105,15 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clearSelectedPrograms(): void {
-    this.appData.programData.programs.filter(p => p.isSelected).forEach(p => {
+    this.appData.programData.programs.filter(p => p.isSelected && !p.isRegistered).forEach(p => {
       p.isSaving = true;
       this.removeProgram(p);
     });
   }
 
   clickProgram(program: Program, modal): void {
-    if (!program.isDisabled(this.daysSelectedBySession, this.appData.payment.tuitionPaid) && !program.isSaving) {
+    if (!program.isDisabled(this.daysSelectedBySession,
+      this.appData.payment.tuitionPaid && !this.appData.isRegistered) && !program.isSaving) {
       program.isSaving = true;
       if (!program.isSelected) {
         if (program.artsAreaList[0] === 'Music') {
@@ -136,7 +138,13 @@ export class ProgramInfoComponent implements OnInit {
       }
     }
   }
-
+  get programsDisabled(): boolean {
+    const unRegisteredPrograms = this.appData.programData.programs.filter(
+      program => (program.isSelected && !program.isRegistered)).length > 0;
+    const programSaving = this.appData.programData.programs.filter(program => program.isSaving).length > 0;
+    return (this.appData.payment.tuitionPaid && !this.appData.isRegistered) ||
+      (this.appData.isRegistered && unRegisteredPrograms && !programSaving && this.appData.payment.amountOwed === 0);
+  }
   private addDaysSelected(p: Program): void {
     p.daysArray?.forEach(d => {
       const daysSelected: Set<string> = this.daysSelectedBySession.get(p.sessionName) || new Set<string>();
@@ -158,6 +166,17 @@ export class ProgramInfoComponent implements OnInit {
         } else {
           // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            this.appData.appId,
+            payment => {
+              if (payment && payment !== 'null') {
+                this.appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+            },
+            {buffer: false, escape: false}
+          );
         }
         program.isSaving = false;
       },

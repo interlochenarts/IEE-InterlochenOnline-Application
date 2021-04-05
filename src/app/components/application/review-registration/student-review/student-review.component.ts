@@ -15,6 +15,7 @@ import {Parent} from '../../../../_classes/parent';
 export class StudentReviewComponent implements OnInit, OnChanges {
   @Input() student: Student;
   @Input() link: RouterLink;
+  @Input() locked: boolean;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
