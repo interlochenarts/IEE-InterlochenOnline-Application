@@ -17,6 +17,7 @@ export class AppDataService {
   public applicationId = new BehaviorSubject<string>(null);
   public transactionId = new BehaviorSubject<string>(null);
   public userType = new BehaviorSubject<string>(null);
+  public userContactId = new BehaviorSubject<string>(null);
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
@@ -47,6 +48,16 @@ export class AppDataService {
       'IEE_OnlineApplicationController.getUserType',
       (userType: string) => {
         this.userType.next(userType);
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public getUserContactId(): void {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.getUserContactId',
+      (userContactId: string) => {
+        this.userContactId.next(userContactId);
       },
       {buffer: false, escape: false}
     );
@@ -85,7 +96,9 @@ export class AppDataService {
     const appId = this.applicationId.getValue();
 
     const appDataCopy = ApplicationData.createFromNestedJson(JSON.parse(JSON.stringify(appData)));
-    appDataCopy.parents = appDataCopy.parents.filter(p => !p.isDeleting);
+    // only save parents who are not being deleted, and that already have a contact id
+    // hopefully prevents creating duplicate parents
+    appDataCopy.parents = appDataCopy.parents.filter(p => !p.isDeleting && !!p.contactId);
 
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {
@@ -96,12 +109,12 @@ export class AppDataService {
         appId,
         result => {
           if (result !== null) {
-            // fix missing parent contact IDs if we just created one with this save
-            const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));
-            resultApp.parents.forEach((p: Parent) => {
-              // match on first name because I can't think of anything better
-              appData.parents.find(ap => ap.firstName === p.firstName).contactId = p.contactId;
-            });
+            // Commenting out for now, don't want to save parents here for the first time
+            // const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));
+            // resultApp.parents.forEach((p: Parent) => {
+            //   // match on first name because I can't think of anything better
+            //   appData.parents.find(ap => ap.firstName === p.firstName).contactId = p.contactId;
+            // });
           }
           this.isSaving.next(false);
         },

@@ -20,6 +20,7 @@ export class ParentComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
   @Input() isParent: boolean;
+  @Input() userContactId: string;
   @Input() countryCodes: Array<CountryCode> = [];
   @Input() stateCodes: Array<StateCode> = [];
 
