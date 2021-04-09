@@ -1,5 +1,8 @@
 #!/bin/bash
 
+NODE_VERSION=14
+NG_CLI_VERSION=11.0.1
+
 cd ..;
 
 # check if nvm is installed. If not, install it.
@@ -10,7 +13,7 @@ fi
 
 # lets us use the nvm commands
 source "$HOME/.nvm/nvm.sh"
-nvm install 15
+nvm install $NODE_VERSION
 
 # get our dependencies
 npm install;
@@ -18,7 +21,7 @@ npm install --save-dev;
 
 # check for angular-cli and install if not found
 if ! command -v ng &>/dev/null; then
-  npm install -g @angular/cli@11.0.1
+  npm install -g @angular/cli@$NG_CLI_VERSION
 fi
 
 ng build --prod --aot --output-hashing=none
