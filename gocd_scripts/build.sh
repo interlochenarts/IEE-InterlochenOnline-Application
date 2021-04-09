@@ -16,12 +16,14 @@ source "$HOME/.nvm/nvm.sh"
 nvm install $NODE_VERSION
 
 # get our dependencies
+echo -e "===> npm install <===\n"
 npm install;
-npm install --save-dev;
 
 # check for angular-cli and install if not found
 if ! command -v ng &>/dev/null; then
+  echo -e "\n===> Installing @angular/cli <===\n"
   npm install -g @angular/cli@$NG_CLI_VERSION
 fi
 
+echo -e "\n===> Compiling... <===\n"
 ng build --prod --aot --output-hashing=none

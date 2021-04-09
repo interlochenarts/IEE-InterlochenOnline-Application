@@ -19,7 +19,6 @@ fi
 
 if [ ! -d "$DIST_FOLDER" ]; then
   echo -e "$DIST_FOLDER does not exist\n"
-  ls
 fi
 
 cd $DIST_FOLDER || exit;
