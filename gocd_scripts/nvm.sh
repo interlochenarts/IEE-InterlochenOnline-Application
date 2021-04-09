@@ -15,3 +15,10 @@ nvm install 15
 # get our dependencies
 npm install;
 npm install --save-dev;
+
+# check for angular-cli and install if not found
+if ! command -v ng &>/dev/null; then
+  npm install -g @angular/cli@11.0.1
+fi
+
+ng build --prod --aot

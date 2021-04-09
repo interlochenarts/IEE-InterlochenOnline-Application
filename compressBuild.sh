@@ -18,7 +18,8 @@ if [ ! -d "$RESOURCE_FOLDER" ]; then
 fi
 
 if [ ! -d "$DIST_FOLDER" ]; then
-  ng build;
+  echo -e "$DIST_FOLDER does not exist\n"
+  ls
 fi
 
 cd $DIST_FOLDER || exit;
