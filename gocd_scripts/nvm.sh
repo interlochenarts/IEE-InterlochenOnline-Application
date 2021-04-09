@@ -21,4 +21,4 @@ if ! command -v ng &>/dev/null; then
   npm install -g @angular/cli@11.0.1
 fi
 
-ng build --prod --aot
+ng build --prod --aot --output-hashing=none
