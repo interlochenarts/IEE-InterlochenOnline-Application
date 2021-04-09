@@ -11,3 +11,7 @@ fi
 # lets us use the nvm commands
 source "$HOME/.nvm/nvm.sh"
 nvm install 15
+
+# get our dependencies
+npm install;
+npm install --save-dev;
