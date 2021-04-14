@@ -34,7 +34,7 @@
     <hr>
   </div>
 
-  <div *ngIf="(!parents || parents.length === 0) && !showParentSearch && !parentResult">
+  <div *ngIf="(!parents || parents.length === 0) && !showParentSearch && !parentResult" class="my-3">
     <button (click)="searchForParent()" class="btn btn-default">
       Add a parent
     </button>
