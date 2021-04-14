@@ -85,6 +85,6 @@
        *ngIf="getBillingParentString()">{{getBillingParentString()}}</div>
 </div>
 
-<div *ngIf="parents.length === 0" class="alert alert-danger">
+<div *ngIf="!parents || parents.length === 0" class="alert alert-danger">
   Please <a [routerLink]="[link.routerLink]" class="alert-link">add a parent</a> before completing your registration.
 </div>

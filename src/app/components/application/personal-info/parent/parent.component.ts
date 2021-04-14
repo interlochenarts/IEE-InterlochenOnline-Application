@@ -186,6 +186,9 @@ export class ParentComponent implements OnInit, OnChanges {
           if (result === true) {
             // console.log('removed parent');
             this.parents.splice(pi, 1);
+            if (this.student.billingParentId === parentContactId) {
+              this.student.billingParentId = null;
+            }
           } else {
             console.error('Could not delete parent: ' + parentContactId);
             this.parents[pi].isDeleting = false;
