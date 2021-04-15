@@ -36,7 +36,7 @@
 
   <div *ngIf="(!parents || parents.length === 0) && !showParentSearch && !parentResult" class="my-3">
     <button (click)="searchForParent()" class="btn btn-default">
-      Add a parent
+      Add a parent or guardian
     </button>
   </div>
 
@@ -118,7 +118,7 @@
     <button class="btn btn-primary ml-2 d-inline-block" type="button" (click)="searchForParent()">
       <i class="fa fa-ban"></i> No, Search Again
     </button>
-    <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent</span>
+    <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding parent/guardian</span>
   </div>
 
   <label *ngIf="parents.length > 1" for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
@@ -131,9 +131,6 @@
           {{parent.firstName}} {{parent.lastName}}
         </option>
       </select>
-    </div>
-    <div *ngIf="!parents || parents.length === 0">
-      Please add a parent.
     </div>
   </div>
 </div>
