@@ -188,6 +188,8 @@ export class ParentComponent implements OnInit, OnChanges {
             this.parents.splice(pi, 1);
             if (this.student.billingParentId === parentContactId) {
               this.student.billingParentId = null;
+              // Set a new default billing parent if we can
+              this.setDefaultBillingParent();
             }
           } else {
             console.error('Could not delete parent: ' + parentContactId);
