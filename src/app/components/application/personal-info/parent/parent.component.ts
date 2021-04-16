@@ -180,7 +180,7 @@ export class ParentComponent implements OnInit, OnChanges {
       this.deletingParentId = parentContactId;
       this.parents[pi].isDeleting = true;
       Visualforce.remoting.Manager.invokeAction(
-        'IEE_CampApplication_ParentController.removeParent',
+        'IEE_OnlineApplicationController.removeParent',
         parentContactId, this.student.contactId,
         result => {
           if (result === true) {
