@@ -180,12 +180,17 @@ export class ParentComponent implements OnInit, OnChanges {
       this.deletingParentId = parentContactId;
       this.parents[pi].isDeleting = true;
       Visualforce.remoting.Manager.invokeAction(
-        'IEE_CampApplication_ParentController.removeParent',
+        'IEE_OnlineApplicationController.removeParent',
         parentContactId, this.student.contactId,
         result => {
           if (result === true) {
             // console.log('removed parent');
             this.parents.splice(pi, 1);
+            if (this.student.billingParentId === parentContactId) {
+              this.student.billingParentId = null;
+              // Set a new default billing parent if we can
+              this.setDefaultBillingParent();
+            }
           } else {
             console.error('Could not delete parent: ' + parentContactId);
             this.parents[pi].isDeleting = false;
