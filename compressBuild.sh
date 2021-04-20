@@ -18,7 +18,7 @@ if [ ! -d "$RESOURCE_FOLDER" ]; then
 fi
 
 if [ ! -d "$DIST_FOLDER" ]; then
-  ng build;
+  echo -e "$DIST_FOLDER does not exist\n"
 fi
 
 cd $DIST_FOLDER || exit;
@@ -27,4 +27,8 @@ cd $DIST_FOLDER || exit;
 echo -e "Compressing files to $FILE.$EXT"
 zip -r "../../$RESOURCE_FOLDER/$FILE.$EXT" *
 
-echo -e "\nFinished creating $FILE.$EXT\n"
+if [ ! -f "../../$RESOURCE_FOLDER/$FILE.$EXT" ]; then
+  >&2 echo -e "Failed to create resource"
+else
+  echo -e "\nFinished creating $FILE.$EXT\n"
+fi

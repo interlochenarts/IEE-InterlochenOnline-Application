@@ -14,7 +14,7 @@ declare const Visualforce: any;
   styleUrls: ['./parent-review.component.less']
 })
 export class ParentReviewComponent implements OnInit, OnChanges {
-  @Input() parents: Array<Parent>;
+  @Input() parents: Array<Parent> = [];
   @Input() student: Student;
   @Input() link: RouterLink;
   @Input() locked: boolean;
@@ -55,27 +55,29 @@ export class ParentReviewComponent implements OnInit, OnChanges {
   }
 
   getBillingParentString(): string {
-    if (!this.student.billingParentId) {
-      return null;
-    } else {
+    if (this.student.billingParentId) {
       const billingParent: Parent = this.parents.find(p => p.contactId === this.student.billingParentId);
-      return billingParent.isVerified ? `${billingParent.firstName} ${billingParent.lastName}` : null;
+      if (billingParent) {
+        return billingParent.isVerified ? `${billingParent.firstName} ${billingParent.lastName}` : null;
+      }
     }
+
+    return null;
   }
 
   reSendVerification(parent: Parent): void {
     Visualforce.remoting.Manager.invokeAction(
-      'IEE_CampApplication_ParentController.sendVerificationEmail',
-      this.student.contactId, parent.contactId,
-      result => {
-        if (!result.includes('@')) {
-          console.error('ERROR: Failed to send verification email');
-        } else {
-          parent.verificationSent = true;
-          parent.email = parent.email == null ? result : parent.email;
-        }
-      },
-      {buffer: false, escape: false}
+        'IEE_CampApplication_ParentController.sendVerificationEmail',
+        this.student.contactId, parent.contactId,
+        result => {
+          if (!result.includes('@')) {
+            console.error('ERROR: Failed to send verification email');
+          } else {
+            parent.verificationSent = true;
+            parent.email = parent.email == null ? result : parent.email;
+          }
+        },
+        {buffer: false, escape: false}
     );
   }
 
