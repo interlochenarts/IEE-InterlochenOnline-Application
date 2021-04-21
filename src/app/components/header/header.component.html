@@ -4,9 +4,9 @@
       <h5>Interlochen Online</h5>
       {{appData.student.firstName}} {{appData.appName}}
     </div>
-    <div class="col-12 col-sm-6 d-flex flex-column justify-content-center my-3 my-sm-0">
+    <div class="col-12 col-sm-6 col-md-5 d-flex flex-column justify-content-center my-3 my-sm-0">
     </div>
-    <div class="col-12 col-md-3 text-center d-flex justify-content-end align-items-center">
+    <div class="col-12 col-md-4 text-center d-flex justify-content-end align-items-center">
       <span class="mr-2" *ngIf="isSaving"><i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i></span>
       <button class="btn btn-ghost mr-3"
               [disabled]="isSaving"
