@@ -1,6 +1,6 @@
 <label for="parentEmail" class="mt-4">Email</label>
 <div class="default required">
-  <input type="text"
+  <input type="text" class="w-100"
          [(ngModel)]="parent.email"
          name="parentEmail"
          id="parentEmail"
@@ -14,7 +14,7 @@
 
 <label for="parentMailingStreet" class="mt-4">Mailing Street</label>
 <div class="default required">
-  <input type="text"
+  <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.street"
          name="parentMailingStreet"
          maxlength="255"
@@ -22,8 +22,8 @@
 </div>
 
 <label for="parentMailingCity" class="mt-4">Mailing City</label>
-<div class="default required ">
-  <input type="text"
+<div class="default required">
+  <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.city"
          name="parentMailingCity"
          maxlength="40"
@@ -31,10 +31,11 @@
 </div>
 
 <label for="parentMailingCountry" class="mt-4">Mailing Country</label>
-<div class="default required ">
+<div class="default required">
   <div class="select">
     <select (ngModelChange)="filterStates($event); clearState($event)"
             [(ngModel)]="parent.mailingAddress.country"
+            class="w-100"
             name="parentMailingCountry"
             id="parentMailingCountry">
             <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
@@ -47,6 +48,7 @@
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
             [disabled]="filteredStates.length === 0"
+            class="w-100"
             name="parentMailingState"
             id="parentMailingState">
             <option *ngFor="let state of filteredStates" [value]="state.isoCode">{{state.name}}</option>
@@ -56,7 +58,7 @@
 
 <label for="parentMailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
 <div class="default" [class]="{required: zipRequired()}">
-  <input type="text"
+  <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"
          name="parentMailingPostalCode"
          maxlength="20"
