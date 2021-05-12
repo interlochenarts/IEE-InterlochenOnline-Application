@@ -24,7 +24,7 @@
 
   <label for="signature" class="mt-4">Signature</label>
   <div class="default required">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="appData.enrollmentAgreement.signature"
            name="signature"
            maxlength="255"
@@ -37,7 +37,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_year">Year</label>
         <div class="select">
-          <select id="birthdate_year" [(ngModel)]="appData.enrollmentAgreement.birthdateYear"
+          <select id="birthdate_year" class="w-100" [(ngModel)]="appData.enrollmentAgreement.birthdateYear"
                   (change)="appData.enrollmentAgreement.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
           </select>
@@ -46,7 +46,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_month">Month</label>
         <div class="select">
-          <select id="birthdate_month" [(ngModel)]="appData.enrollmentAgreement.birthdateMonth"
+          <select id="birthdate_month" class="w-100" [(ngModel)]="appData.enrollmentAgreement.birthdateMonth"
                   (change)="appData.enrollmentAgreement.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
           </select>
@@ -55,7 +55,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_day">Day</label>
         <div class="select">
-          <select id="birthdate_day" [(ngModel)]="appData.enrollmentAgreement.birthdateDay"
+          <select id="birthdate_day" class="w-100" [(ngModel)]="appData.enrollmentAgreement.birthdateDay"
                   (change)="appData.enrollmentAgreement.updateBirthdate()">
             <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
           </select>
@@ -76,8 +76,7 @@
     <div class="col-10 col-md-11">
       <div class="no-select nudge-down">
         By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a
-        legal
-        document.
+        legal document.
       </div>
     </div>
   </div>

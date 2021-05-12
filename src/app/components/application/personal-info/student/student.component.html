@@ -3,7 +3,7 @@
 
   <label for="preferredName" class="mt-4">What name would the student prefer to be called?</label>
   <div class="default required">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="student.preferredName"
            name="nickName"
            id="preferredName"
@@ -12,7 +12,7 @@
 
   <label for="email" class="mt-4">Student's Email</label>
   <div class="default required">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="student.email"
            name="email"
            id="email"
@@ -22,7 +22,7 @@
 
   <label for="mobilePhone" class="mt-4">Mobile Phone</label>
   <div class="default required">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="student.mobilePhone"
            name="mobilePhone"
            maxlength="20"
@@ -38,7 +38,7 @@
 
   <label for="mailingStreet" class="mt-4">Mailing Street</label>
   <div class="default required">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.street"
            name="mailingStreet"
            maxlength="255"
@@ -46,8 +46,8 @@
   </div>
 
   <label for="mailingCity" class="mt-4">Mailing City</label>
-  <div class="default required ">
-    <input type="text"
+  <div class="default required">
+    <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.city"
            name="mailingCity"
            maxlength="40"
@@ -72,6 +72,7 @@
       <select [(ngModel)]="student.mailingAddress.stateProvince"
               [disabled]="filteredStates.length === 0"
               name="mailingState"
+              class="w-100"
               id="mailingState">
         <option *ngFor="let state of filteredStates" [value]="state.isoCode">{{state.name}}</option>
       </select>
@@ -80,7 +81,7 @@
 
   <label for="mailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
   <div class="default" [class]="{required: zipRequired()}">
-    <input type="text"
+    <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.zipPostalCode"
            name="mailingPostalCode"
            maxlength="20"
@@ -110,7 +111,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_year">Year</label>
         <div class="select">
-          <select id="birthdate_year" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
+          <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
           </select>
         </div>
@@ -118,7 +119,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_month">Month</label>
         <div class="select">
-          <select id="birthdate_month" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
+          <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
             <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
           </select>
         </div>
@@ -126,7 +127,7 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_day">Day</label>
         <div class="select">
-          <select id="birthdate_day" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
+          <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
             <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
           </select>
         </div>
@@ -148,7 +149,7 @@
 
     <label for="raceOther" class="mt-4">If race not listed, please specify</label>
     <div class="default">
-      <input type="text"
+      <input type="text" class="w-100"
              [(ngModel)]="student.raceOther"
              name="raceOther"
              maxlength="255"

@@ -49,7 +49,7 @@
       <!-- using Aspen maxlength as it's shorter than SFDC -->
       <label for="parentVerificationFirstName">First Name</label>
       <div class="default required">
-        <input type="text"
+        <input type="text" class="w-100"
                [(ngModel)]="parentVerification.firstName"
                name="parentVerificationFirstName"
                id="parentVerificationFirstName"
@@ -59,7 +59,7 @@
 
       <label for="parentVerificationLastName">Last Name</label>
       <div class="default required">
-        <input type="text"
+        <input type="text" class="w-100"
                [(ngModel)]="parentVerification.lastName"
                name="parentVerificationLastName"
                id="parentVerificationLastName"
@@ -69,7 +69,7 @@
 
       <label for="parentVerificationEmail">Email</label>
       <div class="default required">
-        <input type="text"
+        <input type="text" class="w-100"
                [(ngModel)]="parentVerification.email"
                name="parentVerificationEmail"
                id="parentVerificationEmail"/>
@@ -78,7 +78,7 @@
 
       <label for="parentVerificationPhone">Phone</label>
       <div class="default required">
-        <input type="text"
+        <input type="text" class="w-100"
                [(ngModel)]="parentVerification.phone"
                name="parentVerificationPhone"
                id="parentVerificationPhone"/>
@@ -125,6 +125,7 @@
   <div class="default required">
     <div *ngIf="parents.length > 1" class="select">
       <select [(ngModel)]="student.billingParentId"
+              class="w-100"
               name="primaryBillingContact"
               id="primaryBillingContact">
         <option *ngFor="let parent of parents" [value]="parent.contactId">
