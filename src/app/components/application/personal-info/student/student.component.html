@@ -59,6 +59,7 @@
     <div class="select">
       <select (ngModelChange)="filterStates($event); clearState($event)"
               [(ngModel)]="student.mailingAddress.country"
+              class="w-100"
               name="mailingCountry"
               id="mailingCountry">
         <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
@@ -141,6 +142,7 @@
       <div class="select">
         <select [(ngModel)]="student.race"
                 name="race"
+                class="w-100"
                 id="race">
           <option [value]="option.value" *ngFor="let option of ethnicityOptions">{{option.label}}</option>
         </select>
