@@ -25,7 +25,7 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   get formattedBirthdate(): string {
     if (this.student.birthdate) {
       const [year, month, day] = this.student.birthdate.split('-');
-      return `${+day}/${+month}/${year}`;
+      return `${+month}/${+day}/${year}`;
     }
 
     return null;
