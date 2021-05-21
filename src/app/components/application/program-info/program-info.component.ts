@@ -74,6 +74,10 @@ export class ProgramInfoComponent implements OnInit {
       (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }
 
+  get selectedPrograms(): Array<Program> {
+    return this.appData.programData.programs.filter(p => p.isSelected);
+  }
+
   updateArtsAreas(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
