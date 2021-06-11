@@ -1,4 +1,4 @@
-<h3 class="mb-3">Parent or Guardian</h3>
+<h3 class="mb-4">Parent or Guardian</h3>
 
 <div class="nestedForm">
   <div *ngFor="let parent of parents">
@@ -31,7 +31,7 @@
       </div>
       <iee-parent-info [parent]="parent" [student]="student" [isSaving]="isSaving"></iee-parent-info>
     </div>
-    <hr>
+    <hr class="my-5">
   </div>
 
   <div *ngIf="(!parents || parents.length === 0) && !showParentSearch && !parentResult" class="my-3">
@@ -121,7 +121,7 @@
     <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding...</span>
   </div>
 
-  <label *ngIf="parents.length > 1" for="primaryBillingContact" class="mt-4">Primary Billing Contact</label>
+  <label *ngIf="parents.length > 1" for="primaryBillingContact">Primary Billing Contact</label>
   <div class="default required">
     <div *ngIf="parents.length > 1" class="select">
       <select [(ngModel)]="student.billingParentId"
