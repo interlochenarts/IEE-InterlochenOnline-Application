@@ -1,12 +1,7 @@
 <header>
   <div class="row">
-    <div class="col-8">
+    <div class="col-12">
       <h3>Student Information</h3>
-    </div>
-    <div class="col-4">
-      <div class="required inline-block">
-        <div class="instructions w-100">Required</div>
-      </div>
     </div>
   </div>
 </header>
@@ -17,7 +12,7 @@
   <div class="col-12 text-right">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>
 </div>
 
-<hr>
+<hr class="my-5">
 
 <iee-parent [parents]="appData.parents" [student]="appData.student" [isParent]="isParent" [userContactId]="userContactId" [countryCodes]="countryCodes" [stateCodes]="stateCodes"></iee-parent>
 

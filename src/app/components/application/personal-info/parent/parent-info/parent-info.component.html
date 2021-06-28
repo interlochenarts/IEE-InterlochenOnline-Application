@@ -1,4 +1,4 @@
-<label for="parentEmail" class="mt-4">Email</label>
+<label for="parentEmail" class="mt-4 required">Email</label>
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.email"
@@ -12,7 +12,7 @@
   Copy address from student
 </button>
 
-<label for="parentMailingStreet" class="mt-4">Mailing Street</label>
+<label for="parentMailingStreet" class="mt-4 required">Mailing Street</label>
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.street"
@@ -21,7 +21,7 @@
          id="parentMailingStreet"/>
 </div>
 
-<label for="parentMailingCity" class="mt-4">Mailing City</label>
+<label for="parentMailingCity" class="mt-4 required">Mailing City</label>
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.city"
@@ -30,7 +30,7 @@
          id="parentMailingCity"/>
 </div>
 
-<label for="parentMailingCountry" class="mt-4">Mailing Country</label>
+<label for="parentMailingCountry" class="mt-4 required">Mailing Country</label>
 <div class="default required">
   <div class="select">
     <select (ngModelChange)="filterStates($event); clearState($event)"
@@ -43,7 +43,7 @@
   </div>
 </div>
 
-<label for="parentMailingState" class="mt-4">Mailing State</label>
+<label for="parentMailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">Mailing State</label>
 <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
   <div class="select">
     <select [(ngModel)]="parent.mailingAddress.stateProvince"
@@ -56,8 +56,8 @@
   </div>
 </div>
 
-<label for="parentMailingPostalCode" class="mt-4">Mailing Zip / Postal Code</label>
-<div class="default" [class]="{required: zipRequired()}">
+<label for="parentMailingPostalCode" class="mt-4" [ngClass]="{required: zipRequired()}">Mailing Zip / Postal Code</label>
+<div class="default" [ngClass]="{required: zipRequired()}">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"
          name="parentMailingPostalCode"
