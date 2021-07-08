@@ -23,7 +23,7 @@
       You must choose a program before you can pay.
     </div>
     <div>
-      <table class="table table-bordered my-3">
+      <table class="table table-striped my-3">
         <thead>
           <tr>
             <th>Description</th>
@@ -35,34 +35,32 @@
             <td>Total tuition for {{appData.termName}}</td>
             <td>{{totalTuition | currency:'USD'}}</td>
           </tr>
-        </tbody>
-        <tbody *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
-          <tr *ngFor="let payment of appData.payment.payments">
-            <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
-            <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.appliedCredits > 0">
-          <tr *ngFor="let creditPayment of appData.payment.creditPayments">
-            <td>Credit Used {{creditPayment.split('&')[1] | date:'short'}}</td>
-            <td>-{{creditPayment.split('&')[0] | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">
-          <tr>
-            <td>Credit Used:</td>
-            <td>-{{appData.payment.spendableCredit | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.appliedWaivers > 0">
-          <tr>
-            <td>Discount Amount <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i
-              *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()"
-              class="fa fa-times remove alert-text"></i></span></td>
-            <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody>
+          <ng-container *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
+            <tr *ngFor="let payment of appData.payment.payments">
+              <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
+              <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.appliedCredits > 0">
+            <tr *ngFor="let creditPayment of appData.payment.creditPayments">
+              <td>Credit Used {{creditPayment.split('&')[1] | date:'short'}}</td>
+              <td>-{{creditPayment.split('&')[0] | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">
+            <tr>
+              <td>Credit Used:</td>
+              <td>-{{appData.payment.spendableCredit | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.appliedWaivers > 0">
+            <tr>
+              <td>Discount Amount <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i
+                *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()"
+                class="fa fa-times remove alert-text"></i></span></td>
+              <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
           <tr>
             <td><strong>Amount owed:</strong></td>
             <td><strong>{{achAmount | currency:'USD'}}</strong></td>
