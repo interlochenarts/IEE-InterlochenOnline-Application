@@ -106,7 +106,7 @@
       <div *ngIf="hasCode">
         <label for="code">Discount Code</label>
         <div class="default">
-          <input type="text" class="w-75"
+          <input type="text" class="w-50"
                  [(ngModel)]="enteredCode"
                  name="code"
                  id="code"
@@ -115,9 +115,8 @@
           <button (click)="applyCode()" class="btn btn-default ml-3">Apply</button>
         </div>
       </div>
-      <div *ngIf="appData.payment.waiverDescription" class="mt-2">
-        <i class="fa fa-warning" style="color:red"></i><span
-        class="reviewError">{{appData.payment.waiverDescription}}</span>
+      <div *ngIf="appData.payment.waiverDescription" class="mt-2" class="reviewError">
+        <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
       </div>
     </div>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
