@@ -17,12 +17,12 @@
 
   <iee-ea-text></iee-ea-text>
 
-  <label for="signature" class="mt-4">Parent</label>
+  <label class="mt-4">Parent</label>
   <div class="default">
     {{loggedInUserName}}
   </div>
 
-  <label for="signature" class="mt-4">Signature</label>
+  <label for="signature" class="mt-4 required">Signature</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="appData.enrollmentAgreement.signature"
@@ -31,7 +31,7 @@
            id="signature"/>
   </div>
 
-  <label class="mt-4">Enter your Birthdate</label>
+  <label class="mt-4 required">Enter your Birthdate</label>
   <div class="default required">
     <div class="form-group row">
       <div class="col-12 col-md-4">

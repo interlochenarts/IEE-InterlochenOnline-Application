@@ -11,54 +11,56 @@
     <i class="fa fa-spinner fa-pulse fa-fw fa-2x"></i> Loading...
   </div>
   <div *ngIf="!isLoading">
-    <div class="default mb-2" *ngIf="appData.payment.amountPaid > 0 && transactionId == null && appData.payment.amountOwed == 0">
+    <div class="default mb-2"
+         *ngIf="appData.payment.amountPaid > 0 && transactionId == null && appData.payment.amountOwed == 0">
       You have paid your registration fee of {{appData.payment.amountPaid | currency:'USD'}}.
     </div>
     <div class="default mb-2" *ngIf="paymentReceived && transactionId != null">
       You have paid your registration fee of {{appData.payment.payments[0].split('&')[0] | currency:'USD'}}.
     </div>
-    <div *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0 && appData.payment.appliedWaivers <= 0">
+    <div
+      *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0 && appData.payment.appliedWaivers <= 0">
       You must choose a program before you can pay.
     </div>
     <div>
-      <table class="table table-bordered my-3">
+      <table class="table table-striped my-3">
         <thead>
-        <tr>
-          <th>Description</th>
-          <th>Amount</th>
-        </tr>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+          </tr>
         </thead>
         <tbody>
           <tr>
             <td>Total tuition for {{appData.termName}}</td>
             <td>{{totalTuition | currency:'USD'}}</td>
           </tr>
-        </tbody>
-        <tbody *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
-          <tr *ngFor="let payment of appData.payment.payments">
-            <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
-            <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.appliedCredits > 0">
-          <tr *ngFor="let creditPayment of appData.payment.creditPayments">
-            <td>Credit Used {{creditPayment.split('&')[1] | date:'short'}}</td>
-            <td>-{{creditPayment.split('&')[0] | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">
-          <tr>
-            <td>Credit Used:</td>
-            <td>-{{appData.payment.spendableCredit | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody *ngIf="appData.payment.appliedWaivers > 0">
-          <tr>
-            <td>Discount Amount <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()" class="fa fa-times remove" style="color:red"></i></span></td>
-            <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
-          </tr>
-        </tbody>
-        <tbody>
+          <ng-container *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
+            <tr *ngFor="let payment of appData.payment.payments">
+              <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
+              <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.appliedCredits > 0">
+            <tr *ngFor="let creditPayment of appData.payment.creditPayments">
+              <td>Credit Used {{creditPayment.split('&')[1] | date:'short'}}</td>
+              <td>-{{creditPayment.split('&')[0] | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">
+            <tr>
+              <td>Credit Used:</td>
+              <td>-{{appData.payment.spendableCredit | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
+          <ng-container *ngIf="appData.payment.appliedWaivers > 0">
+            <tr>
+              <td>Discount Amount <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i
+                *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()"
+                class="fa fa-times remove alert-text"></i></span></td>
+              <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
+            </tr>
+          </ng-container>
           <tr>
             <td><strong>Amount owed:</strong></td>
             <td><strong>{{achAmount | currency:'USD'}}</strong></td>
@@ -92,30 +94,29 @@
         </div>
       </div>
       <div *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0">
-        <p class="mt-4">Applying your credit balance of {{(appData.payment.spendableCredit | currency:'USD')}} will reduce your amount owed to $0.00.</p>
+        <p class="mt-4">Applying your credit balance of {{(appData.payment.spendableCredit | currency:'USD')}} will
+          reduce your amount owed to $0.00.</p>
         <button class="btn btn-primary" (click)="confirmCredit()">Apply Credit</button>
       </div>
     </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
-      <label for="have-code">I have a discount code</label>
-      <input class="ml-1" name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
+      <input name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
+      <label for="have-code" class="ml-2">I have a discount code</label>
+
       <div *ngIf="hasCode">
         <label for="code">Discount Code</label>
         <div class="default">
-          <input type="text" class="w-100"
+          <input type="text" class="w-50"
                  [(ngModel)]="enteredCode"
                  name="code"
                  id="code"
                  maxlength="50"
                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
-          <button (click)="applyCode()"
-                  class="btn btn-default ml-2">
-            Apply
-          </button>
+          <button (click)="applyCode()" class="btn btn-default ml-3">Apply</button>
         </div>
       </div>
-      <div *ngIf="appData.payment.waiverDescription" class="mt-2">
-        <i class="fa fa-warning" style="color:red"></i><span class="reviewError">{{appData.payment.waiverDescription}}</span>
+      <div *ngIf="appData.payment.waiverDescription" class="mt-2" class="reviewError">
+        <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
       </div>
     </div>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
