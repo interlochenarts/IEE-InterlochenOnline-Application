@@ -17,12 +17,12 @@
 
   <iee-ea-text></iee-ea-text>
 
-  <label for="signature" class="mt-4">Parent</label>
+  <label class="mt-4">Parent</label>
   <div class="default">
     {{loggedInUserName}}
   </div>
 
-  <label for="signature" class="mt-4">Signature</label>
+  <label for="signature" class="mt-4 required">Signature</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="appData.enrollmentAgreement.signature"
@@ -31,7 +31,7 @@
            id="signature"/>
   </div>
 
-  <label class="mt-4">Enter your Birthdate</label>
+  <label class="mt-4 required">Enter your Birthdate</label>
   <div class="default required">
     <div class="form-group row">
       <div class="col-12 col-md-4">
@@ -70,13 +70,13 @@
     <div class="col-2 col-md-1 text-right">
       <div class="checkbox">
         <input type="checkbox" [checked]="appData.enrollmentAgreement.acceptanceChecked"/>
-        <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-4"></i></label>
+        <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-3"></i></label>
       </div>
     </div>
     <div class="col-10 col-md-11">
       <div class="no-select nudge-down">
         By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a
-        legal document.
+        legal document. <label class="required"></label>
       </div>
     </div>
   </div>
