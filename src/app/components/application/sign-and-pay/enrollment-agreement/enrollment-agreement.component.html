@@ -70,13 +70,13 @@
     <div class="col-2 col-md-1 text-right">
       <div class="checkbox">
         <input type="checkbox" [checked]="appData.enrollmentAgreement.acceptanceChecked"/>
-        <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-4"></i></label>
+        <label [ngClass]="{disabled: canClickCheckbox() === false}"><i class="fa fa-check pl-3"></i></label>
       </div>
     </div>
     <div class="col-10 col-md-11">
       <div class="no-select nudge-down">
         By clicking here, I understand that I have just electronically signed this Enrollment Agreement, which is a
-        legal document.
+        legal document. <label class="required"></label>
       </div>
     </div>
   </div>
