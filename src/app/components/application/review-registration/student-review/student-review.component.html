@@ -9,10 +9,15 @@
 
 <div class="review my-1 row">
   <div class="col-5 hideOverflow">Legal Name</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.firstName || !student.lastName">
+  <div class="col-7 hideOverflow" *ngIf="student.firstName && student.lastName">{{student.firstName}} {{student.lastName}}</div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Preferred Name</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.preferredName">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
-  <div class="col-7 hideOverflow" *ngIf="student.firstName && student.lastName">{{student.firstName}} {{student.lastName}}</div>
+  <div class="col-7 hideOverflow" *ngIf="student.preferredName">{{student.preferredName}}</div>
 </div>
 
 <div class="review my-1 row">
