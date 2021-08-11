@@ -1,10 +1,15 @@
 <div class="row">
   <div class="col-8">
-    <h4>Student: {{student.firstName}} {{student.lastName}}</h4>
+    <h4>Student: {{student.preferredName || student.firstName}} {{student.lastName}}</h4>
   </div>
   <div class="col-4 text-right">
     <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
   </div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Legal Name</div>
+  <div class="col-7 hideOverflow">{{student.firstName}} {{student.lastName}}</div>
 </div>
 
 <div class="review my-1 row">
