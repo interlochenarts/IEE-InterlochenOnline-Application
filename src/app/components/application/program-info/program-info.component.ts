@@ -52,9 +52,7 @@ export class ProgramInfoComponent implements OnInit {
             this.addDaysSelected(p);
           }
         });
-
         this.updateArtsAreas();
-        this.updateSessions();
         this.updateSelectedDivision();
       } else {
         this.appData = new ApplicationData();
@@ -85,16 +83,32 @@ export class ProgramInfoComponent implements OnInit {
       artsAreaSet.add(p.artsAreaList[0]);
     });
 
-    this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
-    this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
+    if (artsAreaSet.size > 1) {
+      this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
+      this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
+    } else if (artsAreaSet.size === 1) {
+      this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, true));
+      this.selectedArtsArea = this.sortedArtsAreas[0].value;
+    }
+
+    this.updateSessions();
   }
 
   updateSessions(): void {
     this.selectedSession = '';
-    console.dir(this.appData.programData.sessionDates);
-    this.sortedSessions = this.appData.programData.sessions.sort()
-      .map(s => new SalesforceOption(s + ': ' + this.appData.programData.sessionDates.get(s), s, false));
-    this.sortedSessions.unshift(new SalesforceOption('All', '', true));
+    const sessionSet: Set<string> = new Set<string>();
+    this.filteredPrograms.forEach(p => {
+      sessionSet.add(p.sessionName);
+    });
+    if (sessionSet.size > 1) {
+      this.sortedSessions = Array.from(sessionSet).sort()
+        .map(ss => new SalesforceOption(ss + ': ' + this.appData.programData.sessionDates.get(ss), ss, false));
+      this.sortedSessions.unshift(new SalesforceOption('All', '', true));
+    } else if (sessionSet.size === 1) {
+      this.sortedSessions = Array.from(sessionSet).sort()
+        .map(s => new SalesforceOption(s + ': ' + this.appData.programData.sessionDates.get(s), s, true));
+      this.selectedSession = this.sortedSessions[0].value;
+    }
   }
 
   updateSelectedDivision(): void {
