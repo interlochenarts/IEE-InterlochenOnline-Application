@@ -28,6 +28,7 @@
 <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
   <div class="select">
     <select [(ngModel)]="selectedArtsArea"
+            (change)="updateSessions()"
             name="selectedArtsArea"
             class="w-100"
             [disabled]="programsDisabled"
@@ -38,7 +39,7 @@
   </div>
 </div>
 
-<div *ngIf="appData.programData.sessions.length > 1">
+<div *ngIf="sortedSessions.length > 0">
   <label for="selectedSession" class="mt-4">Session</label>
   <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
     <div class="select">
@@ -52,6 +53,10 @@
       </select>
     </div>
   </div>
+</div>
+
+<div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
+  There are currently no sessions available for this Grade and Arts Area.
 </div>
 
 <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
