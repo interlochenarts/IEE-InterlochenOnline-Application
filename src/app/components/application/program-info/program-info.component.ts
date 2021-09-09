@@ -80,7 +80,9 @@ export class ProgramInfoComponent implements OnInit {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
-      artsAreaSet.add(p.artsAreaList[0]);
+      p.artsAreaList.forEach(aa => {
+        artsAreaSet.add(aa);
+      });
     });
 
     if (artsAreaSet.size > 1) {
