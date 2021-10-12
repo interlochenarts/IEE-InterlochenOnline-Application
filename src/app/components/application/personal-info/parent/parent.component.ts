@@ -16,7 +16,7 @@ declare const Visualforce: any;
   templateUrl: './parent.component.html',
   styleUrls: ['./parent.component.css']
 })
-export class ParentComponent implements OnInit, OnChanges {
+export class ParentComponent implements OnInit {
   @Input() parents: Array<Parent>;
   @Input() student: Student;
   @Input() isParent: boolean;
@@ -42,10 +42,6 @@ export class ParentComponent implements OnInit, OnChanges {
     this.appDataService.isSaving.asObservable().subscribe(saving => {
       this.isSaving = saving;
     });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.setDefaultBillingParent();
   }
 
   editParent(parent: Parent): void {
@@ -77,12 +73,6 @@ export class ParentComponent implements OnInit, OnChanges {
     }
     this.parentVerification = new ParentVerification();
     this.showParentSearch = true;
-  }
-
-  setDefaultBillingParent(): void {
-    if (this.student && this.parents.length === 1) {
-      this.student.billingParentId = this.parents[0].contactId;
-    }
   }
 
   findRelation(): void {
@@ -150,8 +140,6 @@ export class ParentComponent implements OnInit, OnChanges {
         unverifiedParent.contactId = this.parentResult.contactIdParent.value;
         this.parents.push(unverifiedParent);
 
-        this.setDefaultBillingParent();
-
         delete this.parentVerification;
         delete this.parentResult;
 
@@ -186,11 +174,6 @@ export class ParentComponent implements OnInit, OnChanges {
           if (result === true) {
             // console.log('removed parent');
             this.parents.splice(pi, 1);
-            if (this.student.billingParentId === parentContactId) {
-              this.student.billingParentId = null;
-              // Set a new default billing contact if we can
-              this.setDefaultBillingParent();
-            }
           } else {
             console.error('Could not delete parent: ' + parentContactId);
             this.parents[pi].isDeleting = false;
