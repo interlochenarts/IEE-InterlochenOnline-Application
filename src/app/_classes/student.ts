@@ -10,7 +10,6 @@ export class Student {
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
-  billingParentId: string;
 
   genderIdentity: string;
   genderIdentityDetails: string;
@@ -64,8 +63,7 @@ export class Student {
           false)
       ) &&
       !!this.genderIdentity &&
-      !!this.birthdate &&
-      !!this.billingParentId;
+      !!this.birthdate;
   }
 
   private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {
