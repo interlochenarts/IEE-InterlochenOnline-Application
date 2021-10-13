@@ -122,18 +122,4 @@
     </button>
     <span *ngIf="addingUnverifiedParent"><i class="fa fa-spinner fa-pulse fa-fw"></i> Adding...</span>
   </div>
-
-  <label *ngIf="parents.length > 1" for="primaryBillingContact" class="mt-5">Primary Billing Contact</label>
-  <div class="default required">
-    <div *ngIf="parents.length > 1" class="select">
-      <select [(ngModel)]="student.billingParentId"
-              class="w-100"
-              name="primaryBillingContact"
-              id="primaryBillingContact">
-        <option *ngFor="let parent of parents" [value]="parent.contactId">
-          {{parent.firstName}} {{parent.lastName}}
-        </option>
-      </select>
-    </div>
-  </div>
 </div>

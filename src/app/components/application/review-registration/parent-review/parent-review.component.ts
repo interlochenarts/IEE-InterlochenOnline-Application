@@ -54,17 +54,6 @@ export class ParentReviewComponent implements OnInit, OnChanges {
     return (states.length > 0 ? !parent.mailingAddress.stateProvince : false);
   }
 
-  getBillingParentString(): string {
-    if (this.student.billingParentId) {
-      const billingParent: Parent = this.parents.find(p => p.contactId === this.student.billingParentId);
-      if (billingParent) {
-        return billingParent.isVerified ? `${billingParent.firstName} ${billingParent.lastName}` : null;
-      }
-    }
-
-    return null;
-  }
-
   reSendVerification(parent: Parent): void {
     Visualforce.remoting.Manager.invokeAction(
         'IEE_CampApplication_ParentController.sendVerificationEmail',
