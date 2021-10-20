@@ -3,6 +3,8 @@ import {AppDataService} from '../../../../services/app-data.service';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {Payment} from '../../../../_classes/payment';
 import {Parent} from '../../../../_classes/parent';
+import {Router} from '@angular/router';
+import {RouterLink} from '../../../../_classes/router-link';
 
 declare const Visualforce: any;
 
@@ -29,7 +31,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     return this.appData.payment.useCredit && this.appData.payment.credits >= this.appData.payment.amountOwed;
   }
 
-  constructor(private appDataService: AppDataService) {
+  constructor(private appDataService: AppDataService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -127,6 +129,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
       {buffer: false, escape: false}
     );
   }
+
+  completeRegistration(): void {
+    const links = this.appDataService.routerLinks.getValue();
+    const lastLink: RouterLink = links[links.length - 1];
+    this.router.navigate([lastLink.routerLink]);
+  }
+
   removeCode(): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
