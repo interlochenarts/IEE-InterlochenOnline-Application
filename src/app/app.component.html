@@ -5,7 +5,7 @@
 
   <div class="row">
     <div class="application-steps col-12 col-md-3">
-      <nav class="well dark">
+      <nav class="well dark p-0">
         <ul>
           <li *ngFor="let link of links" [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}">
             <a *ngIf="link.show(appData)"
