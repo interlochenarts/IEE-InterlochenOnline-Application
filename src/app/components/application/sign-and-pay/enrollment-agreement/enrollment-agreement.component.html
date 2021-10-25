@@ -85,6 +85,12 @@
     Please pay your registration fee before completing your registration.
   </div>
 
+  <div class="my-4">
+    Should {{studentName}} enroll, the parent or guardian who electronically signs this enrollment agreement will be
+    designated as the primary billing contact for all active Interlochen enrollments. This person will receive
+    communications and account statements from the Interlochen Business Office.
+  </div>
+
   <button class="btn btn-primary"
           [ngClass]="{disabled: !appData.enrollmentAgreement.isComplete() || !appData.payment.tuitionPaid}"
           [disabled]="!appData.enrollmentAgreement.isComplete() || !appData.payment.tuitionPaid"
