@@ -120,6 +120,8 @@
       </div>
     </div>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
+
+    <button (click)="completeRegistration()"  class="btn btn-default">Complete Registration</button>
   </div>
 </div>
 
