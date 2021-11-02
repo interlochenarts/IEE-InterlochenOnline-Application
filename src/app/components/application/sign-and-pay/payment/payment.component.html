@@ -121,7 +121,7 @@
     </div>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
 
-    <button (click)="completeRegistration()"  class="btn btn-default">Complete Registration</button>
+    <button *ngIf="!canPay() && appData.payment.paidOnLoad" (click)="completeRegistration()"  class="btn btn-default">Complete Registration</button>
   </div>
 </div>
 
