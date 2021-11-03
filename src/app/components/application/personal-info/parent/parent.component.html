@@ -93,13 +93,13 @@
 
       <br/>
 
-      <button class="btn btn-primary mr-2 d-inline-block" type="button"
+      <button class="btn btn-primary mr-2 my-3 d-inline-block" type="button"
               [disabled]="searchFormComplete() === false"
               [ngClass]="{disabled: searchFormComplete() === false}"
               (click)="findRelation()">
         <i class="fa fa-search"></i> Search for an existing person
       </button>
-      <button class="btn btn-primary ml-2 d-inline-block" type="button"
+      <button class="btn btn-primary ml-2 my-3 d-inline-block" type="button"
               (click)="clearRelationSearchForm()">
         <i class="fa fa-ban"></i> Cancel
       </button>
