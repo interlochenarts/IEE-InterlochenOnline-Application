@@ -119,6 +119,7 @@
         <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
       </div>
     </div>
+    <p *ngIf="appData.payment.earlyBirdDiscountInfo" class="reviewError">{{appData.payment.earlyBirdDiscountInfo}}</p>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
 
     <button *ngIf="!canPay() && appData.payment.paidOnLoad" (click)="completeRegistration()"  class="btn btn-default">Complete Registration</button>

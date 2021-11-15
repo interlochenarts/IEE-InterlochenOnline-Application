@@ -12,6 +12,7 @@ export class Payment {
   spendableCredit: number;
   useCredit: boolean;
   waiverCode: string;
+  earlyBirdDiscountInfo: string;
   waiverDescription: string;
   appliedWaivers: number;
   hasWaiverTransactions: boolean;
