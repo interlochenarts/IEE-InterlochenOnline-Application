@@ -123,31 +123,6 @@ export class AppDataService {
     }
   }
 
-  public signEnrollmentAgreement(): void {
-    // console.log('signing agreement');
-    const appData = this.applicationData.getValue();
-    const appId = this.applicationId.getValue();
-
-    // only save if we have an app and appId. Also wait until previous save is done.
-    if (appData && appId && (this.isSigning.getValue() === false)) {
-      this.isSigning.next(true);
-      Visualforce.remoting.Manager.invokeAction(
-        'IEE_OnlineApplicationController.submitSignature',
-        appId,
-        JSON.stringify(appData),
-        result => {
-          // console.log(result);
-          this.isSigning.next(false);
-          // leave app after save
-          window.location.assign('/interlochen/IEE_OnlineSubmitted?id=' + appData.appId);
-        },
-        {buffer: false, escape: false}
-      );
-    } else {
-      console.error('Missing appData or appId, or signing already in progress');
-    }
-  }
-
   public sendParentCredentials(parent: Parent, student: Student): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_UserUtilityController.sendUserLoginByContactId',
