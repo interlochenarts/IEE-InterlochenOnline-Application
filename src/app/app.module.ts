@@ -11,7 +11,6 @@ import {ReviewRegistrationComponent} from './components/application/review-regis
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
 import {ParentComponent} from './components/application/personal-info/parent/parent.component';
-import {EnrollmentAgreementComponent} from './components/application/sign-and-pay/enrollment-agreement/enrollment-agreement.component';
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
 import {FormsModule} from '@angular/forms';
 import {ParentInfoComponent} from './components/application/personal-info/parent/parent-info/parent-info.component';
@@ -20,8 +19,6 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
-import {EaTextComponent} from './components/application/sign-and-pay/enrollment-agreement/ea-text/ea-text.component';
-import {EaHeaderComponent} from './components/application/sign-and-pay/enrollment-agreement/ea-header/ea-header.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +29,6 @@ import {EaHeaderComponent} from './components/application/sign-and-pay/enrollmen
     PersonalInfoComponent,
     StudentComponent,
     ParentComponent,
-    EnrollmentAgreementComponent,
     PaymentComponent,
     ParentInfoComponent,
     AchComponent,
@@ -40,8 +36,6 @@ import {EaHeaderComponent} from './components/application/sign-and-pay/enrollmen
     ProgramReviewComponent,
     ParentReviewComponent,
     StudentReviewComponent,
-    EaTextComponent,
-    EaHeaderComponent
   ],
   imports: [
     BrowserModule,
