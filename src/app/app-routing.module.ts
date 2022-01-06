@@ -5,7 +5,6 @@ import {ReviewRegistrationComponent} from './components/application/review-regis
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
-import {EnrollmentAgreementComponent} from './components/application/sign-and-pay/enrollment-agreement/enrollment-agreement.component';
 
 const routes: Routes = [
   {
@@ -16,8 +15,7 @@ const routes: Routes = [
       {path: 'student-info', component: PersonalInfoComponent},
       {path: 'program', component: ProgramInfoComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
-      {path: 'pay-registration', component: PaymentComponent},
-      {path: 'sign', component: EnrollmentAgreementComponent}
+      {path: 'pay-registration', component: PaymentComponent}
     ]
   },
   {
@@ -28,8 +26,7 @@ const routes: Routes = [
       {path: 'student-info', component: PersonalInfoComponent},
       {path: 'program', component: ProgramInfoComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
-      {path: 'pay-registration', component: PaymentComponent},
-      {path: 'sign', component: EnrollmentAgreementComponent}
+      {path: 'pay-registration', component: PaymentComponent}
     ]
   }
 ];
