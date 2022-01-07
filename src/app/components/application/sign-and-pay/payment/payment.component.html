@@ -122,6 +122,7 @@
     <p *ngIf="appData.payment.earlyBirdDiscountInfo" class="reviewError">{{appData.payment.earlyBirdDiscountInfo}}</p>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
 
+    <a class="btn btn-primary" href="/interlochen"  *ngIf="!canPay() && appData.payment.paidOnLoad" target="_self">Next Step: Home</a>
   </div>
 </div>
 
