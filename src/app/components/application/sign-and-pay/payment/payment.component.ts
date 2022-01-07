@@ -130,12 +130,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
     );
   }
 
-  completeRegistration(): void {
-    const links = this.appDataService.routerLinks.getValue();
-    const lastLink: RouterLink = links[links.length - 1];
-    this.router.navigate([lastLink.routerLink]);
-  }
-
   removeCode(): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
