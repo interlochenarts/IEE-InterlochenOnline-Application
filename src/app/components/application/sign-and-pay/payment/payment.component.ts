@@ -205,6 +205,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
           if (this.appData.payment.amountOwed <= 0) {
             clearInterval(this.timer);
+            this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
             this.isLoading = false;
