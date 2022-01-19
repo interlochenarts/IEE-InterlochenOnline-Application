@@ -6,10 +6,6 @@
   </div>
 </header>
 
-<div class="alert alert-warning" *ngIf="programsDisabled">
-  Registration Fee has already been paid. No more changes are allowed to program choices. Please complete this registration before trying to register for any additional programs.
-</div>
-
 <label for="selectedGrade" class="mt-4">Current Grade in School</label>
 <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
   <div class="select">
