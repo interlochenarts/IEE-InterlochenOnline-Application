@@ -119,10 +119,26 @@
         <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
       </div>
     </div>
+
+    <div *ngIf="selectedPrograms && selectedPrograms.length > 0">
+      <p *ngIf="!canPay() && appData.payment.paidOnLoad">To confirm enrollment in the following program(s), you must click "Register" below:</p>
+      <p *ngIf="canPay()">To confirm enrollment in the following program(s), you must click "Pay Fee & Register" below:</p>
+      <ul>
+        <li *ngFor="let program of selectedPrograms">{{program.name}} - {{program.sessionDates}}</li>
+      </ul>
+
+      <div *ngIf="!canPay() && appData.payment.paidOnLoad">
+        <p><i>Once registered, Interlochen Online programs are not refundable, though in some cases we may be able to apply payment to another Interlochen program. If you have any questions, please contact us at <a href="mailto:online@interlochen.org" target="_blank">online@interlochen.org</a> before completing registration.</i></p>
+        <p>By clicking the Register button you are enrolling in Interlochen Online and agreeing to the terms of our <a href="https://interlochencdn.s3.us-east-2.amazonaws.com/io/Interlochen+Online+Enrollment+Agreement.pdf" target="_blank">enrollment agreement</a>. The full enrollment agreement will also be available for your reference here in the Education Community once you are registered.</p>
+        <button class="btn btn-primary" (click)="addProgramsWithWaiver()">Register</button>
+      </div>
+    </div>
+
     <p *ngIf="appData.payment.earlyBirdDiscountInfo" class="reviewError">{{appData.payment.earlyBirdDiscountInfo}}</p>
     <iee-ach *ngIf="canPay()" [useCredit]="appData.payment.useCredit"></iee-ach>
 
-    <button *ngIf="!canPay() && appData.payment.paidOnLoad" (click)="completeRegistration()"  class="btn btn-default">Complete Registration</button>
+    <p *ngIf="!canPay() && appData.payment.paidOnLoad && (!selectedPrograms || selectedPrograms.length === 0)">Congratulations! Your registration is now complete.</p>
+    <a class="btn btn-primary" href="/interlochen"  *ngIf="!canPay() && appData.payment.paidOnLoad && (!selectedPrograms || selectedPrograms.length === 0)" target="_self">Back to Home</a>
   </div>
 </div>
 

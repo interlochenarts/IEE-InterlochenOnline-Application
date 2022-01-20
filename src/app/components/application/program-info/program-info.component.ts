@@ -161,11 +161,18 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
   get programsDisabled(): boolean {
-    const unRegisteredPrograms = this.appData.programData.programs.filter(
-      program => (program.isSelected && !program.isRegistered)).length > 0;
-    const programSaving = this.appData.programData.programs.filter(program => program.isSaving).length > 0;
-    return (this.appData.payment.tuitionPaid && !this.appData.isRegistered) ||
-      (this.appData.isRegistered && unRegisteredPrograms && !programSaving && this.appData.payment.amountOwed === 0);
+    // Temporarily removed, might come back
+    // Temporarily removed, might come back
+    // Temporarily removed, might come back
+    // const unRegisteredPrograms = this.appData.programData.programs.filter(
+    //   program => (program.isSelected && !program.isRegistered)).length > 0;
+    // const programSaving = this.appData.programData.programs.filter(program => program.isSaving).length > 0;
+    // return (this.appData.payment.tuitionPaid && !this.appData.isRegistered) ||
+    //   (this.appData.isRegistered && unRegisteredPrograms && !programSaving && this.appData.payment.amountOwed === 0);
+    // Temporarily removed, might come back
+    // Temporarily removed, might come back
+    // Temporarily removed, might come back
+    return false;
   }
   private addDaysSelected(p: Program): void {
     p.daysArray?.forEach(d => {
