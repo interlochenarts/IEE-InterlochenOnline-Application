@@ -5,6 +5,7 @@ import {Payment} from '../../../../_classes/payment';
 import {Parent} from '../../../../_classes/parent';
 import {Router} from '@angular/router';
 import {RouterLink} from '../../../../_classes/router-link';
+import {Program} from '../../../../_classes/program';
 
 declare const Visualforce: any;
 
@@ -19,6 +20,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   useCredit = false;
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
+  selectedPrograms: Array<Program>;
   isLoading: boolean;
   enteredCode: string;
   totalTuition: number;
@@ -56,6 +58,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
           },
           {buffer: false, escape: false}
         );
+
+        this.selectedPrograms = this.appData.programData?.programs.filter(p => p.isSelected && !p.isRegistered);
+        // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
+        this.selectedPrograms.sort((a, b) =>
+          new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+          new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
@@ -130,10 +138,24 @@ export class PaymentComponent implements OnInit, OnDestroy {
     );
   }
 
-  completeRegistration(): void {
-    const links = this.appDataService.routerLinks.getValue();
-    const lastLink: RouterLink = links[links.length - 1];
-    this.router.navigate([lastLink.routerLink]);
+  addProgramsWithWaiver(): void {
+    this.isLoading = true;
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.addProgramsWithWaiver',
+      this.appData.appId,
+      result => {
+        if (result && result !== 'null') {
+          this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
+          this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.selectedPrograms = null;
+        } else {
+          console.error('error adding program with waiver for app id: ' + this.appData.appId);
+          console.dir(result);
+        }
+        this.isLoading = false;
+      },
+      {buffer: false, escape: false}
+    );
   }
 
   removeCode(): void {
@@ -183,6 +205,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
           if (this.appData.payment.amountOwed <= 0) {
             clearInterval(this.timer);
+            this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
             this.isLoading = false;

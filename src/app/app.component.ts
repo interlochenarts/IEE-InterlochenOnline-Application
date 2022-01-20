@@ -50,8 +50,6 @@ export class AppComponent implements OnInit {
             () => false, () => true),
           new RouterLink('/' + this.applicationId + '/pay-registration', 'Pay Registration',
             this.linkDisabled, () => true),
-          new RouterLink('/' + this.applicationId + '/sign', 'Complete Registration',
-            this.linkDisabled, () => true)
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
@@ -70,8 +68,6 @@ export class AppComponent implements OnInit {
             () => false, () => true),
           new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/pay-registration', 'Pay Registration',
             this.linkDisabled, () => true),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/sign', 'Complete Registration',
-            this.linkDisabled, () => true)
         ]);
 
         this.links = this.appDataService.routerLinks.getValue();
