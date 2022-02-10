@@ -32,10 +32,20 @@
         </thead>
         <tbody>
           <tr>
-            <td>Total tuition for {{appData.termName}}</td>
-            <td>{{totalTuition | currency:'USD'}}</td>
+            <td>Total tuition for {{appData.termName}}
+              <ul *ngIf="appData.payment.cancelAmount > 0" class="mb-0">
+                <li>Current Registrations</li>
+                <li>Cancelled Registrations</li>
+              </ul>
+            </td>
+            <td>{{totalTuition | currency:'USD'}}
+              <span *ngIf="appData.payment.cancelAmount > 0"><br/>
+                {{totalTuition - appData.payment.cancelAmount | currency:'USD'}}<br/>
+                {{appData.payment.cancelAmount | currency:'USD'}}
+              </span>
+            </td>
           </tr>
-          <ng-container *ngIf="appData.isRegistered && appData.payment.amountPaid > 0">
+          <ng-container *ngIf="appData.payment.amountPaid > 0">
             <tr *ngFor="let payment of appData.payment.payments">
               <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
               <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
