@@ -19,6 +19,7 @@ export class ApplicationData {
   appName: string;
   appStatus: string;
   isRegistered: boolean;
+  isCancelOrWithdrawn: boolean;
 
   constructor() {
     this.student = new Student();
@@ -41,6 +42,7 @@ export class ApplicationData {
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
     appData.isRegistered = appData.appStatus === 'Registered';
+    appData.isCancelOrWithdrawn = appData.appStatus === 'Application Withdrawn by Applicant' || appData.appStatus === 'Cancel';
 
     return appData;
   }

@@ -3,6 +3,7 @@ export class Payment {
   paidOnLoad: boolean;
   amountOwed: number;
   amountPaid: number;
+  cancelAmount: number;
   payments: Array<string>;
   creditPayments: Array<string>;
   credits: number;

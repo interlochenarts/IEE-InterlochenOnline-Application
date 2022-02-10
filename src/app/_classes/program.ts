@@ -9,6 +9,7 @@ export class Program {
   division: string;
   isSelected = false;
   isRegistered = false;
+  isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
   sessionName: string;
@@ -38,6 +39,11 @@ export class Program {
   }
 
   public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean): boolean {
+    // Don't let them re-select it if they already had this program selected and canceled or withdrew
+    if (this.isCancelOrWithdrawn) {
+      return true;
+    }
+
     // disable everything if fee already paid
     if (feePaid || this.isRegistered) {
       return true;
