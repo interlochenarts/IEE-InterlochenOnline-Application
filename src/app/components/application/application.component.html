@@ -1,6 +1,6 @@
 <div class="col-12 col-md-8">
   <router-outlet></router-outlet>
-  <div class="text-right my-5">
+  <div class="text-end my-5">
     <span *ngIf="showBackLink"><a href="javascript:void(0);"
                                   [ngClass]="{disabled: isSaving}"
                                   (click)="saveAndBack()"><i class="fa fa-long-arrow-left"></i> Previous Step</a></span>

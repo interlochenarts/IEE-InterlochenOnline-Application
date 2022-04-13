@@ -65,7 +65,7 @@
           </ng-container>
           <ng-container *ngIf="appData.payment.appliedWaivers > 0">
             <tr>
-              <td>Discount Amount <span class="ml-3 waiver">{{appData.payment.waiverCode}} <i
+              <td>Discount Amount <span class="ms-3 waiver">{{appData.payment.waiverCode}} <i
                 *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()"
                 class="fa fa-times remove alert-text"></i></span></td>
               <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
@@ -111,7 +111,7 @@
     </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
       <input name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
-      <label for="have-code" class="ml-2">I have a discount code</label>
+      <label for="have-code" class="ms-2">I have a discount code</label>
 
       <div *ngIf="hasCode">
         <label for="code">Discount Code</label>
@@ -122,7 +122,7 @@
                  id="code"
                  maxlength="50"
                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
-          <button (click)="applyCode()" class="btn btn-default ml-3">Apply</button>
+          <button (click)="applyCode()" class="btn btn-default ms-3">Apply</button>
         </div>
       </div>
       <div *ngIf="appData.payment.waiverDescription" class="mt-2" class="reviewError">
