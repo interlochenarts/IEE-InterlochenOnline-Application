@@ -2,7 +2,7 @@
   <div class="col-8">
     <h4>Student: {{student.preferredName || student.firstName}} {{student.lastName}}</h4>
   </div>
-  <div class="col-4 text-right">
+  <div class="col-4 text-end">
     <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
   </div>
 </div>

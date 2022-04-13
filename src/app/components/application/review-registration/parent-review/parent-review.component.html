@@ -3,7 +3,7 @@
     <div class="col-8">
       <h4>Parent or Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
     </div>
-    <div class="col-4 text-right">
+    <div class="col-4 text-end">
       <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
     </div>
   </div>
@@ -15,7 +15,7 @@
         Verification email sent to {{parent.email}}
       </div>
     </div>
-    <div class="col-4 text-right">
+    <div class="col-4 text-end">
       <button class="btn btn-default" (click)="reSendVerification(parent)">Re-send Verification</button>
     </div>
   </div>

@@ -9,7 +9,7 @@
 <iee-student [student]="appData.student" [parents]="appData.parents"></iee-student>
 
 <div class="row my-3" *ngIf="saveTime">
-  <div class="col-12 text-right">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>
+  <div class="col-12 text-end">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>
 </div>
 
 <hr class="my-5">
@@ -17,5 +17,5 @@
 <iee-parent [parents]="appData.parents" [student]="appData.student" [isParent]="isParent" [userContactId]="userContactId" [countryCodes]="countryCodes" [stateCodes]="stateCodes"></iee-parent>
 
 <div class="row my-3" *ngIf="saveTime">
-  <div class="col-12 text-right">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>
+  <div class="col-12 text-end">Last saved at: {{saveTime | date : 'h:mm:ss a'}}</div>
 </div>
