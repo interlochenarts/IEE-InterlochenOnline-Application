@@ -1,14 +1,14 @@
 #!/bin/bash
 
 NODE_VERSION=14
-NG_CLI_VERSION=11.2.12
+NG_CLI_VERSION=13.3.2
 
 cd ..;
 
 # check if nvm is installed. If not, install it.
 if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
     # May need to be updated with the latest nvm release
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 fi
 
 # lets us use the nvm commands
@@ -26,4 +26,4 @@ if ! command -v ng &>/dev/null; then
 fi
 
 echo -e "\n===> Compiling... <===\n"
-ng build --prod --aot --output-hashing=none
+ng build --configuration production --aot --output-hashing=none
