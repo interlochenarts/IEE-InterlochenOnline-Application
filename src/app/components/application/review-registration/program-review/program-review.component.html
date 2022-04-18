@@ -2,7 +2,7 @@
   <div class="col-8">
     <h4>Selected Programs</h4>
   </div>
-  <div class="col-4 text-right">
+  <div class="col-4 text-end">
     <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
   </div>
 </div>
@@ -12,15 +12,15 @@
     <span *ngIf="isRegistered && !program.isRegistered"> - <span class="new-program">New</span></span>
     <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
   </div>
-  <div class="ml-3">Session: {{program.sessionDates}} </div>
-  <div class="ml-3">Meeting Days: {{program.daysDisplay}}</div>
+  <div class="ms-3">Session: {{program.sessionDates}} </div>
+  <div class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 <div *ngFor="let program of registeredPrograms" class="my-2">
   <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
     - Registered
   </div>
-  <div class="ml-3">Session: {{program.sessionDates}} </div>
-  <div class="ml-3">Meeting Days: {{program.daysDisplay}}</div>
+  <div class="ms-3">Session: {{program.sessionDates}} </div>
+  <div class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
 <div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
