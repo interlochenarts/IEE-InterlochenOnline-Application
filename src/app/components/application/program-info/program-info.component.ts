@@ -73,7 +73,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => p.isSelected);
+    return this.appData.acProgramData.programs.filter(p => p.isSelected);
   }
 
   updateArtsAreas(): void {
@@ -143,6 +143,11 @@ export class ProgramInfoComponent implements OnInit {
         if (program.artsAreaList[0] === 'Music') {
           // if music, ask for instrument
           this.selectedProgramInstruments = program.programOptionsArray;
+          // remove instruments from list if they exist in currently selected programs selected instrument.
+          this.appData.programData.programs.forEach( p => {
+            console.dir(p.name + ' ' + p.selectedInstrument);
+            // this.selectedProgramInstruments
+          });
           this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
             .then(instrumentResult => {
               program.selectedInstrument = instrumentResult;

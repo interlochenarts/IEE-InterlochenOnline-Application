@@ -45,7 +45,7 @@ export class Program {
     }
 
     // disable everything if fee already paid
-    if (feePaid || this.isRegistered) {
+    if ((feePaid || this.isRegistered) && this.artsArea !== 'Music') {
       return true;
     }
 

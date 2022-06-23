@@ -11,6 +11,7 @@ export class ApplicationData {
   student: Student;
   parents: Array<Parent>;
   programData: ProgramData;
+  acProgramData: ProgramData;
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
   termId: string;
@@ -39,6 +40,7 @@ export class ApplicationData {
     appData.student = Student.createFromNestedJson(json.student);
     appData.parents = json.parents.map(p => Parent.createFromNestedJson(p));
     appData.programData = ProgramData.createFromNestedJson(json.programData);
+    appData.acProgramData = ProgramData.createFromNestedJson(json.acProgramData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
     appData.isRegistered = appData.appStatus === 'Registered';
