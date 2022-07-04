@@ -16,10 +16,20 @@ export class Program {
   programOptions: string;
   selectedInstrument: string;
   isSaving = false;
+  lessonCount = 0;
+  addlLessonCount = 0;
+  isPrivateLesson = false;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
     Object.assign(program, json);
+
+    return program;
+  }
+
+  public static duplicateMe(inProgram: Program): Program {
+    const program = new Program();
+    Object.assign(program, inProgram);
 
     return program;
   }
