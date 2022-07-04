@@ -138,7 +138,7 @@ export class ProgramInfoComponent implements OnInit {
   clickProgram(program: Program, modal, list): void {
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
-      && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn) && !program.isSaving) {
+      && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
 
       program.isSaving = true;
       if (!program.isSelected) {

@@ -29,6 +29,7 @@ export class ApplicationData {
     this.parents.push(new Parent());
     this.parents[0].mailingAddress = new Address();
     this.programData = new ProgramData();
+    this.acProgramData = new ProgramData();
     this.enrollmentAgreement = new EnrollmentAgreement();
     this.payment = new Payment();
   }
@@ -54,6 +55,6 @@ export class ApplicationData {
       this.parents.length > 0 &&
       this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
       this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false) &&
-      this.programData.programs.filter(p => p.isSelected).length > 0;
+      this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
 }

@@ -60,12 +60,12 @@
     <h5>Selected Programs</h5>
     <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'selected')"
-         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
       <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
         <input type="checkbox" [id]="program.id" [name]="program.id"
                [checked]="program.isSelected"
-               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled)">
-        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')">
+        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
           <i class="fa fa-check ps-4"></i>
         </label>
       </div>
@@ -94,12 +94,12 @@
 
 <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
      (click)="clickProgram(program, instrumentModal, 'filtered')"
-     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
   <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
     <input type="checkbox" [id]="program.id" [name]="program.id"
            [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+           [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')">
+    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
       <i class="fa fa-check ps-4"></i>
     </label>
   </div>
