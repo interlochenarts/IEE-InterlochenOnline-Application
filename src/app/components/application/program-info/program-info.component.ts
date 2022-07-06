@@ -22,8 +22,10 @@ export class ProgramInfoComponent implements OnInit {
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
   modalLessonCount : number;
+  modalLessonCountAdd : number;
   isPrivateLesson : boolean;
   isMusic : boolean;
+  isRegistered : boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
@@ -172,6 +174,7 @@ export class ProgramInfoComponent implements OnInit {
               delete this.modalLessonCount;
               delete this.isMusic;
               delete this.isPrivateLesson;
+              delete this.isRegistered;
             }, reason => {
               // console.log(`Not Saving: Instrument closed (${reason})`);
               program.isSaving = false;
@@ -209,6 +212,27 @@ export class ProgramInfoComponent implements OnInit {
       }
     }
   }
+
+  addLessons(program: Program, modal): void {
+    this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
+    this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
+      .then(lessonResult => {
+        if (program.isRegistered) {
+          program.lessonCountAdd = this.modalLessonCountAdd;
+        } else {
+          program.lessonCount = this.modalLessonCountAdd;
+        }
+         this.updateProgram(program);
+        program.isSaving = false;
+        delete this.modalLessonCountAdd;
+      }, reason => {
+        // console.log(`Not Saving: Instrument closed (${reason})`);
+        program.isSaving = false;
+        delete this.modalLessonCountAdd;
+      });
+  }
+
+
   get programsDisabled(): boolean {
     // Temporarily removed, might come back
     // Temporarily removed, might come back
@@ -244,6 +268,36 @@ export class ProgramInfoComponent implements OnInit {
         } else {
           // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            this.appData.appId,
+            payment => {
+              if (payment && payment !== 'null') {
+                this.appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+            },
+            {buffer: false, escape: false}
+          );
+        }
+        program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  private updateProgram(program: Program): void  {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.updateAppChoiceLessons',
+      this.appData.appId, program.appChoiceId, program.lessonCount, program.lessonCountAdd,
+      result => {
+        if (result.toString().startsWith('ERR')) {
+          console.error(result);
+        } else {
+          console.log('updated program: ' + result);
+          if (!program.isRegistered) {
+            program.lessonCount += program.lessonCountAdd;
+            program.lessonCountAdd = 0;
+          }
           // Update payment info
           Visualforce.remoting.Manager.invokeAction(
             'IEE_OnlineApplicationController.getPaymentJSON',

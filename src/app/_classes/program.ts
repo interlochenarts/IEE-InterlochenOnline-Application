@@ -17,7 +17,7 @@ export class Program {
   selectedInstrument: string;
   isSaving = false;
   lessonCount = 0;
-  addlLessonCount = 0;
+  lessonCountAdd = 0;
   isPrivateLesson = false;
 
   public static createFromNestedJson(json: any): Program {
