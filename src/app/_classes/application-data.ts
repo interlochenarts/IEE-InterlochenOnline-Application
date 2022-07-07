@@ -11,6 +11,7 @@ export class ApplicationData {
   student: Student;
   parents: Array<Parent>;
   programData: ProgramData;
+  acProgramData: ProgramData;
   enrollmentAgreement: EnrollmentAgreement;
   payment: Payment;
   termId: string;
@@ -28,6 +29,7 @@ export class ApplicationData {
     this.parents.push(new Parent());
     this.parents[0].mailingAddress = new Address();
     this.programData = new ProgramData();
+    this.acProgramData = new ProgramData();
     this.enrollmentAgreement = new EnrollmentAgreement();
     this.payment = new Payment();
   }
@@ -39,6 +41,7 @@ export class ApplicationData {
     appData.student = Student.createFromNestedJson(json.student);
     appData.parents = json.parents.map(p => Parent.createFromNestedJson(p));
     appData.programData = ProgramData.createFromNestedJson(json.programData);
+    appData.acProgramData = ProgramData.createFromNestedJson(json.acProgramData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
     appData.isRegistered = appData.appStatus === 'Registered';
@@ -52,6 +55,6 @@ export class ApplicationData {
       this.parents.length > 0 &&
       this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
       this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false) &&
-      this.programData.programs.filter(p => p.isSelected).length > 0;
+      this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
 }

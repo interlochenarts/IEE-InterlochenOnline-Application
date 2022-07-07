@@ -59,7 +59,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           {buffer: false, escape: false}
         );
 
-        this.selectedPrograms = this.appData.programData?.programs.filter(p => p.isSelected && !p.isRegistered);
+        this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
         this.selectedPrograms.sort((a, b) =>
           new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
