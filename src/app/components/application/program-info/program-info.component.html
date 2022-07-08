@@ -76,12 +76,10 @@
         <div>Meets on {{program.daysDisplay}}</div>
       </div>
       <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
-        <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
-        <div>Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" style="background-color:white; color: #003057; !important;"> Pending Additional Lessons: {{program.lessonCountAdd}} </span>
-             <span *ngIf="program.isRegistered && program.lessonCountAdd < 1"><a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"><i class="fa fa-long-arrow-left"></i> Add Lessons</a></span>
-             <span *ngIf="!program.isRegistered || program.lessonCountAdd > 0"><a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"><i class="fa fa-long-arrow-left"></i> Update Lessons</a></span>
-        </div>
-        <div>Meets on various days (selected by student according to instructor's availability)</div>
+        <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Add Lessons</a></span>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">{{program.lessonCountAdd}} Pending New </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
+        <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
       </div>
     </div>
 </div>
