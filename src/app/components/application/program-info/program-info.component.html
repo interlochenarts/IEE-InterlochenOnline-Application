@@ -56,16 +56,44 @@
 </div>
 
 <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
-  <div class="row">
     <h5>Selected Programs</h5>
     <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
-         (click)="clickProgram(program, instrumentModal)"
-         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
+      <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving" (click)="clickProgram(program, instrumentModal, 'selected')">
+        <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
+               [checked]="program.isSelected"
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')">
+        <label *ngIf="!program.isRegistered" [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
+          <i class="fa fa-check ps-4"></i>
+        </label>
+      </div>
+      <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
+        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+      </div>
+      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-8 description">
+        <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
+        <div>{{program.sessionDates}}</div>
+        <div>Meets on {{program.daysDisplay}}</div>
+      </div>
+      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
+        <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Add Lessons</a></span>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">{{program.lessonCountAdd}} Pending New </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
+        <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
+      </div>
+    </div>
+</div>
+
+<div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
+    <h5>Programs for {{selectedDivisionDescription}}</h5>
+    <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
+         (click)="clickProgram(program, instrumentModal, 'filtered')"
+         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
       <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
         <input type="checkbox" [id]="program.id" [name]="program.id"
                [checked]="program.isSelected"
-               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled)">
-        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')">
+        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
           <i class="fa fa-check ps-4"></i>
         </label>
       </div>
@@ -74,63 +102,73 @@
       </div>
       <div class="col-9 col-md-8 description">
         <h4>{{program.name}}</h4>
-        <div>{{program.sessionDates}}</div>
-        <div>Meets on {{program.daysDisplay}}</div>
+        <div *ngIf="!program.isPrivateLesson">{{program.sessionDates}}</div>
+        <div *ngIf="!program.isPrivateLesson">Meets on {{program.daysDisplay}}</div>
       </div>
     </div>
-  </div>
 </div>
-
-<div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
-  <div class="row">
-    <h5>Programs for {{selectedDivisionDescription}}</h5>
-  </div>
-</div>
-
-<div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
-     (click)="clickProgram(program, instrumentModal)"
-     [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
-  <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
-    <input type="checkbox" [id]="program.id" [name]="program.id"
-           [checked]="program.isSelected"
-           [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled)">
-    <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled)}">
-      <i class="fa fa-check ps-4"></i>
-    </label>
-  </div>
-  <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
-    <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-  </div>
-  <div class="col-9 col-md-8 description">
-    <h4>{{program.name}}</h4>
-    <div>{{program.sessionDates}}</div>
-    <div>Meets on {{program.daysDisplay}}</div>
-  </div>
-</div>
-
 <div *ngIf="appData.programData.selectedDivision && filteredPrograms.length === 0">
   There are no programs available for your selected session.
 </div>
 
 <ng-template #instrumentModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+    <h4 *ngIf="isMusic && !isPrivateLesson" class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+    <h4 *ngIf="isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select an Instrument and Number of Lessons</h4>
+    <h4 *ngIf="!isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select Number of Lessons</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
-    <div class="select">
+    <div *ngIf="isMusic" class="select">
       <select [(ngModel)]="modalInstrumentChoice"
               name="selectedInstrument"
               class="w-100"
               id="selectedInstrument">
         <option *ngFor="let instrument of selectedProgramInstruments" [value]="instrument.value"
+                [disabled]="instrument.disabled"
                 [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
       </select>
     </div>
+    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Number of Lessons</label>
+    <div *ngIf="isPrivateLesson" class="default required">
+      <input type="number" class="w-25"
+             [(ngModel)]="modalLessonCount"
+             name="lessonCount"
+             maxlength="3"
+             id="lessonCount"/>
+    </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+
+    <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="isMusic && !isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalLessonCount || modalLessonCount < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+
+  </div>
+</ng-template>
+
+<ng-template #lessonsModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Select Number of Lessons</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label  for="lessonCountAdd" class="mt-4 required">Number of Lessons</label>
+    <div  class="default required">
+      <input type="number" class="w-25"
+             [(ngModel)]="modalLessonCountAdd"
+             name="lessonCountAdd"
+             maxlength="3"
+             id="lessonCountAdd"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+
+    <button type="button" class="btn btn-primary" [disabled]="!modalLessonCountAdd || modalLessonCountAdd < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+
   </div>
 </ng-template>

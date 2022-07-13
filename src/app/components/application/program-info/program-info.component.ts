@@ -21,7 +21,11 @@ export class ProgramInfoComponent implements OnInit {
   sortedArtsAreas: Array<SalesforceOption> = [];
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
-
+  modalLessonCount : number;
+  modalLessonCountAdd : number;
+  isPrivateLesson : boolean;
+  isMusic : boolean;
+  isRegistered : boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
@@ -66,15 +70,16 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get filteredPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => p.isSelected ||
+    return this.appData.programData.programs.filter(p => !p.isSelected &&
       ((p.division === this.appData.programData.selectedDivision) &&
       (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
       (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => p.isSelected);
+    return this.appData.acProgramData.programs.filter(p => p.isSelected);
   }
+
 
   updateArtsAreas(): void {
     this.selectedArtsArea = '';
@@ -133,35 +138,102 @@ export class ProgramInfoComponent implements OnInit {
     });
   }
 
-  clickProgram(program: Program, modal): void {
+  clickProgram(program: Program, modal, list): void {
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
-      && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn) && !program.isSaving) {
+      && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
 
       program.isSaving = true;
       if (!program.isSelected) {
-        if (program.artsAreaList[0] === 'Music') {
+        if (program.artsAreaList[0] === 'Music' || program.isPrivateLesson) { // open modal for music OR private lessons
+          this.isPrivateLesson = program.isPrivateLesson;
+          this.isMusic = program.artsAreaList[0] === 'Music';
           // if music, ask for instrument
-          this.selectedProgramInstruments = program.programOptionsArray;
+          if (program.artsAreaList[0] === 'Music' ) {
+            this.selectedProgramInstruments = program.programOptionsArray;
+            // disable instruments from list if they exist in currently selected programs selected instrument.
+            this.selectedProgramInstruments.forEach(o => {
+              this.appData.acProgramData.programs.forEach(p => {
+                if (p.selectedInstrument === o.value) {
+                  o.disabled = true;
+                }
+              });
+            });
+          }
+
           this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
             .then(instrumentResult => {
               program.selectedInstrument = instrumentResult;
-              this.saveProgram(program);
+              program.lessonCount = this.modalLessonCount;
+              let pgmCopy : Program = Program.duplicateMe(program);
+              pgmCopy.isSelected = true;
+              this.appData.acProgramData.programs.push(pgmCopy);
+              this.saveProgram(pgmCopy);
+              program.isSelected = !this.isMusic && this.isPrivateLesson; // if private lesson, set music selected to false.
+              program.isSaving = false;
               delete this.modalInstrumentChoice;
+              delete this.modalLessonCount;
+              delete this.isMusic;
+              delete this.isPrivateLesson;
+              delete this.isRegistered;
             }, reason => {
               // console.log(`Not Saving: Instrument closed (${reason})`);
               program.isSaving = false;
               delete this.modalInstrumentChoice;
+              delete this.modalLessonCount;
+              delete this.isMusic;
+              delete this.isPrivateLesson;
             });
         } else {
           // if not music, just save
-          this.saveProgram(program);
+          let pgmCopy : Program = Program.duplicateMe(program);
+          pgmCopy.isSelected = true;
+          this.appData.acProgramData.programs.push(pgmCopy);
+          this.saveProgram(pgmCopy);
+          program.isSelected = true;
+          program.isSaving = false;
+          delete this.isMusic;
+          delete this.isPrivateLesson;
         }
       } else {
-        this.removeProgram(program);
+        // remove program from 'selected' list in memory
+        this.appData.acProgramData.programs.forEach(((p, x) => {
+          if (p.id === program.id && (p.artsArea !== 'Music' || (p.artsArea === 'Music' && p.selectedInstrument === program.selectedInstrument))) { // have to id by instrument because multiples
+            this.removeProgram(p);
+            this.appData.acProgramData.programs.splice(x, 1);
+          }
+        }));
+        // sync up the filtered list.
+          this.appData.programData.programs.forEach((p => {
+            if (p.id === program.id) { // only one music program in filtered list
+              p.isSelected = false;
+              p.isSaving = false;
+            }
+          }));
       }
     }
   }
+
+  addLessons(program: Program, modal): void {
+    this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
+    this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
+      .then(lessonResult => {
+        if (program.isRegistered) {
+          program.lessonCountAdd = this.modalLessonCountAdd;
+        } else {
+          program.lessonCount = this.modalLessonCountAdd;
+        }
+         this.updateProgram(program);
+        program.isSaving = false;
+        delete this.modalLessonCountAdd;
+      }, reason => {
+        // console.log(`Not Saving: Instrument closed (${reason})`);
+        program.isSaving = false;
+        delete this.modalLessonCountAdd;
+      });
+  }
+
+
   get programsDisabled(): boolean {
     // Temporarily removed, might come back
     // Temporarily removed, might come back
@@ -184,19 +256,49 @@ export class ProgramInfoComponent implements OnInit {
     });
   }
 
-  private saveProgram(program: Program): void {
+  private saveProgram(program: Program): void  {
     program.isSelected = true;
     this.addDaysSelected(program);
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       this.appData.appId, program.id, program.sessionId,
-      (program.selectedInstrument ? program.selectedInstrument : ''),
+      (program.selectedInstrument ? program.selectedInstrument : ''), program.lessonCount,
       result => {
         if (result.toString().startsWith('ERR')) {
           console.error(result);
         } else {
           // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            this.appData.appId,
+            payment => {
+              if (payment && payment !== 'null') {
+                this.appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+            },
+            {buffer: false, escape: false}
+          );
+        }
+        program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+  private updateProgram(program: Program): void  {
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.updateAppChoiceLessons',
+      this.appData.appId, program.appChoiceId, program.lessonCount, program.lessonCountAdd,
+      result => {
+        if (result.toString().startsWith('ERR')) {
+          console.error(result);
+        } else {
+          console.log('updated program: ' + result);
+          if (!program.isRegistered) {
+            program.lessonCount += program.lessonCountAdd;
+            program.lessonCountAdd = 0;
+          }
           // Update payment info
           Visualforce.remoting.Manager.invokeAction(
             'IEE_OnlineApplicationController.getPaymentJSON',

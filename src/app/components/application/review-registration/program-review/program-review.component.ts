@@ -22,13 +22,13 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     // Only unregistered programs
-    this.selectedPrograms = this.programData?.programs.filter(p => p.isSelected && !p.isRegistered);
+    this.selectedPrograms = this.programData?.programs.filter(p => (p.isSelected && !p.isRegistered) || (p.isSelected && p.isRegistered && p.lessonCountAdd > 0));
     // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
     this.selectedPrograms.sort((a, b) =>
       new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
       new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
     // Only registered programs
-    this.registeredPrograms = this.programData?.programs.filter(p => p.isSelected && p.isRegistered);
+    this.registeredPrograms = this.programData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
     // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
     this.registeredPrograms.sort((a, b) =>
       new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
