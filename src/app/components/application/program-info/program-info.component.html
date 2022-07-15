@@ -57,9 +57,7 @@
 
 <div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
   <h5>Registered Programs</h5>
-<!--  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"-->
-<!--       [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'registered')}">-->
-  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3">
+  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3" style="cursor: auto !important;">
     <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving" (click)="clickProgram(program, instrumentModal, 'registered')">
       <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
              [checked]="program.isSelected"
