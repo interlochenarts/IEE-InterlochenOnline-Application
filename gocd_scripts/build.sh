@@ -26,6 +26,6 @@ if ! command -v ng &>/dev/null; then
 fi
 
 echo -e "\n===> Compiling... <===\n"
-ng build --prod --aot --output-hashing=none
+ng build --configuration production --aot --output-hashing=none
 #ng build --output-hashing=none
 

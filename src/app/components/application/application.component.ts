@@ -46,7 +46,7 @@ export class ApplicationComponent implements OnInit {
         this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
           && ((!this.applicationData.isRegistered && !this.applicationData.isComplete(this.countryCodes, this.stateCodes))
           || (this.applicationData.isRegistered &&
-              this.applicationData.programData.programs.filter(program => (program.isSelected && !program.isRegistered)).length === 0));
+              this.applicationData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd > 0) )).length === 0));
       }
     });
 

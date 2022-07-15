@@ -83,7 +83,7 @@ export class AppComponent implements OnInit {
 
   linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
     return !appData.isComplete(countryCodes, stateCodes) ||
-      (appData.isRegistered && appData.programData.programs.filter(program => (program.isSelected && !program.isRegistered)).length === 0);
+      (appData.isRegistered && appData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd  > 0) )).length === 0);
   }
   linkShow(appData: ApplicationData): boolean {
     return !appData.isRegistered;
