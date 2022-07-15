@@ -142,9 +142,9 @@
   </div>
   <div class="modal-footer">
 
-    <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
     <button *ngIf="isMusic && !isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
-    <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalLessonCount || modalLessonCount < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalLessonCount || modalLessonCount < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
 
   </div>
 </ng-template>
@@ -168,7 +168,7 @@
   </div>
   <div class="modal-footer">
 
-    <button type="button" class="btn btn-primary" [disabled]="!modalLessonCountAdd || modalLessonCountAdd < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
 
   </div>
 </ng-template>
