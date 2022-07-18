@@ -21,6 +21,7 @@ export class ProgramInfoComponent implements OnInit {
   sortedArtsAreas: Array<SalesforceOption> = [];
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
+  modalList: string; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
   modalLessonCount : number;
   modalLessonCountAdd : number;
   isPrivateLesson : boolean;
@@ -144,6 +145,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal, list): void {
+    this.modalList = list;
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
       && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
@@ -182,6 +184,7 @@ export class ProgramInfoComponent implements OnInit {
                 delete this.isMusic;
                 delete this.isPrivateLesson;
                 delete this.isRegistered;
+                delete this.modalList;
               }, reason => {
                 // console.log(`Not Saving: Instrument closed (${reason})`);
                 program.isSaving = false;
@@ -189,6 +192,7 @@ export class ProgramInfoComponent implements OnInit {
                 delete this.modalLessonCount;
                 delete this.isMusic;
                 delete this.isPrivateLesson;
+                delete this.modalList;
               });
           }
         } else {
@@ -221,7 +225,8 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
-  addLessons(program: Program, modal): void {
+  addLessons(program: Program, modal, modalList): void {
+    this.modalList = modalList;
     this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
     this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
       .then(lessonResult => {
@@ -233,10 +238,12 @@ export class ProgramInfoComponent implements OnInit {
          this.updateProgram(program);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
+        delete this.modalList;
       }, reason => {
         // console.log(`Not Saving: Instrument closed (${reason})`);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
+        delete this.modalList;
       });
   }
 
