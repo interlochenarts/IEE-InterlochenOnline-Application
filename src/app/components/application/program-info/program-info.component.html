@@ -56,10 +56,8 @@
 </div>
 
 <div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
-  <h5>Registered Programs</h5>
-<!--  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"-->
-<!--       [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'registered')}">-->
-  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3">
+  <h5>Previously Registered Programs</h5>
+  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3" style="cursor: auto !important;">
     <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving" (click)="clickProgram(program, instrumentModal, 'registered')">
       <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
              [checked]="program.isSelected"
@@ -78,9 +76,9 @@
     </div>
     <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
       <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
-      <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Add Lessons</a></span>
-      <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">{{program.lessonCountAdd}} Pending New </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
-      <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
+      <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Add Lessons</a></span>
+      <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">{{program.lessonCountAdd}} Pending New </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Update Lessons</a></span>
+      <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Update Lessons</a></span>
     </div>
   </div>
 </div>
@@ -107,15 +105,15 @@
       </div>
       <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
         <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
-        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Add Lessons</a></span>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'selected')"> Add Lessons</a></span>
         <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">{{program.lessonCountAdd}} Pending New </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
-        <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal)"> Update Lessons</a></span>
+        <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'selected')"> Update Lessons</a></span>
       </div>
     </div>
 </div>
 
 <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
-    <h5>Programs for {{selectedDivisionDescription}}</h5>
+    <h5>Available Programs for {{selectedDivisionDescription}}</h5>
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'filtered')"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
@@ -161,7 +159,7 @@
                 [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
       </select>
     </div>
-    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Number of Lessons</label>
+    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add Lessons</label>
     <div *ngIf="isPrivateLesson" class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCount"
@@ -181,7 +179,8 @@
 
 <ng-template #lessonsModal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Select Number of Lessons</h4>
+    <h4 *ngIf="modalList === 'selected'" class="modal-title" id="modal-basic-title">Adjust Lessons</h4>
+    <h4 *ngIf="modalList === 'registered' " class="modal-title" id="modal-basic-title">Select number of Additional Lessons</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true">×</span>
     </button>
