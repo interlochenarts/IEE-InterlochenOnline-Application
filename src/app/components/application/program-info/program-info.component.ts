@@ -52,7 +52,7 @@ export class ProgramInfoComponent implements OnInit {
       if (app) {
         this.appData = app;
 
-        this.appData.programData.programs.forEach(p => {
+        this.appData.acProgramData.programs.forEach(p => {
           if (p.isSelected) {
             this.addDaysSelected(p);
           }
@@ -172,7 +172,7 @@ export class ProgramInfoComponent implements OnInit {
             this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
               .then(instrumentResult => {
                 program.selectedInstrument = instrumentResult;
-                program.lessonCount = this.modalLessonCount;
+                program.lessonCount = this.modalLessonCount || 0;
                 let pgmCopy: Program = Program.duplicateMe(program);
                 pgmCopy.isSelected = true;
                 this.appData.acProgramData.programs.push(pgmCopy);
@@ -231,9 +231,9 @@ export class ProgramInfoComponent implements OnInit {
     this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
       .then(lessonResult => {
         if (program.isRegistered) {
-          program.lessonCountAdd = this.modalLessonCountAdd;
+          program.lessonCountAdd = this.modalLessonCountAdd|| 0;
         } else {
-          program.lessonCount = this.modalLessonCountAdd;
+          program.lessonCount = this.modalLessonCountAdd || 0;
         }
          this.updateProgram(program);
         program.isSaving = false;

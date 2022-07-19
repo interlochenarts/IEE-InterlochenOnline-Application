@@ -142,8 +142,8 @@
 <ng-template #instrumentModal let-modal>
   <div class="modal-header">
     <h4 *ngIf="isMusic && !isPrivateLesson" class="modal-title" id="modal-basic-title">Select an Instrument</h4>
-    <h4 *ngIf="isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select an Instrument and Number of Lessons</h4>
-    <h4 *ngIf="!isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select Number of Lessons</h4>
+    <h4 *ngIf="isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select an Instrument and Number of lessons</h4>
+    <h4 *ngIf="!isMusic && isPrivateLesson" class="modal-title" id="modal-basic-title">Select Number of lessons</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true">×</span>
     </button>
@@ -159,7 +159,7 @@
                 [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
       </select>
     </div>
-    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add Lessons</label>
+    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add lessons</label>
     <div *ngIf="isPrivateLesson" class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCount"
@@ -180,13 +180,13 @@
 <ng-template #lessonsModal let-modal>
   <div class="modal-header">
     <h4 *ngIf="modalList === 'selected'" class="modal-title" id="modal-basic-title">Adjust Lessons</h4>
-    <h4 *ngIf="modalList === 'registered' " class="modal-title" id="modal-basic-title">Select number of additional Lessons</h4>
+    <h4 *ngIf="modalList === 'registered' " class="modal-title" id="modal-basic-title">Select number of additional lessons</h4>
     <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true">×</span>
     </button>
   </div>
   <div class="modal-body">
-    <label  for="lessonCountAdd" class="mt-4 required">Number of Lessons</label>
+    <label  for="lessonCountAdd" class="mt-4 required">Number of lessons</label>
     <div  class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCountAdd"
@@ -197,7 +197,8 @@
   </div>
   <div class="modal-footer">
 
-    <button type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="modalList === 'selected'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="modalList === 'registered'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
 
   </div>
 </ng-template>
