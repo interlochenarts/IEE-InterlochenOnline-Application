@@ -172,7 +172,7 @@ export class ProgramInfoComponent implements OnInit {
             this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
               .then(instrumentResult => {
                 program.selectedInstrument = instrumentResult;
-                program.lessonCount = this.modalLessonCount === null ? 0 : this.modalLessonCount;
+                program.lessonCount = this.modalLessonCount || 0;
                 let pgmCopy: Program = Program.duplicateMe(program);
                 pgmCopy.isSelected = true;
                 this.appData.acProgramData.programs.push(pgmCopy);
@@ -231,9 +231,9 @@ export class ProgramInfoComponent implements OnInit {
     this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
       .then(lessonResult => {
         if (program.isRegistered) {
-          program.lessonCountAdd = this.modalLessonCountAdd === null ? 0 : this.modalLessonCountAdd;
+          program.lessonCountAdd = this.modalLessonCountAdd|| 0;
         } else {
-          program.lessonCount = this.modalLessonCountAdd === null ? 0 : this.modalLessonCountAdd;
+          program.lessonCount = this.modalLessonCountAdd || 0;
         }
          this.updateProgram(program);
         program.isSaving = false;
