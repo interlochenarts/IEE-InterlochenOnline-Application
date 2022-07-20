@@ -159,20 +159,20 @@
                 [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
       </select>
     </div>
-    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add lessons</label>
+    <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add lessons (max 52)</label>
     <div *ngIf="isPrivateLesson" class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCount"
              name="lessonCount"
-             maxlength="3"
+             max="52"
              id="lessonCount"/>
     </div>
   </div>
   <div class="modal-footer">
 
-    <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 0 || modalLessonCount > 52" (click)="modal.close(modalInstrumentChoice)">Ok</button>
     <button *ngIf="isMusic && !isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok</button>
-    <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalLessonCount || modalLessonCount < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary" [disabled]="!modalLessonCount || modalLessonCount < 0 || modalLessonCount > 52" (click)="modal.close(modalInstrumentChoice)">Ok</button>
 
   </div>
 </ng-template>
@@ -186,19 +186,20 @@
     </button>
   </div>
   <div class="modal-body">
-    <label  for="lessonCountAdd" class="mt-4 required">Number of lessons</label>
+    <label  *ngIf="modalList === 'selected'" for="lessonCountAdd" class="mt-4 required">Number of lessons (max 52)</label>
+    <label  *ngIf="modalList === 'registered'" for="lessonCountAdd" class="mt-4 required">Number of lessons (max {{52 - modalExistingCount}})</label>
     <div  class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCountAdd"
              name="lessonCountAdd"
-             maxlength="3"
+             max="52"
              id="lessonCountAdd"/>
     </div>
   </div>
   <div class="modal-footer">
 
-    <button *ngIf="modalList === 'selected'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 1" (click)="modal.close(modalInstrumentChoice)">Ok</button>
-    <button *ngIf="modalList === 'registered'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 0" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="modalList === 'selected'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 1 || modalLessonCountAdd > 52" (click)="modal.close(modalInstrumentChoice)">Ok</button>
+    <button *ngIf="modalList === 'registered'" type="button" class="btn btn-primary" [disabled]=" modalLessonCountAdd < 0 || (modalExistingCount + modalLessonCountAdd) > 52" (click)="modal.close(modalInstrumentChoice)">Ok</button>
 
   </div>
 </ng-template>

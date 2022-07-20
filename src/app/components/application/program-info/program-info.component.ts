@@ -24,6 +24,7 @@ export class ProgramInfoComponent implements OnInit {
   modalList: string; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
   modalLessonCount : number;
   modalLessonCountAdd : number;
+  modalExistingCount : number;
   isPrivateLesson : boolean;
   isMusic : boolean;
   isRegistered : boolean;
@@ -169,6 +170,7 @@ export class ProgramInfoComponent implements OnInit {
           }
 
           if (program.isPrivateLesson || program.artsAreaList[0] === 'Music') {
+            this.modalLessonCount = this.modalLessonCount === 0 ? null : this.modalLessonCount;
             this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
               .then(instrumentResult => {
                 program.selectedInstrument = instrumentResult;
@@ -227,11 +229,13 @@ export class ProgramInfoComponent implements OnInit {
 
   addLessons(program: Program, modal, modalList): void {
     this.modalList = modalList;
+    this.modalExistingCount = program.lessonCount;
     this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
+    this.modalLessonCountAdd = this.modalLessonCountAdd === 0 ? null : this.modalLessonCountAdd;
     this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
       .then(lessonResult => {
         if (program.isRegistered) {
-          program.lessonCountAdd = this.modalLessonCountAdd|| 0;
+          program.lessonCountAdd = this.modalLessonCountAdd || 0;
         } else {
           program.lessonCount = this.modalLessonCountAdd || 0;
         }
