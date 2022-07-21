@@ -1,4 +1,4 @@
-<header>
+<header xmlns="http://www.w3.org/1999/html">
   <div class="row">
     <div class="col-12">
       <h3>Make a Payment</h3>
@@ -134,7 +134,7 @@
       <p *ngIf="!canPay() && appData.payment.paidOnLoad">To confirm enrollment in the following program(s), you must click "Register" below:</p>
       <p *ngIf="canPay()">To confirm enrollment in the following program(s), you must click "Pay Fee & Register" below:</p>
       <ul>
-        <li *ngFor="let program of selectedPrograms">{{program.name}} - {{program.sessionDates}}</li>
+        <li *ngFor="let program of selectedPrograms">{{program.name}}<span *ngIf="program.artsArea == 'Music'"> - {{program.selectedInstrument}}</span><span *ngIf="!program.isPrivateLesson"> {{program.sessionDates}}</span><span *ngIf="program.isPrivateLesson">: {{program.lessonCount}}</span><span *ngIf="program.lessonCountAdd > 0" class="reviewError">  New Additional Lessons: {{program.lessonCountAdd}} </span></li>
       </ul>
 
       <div *ngIf="!canPay() && appData.payment.paidOnLoad">

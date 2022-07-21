@@ -27,3 +27,5 @@ fi
 
 echo -e "\n===> Compiling... <===\n"
 ng build --configuration production --aot --output-hashing=none
+#ng build --output-hashing=none
+

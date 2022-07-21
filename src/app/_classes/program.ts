@@ -16,6 +16,9 @@ export class Program {
   programOptions: string;
   selectedInstrument: string;
   isSaving = false;
+  lessonCount = 0;
+  lessonCountAdd = 0;
+  isPrivateLesson = false;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -24,9 +27,16 @@ export class Program {
     return program;
   }
 
+  public static duplicateMe(inProgram: Program): Program {
+    const program = new Program();
+    Object.assign(program, inProgram);
+
+    return program;
+  }
+
   get daysDisplay(): string {
     return this.daysArray?.reduce((prev: string, curr: string, index: number, array: string[]): string => {
-      return prev + (index === array.length - 1 ? ', & ' : ', ') + curr;
+      return prev + (index === array.length - 1 ? ' & ' : ', ') + curr;
     });
   }
 
@@ -38,14 +48,16 @@ export class Program {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean): boolean {
+  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list : string): boolean {
     // Don't let them re-select it if they already had this program selected and canceled or withdrew
     if (this.isCancelOrWithdrawn) {
       return true;
     }
 
     // disable everything if fee already paid
-    if (feePaid || this.isRegistered) {
+    // "feePaid" is the passed in result of the program-info.programsDisabled() function currently commented out, except where called in program-info.clickProgram()
+    // we're leaving the private lesson music re-selectable (because their existing instruments will be disabled, but they can pick new ones for pvt lessons)
+    if ((feePaid || this.isRegistered) && list === 'selected' || (list === 'filtered' && this.isRegistered && this.isPrivateLesson && this.artsArea !='Music' )) {
       return true;
     }
 
