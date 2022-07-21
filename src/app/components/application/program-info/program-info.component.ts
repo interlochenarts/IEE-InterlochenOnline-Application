@@ -21,8 +21,10 @@ export class ProgramInfoComponent implements OnInit {
   sortedArtsAreas: Array<SalesforceOption> = [];
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
+  modalList: string; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
   modalLessonCount : number;
   modalLessonCountAdd : number;
+  modalExistingCount : number;
   isPrivateLesson : boolean;
   isMusic : boolean;
   isRegistered : boolean;
@@ -51,7 +53,7 @@ export class ProgramInfoComponent implements OnInit {
       if (app) {
         this.appData = app;
 
-        this.appData.programData.programs.forEach(p => {
+        this.appData.acProgramData.programs.forEach(p => {
           if (p.isSelected) {
             this.addDaysSelected(p);
           }
@@ -77,7 +79,11 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.acProgramData.programs.filter(p => p.isSelected);
+    return this.appData.acProgramData.programs.filter(p => (p.isSelected && !p.isRegistered));
+  }
+
+  get registeredPrograms(): Array<Program> {
+    return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered));
   }
 
 
@@ -108,11 +114,12 @@ export class ProgramInfoComponent implements OnInit {
       sessionSet.add(p.sessionName);
     });
     if (sessionSet.size > 1) {
-      this.sortedSessions = Array.from(sessionSet).sort()
+      // sort is now coming from SOQL ORDER BY in IEE_OnlineApplicationController.getProgramData
+      this.sortedSessions = Array.from(sessionSet)
         .map(ss => new SalesforceOption(ss + ': ' + this.appData.programData.sessionDates.get(ss), ss, false));
       this.sortedSessions.unshift(new SalesforceOption('All', '', true));
     } else if (sessionSet.size === 1) {
-      this.sortedSessions = Array.from(sessionSet).sort()
+      this.sortedSessions = Array.from(sessionSet)
         .map(s => new SalesforceOption(s + ': ' + this.appData.programData.sessionDates.get(s), s, true));
       this.selectedSession = this.sortedSessions[0].value;
     }
@@ -139,51 +146,57 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   clickProgram(program: Program, modal, list): void {
+    this.modalList = list;
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
       && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
 
       program.isSaving = true;
       if (!program.isSelected) {
-        if (program.artsAreaList[0] === 'Music' || program.isPrivateLesson) { // open modal for music OR private lessons
+        if ((program.artsAreaList[0] === 'Music' && program.programOptionsArray !== undefined && program.programOptionsArray.length > 0) || program.isPrivateLesson) { // open modal for music OR private lessons
           this.isPrivateLesson = program.isPrivateLesson;
           this.isMusic = program.artsAreaList[0] === 'Music';
           // if music, ask for instrument
-          if (program.artsAreaList[0] === 'Music' ) {
+          if (program.artsAreaList[0] === 'Music') {
             this.selectedProgramInstruments = program.programOptionsArray;
             // disable instruments from list if they exist in currently selected programs selected instrument.
             this.selectedProgramInstruments.forEach(o => {
               this.appData.acProgramData.programs.forEach(p => {
-                if (p.selectedInstrument === o.value) {
+                if (p.isPrivateLesson && p.selectedInstrument === o.value) {
                   o.disabled = true;
                 }
               });
             });
           }
 
-          this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
-            .then(instrumentResult => {
-              program.selectedInstrument = instrumentResult;
-              program.lessonCount = this.modalLessonCount;
-              let pgmCopy : Program = Program.duplicateMe(program);
-              pgmCopy.isSelected = true;
-              this.appData.acProgramData.programs.push(pgmCopy);
-              this.saveProgram(pgmCopy);
-              program.isSelected = !this.isMusic && this.isPrivateLesson; // if private lesson, set music selected to false.
-              program.isSaving = false;
-              delete this.modalInstrumentChoice;
-              delete this.modalLessonCount;
-              delete this.isMusic;
-              delete this.isPrivateLesson;
-              delete this.isRegistered;
-            }, reason => {
-              // console.log(`Not Saving: Instrument closed (${reason})`);
-              program.isSaving = false;
-              delete this.modalInstrumentChoice;
-              delete this.modalLessonCount;
-              delete this.isMusic;
-              delete this.isPrivateLesson;
-            });
+          if (program.isPrivateLesson || program.artsAreaList[0] === 'Music') {
+            this.modalLessonCount = this.modalLessonCount === 0 ? null : this.modalLessonCount;
+            this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
+              .then(instrumentResult => {
+                program.selectedInstrument = instrumentResult;
+                program.lessonCount = this.modalLessonCount || 0;
+                let pgmCopy: Program = Program.duplicateMe(program);
+                pgmCopy.isSelected = true;
+                this.appData.acProgramData.programs.push(pgmCopy);
+                this.saveProgram(pgmCopy);
+                program.isSelected = !this.isMusic && this.isPrivateLesson; // if private lesson, set music selected to false.
+                program.isSaving = false;
+                delete this.modalInstrumentChoice;
+                delete this.modalLessonCount;
+                delete this.isMusic;
+                delete this.isPrivateLesson;
+                delete this.isRegistered;
+                delete this.modalList;
+              }, reason => {
+                // console.log(`Not Saving: Instrument closed (${reason})`);
+                program.isSaving = false;
+                delete this.modalInstrumentChoice;
+                delete this.modalLessonCount;
+                delete this.isMusic;
+                delete this.isPrivateLesson;
+                delete this.modalList;
+              });
+          }
         } else {
           // if not music, just save
           let pgmCopy : Program = Program.duplicateMe(program);
@@ -214,22 +227,27 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
-  addLessons(program: Program, modal): void {
+  addLessons(program: Program, modal, modalList): void {
+    this.modalList = modalList;
+    this.modalExistingCount = program.lessonCount;
     this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
+    this.modalLessonCountAdd = this.modalLessonCountAdd === 0 ? null : this.modalLessonCountAdd;
     this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
       .then(lessonResult => {
         if (program.isRegistered) {
-          program.lessonCountAdd = this.modalLessonCountAdd;
+          program.lessonCountAdd = this.modalLessonCountAdd || 0;
         } else {
-          program.lessonCount = this.modalLessonCountAdd;
+          program.lessonCount = this.modalLessonCountAdd || 0;
         }
          this.updateProgram(program);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
+        delete this.modalList;
       }, reason => {
         // console.log(`Not Saving: Instrument closed (${reason})`);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
+        delete this.modalList;
       });
   }
 
@@ -262,7 +280,7 @@ export class ProgramInfoComponent implements OnInit {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       this.appData.appId, program.id, program.sessionId,
-      (program.selectedInstrument ? program.selectedInstrument : ''), program.lessonCount,
+      (program.selectedInstrument ? program.selectedInstrument : ''), (program.lessonCount ? program.lessonCount : ' '),
       result => {
         if (result.toString().startsWith('ERR')) {
           console.error(result);
