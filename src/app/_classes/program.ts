@@ -5,10 +5,12 @@ export class Program {
   sessionId: string;
   name: string;
   daysOfAttendance: string;
+  daysOfAttendanceApi: string;
   artsArea: string;
   division: string;
   isSelected = false;
   isRegistered = false;
+  allowsConflicts = false;
   isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
@@ -44,11 +46,15 @@ export class Program {
     return this.daysOfAttendance?.split(';');
   }
 
+  get daysArrayApi(): Array<string> {
+    return this.daysOfAttendanceApi?.split(';');
+  }
+
   get programOptionsArray(): Array<SalesforceOption> {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list : string): boolean {
+  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: string): boolean {
     // Don't let them re-select it if they already had this program selected and canceled or withdrew
     if (this.isCancelOrWithdrawn) {
       return true;
@@ -57,7 +63,13 @@ export class Program {
     // disable everything if fee already paid
     // "feePaid" is the passed in result of the program-info.programsDisabled() function currently commented out, except where called in program-info.clickProgram()
     // we're leaving the private lesson music re-selectable (because their existing instruments will be disabled, but they can pick new ones for pvt lessons)
-    if ((feePaid || this.isRegistered) && list === 'selected' || (list === 'filtered' && this.isRegistered && this.isPrivateLesson && this.artsArea !='Music' )) {
+    if (list === 'selected' && (feePaid || this.isRegistered)) {
+      return true;
+    }
+
+    if (list === 'filtered' &&
+      ((this.isRegistered && this.isPrivateLesson && this.artsArea != 'Music')
+        || (this.isRegistered && !this.isPrivateLesson))) {
       return true;
     }
 
@@ -70,7 +82,7 @@ export class Program {
     // if no days selected for a session, return a set instead of null
     const daysSelected = daysSelectedBySession.get(this.sessionName) || new Set<string>();
     for (const d of daysSelected) {
-      if (this.daysArray?.includes(d)) {
+      if (this.daysArrayApi?.includes(d)) {
         daySelected = true;
       }
     }
