@@ -22,12 +22,12 @@ export class ProgramInfoComponent implements OnInit {
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
   modalList: string; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
-  modalLessonCount : number;
-  modalLessonCountAdd : number;
-  modalExistingCount : number;
-  isPrivateLesson : boolean;
-  isMusic : boolean;
-  isRegistered : boolean;
+  modalLessonCount: number;
+  modalLessonCountAdd: number;
+  modalExistingCount: number;
+  isPrivateLesson: boolean;
+  isMusic: boolean;
+  isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
@@ -74,8 +74,8 @@ export class ProgramInfoComponent implements OnInit {
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p => !p.isSelected &&
       ((p.division === this.appData.programData.selectedDivision) &&
-      (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-      (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+        (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
+        (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }
 
   get selectedPrograms(): Array<Program> {
@@ -159,14 +159,16 @@ export class ProgramInfoComponent implements OnInit {
           // if music, ask for instrument
           if (program.artsAreaList[0] === 'Music') {
             this.selectedProgramInstruments = program.programOptionsArray;
-            // disable instruments from list if they exist in currently selected programs selected instrument.
-            this.selectedProgramInstruments.forEach(o => {
-              this.appData.acProgramData.programs.forEach(p => {
-                if (p.isPrivateLesson && p.selectedInstrument === o.value) {
-                  o.disabled = true;
-                }
+            // disable instruments from list if they exist in currently selected programs selected instrument, but only for private lessons.
+            if (program.isPrivateLesson) {
+              this.selectedProgramInstruments.forEach(o => {
+                this.appData.acProgramData.programs.forEach(p => {
+                  if (p.isPrivateLesson && p.selectedInstrument === o.value) {
+                    o.disabled = true;
+                  }
+                });
               });
-            });
+            }
           }
 
           if (program.isPrivateLesson || program.artsAreaList[0] === 'Music') {
@@ -179,7 +181,12 @@ export class ProgramInfoComponent implements OnInit {
                 pgmCopy.isSelected = true;
                 this.appData.acProgramData.programs.push(pgmCopy);
                 this.saveProgram(pgmCopy);
-                program.isSelected = !this.isMusic && this.isPrivateLesson; // if private lesson, set music selected to false.
+                if (this.isPrivateLesson) {
+                  program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
+                } else {
+                  program.isSelected = true;
+                }
+
                 program.isSaving = false;
                 delete this.modalInstrumentChoice;
                 delete this.modalLessonCount;
@@ -199,7 +206,7 @@ export class ProgramInfoComponent implements OnInit {
           }
         } else {
           // if not music, just save
-          let pgmCopy : Program = Program.duplicateMe(program);
+          let pgmCopy: Program = Program.duplicateMe(program);
           pgmCopy.isSelected = true;
           this.appData.acProgramData.programs.push(pgmCopy);
           this.saveProgram(pgmCopy);
@@ -217,12 +224,12 @@ export class ProgramInfoComponent implements OnInit {
           }
         }));
         // sync up the filtered list.
-          this.appData.programData.programs.forEach((p => {
-            if (p.id === program.id) { // only one music program in filtered list
-              p.isSelected = false;
-              p.isSaving = false;
-            }
-          }));
+        this.appData.programData.programs.forEach((p => {
+          if (p.id === program.id) { // only one music program in filtered list
+            p.isSelected = false;
+            p.isSaving = false;
+          }
+        }));
       }
     }
   }
@@ -239,7 +246,7 @@ export class ProgramInfoComponent implements OnInit {
         } else {
           program.lessonCount = this.modalLessonCountAdd || 0;
         }
-         this.updateProgram(program);
+        this.updateProgram(program);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
         delete this.modalList;
@@ -266,15 +273,18 @@ export class ProgramInfoComponent implements OnInit {
     // Temporarily removed, might come back
     return false;
   }
+
   private addDaysSelected(p: Program): void {
-    p.daysArray?.forEach(d => {
+    p.daysArrayApi?.forEach(d => {
       const daysSelected: Set<string> = this.daysSelectedBySession.get(p.sessionName) || new Set<string>();
-      daysSelected.add(d);
+      if (p.allowsConflicts === false) {
+        daysSelected.add(d);
+      }
       this.daysSelectedBySession.set(p.sessionName, daysSelected);
     });
   }
 
-  private saveProgram(program: Program): void  {
+  private saveProgram(program: Program): void {
     program.isSelected = true;
     this.addDaysSelected(program);
     Visualforce.remoting.Manager.invokeAction(
@@ -304,7 +314,8 @@ export class ProgramInfoComponent implements OnInit {
       {buffer: false, escape: false}
     );
   }
-  private updateProgram(program: Program): void  {
+
+  private updateProgram(program: Program): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.updateAppChoiceLessons',
       this.appData.appId, program.appChoiceId, program.lessonCount, program.lessonCountAdd,
@@ -338,7 +349,7 @@ export class ProgramInfoComponent implements OnInit {
   private removeProgram(program: Program): void {
     program.isSelected = false;
     const daysSelected = this.daysSelectedBySession.get(program.sessionName);
-    program.daysArray?.forEach(d => {
+    program.daysArrayApi?.forEach(d => {
       daysSelected.delete(d);
     });
     this.daysSelectedBySession.set(program.sessionName, daysSelected);
