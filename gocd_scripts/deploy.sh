@@ -39,7 +39,8 @@ if [[ -z "${KEY_FILE}" ]]; then
   echo -e "Missing KEY_FILE environment variable"
 fi
 
-
+echo -e "===> SFDX Update <===\n"
+sfdx update
 
 echo -e "===> SFDX Deploy <===\n"
 sfdx -v
