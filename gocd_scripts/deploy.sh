@@ -17,7 +17,7 @@ nvm install $NODE_VERSION
 
 # get our dependencies
 echo -e "===> npm install <===\n"
-npm install -s;
+npm install sfdx-cli;
 
 if [[ -z "${SFDC_CONSUMER_KEY}" ]]; then
   echo -e "Missing SFDC_CONSUMER_KEY environment variable"
