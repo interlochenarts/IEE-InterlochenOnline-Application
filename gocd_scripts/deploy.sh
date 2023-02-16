@@ -1,24 +1,5 @@
 #!/bin/bash
 
-NODE_VERSION=14
-NG_CLI_VERSION=13.3.2
-
-cd ..;
-
-# check if nvm is installed. If not, install it.
-if [ ! -f "$HOME/.nvm/nvm.sh" ]; then
-    # May need to be updated with the latest nvm release
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-fi
-
-# lets us use the nvm commands
-source "$HOME/.nvm/nvm.sh"
-nvm install $NODE_VERSION
-
-# get our dependencies
-echo -e "===> npm install <===\n"
-npm install sfdx-cli;
-
 if [[ -z "${SFDC_CONSUMER_KEY}" ]]; then
   echo -e "Missing SFDC_CONSUMER_KEY environment variable"
 fi
