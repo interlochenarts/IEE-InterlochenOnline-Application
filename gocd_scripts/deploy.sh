@@ -1,5 +1,7 @@
 #!/bin/bash
 
+npm install -s
+
 if [[ -z "${SFDC_CONSUMER_KEY}" ]]; then
   echo -e "Missing SFDC_CONSUMER_KEY environment variable"
 fi
@@ -19,6 +21,8 @@ fi
 if [[ -z "${KEY_FILE}" ]]; then
   echo -e "Missing KEY_FILE environment variable"
 fi
+
+sfdx -v
 
 echo -e "sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -rhttps://${LOGIN_SERVER}.salesforce.com"
 sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -rhttps://${LOGIN_SERVER}.salesforce.com
