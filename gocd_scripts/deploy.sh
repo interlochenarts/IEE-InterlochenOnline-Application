@@ -26,11 +26,8 @@ sfdx update
 echo -e "===> SFDX Deploy <===\n"
 sfdx -v
 
-
-export SFDX_AUDIENCE_URL=https://${LOGIN_SERVER}.salesforce.com
-
-echo -e "sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -rhttps://${LOGIN_SERVER}.salesforce.com"
-sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -rhttps://${LOGIN_SERVER}.salesforce.com
+echo -e "sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -r${LOGIN_SERVER}"
+sfdx force:auth:jwt:grant -i${SFDC_CONSUMER_KEY} -f/home/wwadmin/certificates/${KEY_FILE} -u${sfdcUser} -a${DX_ENV} -r${LOGIN_SERVER}
 
 echo -e "sfdx force:mdapi:deploy -dSalesforce/src -u${DX_ENV} -w60"
 sfdx force:mdapi:deploy -dSalesforce/src -u${DX_ENV} -w60
