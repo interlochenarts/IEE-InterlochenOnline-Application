@@ -32,7 +32,7 @@ export class ParentComponent implements OnInit {
   addingUnverifiedParent = false;
   deletingParentId = 'none';
   isSaving = false;
-  isLoding = false;
+  isLoading = false;
 
   constructor(private appDataService: AppDataService) {
   }
@@ -163,7 +163,7 @@ export class ParentComponent implements OnInit {
   }
 
   removeParent(parentContactId: string): void {
-    this.isLoding = true;
+    this.isLoading = true;
     console.log(`removing ${parentContactId}`);
     const pi = this.parents.findIndex(p => p.contactId === parentContactId);
     if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
@@ -176,13 +176,12 @@ export class ParentComponent implements OnInit {
           if (result === true) {
             // console.log('removed parent');
             this.parents.splice(pi, 1);
-            this.isLoding = false;
           } else {
             console.error('Could not delete parent: ' + parentContactId);
             this.parents[pi].isDeleting = false;
-            this.isLoding = false;
           }
           this.deletingParentId = 'none';
+          this.isLoading = false;
         },
         {buffer: false, escape: false}
       );
