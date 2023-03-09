@@ -1,5 +1,4 @@
 <h3 class="mb-4">Parent or Guardian</h3>
-
 <div class="nestedForm">
   <div *ngFor="let parent of parents; let i = index">
     <h5>{{parent.firstName}} {{parent.lastName}}</h5>
@@ -13,9 +12,17 @@
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
+      <span *ngIf="!isDisable" >
       <a class="mx-3" href="javascript:void(0);" *ngIf="parent.contactId !== userContactId"
          [ngClass]="{disabled: isSaving || parent.isSaving}"
          (click)="removeParent(parent.contactId)">Remove</a>
+         </span>
+         <span *ngIf="isDisable" >
+          <a class="disabled mx-3" href="javascript:void(0);" *ngIf="parent.contactId !== userContactId"
+          disabled="true">Remove</a>
+         </span>
+
+
       <span *ngIf="parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
       <span *ngIf="(isSaving || parent.isSaving) && !parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Saving</span>
       <div *ngIf="parent.verificationSent" class="alert alert-info my-3">
