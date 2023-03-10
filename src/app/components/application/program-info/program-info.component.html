@@ -112,6 +112,10 @@
     </div>
 </div>
 
+<div *ngIf="appData.programData.selectedDivision == null" class="mt-4">
+  There are no programs available for the selected Arts Area and Session for this student's Current Grade in School. Choose a different Arts Area or Session to see available programs.
+</div>
+
 <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
     <h5>Available Programs for {{selectedDivisionDescription}}</h5>
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
