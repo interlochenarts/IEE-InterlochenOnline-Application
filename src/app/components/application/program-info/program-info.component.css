@@ -37,10 +37,3 @@ button.disabled {
   cursor: not-allowed;
 }
 /*# sourceMappingURL=program-info.component.css.map */
-/* apply only on iPad screens */
-@media (min-width: 350px) and (max-width: 1370px) {
-      .update-pending {
-          display: block;
-          margin-top: 5px; /* optional - add margin to separate link from text */
-      }
-}
