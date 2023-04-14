@@ -78,37 +78,6 @@
         </tbody>
       </table>
     </div>
-    <div *ngIf="!paymentReceived && appData.payment.spendableCredit > 0" class="mb-4">
-      <label>Would you like to apply your Interlochen Arts Camp credit of
-        {{(appData.payment.spendableCredit | currency:'USD')}} towards your registration fee?</label>
-      <div class="default">
-        <div class="form-check form-check-inline">
-          <input type="radio"
-                 class="form-check-input"
-                 [(ngModel)]="appData.payment.useCredit"
-                 [disabled]="appData.payment.tuitionPaid"
-                 name="useCredit_Yes"
-                 id="useCredit_Yes"
-                 [value]="true"/>
-          <label for="useCredit_Yes" class="form-check-label">Yes</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input type="radio"
-                 class="form-check-input"
-                 [(ngModel)]="appData.payment.useCredit"
-                 [disabled]="appData.payment.tuitionPaid"
-                 name="useCredit_No"
-                 id="useCredit_No"
-                 [value]="false"/>
-          <label for="useCredit_No" class="form-check-label">No</label>
-        </div>
-      </div>
-      <div *ngIf="feeCoveredByCredit && !paymentReceived && appData.payment.spendableCredit > 0">
-        <p class="mt-4">Applying your credit balance of {{(appData.payment.spendableCredit | currency:'USD')}} will
-          reduce your amount owed to $0.00.</p>
-        <button class="btn btn-primary" (click)="confirmCredit()">Apply Credit</button>
-      </div>
-    </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
       <input name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
       <label for="have-code" class="ms-2">I have a discount code</label>
