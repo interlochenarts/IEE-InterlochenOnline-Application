@@ -77,7 +77,7 @@
     <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
       <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
       <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Add Lessons</a></span>
-      <span class="float-start" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">+{{program.lessonCountAdd}} pending</span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')" class="mt-md-1 d-block d-lg-inline-block"> Update Pending</a></span>
+      <span class="float-start" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">+{{program.lessonCountAdd}} pending </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')" class="mt-md-1 d-block d-lg-inline-block"> Update Pending</a></span>
       <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Update Lessons</a></span>
     </div>
   </div>
