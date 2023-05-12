@@ -21,6 +21,7 @@ export class ApplicationData {
   appStatus: string;
   isRegistered: boolean;
   isCancelOrWithdrawn: boolean;
+  isAdultApplicant: boolean;
 
   constructor() {
     this.student = new Student();
@@ -52,9 +53,9 @@ export class ApplicationData {
 
   public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
     return this.student.isComplete(countryCodes, stateCodes) &&
-      this.parents.length > 0 &&
+      (this.isAdultApplicant || (this.parents.length > 0 &&
       this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
-      this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false) &&
+      this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false))) &&
       this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
 }

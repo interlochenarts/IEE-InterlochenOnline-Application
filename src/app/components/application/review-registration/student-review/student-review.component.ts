@@ -16,6 +16,7 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   @Input() student: Student;
   @Input() link: RouterLink;
   @Input() locked: boolean;
+  @Input() isAdultApplicant: boolean;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
