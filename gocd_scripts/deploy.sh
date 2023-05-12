@@ -24,7 +24,10 @@ if [[ -z ${SFDX_CLI_VERSION} ]]; then
   echo -e "Missing SFDX_CLI_VERSION environment variable"
 fi
 
-echo -e "===> SFDX Update <===\n"
+source "$HOME/.nvm/nvm.sh"
+nvm install --lts
+
+echo -e "\n===> SFDX Update <===\n"
 npm install -g sfdx-cli@${SFDX_CLI_VERSION}
 sfdx --version
 
