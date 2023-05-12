@@ -23,6 +23,7 @@ export class Student {
   race: string;
   raceOther: string;
   hispanic: string;
+  isAdult: boolean;
 
   public static createFromNestedJson(json: any): Student {
     const student = new Student();
@@ -63,7 +64,7 @@ export class Student {
           false)
       ) &&
       !!this.genderIdentity &&
-      !!this.birthdate;
+      (!!this.birthdate || this.isAdult);
   }
 
   private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {

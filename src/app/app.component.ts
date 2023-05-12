@@ -28,6 +28,8 @@ export class AppComponent implements OnInit {
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;
+
+        this.buildLinks();
       }
     });
     this.appDataService.stateData.asObservable().subscribe(states => {
@@ -41,36 +43,14 @@ export class AppComponent implements OnInit {
       if (appId) {
         this.applicationId = appId;
 
-        this.appDataService.routerLinks.next([
-          new RouterLink('/' + this.applicationId + '/student-info', 'Student Information',
-            () => false, this.linkShow),
-          new RouterLink('/' + this.applicationId + '/program', 'Select a Program',
-            () => false, () => true),
-          new RouterLink('/' + this.applicationId + '/review-registration', 'Review Registration',
-            () => false, () => true),
-          new RouterLink('/' + this.applicationId + '/pay-registration', 'Pay Registration',
-            this.linkDisabled, () => true),
-        ]);
-
-        this.links = this.appDataService.routerLinks.getValue();
+        this.buildLinks();
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
       if (trxId) {
         this.transactionId = trxId;
 
-        this.appDataService.routerLinks.next([
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/student-info', 'Student Information',
-            () => false, this.linkShow),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/program', 'Select a Program',
-            () => false, () => true),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/review-registration', 'Review Registration',
-            () => false, () => true),
-          new RouterLink('/' + this.applicationId + '/' + this.transactionId + '/pay-registration', 'Pay Registration',
-            this.linkDisabled, () => true),
-        ]);
-
-        this.links = this.appDataService.routerLinks.getValue();
+        this.buildLinks();
       }
     });
   }
@@ -87,5 +67,23 @@ export class AppComponent implements OnInit {
   }
   linkShow(appData: ApplicationData): boolean {
     return !appData.isRegistered;
+  }
+
+  buildLinks(): void {
+    const appId = this.applicationId || this.appData.appId;
+    const txnId = this.transactionId ? '/' + this.applicationId : '';
+
+    this.appDataService.routerLinks.next([
+      new RouterLink('/' + appId + txnId + '/student-info', this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
+        () => false, this.linkShow),
+      new RouterLink('/' + appId + txnId + '/program', 'Select a Program',
+        () => false, () => true),
+      new RouterLink('/' + appId + txnId + '/review-registration', 'Review Registration',
+        () => false, () => true),
+      new RouterLink('/' + appId + txnId + '/pay-registration', 'Pay Registration',
+        this.linkDisabled, () => true),
+    ]);
+
+    this.links = this.appDataService.routerLinks.getValue();
   }
 }
