@@ -57,4 +57,8 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     clearInterval(this.autoSaveIntervalId);
   }
+
+  getStudentOrYour(): string {
+    return this.appData.isAdultApplicant ? 'Your' : 'Student'
+  }
 }
