@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-8">
-    <h4>Student: {{student.preferredName || student.firstName}} {{student.lastName}}</h4>
+    <h4>{{isAdultApplicant ? '' : 'Student: '}}{{student.preferredName || student.firstName}} {{student.lastName}}</h4>
   </div>
   <div class="col-4 text-end">
     <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
@@ -84,12 +84,20 @@
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
 </div>
 
-<div class="review my-1 row">
+<div class="review my-1 row" *ngIf="!isAdultApplicant">
   <div class="col-5 hideOverflow">Birth Date</div>
   <div class="col-7 hideOverflow" *ngIf="!formattedBirthdate">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
   <div class="col-7 hideOverflow" *ngIf="formattedBirthdate">{{formattedBirthdate}}</div>
+</div>
+
+<div class="review my-1 row" *ngIf="isAdultApplicant">
+  <div class="col-5 hideOverflow">Over 18?</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.isAdult">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="student.isAdult">Yes</div>
 </div>
 
 <div class="review my-1 row" *ngIf="student.race">
