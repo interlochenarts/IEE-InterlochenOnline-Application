@@ -17,6 +17,7 @@ declare const Visualforce: any;
 export class StudentComponent implements OnInit, OnChanges {
   @Input() student: Student;
   @Input() parents: Array<Parent>;
+  @Input() isAdultApplicant: boolean;
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();

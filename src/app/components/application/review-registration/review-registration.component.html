@@ -6,8 +6,8 @@
   </div>
 </header>
 
-<iee-student-review [student]="appData.student" [link]="routerLinks[0]" [locked]="appData.isRegistered" class="my-3 block"></iee-student-review>
-<iee-parent-review class="my-3 block" [parents]="appData.parents" [student]="appData.student"
+<iee-student-review [student]="appData.student" [isAdultApplicant]="appData.isAdultApplicant" [link]="routerLinks[0]" [locked]="appData.isRegistered" class="my-3 block"></iee-student-review>
+<iee-parent-review *ngIf="!appData.isAdultApplicant" class="my-3 block" [parents]="appData.parents" [student]="appData.student"
                    [link]="routerLinks[0]" [locked]="appData.isRegistered"></iee-parent-review>
 <iee-program-review [programData]="appData.acProgramData" [link]="routerLinks[1]" [isRegistered]="appData.isRegistered" class="my-3 block"></iee-program-review>
 <div class="alert alert-danger" *ngIf="appData && !appData.isComplete(countryCodes, stateCodes)">
