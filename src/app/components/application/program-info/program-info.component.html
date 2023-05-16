@@ -119,7 +119,7 @@
 </div>
 
 <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
-    <h5>Available Programs for {{selectedDivisionDescription}}</h5>
+    <h5>Available Programs <span *ngIf="!appData.isAdultApplicant"> for {{selectedDivisionDescription}}</span></h5>
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'filtered')"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
