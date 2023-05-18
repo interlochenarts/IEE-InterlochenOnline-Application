@@ -208,6 +208,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
             this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
+
+            // Mark selected app choices as registered
+            this.appData.acProgramData.programs.forEach(program => { program.isRegistered = true;});
+            this.appData.isRegistered = true;
+
+            this.transactionId = null;
+            this.appDataService.transactionId.next(null);
+
             this.isLoading = false;
           }
         }
