@@ -116,11 +116,11 @@ export class ProgramInfoComponent implements OnInit {
     if (sessionSet.size > 1) {
       // sort is now coming from SOQL ORDER BY in IEE_OnlineApplicationController.getProgramData
       this.sortedSessions = Array.from(sessionSet)
-        .map(ss => new SalesforceOption(ss + ': ' + this.appData.programData.sessionDates.get(ss), ss, false));
+        .map(ss => new SalesforceOption(this.appData.programData.sessionDates.get(ss), ss, false));
       this.sortedSessions.unshift(new SalesforceOption('All', '', true));
     } else if (sessionSet.size === 1) {
       this.sortedSessions = Array.from(sessionSet)
-        .map(s => new SalesforceOption(s + ': ' + this.appData.programData.sessionDates.get(s), s, true));
+        .map(s => new SalesforceOption(this.appData.programData.sessionDates.get(s), s, true));
       this.selectedSession = this.sortedSessions[0].value;
     }
   }

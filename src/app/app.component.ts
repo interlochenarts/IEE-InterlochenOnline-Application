@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
 
     this.appDataService.routerLinks.next([
       new RouterLink('/' + appId + txnId + '/student-info', this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
-        () => false, this.linkShow),
+        () => false, () => true),
       new RouterLink('/' + appId + txnId + '/program', 'Select a Program',
         () => false, () => true),
       new RouterLink('/' + appId + txnId + '/review-registration', 'Review Registration',
