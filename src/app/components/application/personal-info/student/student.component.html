@@ -1,7 +1,7 @@
 <h5 class="mb-3">Name: {{student.preferredName || student.firstName}} {{student.lastName}}</h5>
 <div class="nestedForm">
 
-  <label for="preferredName" class="mt-4 required">What name would the student prefer to be called?</label>
+  <label for="preferredName" class="mt-4 required">What name would {{isAdultApplicant ? 'you' : 'the student'}} prefer to be called?</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="student.preferredName"
@@ -11,7 +11,7 @@
            maxlength="25"/>
   </div>
 
-  <label for="email" class="mt-4 required">Student's Email</label>
+  <label for="email" class="mt-4 required">{{isAdultApplicant ? '' : 'Student’s '}}Email</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="student.email"
@@ -30,11 +30,13 @@
            id="mobilePhone"/>
   </div>
 
-  <div *ngFor="let parent of parents">
-    <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
-            class="btn btn-default mt-4">
-      Copy Address from {{parent.firstName}} {{parent.lastName}}
-    </button>
+  <div *ngIf="!isAdultApplicant">
+    <div *ngFor="let parent of parents">
+      <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
+              class="btn btn-default mt-4">
+        Copy Address from {{parent.firstName}} {{parent.lastName}}
+      </button>
+    </div>
   </div>
 
   <label for="mailingStreet" class="mt-4 required">Mailing Street</label>
@@ -107,38 +109,59 @@
     </div>
   </div>
 
-  <label class="mt-4 required">Birth Date</label>
-  <div class="default required">
-    <div class="form-group row">
-      <div class="col-12 col-md-4">
-        <label for="birthdate_year">Year</label>
-        <div class="select">
-          <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
-            <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
-          </select>
+  <div *ngIf="!isAdultApplicant">
+    <label class="mt-4 required">Birth Date</label>
+    <div class="default required">
+      <div class="form-group row">
+        <div class="col-12 col-md-4">
+          <label for="birthdate_year">Year</label>
+          <div class="select">
+            <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
+              <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <label for="birthdate_month">Month</label>
-        <div class="select">
-          <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
-            <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
-          </select>
+        <div class="col-12 col-md-4">
+          <label for="birthdate_month">Month</label>
+          <div class="select">
+            <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
+              <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
+            </select>
+          </div>
         </div>
-      </div>
-      <div class="col-12 col-md-4">
-        <label for="birthdate_day">Day</label>
-        <div class="select">
-          <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
-            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
-          </select>
+        <div class="col-12 col-md-4">
+          <label for="birthdate_day">Day</label>
+          <div class="select">
+            <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
+              <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <div *ngIf="isAdultApplicant" class="row mt-3">
+    <div class="col-2 col-md-1 d-flex align-items-center flex-row-reverse">
+      <div class="check">
+        <input type="checkbox"
+               id="isAdult"
+               name="isAdult"
+               [(ngModel)]="student.isAdult"/>
+        <label for="isAdult" class="checkbox-box">
+          <i class="fa fa-check"></i>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-10 col-md-11 mt-1 ps-0">
+      <label class="required">I confirm that I am 18 years of age or older by the first day of the course.</label>
+    </div>
+  </div>
+
+
   <div>
-    <label for="race" class="mt-4">What is this student’s race?</label>
+    <label for="race" class="mt-4">{{isAdultApplicant ? 'Race' : 'What is this student’s race?'}}</label>
     <div class="default">
       <div class="select">
         <select [(ngModel)]="student.race"
@@ -160,7 +183,7 @@
     </div>
   </div>
 
-  <label class="mt-4">Is the student of Hispanic, Latinx, or Spanish origin?</label>
+  <label class="mt-4">{{isAdultApplicant ? 'Are you' : 'Is the student'}} of Hispanic, Latinx, or Spanish origin?</label>
   <div class="default">
     <div class="form-check form-check-inline" *ngFor="let option of yesNoOptions; let i = index">
       <input type="radio"

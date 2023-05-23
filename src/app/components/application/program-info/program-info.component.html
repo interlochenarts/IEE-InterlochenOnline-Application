@@ -6,17 +6,19 @@
   </div>
 </header>
 
-<label for="selectedGrade" class="mt-4">Current Grade in School</label>
-<div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
-  <div class="select">
-    <select [(ngModel)]="appData.programData.gradeInSchool"
-            (change)="updateSelectedDivision()"
-            name="selectedGrade"
-            class="w-100"
-            [disabled]="appData.payment.tuitionPaid || appData.isRegistered"
-            id="selectedGrade">
-      <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
-    </select>
+<div *ngIf="!appData.isAdultApplicant">
+  <label for="selectedGrade" class="mt-4">Current Grade in School</label>
+  <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
+    <div class="select">
+      <select [(ngModel)]="appData.programData.gradeInSchool"
+              (change)="updateSelectedDivision()"
+              name="selectedGrade"
+              class="w-100"
+              [disabled]="appData.payment.tuitionPaid || appData.isRegistered"
+              id="selectedGrade">
+        <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
+      </select>
+    </div>
   </div>
 </div>
 
@@ -52,7 +54,7 @@
 </div>
 
 <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
-  There are currently no sessions available for this Grade and Arts Area.
+  There are currently no sessions available for this {{appData.isAdultApplicant ? '' : 'Grade and '}}Arts Area.
 </div>
 
 <div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
@@ -117,7 +119,7 @@
 </div>
 
 <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
-    <h5>Available Programs for {{selectedDivisionDescription}}</h5>
+    <h5>Available Programs <span *ngIf="!appData.isAdultApplicant"> for {{selectedDivisionDescription}}</span></h5>
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'filtered')"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
