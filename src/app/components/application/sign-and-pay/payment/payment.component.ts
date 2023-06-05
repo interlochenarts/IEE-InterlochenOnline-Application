@@ -63,15 +63,17 @@ export class PaymentComponent implements OnInit, OnDestroy {
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
         this.selectedPrograms.sort((a, b) =>
-          new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-          new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
+          a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
+            (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
 
         // Only registered programs
         this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
         this.registeredPrograms.sort((a, b) =>
-          new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-          new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
+          a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
+            (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
@@ -214,7 +216,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           if (this.appData.payment.amountOwed <= 0) {
             clearInterval(this.timer);
 
-            this.selectedPrograms.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
+            this.selectedPrograms?.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
             this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
@@ -227,8 +229,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
             this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
             // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
             this.registeredPrograms.sort((a, b) =>
-              new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
+              a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
+              (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
 
             this.transactionId = null;
             this.appDataService.transactionId.next(null);
