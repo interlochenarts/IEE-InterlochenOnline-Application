@@ -21,6 +21,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   transactionId: string;
   appData: ApplicationData = new ApplicationData();
   selectedPrograms: Array<Program>;
+  registeredPrograms: Array<Program>;
   isLoading: boolean;
   enteredCode: string;
   totalTuition: number;
@@ -62,6 +63,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
         this.selectedPrograms.sort((a, b) =>
+          new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+          new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
+
+        // Only registered programs
+        this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
+        // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
+        this.registeredPrograms.sort((a, b) =>
           new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
           new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
       }
@@ -205,6 +213,8 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
           if (this.appData.payment.amountOwed <= 0) {
             clearInterval(this.timer);
+
+            this.selectedPrograms.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
             this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
@@ -212,6 +222,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
             // Mark selected app choices as registered
             this.appData.acProgramData.programs.forEach(program => { program.isRegistered = true;});
             this.appData.isRegistered = true;
+
+            // Only registered programs
+            this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
+            // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
+            this.registeredPrograms.sort((a, b) =>
+              new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
 
             this.transactionId = null;
             this.appDataService.transactionId.next(null);
