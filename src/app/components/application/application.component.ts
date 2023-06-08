@@ -39,9 +39,9 @@ export class ApplicationComponent implements OnInit {
 
       if (event instanceof NavigationEnd) {
         this.routerIndex = links.findIndex(l => l.routerLink === event.urlAfterRedirects);
-        this.showBackLink = this.routerIndex !== 0;
-        this.showNextLink = this.routerIndex !== (links.length - 1);
-        this.showSaveAndQuit = this.routerIndex !== (links.length - 1);
+        this.showBackLink = this.routerIndex !== 0 && !this.transactionId;
+        this.showNextLink = this.routerIndex !== (links.length - 1) && !this.transactionId;
+        this.showSaveAndQuit = this.routerIndex !== (links.length - 1) && !this.transactionId;
 
         this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
           && ((!this.applicationData.isRegistered && !this.applicationData.isComplete(this.countryCodes, this.stateCodes))
