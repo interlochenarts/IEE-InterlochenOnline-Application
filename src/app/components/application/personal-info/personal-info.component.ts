@@ -16,6 +16,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   saveTime: Date;
   isParent: boolean;
   userContactId: string;
+  isLoading: boolean = true;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
@@ -31,6 +32,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     this.appDataService.applicationData.asObservable().subscribe(app => {
       if (app) {
         this.appData = app;
+        this.isLoading = false;
       }
     });
     this.appDataService.stateData.asObservable().subscribe(states => {
