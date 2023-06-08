@@ -29,6 +29,7 @@ export class ProgramInfoComponent implements OnInit {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
+  isLoading: boolean = true;
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -60,6 +61,7 @@ export class ProgramInfoComponent implements OnInit {
         });
         this.updateArtsAreas();
         this.updateSelectedDivision();
+        this.isLoading = false;
       } else {
         this.appData = new ApplicationData();
       }
