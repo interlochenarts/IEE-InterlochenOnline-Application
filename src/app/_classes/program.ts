@@ -10,6 +10,7 @@ export class Program {
   division: string;
   isSelected = false;
   isRegistered = false;
+  registeredDate: string;
   allowsConflicts = false;
   isCancelOrWithdrawn = false;
   appChoiceId: string;
