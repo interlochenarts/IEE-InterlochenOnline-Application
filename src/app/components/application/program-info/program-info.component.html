@@ -6,86 +6,90 @@
   </div>
 </header>
 
-<div *ngIf="!appData.isAdultApplicant">
-  <label for="selectedGrade" class="mt-4">Current Grade in School</label>
-  <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
-    <div class="select">
-      <select [(ngModel)]="appData.programData.gradeInSchool"
-              (change)="updateSelectedDivision()"
-              name="selectedGrade"
-              class="w-100"
-              [disabled]="appData.payment.tuitionPaid || appData.isRegistered"
-              id="selectedGrade">
-        <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
-      </select>
+<div *ngIf="isLoading">
+  <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
+</div>
+<div *ngIf="!isLoading">
+  <div *ngIf="!appData.isAdultApplicant">
+    <label for="selectedGrade" class="mt-4">Current Grade in School</label>
+    <div class="default" [ngClass]="{disabledDiv: appData.payment.tuitionPaid || appData.isRegistered}">
+      <div class="select">
+        <select [(ngModel)]="appData.programData.gradeInSchool"
+                (change)="updateSelectedDivision()"
+                name="selectedGrade"
+                class="w-100"
+                [disabled]="appData.payment.tuitionPaid || appData.isRegistered"
+                id="selectedGrade">
+          <option *ngFor="let grade of gradeInSchoolOptions" [value]="grade.value">{{grade.label}}</option>
+        </select>
+      </div>
     </div>
   </div>
-</div>
 
-<label for="selectedArtsArea" class="mt-4">Arts Area</label>
-<div class="default" [ngClass]="{disabledDiv: programsDisabled}">
-  <div class="select">
-    <select [(ngModel)]="selectedArtsArea"
-            (change)="updateSessions()"
-            name="selectedArtsArea"
-            class="w-100"
-            [disabled]="programsDisabled"
-            id="selectedArtsArea">
-      <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
-              [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
-    </select>
-  </div>
-</div>
-
-<div *ngIf="sortedSessions.length > 0">
-  <label for="selectedSession" class="mt-4">Session</label>
+  <label for="selectedArtsArea" class="mt-4">Arts Area</label>
   <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
     <div class="select">
-      <select [(ngModel)]="selectedSession"
-              name="selectedSession"
+      <select [(ngModel)]="selectedArtsArea"
+              (change)="updateSessions()"
+              name="selectedArtsArea"
               class="w-100"
               [disabled]="programsDisabled"
-              id="selectedSession">
-        <option *ngFor="let session of sortedSessions" [value]="session.value"
-                [defaultSelected]="session.defaultValue">{{session.label}}</option>
+              id="selectedArtsArea">
+        <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
+                [defaultSelected]="artsArea.defaultValue">{{artsArea.label}}</option>
       </select>
     </div>
   </div>
-</div>
 
-<div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
-  There are currently no sessions available for this {{appData.isAdultApplicant ? '' : 'Grade and '}}Arts Area.
-</div>
-
-<div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
-  <h5>Previously Registered Programs</h5>
-  <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3" style="cursor: auto !important;">
-    <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving" (click)="clickProgram(program, instrumentModal, 'registered')">
-      <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
-             [checked]="program.isSelected"
-             [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')">
-      <label *ngIf="!program.isRegistered" [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'registered')}">
-        <i class="fa fa-check ps-4"></i>
-      </label>
-    </div>
-    <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
-      <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-    </div>
-    <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-8 description">
-      <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
-      <div>{{program.sessionDates}}</div>
-      <div *ngIf="program.daysDisplay">Meets on {{program.daysDisplay}}</div>
-    </div>
-    <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
-      <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
-      <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Add Lessons</a></span>
-      <span class="float-start" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">+{{program.lessonCountAdd}} pending </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')" class="mt-md-1 d-block d-lg-inline-block"> Update Pending</a></span>
-      <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Update Lessons</a></span>
+  <div *ngIf="sortedSessions.length > 0">
+    <label for="selectedSession" class="mt-4">Session</label>
+    <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
+      <div class="select">
+        <select [(ngModel)]="selectedSession"
+                name="selectedSession"
+                class="w-100"
+                [disabled]="programsDisabled"
+                id="selectedSession">
+          <option *ngFor="let session of sortedSessions" [value]="session.value"
+                  [defaultSelected]="session.defaultValue">{{session.label}}</option>
+        </select>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
+  <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
+    There are currently no sessions available for this {{appData.isAdultApplicant ? '' : 'Grade and '}}Arts Area.
+  </div>
+
+  <div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
+    <h5>Previously Registered Programs</h5>
+    <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3" style="cursor: auto !important;">
+      <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving" (click)="clickProgram(program, instrumentModal, 'registered')">
+        <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
+               [checked]="program.isSelected"
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')">
+        <label *ngIf="!program.isRegistered" [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'registered')}">
+          <i class="fa fa-check ps-4"></i>
+        </label>
+      </div>
+      <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
+        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+      </div>
+      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-8 description">
+        <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
+        <div>{{program.sessionDates}}</div>
+        <div *ngIf="program.daysDisplay">Meets on {{program.daysDisplay}}</div>
+      </div>
+      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
+        <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
+        <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Add Lessons</a></span>
+        <span class="float-start" *ngIf="program.isRegistered && program.lessonCountAdd > 0"> {{program.lessonCount}} Lessons <span class="reviewError">+{{program.lessonCountAdd}} pending </span> <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')" class="mt-md-1 d-block d-lg-inline-block"> Update Pending</a></span>
+        <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'registered')"> Update Lessons</a></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
     <h5>Selected Programs</h5>
     <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
@@ -112,13 +116,13 @@
         <span style="float: right" *ngIf="!program.isRegistered"> {{program.lessonCount}} Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'selected')"> Update Lessons</a></span>
       </div>
     </div>
-</div>
+  </div>
 
-<div *ngIf="appData.programData.selectedDivision == null" class="mt-4">
-  Please use the filters above to view available programs.
-</div>
+  <div *ngIf="appData.programData.selectedDivision == null" class="mt-4">
+    Please use the filters above to view available programs.
+  </div>
 
-<div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
+  <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
     <h5>Available Programs <span *ngIf="!appData.isAdultApplicant"> for {{selectedDivisionDescription}}</span></h5>
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'filtered')"
@@ -140,10 +144,12 @@
         <div *ngIf="!program.isPrivateLesson && program.daysDisplay">Meets on {{program.daysDisplay}}</div>
       </div>
     </div>
+  </div>
+  <div *ngIf="appData.programData.selectedDivision && filteredPrograms.length === 0">
+    There are no additional programs available for your selected session.
+  </div>
 </div>
-<div *ngIf="appData.programData.selectedDivision && filteredPrograms.length === 0">
-  There are no additional programs available for your selected session.
-</div>
+
 
 <ng-template #instrumentModal let-modal>
   <div class="modal-header">
