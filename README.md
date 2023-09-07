@@ -21,6 +21,10 @@ Run `ng generate component component-name` to generate a new component. You can 
 `--output-hashing=none` makes the file names not have any hashed character sequences so we can refer to
 them nicely in the static resource bundles.
 
+## Uploading to SalesForce
+
+`./compressBuild.sh` compresses the build and creates a .resource file to be uploaded to SalesForce
+
 ## Running unit tests
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
