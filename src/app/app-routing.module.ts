@@ -34,7 +34,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [],
   imports: [
-    RouterModule.forRoot(routes, {useHash: true, paramsInheritanceStrategy: 'always', scrollPositionRestoration: 'enabled'})
+    RouterModule.forRoot(routes, {useHash: true, paramsInheritanceStrategy: 'always', anchorScrolling: 'enabled'})
   ],
   exports: [RouterModule]
 })
