@@ -106,6 +106,7 @@ export class ApplicationComponent implements OnInit {
     if (this.isSaving === false && this.disableNextLink === false) {
       this.router.navigate([this.routerLinks[this.routerIndex + 1].routerLink]);
       this.appDataService.saveApplication();
+      document.getElementById('Top').scrollIntoView();
     }
   }
 
@@ -113,6 +114,7 @@ export class ApplicationComponent implements OnInit {
     if (this.isSaving === false) {
       this.router.navigate([this.routerLinks[this.routerIndex - 1].routerLink]);
       this.appDataService.saveApplication();
+      document.getElementById('Top').scrollIntoView();
     }
   }
 
