@@ -32,7 +32,7 @@ export class AppDataService {
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getApplicationData',
         applicationId,
-        json => {
+        (json: string) => {
           if (json !== null) {
             // build app data
             this.applicationData.next(ApplicationData.createFromNestedJson(JSON.parse(json)));
@@ -66,7 +66,7 @@ export class AppDataService {
   public getCountryData(): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getCountryData',
-      json => {
+        (json: string) => {
         if (json !== null) {
           const countryJson = JSON.parse(json);
           const countryCodes = countryJson.map(country => CountryCode.createFromJson(country));
@@ -80,7 +80,7 @@ export class AppDataService {
   public getStateData(): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getStateData',
-      json => {
+        (json: string) => {
         if (json !== null) {
           const stateJson = JSON.parse(json);
           const stateCodes = stateJson.map(state => StateCode.createFromJson(state));
@@ -92,8 +92,8 @@ export class AppDataService {
   }
 
   public saveApplication(): void {
-    const appData = this.applicationData.getValue();
-    const appId = this.applicationId.getValue();
+    const appData: ApplicationData = this.applicationData.getValue();
+    const appId: string = this.applicationId.getValue();
 
     const appDataCopy = ApplicationData.createFromNestedJson(JSON.parse(JSON.stringify(appData)));
     // only save parents who are not being deleted, and that already have a contact id
@@ -107,7 +107,7 @@ export class AppDataService {
         'IEE_OnlineApplicationController.saveApplication',
         JSON.stringify(appDataCopy),
         appId,
-        result => {
+        (result: string) => {
           if (result !== null) {
             // Commenting out for now, don't want to save parents here for the first time
             // const resultApp = ApplicationData.createFromNestedJson(JSON.parse(result));

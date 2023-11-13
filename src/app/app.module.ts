@@ -19,6 +19,7 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
+import {BundleModalComponent} from './components/application/program-info/bundle-modal/bundle-modal.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import {StudentReviewComponent} from './components/application/review-registrati
     ProgramReviewComponent,
     ParentReviewComponent,
     StudentReviewComponent,
+    BundleModalComponent,
   ],
   imports: [
     BrowserModule,
