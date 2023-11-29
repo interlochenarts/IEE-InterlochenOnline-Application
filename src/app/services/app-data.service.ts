@@ -21,7 +21,6 @@ export class AppDataService {
   public countryData = new BehaviorSubject<Array<CountryCode>>(new Array<CountryCode>());
   public stateData = new BehaviorSubject<Array<StateCode>>(new Array<StateCode>());
   public isSaving = new BehaviorSubject<boolean>(false);
-  public isSigning = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
   public credentialStatus = new BehaviorSubject<string>(null);
 

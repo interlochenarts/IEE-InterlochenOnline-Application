@@ -6,7 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
 
-import {ProgramInfoComponent} from './components/application/program-info/program-info.component';
+import {ProgramInfoComponent} from './components/application/program-tabs/program-info/program-info.component';
 import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
@@ -19,7 +19,9 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
-import {BundleModalComponent} from './components/application/program-info/bundle-modal/bundle-modal.component';
+import {BundleModalComponent} from './components/application/program-tabs/bundle-info/bundle-modal/bundle-modal.component';
+import {ProgramTabsComponent} from './components/application/program-tabs/program-tabs.component';
+import {BundleInfoComponent} from './components/application/program-tabs/bundle-info/bundle-info.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import {BundleModalComponent} from './components/application/program-info/bundle
     ParentReviewComponent,
     StudentReviewComponent,
     BundleModalComponent,
+    ProgramTabsComponent,
+    BundleInfoComponent,
   ],
   imports: [
     BrowserModule,

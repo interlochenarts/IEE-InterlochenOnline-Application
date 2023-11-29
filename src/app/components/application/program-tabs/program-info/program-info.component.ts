@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {ApplicationData} from '../../../_classes/application-data';
-import {AppDataService} from '../../../services/app-data.service';
-import {Program} from '../../../_classes/program';
-import {SalesforceOption} from '../../../_classes/salesforce-option';
+import {ApplicationData} from '../../../../_classes/application-data';
+import {AppDataService} from '../../../../services/app-data.service';
+import {Program} from '../../../../_classes/program';
+import {SalesforceOption} from '../../../../_classes/salesforce-option';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Payment} from '../../../_classes/payment';
+import {Payment} from '../../../../_classes/payment';
 
 declare const Visualforce: any;
 
