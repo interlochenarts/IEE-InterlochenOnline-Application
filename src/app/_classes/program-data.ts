@@ -9,6 +9,7 @@ export class ProgramData {
   sessionDates: Map<string, string>;
   selectedDivision: string;
   gradeInSchool: string;
+  selectedCertificateGroup: CertificateGroup;
 
   constructor() {
     this.programs = new Array<Program>();

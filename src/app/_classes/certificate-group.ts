@@ -1,6 +1,9 @@
 import {Program} from "./program";
 
 export class CertificateGroup {
+  id: string;
+  name: string;
+  discount: number;
   programs: Array<Program>;
 
   public static createFromNestedJson(json: any): CertificateGroup {
