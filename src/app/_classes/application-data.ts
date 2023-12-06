@@ -43,14 +43,14 @@ export class ApplicationData {
     Object.assign(appData, json);
 
     appData.student = Student.createFromNestedJson(json.student);
-    appData.parents = json.parents.map(p => Parent.createFromNestedJson(p));
+    appData.parents = json.parents.map((p: Parent) => Parent.createFromNestedJson(p));
     appData.programData = ProgramData.createFromNestedJson(json.programData);
     appData.acProgramData = ProgramData.createFromNestedJson(json.acProgramData);
     appData.enrollmentAgreement = new EnrollmentAgreement();
     appData.payment = Payment.createFromNestedJson(json.payment);
     appData.isRegistered = appData.appStatus === 'Registered';
     appData.isCancelOrWithdrawn = appData.appStatus === 'Application Withdrawn by Applicant' || appData.appStatus === 'Cancel';
-    appData.certificateGroups = json.certificateGroups.map(cg => CertificateGroup.createFromNestedJson(cg));
+    appData.certificateGroups = json.certificateGroups?.map((cg: CertificateGroup) => CertificateGroup.createFromNestedJson(cg));
 
     return appData;
   }
@@ -58,8 +58,8 @@ export class ApplicationData {
   public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
     return this.student.isComplete(countryCodes, stateCodes) &&
       (this.isAdultApplicant || (this.parents.length > 0 &&
-      this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
-      this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false))) &&
+        this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
+        this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false))) &&
       this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
 }

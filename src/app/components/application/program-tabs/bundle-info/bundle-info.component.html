@@ -1,7 +1,7 @@
 <header>
   <div class="row">
     <div class="col-12">
-      <h3>Select a Certificate Bundle</h3>
+      <h3>Select a Certificate Program</h3>
     </div>
   </div>
 </header>
@@ -14,7 +14,7 @@
 
 <div *ngIf="!isLoading">
   <h5>Available Certificate Programs</h5>
-  <div *ngFor="let program of appData.certificateGroups" class="checkbox-container col-12 align-items-center d-flex my-3">
-    {{program.name}}
+  <div *ngFor="let group of appData.certificateGroups" class="checkbox-container col-12 align-items-center d-flex my-3">
+    {{group.id}} - {{group.name}}
   </div>
 </div>

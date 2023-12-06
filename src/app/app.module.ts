@@ -22,6 +22,7 @@ import {StudentReviewComponent} from './components/application/review-registrati
 import {BundleModalComponent} from './components/application/program-tabs/bundle-info/bundle-modal/bundle-modal.component';
 import {ProgramTabsComponent} from './components/application/program-tabs/program-tabs.component';
 import {BundleInfoComponent} from './components/application/program-tabs/bundle-info/bundle-info.component';
+import { PrivateLessonInfoComponent } from './components/application/program-tabs/private-lesson-info/private-lesson-info.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {BundleInfoComponent} from './components/application/program-tabs/bundle-
     BundleModalComponent,
     ProgramTabsComponent,
     BundleInfoComponent,
+    PrivateLessonInfoComponent,
   ],
   imports: [
     BrowserModule,
