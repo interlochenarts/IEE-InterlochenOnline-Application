@@ -4,16 +4,13 @@ import {CertificateGroup} from "./certificate-group";
 export class ProgramData {
   divisions: Map<string, string>;
   programs: Array<Program>;
-  certificateGroups: Array<CertificateGroup>;
   sessions: Array<string>;
   sessionDates: Map<string, string>;
   selectedDivision: string;
   gradeInSchool: string;
-  selectedCertificateGroup: CertificateGroup;
 
   constructor() {
     this.programs = new Array<Program>();
-    this.certificateGroups = new Array<CertificateGroup>();
     this.divisions = new Map<string, string>();
     this.sessions = new Array<string>();
     this.sessionDates = new Map<string, string>();
@@ -24,7 +21,6 @@ export class ProgramData {
     Object.assign(programData, json);
 
     programData.programs = json.programs.map((p: any) => Program.createFromNestedJson(p));
-    programData.certificateGroups = json.certificateGroups.map((cg: any) => CertificateGroup.createFromNestedJson(cg));
     programData.divisions = new Map(Object.entries(json.divisions));
     programData.sessionDates = new Map(Object.entries(json.sessionDates));
 

@@ -10,3 +10,11 @@
 <div *ngIf="isLoading">
   <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
 </div>
+
+
+<div *ngIf="!isLoading">
+  <h5>Available Certificate Programs</h5>
+  <div *ngFor="let program of appData.certificateGroups" class="checkbox-container col-12 align-items-center d-flex my-3">
+    {{program.name}}
+  </div>
+</div>
