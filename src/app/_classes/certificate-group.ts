@@ -1,10 +1,12 @@
 import {Program} from "./program";
+import {Course} from "./course";
 
 export class CertificateGroup {
   id: string;
   name: string;
   discount: number;
   courses: Array<Program>;
+  ioCourses: Array<Program>;
   isSelected: boolean;
   isSaving: boolean;
 
@@ -12,7 +14,8 @@ export class CertificateGroup {
     const certificateGroup = new CertificateGroup();
     Object.assign(certificateGroup, json);
 
-    certificateGroup.courses = json.programs?.map((p: any) => Program.createFromNestedJson(p));
+    certificateGroup.ioCourses = json.ioCourses?.map((p: any) => Program.createFromNestedJson(p));
+    certificateGroup.courses = json.courses?.map((c: any) => Course.createFromNestedJson(c));
 
     return certificateGroup;
   }
