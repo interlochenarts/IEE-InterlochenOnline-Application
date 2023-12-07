@@ -1,0 +1,37 @@
+<header>
+  <div class="row">
+    <div class="col-12">
+      <h3>Select a Certificate Program</h3>
+    </div>
+  </div>
+</header>
+
+
+<div *ngIf="isLoading">
+  <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
+</div>
+
+
+<div *ngIf="!isLoading">
+  <h5>Available Certificate Programs</h5>
+  <div *ngFor="let group of appData.programData.certificateGroups"
+       class="checkbox-container col-12 align-items-center d-flex my-3">
+    <div class="checkbox col-3 col-md-2 text-center" (click)="clickCertificate(group)" *ngIf="!group.isSaving">
+      <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
+      <label>
+        <i class="fa fa-check ps-4"></i>
+      </label>
+    </div>
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="group.isSaving">
+      <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+    </div>
+    <div class="col-9 col-md-10 description">
+      <h4>{{group.name}}</h4>
+      <ul>
+        <li *ngFor="let course of group.courses">
+          {{course.name}}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -11,7 +11,7 @@ declare const Visualforce: any;
 @Component({
   selector: 'iee-program-info',
   templateUrl: './program-info.component.html',
-  styleUrls: ['./program-info.component.css']
+  styleUrls: ['../program-tabs.component.less', 'program-info.component.less']
 })
 export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;

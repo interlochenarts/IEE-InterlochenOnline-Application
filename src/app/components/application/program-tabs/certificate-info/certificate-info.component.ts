@@ -3,15 +3,16 @@ import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Program} from "../../../../_classes/program";
+import {CertificateGroup} from "../../../../_classes/certificate-group";
 
 declare const Visualforce: any;
 
 @Component({
-  selector: 'iee-bundle-info',
-  templateUrl: './bundle-info.component.html',
-  styleUrls: ['./bundle-info.component.less']
+  selector: 'iee-certificate-info',
+  templateUrl: './certificate-info.component.html',
+  styleUrls: ['../program-tabs.component.less', 'certificate-info.component.less']
 })
-export class BundleInfoComponent {
+export class CertificateInfoComponent {
   isLoading: boolean = true;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
@@ -45,5 +46,9 @@ export class BundleInfoComponent {
       }
       this.daysSelectedBySession.set(p.sessionName, daysSelected);
     });
+  }
+
+  clickCertificate(group: CertificateGroup) {
+    console.info('clicked', group.id, group.name);
   }
 }

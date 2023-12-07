@@ -34,6 +34,7 @@ export class AppDataService {
         (json: string) => {
           if (json !== null) {
             // build app data
+            // console.info('json', json);
             this.applicationData.next(ApplicationData.createFromNestedJson(JSON.parse(json)));
           }
         },

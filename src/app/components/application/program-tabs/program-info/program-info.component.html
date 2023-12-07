@@ -65,7 +65,7 @@
     <h5>Previously Registered Programs</h5>
     <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          style="cursor: auto !important;">
-      <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving"
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving"
            (click)="clickProgram(program, instrumentModal, 'registered')">
         <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
                [checked]="program.isSelected"
@@ -75,15 +75,15 @@
           <i class="fa fa-check ps-4"></i>
         </label>
       </div>
-      <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
         <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
       </div>
-      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-8 description">
+      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-10 description">
         <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
         <div>{{program.sessionDates}}</div>
         <div *ngIf="program.daysDisplay">Meets on {{program.daysDisplay}}</div>
       </div>
-      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
+      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-10 description">
         <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
         <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}}
           Lessons <a href="javascript:void(0);"
@@ -103,7 +103,7 @@
     <h5>Selected Programs</h5>
     <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'selected')}">
-      <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving"
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving"
            (click)="clickProgram(program, instrumentModal, 'selected')">
         <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
                [checked]="program.isSelected"
@@ -113,15 +113,15 @@
           <i class="fa fa-check ps-4"></i>
         </label>
       </div>
-      <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
         <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
       </div>
-      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-8 description">
+      <div *ngIf="!program.isPrivateLesson" class="col-9 col-md-10 description">
         <h4>{{program.name}}  {{program.selectedInstrument}}</h4>
         <div>{{program.sessionDates}}</div>
         <div *ngIf="program.daysDisplay">Meets on {{program.daysDisplay}}</div>
       </div>
-      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-8 description">
+      <div *ngIf="program.isPrivateLesson" class="col-9 col-md-10 description">
         <h4 style="display: inline">{{program.name}}  {{program.selectedInstrument}}</h4>
         <span style="float: right" *ngIf="program.isRegistered && program.lessonCountAdd < 1"> {{program.lessonCount}}
           Lessons <a href="javascript:void(0);" (click)="addLessons(program, lessonsModal, 'selected')"> Add Lessons</a></span>
@@ -143,7 +143,7 @@
     <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, instrumentModal, 'filtered')"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')}">
-      <div class="checkbox col-3 col-md-2" *ngIf="!program.isSaving">
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving">
         <input type="checkbox" [id]="program.id" [name]="program.id"
                [checked]="program.isSelected"
                [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, 'filtered')">
@@ -151,10 +151,10 @@
           <i class="fa fa-check ps-4"></i>
         </label>
       </div>
-      <div class="checkbox col-3 col-md-2" *ngIf="program.isSaving">
+      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
         <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
       </div>
-      <div class="col-9 col-md-8 description">
+      <div class="col-9 col-md-10 description">
         <h4>{{program.name}}</h4>
         <div *ngIf="!program.isPrivateLesson">{{program.sessionDates}}</div>
         <div *ngIf="!program.isPrivateLesson && program.daysDisplay">Meets on {{program.daysDisplay}}</div>

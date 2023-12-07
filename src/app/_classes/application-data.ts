@@ -23,7 +23,6 @@ export class ApplicationData {
   isRegistered: boolean;
   isCancelOrWithdrawn: boolean;
   isAdultApplicant: boolean;
-  certificateGroups: Array<CertificateGroup>;
 
   constructor() {
     this.student = new Student();
@@ -34,7 +33,6 @@ export class ApplicationData {
     this.programData = new ProgramData();
     this.acProgramData = new ProgramData();
     this.enrollmentAgreement = new EnrollmentAgreement();
-    this.certificateGroups = new Array<CertificateGroup>();
     this.payment = new Payment();
   }
 
@@ -50,7 +48,6 @@ export class ApplicationData {
     appData.payment = Payment.createFromNestedJson(json.payment);
     appData.isRegistered = appData.appStatus === 'Registered';
     appData.isCancelOrWithdrawn = appData.appStatus === 'Application Withdrawn by Applicant' || appData.appStatus === 'Cancel';
-    appData.certificateGroups = json.certificateGroups?.map((cg: CertificateGroup) => CertificateGroup.createFromNestedJson(cg));
 
     return appData;
   }

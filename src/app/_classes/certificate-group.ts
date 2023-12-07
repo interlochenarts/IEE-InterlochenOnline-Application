@@ -4,13 +4,15 @@ export class CertificateGroup {
   id: string;
   name: string;
   discount: number;
-  programs: Array<Program>;
+  courses: Array<Program>;
+  isSelected: boolean;
+  isSaving: boolean;
 
   public static createFromNestedJson(json: any): CertificateGroup {
     const certificateGroup = new CertificateGroup();
     Object.assign(certificateGroup, json);
 
-    certificateGroup.programs = json.programs?.map((p: any) => Program.createFromNestedJson(p));
+    certificateGroup.courses = json.programs?.map((p: any) => Program.createFromNestedJson(p));
 
     return certificateGroup;
   }

@@ -19,9 +19,9 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
-import {BundleModalComponent} from './components/application/program-tabs/bundle-info/bundle-modal/bundle-modal.component';
+import {BundleModalComponent} from './components/application/program-tabs/certificate-info/bundle-modal/bundle-modal.component';
 import {ProgramTabsComponent} from './components/application/program-tabs/program-tabs.component';
-import {BundleInfoComponent} from './components/application/program-tabs/bundle-info/bundle-info.component';
+import {CertificateInfoComponent} from './components/application/program-tabs/certificate-info/certificate-info.component';
 import { PrivateLessonInfoComponent } from './components/application/program-tabs/private-lesson-info/private-lesson-info.component';
 
 @NgModule({
@@ -42,7 +42,7 @@ import { PrivateLessonInfoComponent } from './components/application/program-tab
     StudentReviewComponent,
     BundleModalComponent,
     ProgramTabsComponent,
-    BundleInfoComponent,
+    CertificateInfoComponent,
     PrivateLessonInfoComponent,
   ],
   imports: [
