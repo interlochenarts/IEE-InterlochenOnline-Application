@@ -49,6 +49,10 @@ export class ParentComponent implements OnInit {
     parent.isEditing = true;
   }
 
+  canRemoveParent(parent: Parent) {
+    return (parent.contactId !== this.userContactId) && (!this.isParent && this.parents.length > 1);
+  }
+
   reSendVerification(parent: Parent): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.sendVerificationEmail',
