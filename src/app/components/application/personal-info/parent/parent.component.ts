@@ -50,7 +50,8 @@ export class ParentComponent implements OnInit {
   }
 
   canRemoveParent(parent: Parent) {
-    return parent.contactId !== this.userContactId && this.parents.length > 1;
+    let verifiedParents = this.parents.filter(p => p && p.isVerified);
+    return parent.contactId !== this.userContactId && verifiedParents.length > 1;
   }
 
   reSendVerification(parent: Parent): void {
