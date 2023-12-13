@@ -29,7 +29,8 @@ export class ProgramInfoComponent implements OnInit {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
-  isLoading: boolean = true;
+  isLoading: boolean;
+  otherInstrument: string;
 
   // hardcode because salesforce is dumb and we can't pull picklist values based on record type
   gradeInSchoolOptions: Array<SalesforceOption> = [
@@ -140,6 +141,10 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
+  get isOtherInstrument() :boolean {
+    return this.modalInstrumentChoice === 'Other';
+  }
+
   clearSelectedPrograms(): void {
     this.appData.programData.programs.filter(p => p.isSelected && !p.isRegistered).forEach(p => {
       p.isSaving = true;
@@ -178,6 +183,7 @@ export class ProgramInfoComponent implements OnInit {
             this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
               .then(instrumentResult => {
                 program.selectedInstrument = instrumentResult;
+                program.selectedInstrumentOther = this.otherInstrument;
                 program.lessonCount = this.modalLessonCount || 0;
                 let pgmCopy: Program = Program.duplicateMe(program);
                 pgmCopy.isSelected = true;
@@ -192,6 +198,7 @@ export class ProgramInfoComponent implements OnInit {
                 program.isSaving = false;
                 delete this.modalInstrumentChoice;
                 delete this.modalLessonCount;
+                delete this.otherInstrument;
                 delete this.isMusic;
                 delete this.isPrivateLesson;
                 delete this.isRegistered;
@@ -201,6 +208,7 @@ export class ProgramInfoComponent implements OnInit {
                 program.isSaving = false;
                 delete this.modalInstrumentChoice;
                 delete this.modalLessonCount;
+                delete this.otherInstrument;
                 delete this.isMusic;
                 delete this.isPrivateLesson;
                 delete this.modalList;
@@ -292,7 +300,9 @@ export class ProgramInfoComponent implements OnInit {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       this.appData.appId, program.id, program.sessionId,
-      (program.selectedInstrument ? program.selectedInstrument : ''), (program.lessonCount ? program.lessonCount : ' '),
+      (program.selectedInstrument ? program.selectedInstrument : ''),
+      (program.lessonCount ? program.lessonCount : ' '),
+      (program.selectedInstrument === 'Other' ? program.selectedInstrumentOther : ''),
       result => {
         if (result.toString().startsWith('ERR')) {
           console.error(result);

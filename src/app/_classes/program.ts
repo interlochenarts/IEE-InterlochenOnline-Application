@@ -22,6 +22,7 @@ export class Program {
   lessonCount = 0;
   lessonCountAdd = 0;
   isPrivateLesson = false;
+  selectedInstrumentOther: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
