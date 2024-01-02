@@ -147,7 +147,7 @@ export class ProgramInfoComponent implements OnInit {
     });
   }
 
-  clickProgram(program: Program, modal, list): void {
+  clickProgram(program: Program, modal: any, list: string): void {
     this.modalList = list;
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {CertificateGroup} from "../../../../../_classes/certificate-group";
 
 @Component({
   selector: 'iee-bundle-modal',
@@ -6,5 +7,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./bundle-modal.component.less']
 })
 export class BundleModalComponent {
+  @Input() modal: any;
+  @Input() group: CertificateGroup;
 
+  bundleChoices: Array<string> = [];
+
+  dismiss() {
+    this.modal.close(null);
+  }
+
+  ok() {
+    this.modal.close(this.bundleChoices);
+  }
 }

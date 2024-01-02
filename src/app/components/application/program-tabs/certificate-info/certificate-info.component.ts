@@ -16,6 +16,7 @@ export class CertificateInfoComponent {
   isLoading: boolean = true;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
+  selectedGroup: CertificateGroup;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
@@ -48,7 +49,8 @@ export class CertificateInfoComponent {
     });
   }
 
-  clickCertificate(group: CertificateGroup) {
-    console.info('clicked', group.id, group.name);
+  clickCertificate(group: CertificateGroup, modal: any) {
+    this.selectedGroup = group;
+    this.modalService.open(modal)
   }
 }

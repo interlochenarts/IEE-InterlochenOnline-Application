@@ -14,9 +14,9 @@
 
 <div *ngIf="!isLoading">
   <h5>Available Certificate Programs</h5>
-  <div *ngFor="let group of appData.programData.certificateGroups"
+  <div *ngFor="let group of appData.programData.certificateGroups" (click)="clickCertificate(group, certificateModal)"
        class="checkbox-container col-12 align-items-center d-flex my-3">
-    <div class="checkbox col-3 col-md-2 text-center" (click)="clickCertificate(group)" *ngIf="!group.isSaving">
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving">
       <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
       <label>
         <i class="fa fa-check ps-4"></i>
@@ -35,3 +35,8 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #certificateModal let-modal>
+  <iee-bundle-modal [group]="selectedGroup" [modal]="modal"></iee-bundle-modal>
+</ng-template>

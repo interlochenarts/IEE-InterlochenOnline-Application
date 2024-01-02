@@ -1,1 +1,15 @@
-<p>bundle-modal works!</p>
+
+<div class="modal-header">
+  <h4 class="modal-title">{{group.name}}</h4>
+  <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">
+      <i class="fa fa-close fa-2x"></i>
+    </span>
+  </button>
+</div>
+<div class="modal-body">
+  Modal Body
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" (click)="dismiss()">Ok</button>
+</div>
