@@ -1,4 +1,5 @@
 import {SalesforceOption} from './salesforce-option';
+import {ListTypes} from "../_enums/enums";
 
 export class Program {
   id: string;
@@ -23,6 +24,7 @@ export class Program {
   lessonCountAdd = 0;
   isPrivateLesson = false;
   certificateGroupId: string;
+
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
@@ -56,7 +58,7 @@ export class Program {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: string): boolean {
+  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: ListTypes): boolean {
     // Don't let them re-select it if they already had this program selected and canceled or withdrew
     if (this.isCancelOrWithdrawn) {
       return true;
@@ -65,11 +67,11 @@ export class Program {
     // disable everything if fee already paid
     // "feePaid" is the passed in result of the program-info.programsDisabled() function currently commented out, except where called in program-info.clickProgram()
     // we're leaving the private lesson music re-selectable (because their existing instruments will be disabled, but they can pick new ones for pvt lessons)
-    if (list === 'selected' && (feePaid || this.isRegistered)) {
+    if (list === ListTypes.SELECTED && (feePaid || this.isRegistered)) {
       return true;
     }
 
-    if (list === 'filtered' &&
+    if (list === ListTypes.FILTERED &&
       ((this.isRegistered && this.isPrivateLesson && this.artsArea != 'Music')
         || (this.isRegistered && !this.isPrivateLesson))) {
       return true;

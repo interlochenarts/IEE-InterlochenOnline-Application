@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
@@ -6,6 +6,8 @@ import {StateCode} from '../_classes/state-code';
 import {RouterLink} from '../_classes/router-link';
 import {Parent} from '../_classes/parent';
 import {Student} from '../_classes/student';
+import {Program} from "../_classes/program";
+import {Payment} from "../_classes/payment";
 
 declare const Visualforce: any;
 
@@ -23,8 +25,10 @@ export class AppDataService {
   public isSaving = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
   public credentialStatus = new BehaviorSubject<string>(null);
+  public daysSelectedBySession = new BehaviorSubject<Map<string, Set<string>>>(new Map<string, Set<string>>());
 
-  constructor() { }
+  constructor() {
+  }
 
   public getApplicationData(applicationId: string): void {
     if (applicationId && !this.applicationData.getValue()) {
@@ -66,10 +70,10 @@ export class AppDataService {
   public getCountryData(): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getCountryData',
-        (json: string) => {
+      (json: string) => {
         if (json !== null) {
           const countryJson = JSON.parse(json);
-          const countryCodes = countryJson.map(country => CountryCode.createFromJson(country));
+          const countryCodes = countryJson.map((country: any) => CountryCode.createFromJson(country));
           this.countryData.next(countryCodes);
         }
       },
@@ -80,10 +84,10 @@ export class AppDataService {
   public getStateData(): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getStateData',
-        (json: string) => {
+      (json: string) => {
         if (json !== null) {
           const stateJson = JSON.parse(json);
-          const stateCodes = stateJson.map(state => StateCode.createFromJson(state));
+          const stateCodes = stateJson.map((state: any) => StateCode.createFromJson(state));
           this.stateData.next(stateCodes);
         }
       },
@@ -137,5 +141,99 @@ export class AppDataService {
       },
       {buffer: false, escape: false}
     );
+  }
+
+  public saveProgram(program: Program): void {
+    program.isSelected = true;
+    this.addDaysSelected(program);
+    const appData = this.applicationData.getValue();
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.addAppChoice',
+      appData.appId, program.id, program.sessionId,
+      (program.selectedInstrument ? program.selectedInstrument : ''), (program.lessonCount ? program.lessonCount : ' '),
+      (result: string) => {
+        if (result.startsWith('ERR')) {
+          console.error(result);
+        } else {
+          // console.log('Saved new program: ' + result);
+          program.appChoiceId = result;
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            appData.appId,
+            (payment: string) => {
+              if (payment && payment !== 'null') {
+                appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+            },
+            {buffer: false, escape: false}
+          );
+        }
+        program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public updateProgram(program: Program): void {
+    const appData = this.applicationData.getValue();
+
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.updateAppChoiceLessons',
+      appData.appId, program.appChoiceId, program.lessonCount, program.lessonCountAdd,
+      (result: string) => {
+        if (result.startsWith('ERR')) {
+          console.error(result);
+        } else {
+          console.log('updated program: ' + result);
+          if (!program.isRegistered) {
+            program.lessonCount += program.lessonCountAdd;
+            program.lessonCountAdd = 0;
+          }
+          // Update payment info
+          Visualforce.remoting.Manager.invokeAction(
+            'IEE_OnlineApplicationController.getPaymentJSON',
+            appData.appId,
+            (payment: string) => {
+              if (payment && payment !== 'null') {
+                appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+              }
+              this.applicationData.next(appData);
+            },
+            {buffer: false, escape: false}
+          );
+        }
+        program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public removeProgram(program: Program): void {
+    program.isSelected = false;
+    const daysSelected = this.daysSelectedBySession.getValue().get(program.sessionName);
+    program.daysArrayApi?.forEach(d => {
+      daysSelected.delete(d);
+    });
+    this.daysSelectedBySession.getValue().set(program.sessionName, daysSelected);
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.removeAppChoice',
+      this.applicationData.getValue().appId, program.appChoiceId,
+      (result: string) => {
+        console.log(result);
+        program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public addDaysSelected(p: Program): void {
+    p.daysArrayApi?.forEach(d => {
+      const daysSelected: Set<string> = this.daysSelectedBySession.getValue().get(p.sessionName) || new Set<string>();
+      if (p.allowsConflicts === false) {
+        daysSelected.add(d);
+      }
+      this.daysSelectedBySession.getValue().set(p.sessionName, daysSelected);
+    });
   }
 }
