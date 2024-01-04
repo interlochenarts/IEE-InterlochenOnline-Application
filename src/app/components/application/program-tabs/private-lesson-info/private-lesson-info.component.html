@@ -43,7 +43,7 @@
 
   <div class="col-12 my-4">
     <h5>Available Private Lessons</h5>
-    <div *ngFor="let program of appData.programData.privateLessons" class="checkbox-container col-12 align-items-center d-flex my-3"
+    <div *ngFor="let program of filteredLessons" class="checkbox-container col-12 align-items-center d-flex my-3"
          (click)="clickProgram(program, newLessonModal, ListTypes.FILTERED)"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
       <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving">

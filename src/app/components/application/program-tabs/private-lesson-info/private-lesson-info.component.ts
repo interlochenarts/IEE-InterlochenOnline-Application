@@ -25,6 +25,12 @@ export class PrivateLessonInfoComponent implements OnInit {
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
 
+  get filteredLessons(): Array<Program> {
+    return this.appData.programData.privateLessons.filter(p =>
+      (this.appData.isAdultApplicant ? p.division === 'Adult' : p.division !== 'Adult')
+      && !p.isSelected);
+  }
+
   get selectedPrograms(): Array<Program> {
     return this.appData.acProgramData.privateLessons.filter(p => (p.isSelected && !p.isRegistered));
   }
@@ -40,6 +46,13 @@ export class PrivateLessonInfoComponent implements OnInit {
     this.appDataService.applicationData.asObservable().subscribe(app => {
       if (app) {
         this.appData = app;
+
+        // pre-check boxes for app choices in the main list
+        this.appData.acProgramData.privateLessons.forEach(acp => {
+          if (!acp.artsAreaList.includes('Music')) {
+            this.appData.programData.privateLessons.find(p => p.id === acp.id).isSelected = true;
+          }
+        });
 
         this.isLoading = false;
       } else {
@@ -61,9 +74,6 @@ export class PrivateLessonInfoComponent implements OnInit {
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
       && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
-
-      console.table(program);
-      console.log('isMusic', this.isMusic);
 
       program.isSaving = true;
       if (!program.isSelected) {

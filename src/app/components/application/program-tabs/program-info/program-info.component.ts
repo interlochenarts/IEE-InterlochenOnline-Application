@@ -51,10 +51,8 @@ export class ProgramInfoComponent implements OnInit {
       if (app) {
         this.appData = app;
 
-        this.appData.acProgramData.programs.forEach(p => {
-          if (p.isSelected) {
-            this.appDataService.addDaysSelected(p);
-          }
+        this.appData.acProgramData.programs.forEach(acp => {
+          this.appDataService.addDaysSelected(acp);
         });
         this.updateArtsAreas();
         this.updateSelectedDivision();
