@@ -39,7 +39,10 @@
     </div>
   </div>
 
-  <label for="mailingStreet" class="mt-4 required">Mailing Street</label>
+  <br/>
+  <h4>Mailing Address</h4>
+
+  <label for="mailingStreet" class="mt-4 required">Street</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.street"
@@ -48,7 +51,7 @@
            id="mailingStreet"/>
   </div>
 
-  <label for="mailingCity" class="mt-4 required">Mailing City</label>
+  <label for="mailingCity" class="mt-4 required">City</label>
   <div class="default required">
     <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.city"
@@ -57,7 +60,7 @@
            id="mailingCity"/>
   </div>
 
-  <label for="mailingCountry" class="mt-4 required">Mailing Country</label>
+  <label for="mailingCountry" class="mt-4 required">Country</label>
   <div class="default required">
     <div class="select">
       <select (ngModelChange)="filterStates($event); clearState($event)"
@@ -70,7 +73,7 @@
     </div>
   </div>
 
-  <label for="mailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">Mailing State</label>
+  <label for="mailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">State</label>
   <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
     <div class="select">
       <select [(ngModel)]="student.mailingAddress.stateProvince"
@@ -83,7 +86,7 @@
     </div>
   </div>
 
-  <label for="mailingPostalCode" class="mt-4" [ngClass]="{required: zipRequired()}">Mailing Zip / Postal Code</label>
+  <label for="mailingPostalCode" class="mt-4" [ngClass]="{required: zipRequired()}">Zip / Postal Code</label>
   <div class="default" [ngClass]="{required: zipRequired()}">
     <input type="text" class="w-100"
            [(ngModel)]="student.mailingAddress.zipPostalCode"
