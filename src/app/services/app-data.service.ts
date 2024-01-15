@@ -24,6 +24,7 @@ export class AppDataService {
   public isSigning = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
   public credentialStatus = new BehaviorSubject<string>(null);
+  public reviewCompleted = new BehaviorSubject<boolean>(false);
 
   constructor() { }
 
