@@ -96,13 +96,13 @@ export class AppComponent implements OnInit {
     return appData.studentInfoIsComplete(countryCodes, stateCodes);
   }
 
-  selectProgramComplete(appData: ApplicationData | null | undefined, countryCodes: Array<CountryCode> | null | undefined, stateCodes: Array<StateCode> | null | undefined): boolean {
+  selectProgramComplete(appData: ApplicationData): boolean {
     let selectedPrograms = appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || (p.isSelected && p.isRegistered && p.lessonCountAdd > 0));
     let registeredPrograms = appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
     return selectedPrograms?.length > 0 || registeredPrograms?.length > 0;
   }
 
-  reviewRegistrationComplete = (appData: ApplicationData | null | undefined, countryCodes: Array<CountryCode> | null | undefined, stateCodes: Array<StateCode> | null | undefined): boolean => {
+  reviewRegistrationComplete = (): boolean => {
     return this.reviewComplete;
   }
 }
