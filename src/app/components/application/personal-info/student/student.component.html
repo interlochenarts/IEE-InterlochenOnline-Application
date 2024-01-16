@@ -30,6 +30,9 @@
            id="mobilePhone"/>
   </div>
 
+  <hr class="my-4">
+  <h4>Mailing Address</h4>
+
   <div *ngIf="!isAdultApplicant">
     <div *ngFor="let parent of parents">
       <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
@@ -38,9 +41,6 @@
       </button>
     </div>
   </div>
-
-  <br/>
-  <h4>Mailing Address</h4>
 
   <label for="mailingStreet" class="mt-4 required">Street</label>
   <div class="default required">
