@@ -63,26 +63,54 @@
   <label for="mailingCountry" class="mt-4 required">Country</label>
   <div class="default required">
     <div class="select">
-      <select (ngModelChange)="filterStates($event); clearState($event)"
-              [(ngModel)]="student.mailingAddress.country"
-              class="w-100"
-              name="mailingCountry"
-              id="mailingCountry">
-        <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
-      </select>
+      <ng-autocomplete #countryAutocompleteComponent
+        [data]="countryCodes"
+        [searchKeyword]="keyword"
+        placeholder="Enter the Country name"
+        (selected)='filterStates($event.name); clearState($event.name)'
+        (inputChanged)='filterStates($event.name); clearState($event.name)'
+        (inputCleared)='clearStateVal()'
+        (closed)="focusout()"
+        [itemTemplate]="itemTemplate"
+        [notFoundTemplate]="notFoundTemplate"
+        [ngModel]="student.mailingAddress.country"
+        class="w-100"
+        id="mailingCountry">
+      </ng-autocomplete>
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
     </div>
+  </div>
+  <div *ngIf="showError" class="alert alert-danger" role="alert">
+    Please select a valid country from the list
   </div>
 
   <label for="mailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">State</label>
   <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
     <div class="select">
-      <select [(ngModel)]="student.mailingAddress.stateProvince"
-              [disabled]="filteredStates.length === 0"
-              name="mailingState"
-              class="w-100"
-              id="mailingState">
-        <option *ngFor="let state of filteredStates" [value]="state.isoCode">{{state.name}}</option>
-      </select>
+      <ng-autocomplete #stateAutocompleteComponent
+                       [data]="filteredStates"
+                       [searchKeyword]="keyword"
+                       [disabled]="filteredStates.length === 0"
+                       placeholder="Enter the State name"
+                       (selected)="stateSelected($event)"
+                       (inputCleared)="clearStateVal()"
+                       [itemTemplate]="itemTemplate"
+                       [notFoundTemplate]="notFoundTemplate"
+                       [ngModel]="student.mailingAddress.stateProvince"
+                       class="w-100"
+                       id="mailingState">
+      </ng-autocomplete>
+      <ng-template #itemTemplate let-item>
+        <a [innerHTML]="item.name"></a>
+      </ng-template>
+      <ng-template #notFoundTemplate let-notFound>
+        <div [innerHTML]="notFound"></div>
+      </ng-template>
     </div>
   </div>
 
