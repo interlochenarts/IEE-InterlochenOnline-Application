@@ -8,11 +8,14 @@
          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
 </div>
 
+<br/>
+<h4>Mailing Address</h4>
+
 <button class="btn btn-default mt-4" *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()" (click)="copyAddressFromStudent()">
   Copy address from student
 </button>
 
-<label for="parentMailingStreet" class="mt-4 required">Mailing Street</label>
+<label for="parentMailingStreet" class="mt-4 required">Street</label>
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.street"
@@ -21,7 +24,7 @@
          id="parentMailingStreet"/>
 </div>
 
-<label for="parentMailingCity" class="mt-4 required">Mailing City</label>
+<label for="parentMailingCity" class="mt-4 required">City</label>
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.city"
@@ -30,33 +33,61 @@
          id="parentMailingCity"/>
 </div>
 
-<label for="parentMailingCountry" class="mt-4 required">Mailing Country</label>
+<label for="parentMailingCountry" class="mt-4 required">Country</label>
 <div class="default required">
   <div class="select">
-    <select (ngModelChange)="filterStates($event); clearState($event)"
-            [(ngModel)]="parent.mailingAddress.country"
-            class="w-100"
-            name="parentMailingCountry"
-            id="parentMailingCountry">
-            <option *ngFor="let country of countryCodes" [value]="country.name">{{country.name}}</option>
-    </select>
+    <ng-autocomplete #countryAutocompleteComponent
+                     [data]="countryCodes"
+                     [searchKeyword]="keyword"
+                     placeholder="Enter the Country name"
+                     (selected)='filterStates($event.name); clearState($event.name)'
+                     (inputChanged)='filterStates($event.name); clearState($event.name)'
+                     (inputCleared)='clearStateVal()'
+                     (closed)="focusout()"
+                     [itemTemplate]="itemTemplate"
+                     [notFoundTemplate]="notFoundTemplate"
+                     [ngModel]="parent.mailingAddress.country"
+                     class="w-100"
+                     id="parentMailingCountry">
+    </ng-autocomplete>
+    <ng-template #itemTemplate let-item>
+      <a [innerHTML]="item.name"></a>
+    </ng-template>
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
   </div>
 </div>
+<div *ngIf="showError" class="alert alert-danger" role="alert">
+  Please select a valid country from the list
+</div>
 
-<label for="parentMailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">Mailing State</label>
+<label for="parentMailingState" class="mt-4" [ngClass]="{required: filteredStates.length > 0}">State</label>
 <div class="default" [ngClass]="{required: filteredStates.length > 0, disabledDiv: filteredStates.length === 0}">
   <div class="select">
-    <select [(ngModel)]="parent.mailingAddress.stateProvince"
-            [disabled]="filteredStates.length === 0"
-            class="w-100"
-            name="parentMailingState"
-            id="parentMailingState">
-            <option *ngFor="let state of filteredStates" [value]="state.isoCode">{{state.name}}</option>
-    </select>
+    <ng-autocomplete #stateAutocompleteComponent
+                     [data]="filteredStates"
+                     [searchKeyword]="keyword"
+                     [disabled]="filteredStates.length === 0"
+                     placeholder="Enter the State name"
+                     (selected)="stateSelected($event)"
+                     (inputCleared)="clearStateVal()"
+                     [itemTemplate]="itemTemplate"
+                     [notFoundTemplate]="notFoundTemplate"
+                     [ngModel]="parent.mailingAddress.stateProvince"
+                     class="w-100"
+                     id="parentMailingState">
+    </ng-autocomplete>
+    <ng-template #itemTemplate let-item>
+      <a [innerHTML]="item.name"></a>
+    </ng-template>
+    <ng-template #notFoundTemplate let-notFound>
+      <div [innerHTML]="notFound"></div>
+    </ng-template>
   </div>
 </div>
 
-<label for="parentMailingPostalCode" class="mt-4" [ngClass]="{required: zipRequired()}">Mailing Zip / Postal Code</label>
+<label for="parentMailingPostalCode" class="mt-4" [ngClass]="{required: zipRequired()}">Zip / Postal Code</label>
 <div class="default" [ngClass]="{required: zipRequired()}">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"

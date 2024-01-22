@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Parent} from '../../../../../_classes/parent';
 import {Student} from '../../../../../_classes/student';
 import {CountryCode} from '../../../../../_classes/country-code';
@@ -19,6 +19,11 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
+  keyword = 'name'
+  showError:boolean = false;
+
+  @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
+  @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
 
   constructor(private appDataService: AppDataService) { }
 
@@ -52,8 +57,12 @@ export class ParentInfoComponent implements OnInit, OnChanges {
 
   clearState(event: string): void {
     if (event !== this.parent.mailingAddress.country) {
-      this.parent.mailingAddress.stateProvince = null;
+      this.clearStateVal();
     }
+  }
+
+  clearStateVal(): void {
+    this.parent.mailingAddress.stateProvince = null;
   }
 
   copyAddressFromStudent(): void {
@@ -83,5 +92,23 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       },
       {buffer: false, escape: false}
     );
+  }
+
+  focusout(): void {
+    const countryCode = this.countryCodes.find(c => c.name === this.countryAutocomplete.query);
+    if (!countryCode) {
+      this.showError = true;
+      this.clearState(this.countryAutocomplete.query);
+      this.filteredStates = new Array<StateCode>();
+      this.parent.mailingAddress.country = null;
+      this.stateAutocomplete.query = null;
+    } else {
+      this.showError = false;
+      this.parent.mailingAddress.country = countryCode.name;
+    }
+  }
+
+  stateSelected(event: StateCode): void {
+    this.parent.mailingAddress.stateProvince = event.name;
   }
 }

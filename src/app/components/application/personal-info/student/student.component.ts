@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Student} from '../../../../_classes/student';
 import {Parent} from '../../../../_classes/parent';
 import {Address} from '../../../../_classes/address';
@@ -24,6 +24,11 @@ export class StudentComponent implements OnInit, OnChanges {
   ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  keyword = 'name'
+  showError:boolean = false;
+
+  @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
+  @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -132,8 +137,12 @@ export class StudentComponent implements OnInit, OnChanges {
 
   clearState(event: string): void {
     if (event !== this.student.mailingAddress.country) {
-      this.student.mailingAddress.stateProvince = null;
+      this.clearStateVal();
     }
+  }
+
+  clearStateVal(): void {
+    this.student.mailingAddress.stateProvince = null;
   }
 
   copyAddressFrom(parentAddress: Address): void {
@@ -151,5 +160,23 @@ export class StudentComponent implements OnInit, OnChanges {
       && parent.lastName
       && parent.mailingAddress
       && parent.mailingAddress.hasAddress());
+  }
+
+  focusout(): void {
+    const countryCode = this.countryCodes.find(c => c.name === this.countryAutocomplete.query);
+    if (!countryCode) {
+      this.showError = true;
+      this.clearState(this.countryAutocomplete.query);
+      this.filteredStates = new Array<StateCode>();
+      this.student.mailingAddress.country = null;
+      this.stateAutocomplete.query = null;
+    } else {
+      this.showError = false;
+      this.student.mailingAddress.country = countryCode.name;
+    }
+  }
+
+  stateSelected(event: StateCode): void {
+    this.student.mailingAddress.stateProvince = event.name;
   }
 }

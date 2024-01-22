@@ -179,15 +179,26 @@
   </div>
   <div class="modal-body">
     <div class="default required">
-      <div *ngIf="isMusic" class="select">
-        <select [(ngModel)]="modalInstrumentChoice"
-                name="selectedInstrument"
-                class="w-100"
-                id="selectedInstrument">
-          <option *ngFor="let instrument of selectedProgramInstruments" [value]="instrument.value"
-                  [disabled]="instrument.disabled"
-                  [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
-        </select>
+      <div *ngIf="isMusic">
+        <div class="select">
+          <select [(ngModel)]="modalInstrumentChoice"
+                  name="selectedInstrument"
+                  class="w-100"
+                  id="selectedInstrument">
+            <option *ngFor="let instrument of selectedProgramInstruments" [value]="instrument.value"
+                    [disabled]="instrument.disabled"
+                    [defaultSelected]="instrument.defaultValue">{{instrument.label}}</option>
+          </select>
+        </div>
+
+        <label *ngIf="isOtherInstrument" class="mt-4 required">Other Instrument</label>
+        <div *ngIf="isOtherInstrument" class="default required">
+          <input type="text" class="w-100"
+                 [(ngModel)]="otherInstrument"
+                 name="otherInstrument"
+                 id="otherInstrument"
+                 maxlength="50"/>
+        </div>
       </div>
     </div>
     <label *ngIf="isPrivateLesson" for="lessonCount" class="mt-4 required">Add lessons (max 52)</label>
@@ -201,15 +212,17 @@
   </div>
   <div class="modal-footer">
 
+    <!-- todo: if other instrument selected but no text don't dooo-->
     <button *ngIf="isMusic && isPrivateLesson" type="button" class="btn btn-primary"
-            [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 0 || modalLessonCount > 52"
+            [disabled]="(!modalInstrumentChoice || !modalLessonCount) || modalLessonCount < 0 || modalLessonCount > 52 || (modalInstrumentChoice && modalInstrumentChoice === 'Other' && !otherInstrument)"
             (click)="modal.close(modalInstrumentChoice)">Ok
     </button>
     <button *ngIf="isMusic && !isPrivateLesson" type="button" class="btn btn-primary"
-            [disabled]="!modalInstrumentChoice" (click)="modal.close(modalInstrumentChoice)">Ok
+            [disabled]="!modalInstrumentChoice || (modalInstrumentChoice && modalInstrumentChoice === 'Other' && !otherInstrument)"
+            (click)="modal.close(modalInstrumentChoice)">Ok
     </button>
     <button *ngIf="!isMusic && isPrivateLesson" type="button" class="btn btn-primary"
-            [disabled]="!modalLessonCount || modalLessonCount < 0 || modalLessonCount > 52"
+            [disabled]="!modalLessonCount || modalLessonCount < 0 || modalLessonCount > 52 || (modalInstrumentChoice && modalInstrumentChoice === 'Other' && !otherInstrument)"
             (click)="modal.close(modalInstrumentChoice)">Ok
     </button>
 
