@@ -23,6 +23,7 @@ export class ApplicationData {
   isRegistered: boolean;
   isCancelOrWithdrawn: boolean;
   isAdultApplicant: boolean;
+  divisions: Array<string>;
 
   constructor() {
     this.student = new Student();

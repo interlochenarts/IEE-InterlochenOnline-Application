@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CertificateGroup} from "../../../../../_classes/certificate-group";
 
 @Component({
@@ -6,11 +6,16 @@ import {CertificateGroup} from "../../../../../_classes/certificate-group";
   templateUrl: './bundle-modal.component.html',
   styleUrls: ['./bundle-modal.component.less']
 })
-export class BundleModalComponent {
+export class BundleModalComponent implements OnInit {
   @Input() modal: any;
   @Input() group: CertificateGroup;
+  @Input() selectedDivision: string;
 
   bundleChoices: Array<string> = [];
+
+  ngOnInit() {
+    console.dir(this.group);
+  }
 
   dismiss() {
     this.modal.close(null);

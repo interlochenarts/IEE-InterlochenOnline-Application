@@ -20,28 +20,10 @@ export class ProgramInfoComponent implements OnInit {
   sortedSessions: Array<SalesforceOption> = [];
   modalInstrumentChoice: string;
   modalList: ListTypes; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
-  modalLessonCount: number;
-  modalLessonCountAdd: number;
-  modalExistingCount: number;
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
   isLoading: boolean = true;
-
-  // hardcode because salesforce is dumb and we can't pull picklist values based on record type
-  gradeInSchoolOptions: Array<SalesforceOption> = [
-    new SalesforceOption('2nd', '2nd', false),
-    new SalesforceOption('3rd', '3rd', false),
-    new SalesforceOption('4th', '4th', false),
-    new SalesforceOption('5th', '5th', false),
-    new SalesforceOption('6th', '6th', false),
-    new SalesforceOption('7th', '7th', false),
-    new SalesforceOption('8th', '8th', false),
-    new SalesforceOption('9th', '9th', false),
-    new SalesforceOption('10th', '10th', false),
-    new SalesforceOption('11th', '11th', false),
-    new SalesforceOption('12th', '12th', false),
-  ];
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
@@ -55,7 +37,6 @@ export class ProgramInfoComponent implements OnInit {
           this.appDataService.addDaysSelected(acp);
         });
         this.updateArtsAreas();
-        this.updateSelectedDivision();
         this.isLoading = false;
       } else {
         this.appData = new ApplicationData();
@@ -70,7 +51,7 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.divisions.get(this.appData.programData.selectedDivision);
+    return this.appData.programData.selectedDivision;
   }
 
   get filteredPrograms(): Array<Program> {
@@ -127,26 +108,6 @@ export class ProgramInfoComponent implements OnInit {
     }
   }
 
-  updateSelectedDivision(): void {
-    const originalDivision: string = this.appData?.programData?.selectedDivision;
-    const grade = this.appData.programData.gradeInSchool;
-    if (grade) {
-      const gradeNumber = grade.match(/\d+/);
-      this.appData.programData.selectedDivision = this.appData.programData.divisionGradeMap.get(+gradeNumber);
-      if (originalDivision && (originalDivision !== this.appData.programData.selectedDivision)) {
-        this.clearSelectedPrograms();
-      }
-      this.updateArtsAreas();
-    }
-  }
-
-  clearSelectedPrograms(): void {
-    this.appData.programData.programs.filter(p => p.isSelected && !p.isRegistered).forEach(p => {
-      p.isSaving = true;
-      this.appDataService.removeProgram(p);
-    });
-  }
-
   clickProgram(program: Program, modal: any, list: ListTypes): void {
     this.modalList = list;
     if (!program.isDisabled(this.daysSelectedBySession,
@@ -158,11 +119,9 @@ export class ProgramInfoComponent implements OnInit {
         if (this.isMusic && program.programOptionsArray && program.programOptionsArray.length > 0) { // open modal for music
           // if music, ask for instrument
           this.selectedProgramInstruments = program.programOptionsArray;
-          this.modalLessonCount = this.modalLessonCount === 0 ? null : this.modalLessonCount;
           this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title'}).result
             .then(instrumentResult => {
               program.selectedInstrument = instrumentResult;
-              program.lessonCount = this.modalLessonCount || 0;
               let pgmCopy: Program = Program.duplicateMe(program);
               pgmCopy.isSelected = true;
               this.appData.acProgramData.programs.push(pgmCopy);
@@ -185,7 +144,6 @@ export class ProgramInfoComponent implements OnInit {
 
         // clean up
         delete this.modalInstrumentChoice;
-        delete this.modalLessonCount;
         delete this.isMusic;
         delete this.isRegistered;
         delete this.modalList;

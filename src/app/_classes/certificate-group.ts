@@ -6,7 +6,6 @@ export class CertificateGroup {
   name: string;
   discount: number;
   courses: Array<Course>;
-  ioCourses: Array<Program>;
   isSelected: boolean;
   isSaving: boolean;
 
@@ -14,7 +13,6 @@ export class CertificateGroup {
     const certificateGroup = new CertificateGroup();
     Object.assign(certificateGroup, json);
 
-    certificateGroup.ioCourses = json.ioCourses?.map((p: any) => Program.createFromNestedJson(p));
     certificateGroup.courses = json.courses?.map((c: any) => Course.createFromNestedJson(c));
     certificateGroup.courses.sort((a, b) => a.displayOrder - b.displayOrder);
 

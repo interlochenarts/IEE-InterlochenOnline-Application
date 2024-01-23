@@ -29,10 +29,10 @@ nvm install # use .nvmrc version
 
 echo -e "\n===> SFDX Update <===\n"
 npm install -g "@salesforce/cli@${SFDX_CLI_VERSION}"
-sfdx --version
+sf --version
 
-echo -e "sfdx auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
-sfdx auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
+echo -e "sf auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
+sf auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
 
-echo -e "sfdx project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
-sfdx project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60
+echo -e "sf project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
+sf project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60

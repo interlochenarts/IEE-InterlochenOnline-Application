@@ -24,11 +24,16 @@ export class Program {
   lessonCountAdd = 0;
   isPrivateLesson = false;
   certificateGroupId: string;
+  certificateGroupOption: SalesforceOption;
 
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
     Object.assign(program, json);
+
+    const label = program.sessionName || 'Future';
+
+    program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 
     return program;
   }

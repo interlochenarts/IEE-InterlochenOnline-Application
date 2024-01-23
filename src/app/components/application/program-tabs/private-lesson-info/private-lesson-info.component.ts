@@ -27,8 +27,9 @@ export class PrivateLessonInfoComponent implements OnInit {
 
   get filteredLessons(): Array<Program> {
     return this.appData.programData.privateLessons.filter(p =>
-      (this.appData.isAdultApplicant ? p.division === 'Adult' : p.division !== 'Adult')
-      && !p.isSelected);
+      (this.appData.programData.selectedDivision === p.division) &&
+      (this.appData.isAdultApplicant ? p.division === 'Adult' : p.division !== 'Adult') &&
+      !p.isSelected);
   }
 
   get selectedPrograms(): Array<Program> {
@@ -64,7 +65,7 @@ export class PrivateLessonInfoComponent implements OnInit {
       if (days) {
         this.daysSelectedBySession = days;
       }
-    })
+    });
   }
 
   clickProgram(program: Program, modal: any, list: ListTypes): void {

@@ -220,7 +220,7 @@ export class AppDataService {
       'IEE_OnlineApplicationController.removeAppChoice',
       this.applicationData.getValue().appId, program.appChoiceId,
       (result: string) => {
-        console.log(result);
+        // console.log(result);
         program.isSaving = false;
       },
       {buffer: false, escape: false}

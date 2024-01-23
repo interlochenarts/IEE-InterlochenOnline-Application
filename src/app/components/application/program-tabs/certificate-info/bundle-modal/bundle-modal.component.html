@@ -1,6 +1,5 @@
-
 <div class="modal-header">
-  <h4 class="modal-title">{{group.name}}</h4>
+  <h4 class="modal-title">{{ group.name }}</h4>
   <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
     <span aria-hidden="true">
       <i class="fa fa-close fa-2x"></i>
@@ -8,7 +7,25 @@
   </button>
 </div>
 <div class="modal-body">
-  Modal Body
+  <div *ngFor="let course of group.courses; let i = index" class="row mb-3">
+    <div class="col-6">{{ course.name }}</div>
+    <div class="col-6">
+
+      <div class="default required">
+        <div class="select">
+          <select [(ngModel)]="bundleChoices[i]"
+                  name="bundleChoice_{{i}}"
+                  class="w-100"
+                  id="bundleChoice_{{i}}">
+            <option *ngFor="let program of course.getProgramsByDivision(selectedDivision)"
+                    [value]="program.certificateGroupOption.value"
+                    [defaultSelected]="program.certificateGroupOption.defaultValue">{{ program.certificateGroupOption.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="modal-footer">
   <button class="btn btn-primary" (click)="dismiss()">Ok</button>

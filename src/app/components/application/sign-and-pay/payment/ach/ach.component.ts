@@ -45,7 +45,7 @@ export class AchComponent implements OnInit, OnChanges {
             // console.log('got facts link! ' + this.linkFACTS);
           } else {
             console.error('error getting FACTS link for app id: ' + this.appData.appId);
-            console.dir(result);
+            // console.dir(result);
             this.linkFACTS = null;
           }
         },
