@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
       new RouterLink('/' + appId + txnId + '/review-registration', 'Review Registration',
         () => false, () => true, this.reviewRegistrationComplete),
       new RouterLink('/' + appId + txnId + '/pay-registration', 'Pay Registration',
-        this.linkDisabled, () => true, () => false),
+        this.linkDisabled, () => true,  this.registrationPayed),
     ]);
 
     this.links = this.appDataService.routerLinks.getValue();
@@ -102,7 +102,11 @@ export class AppComponent implements OnInit {
     return selectedPrograms?.length > 0 || registeredPrograms?.length > 0;
   }
 
-  reviewRegistrationComplete = (): boolean => {
-    return this.reviewComplete;
+  reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
+    return (this.reviewComplete || this.registrationPayed(appData)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+  }
+
+  registrationPayed(appData: ApplicationData): boolean {
+    return appData.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered).length === 0;
   }
 }
