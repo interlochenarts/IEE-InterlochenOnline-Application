@@ -42,6 +42,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;
+        // HERE How does this work with the switch????
+        // HERE How does this work with the switch????
+        // HERE How does this work with the switch????
         this.paymentReceived = appData.payment.paidOnLoad && !appData.isRegistered ? appData.payment.paidOnLoad : this.paymentReceived;
         this.isLoading = true;
         // Load payment info in case they picked programs since the data was last loaded
@@ -168,12 +171,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
     );
   }
 
-  removeCode(): void {
+  removeCode(waiverCode): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeFeeWaiver',
       this.appData.appId,
+      waiverCode,
       result => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
