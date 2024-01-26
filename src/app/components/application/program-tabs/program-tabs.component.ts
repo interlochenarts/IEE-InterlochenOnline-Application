@@ -40,7 +40,9 @@ export class ProgramTabsComponent implements OnInit {
 
         // pre-check boxes for app choices in the main program list
         this.appData.acProgramData.programs.forEach(acp => {
-          this.appData.programData.programs.find(p => p.id === acp.id).isSelected = true;
+          if (acp.sessionId) { // ignore stub programs for IO bundles
+            this.appData.programData.programs.find(p => p.id === acp.id).isSelected = true;
+          }
         });
 
         // pre-check boxes for app choices in the main private lesson list

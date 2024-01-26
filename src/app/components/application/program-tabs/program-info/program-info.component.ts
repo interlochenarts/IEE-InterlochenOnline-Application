@@ -62,11 +62,11 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.acProgramData.programs.filter(p => (p.isSelected && !p.isRegistered));
+    return this.appData.acProgramData.programs.filter(p => (p.isSelected && !p.isRegistered && p.sessionId));
   }
 
   get registeredPrograms(): Array<Program> {
-    return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered));
+    return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered && p.sessionId));
   }
 
 
