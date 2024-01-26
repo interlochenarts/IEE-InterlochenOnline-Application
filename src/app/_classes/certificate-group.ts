@@ -8,6 +8,9 @@ export class CertificateGroup {
   courses: Array<Course>;
   isSelected: boolean;
   isSaving: boolean;
+  // INFO: bundle size is hardcoded for now, but this should be stored on the CertificateGroup record if it's ever not 3
+  bundleSize: number = 3;
+  appChoiceIds: Array<string> = [];
 
   public static createFromNestedJson(json: any): CertificateGroup {
     const certificateGroup = new CertificateGroup();

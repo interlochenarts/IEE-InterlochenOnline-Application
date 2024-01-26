@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -51,6 +51,12 @@ export class CertificateInfoComponent {
 
   clickCertificate(group: CertificateGroup, modal: any) {
     this.selectedGroup = group;
-    this.modalService.open(modal)
+    const modalRef = this.modalService.open(modal, {size: 'lg'});
+
+    modalRef.closed.subscribe(programIds => {
+      console.log(programIds);
+      this.selectedGroup.isSaving = true;
+      this.appDataService.saveBundle(this.selectedGroup, programIds);
+    })
   }
 }

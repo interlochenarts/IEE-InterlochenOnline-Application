@@ -28,5 +28,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" (click)="dismiss()">Ok</button>
+  <span *ngIf="isValid === false" class="alert-text me-3">Please select all options.</span>
+  <button class="btn btn-primary" (click)="ok()">Ok</button>
 </div>

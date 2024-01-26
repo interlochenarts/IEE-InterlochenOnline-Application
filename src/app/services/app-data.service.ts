@@ -8,6 +8,7 @@ import {Parent} from '../_classes/parent';
 import {Student} from '../_classes/student';
 import {Program} from "../_classes/program";
 import {Payment} from "../_classes/payment";
+import {CertificateGroup} from "../_classes/certificate-group";
 
 declare const Visualforce: any;
 
@@ -170,6 +171,39 @@ export class AppDataService {
           );
         }
         program.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public saveBundle(group: CertificateGroup, programIds: string): void {
+    group.isSelected = true;
+    const appData = this.applicationData.getValue();
+
+    console.log('saveBundle', appData.appId, group.id, programIds);
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.addCertificateAppChoices',
+      appData.appId, group.id, programIds,
+      (result: string) => {
+        if (result.startsWith('ERR')) {
+          console.error(result);
+        } else {
+          group.appChoiceIds = result.split(';');
+
+          // console.log('Saved new program: ' + result);
+          // Update payment info
+          // Visualforce.remoting.Manager.invokeAction(
+          //   'IEE_OnlineApplicationController.getPaymentJSON',
+          //   appData.appId,
+          //   (payment: string) => {
+          //     if (payment && payment !== 'null') {
+          //       appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
+          //     }
+          //   },
+          //   {buffer: false, escape: false}
+          // );
+        }
+        group.isSaving = false;
       },
       {buffer: false, escape: false}
     );
