@@ -93,20 +93,33 @@ export class AppComponent implements OnInit {
   }
 
   studentInfoComplete(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    return appData.studentInfoIsComplete(countryCodes, stateCodes);
+    let result = appData.studentInfoIsComplete(countryCodes, stateCodes);
+    if (!result) {
+      this.reviewComplete = false;
+    }
+    return result;
   }
 
   selectProgramComplete(appData: ApplicationData): boolean {
-    let selectedPrograms = appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || (p.isSelected && p.isRegistered && p.lessonCountAdd > 0));
-    let registeredPrograms = appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
-    return selectedPrograms?.length > 0 || registeredPrograms?.length > 0;
+    let selectedPrograms = appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered));
+
+    if ((appData.isRegistered && appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0) || (!appData.isRegistered && selectedPrograms?.length === 0)) {
+      this.reviewComplete = false;
+      return false;
+    } else if ((appData.isRegistered && appData.acProgramData?.programs.filter(p => (p.isSelected && p.isRegistered) || p.lessonCountAdd > 0)) || (!appData.isRegistered && selectedPrograms?.length > 0)) {
+      return true;
+    }
   }
 
   reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    return (this.reviewComplete || this.registrationPayed(appData)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    let result = (this.reviewComplete || this.registrationPayed(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    if (!result) {
+      this.reviewComplete = false;
+    }
+    return result;
   }
 
-  registrationPayed(appData: ApplicationData): boolean {
-    return appData.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered).length === 0;
+  registrationPayed = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
+    return !this.linkDisabled(appData, countryCodes, stateCodes) && appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0;
   }
 }
