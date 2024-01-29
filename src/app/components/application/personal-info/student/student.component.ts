@@ -186,7 +186,7 @@ export class StudentComponent implements OnInit, OnChanges {
 
   stateSelected(event: StateCode): void {
     this.student.mailingAddress.stateProvince = event.isoCode;
-    this.studentState = this.filteredStates.find(x => x.isoCode === this.student?.mailingAddress?.stateProvince)?.name;
+    this.studentState = this.getState(this.student.mailingAddress.stateProvince);
   }
 
   getState(isoCode:string): string {

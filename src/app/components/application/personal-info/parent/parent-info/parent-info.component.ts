@@ -116,7 +116,7 @@ export class ParentInfoComponent implements OnInit, OnChanges {
 
   stateSelected(event: StateCode): void {
     this.parent.mailingAddress.stateProvince = event.isoCode;
-    this.parentState = this.filteredStates.find(x => x.isoCode === this.parent?.mailingAddress?.stateProvince)?.name;
+    this.parentState = this.getState(this.parent.mailingAddress.stateProvince);
   }
 
   getState(isoCode:string): string {
