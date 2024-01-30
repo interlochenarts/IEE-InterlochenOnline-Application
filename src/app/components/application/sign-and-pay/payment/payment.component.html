@@ -1,7 +1,7 @@
 <header xmlns="http://www.w3.org/1999/html">
   <div class="row">
     <div class="col-12">
-      <h3>{{(appData.payment && (appData.payment.amountOwed == 0 || appData.payment.paidOnLoad)) || (paymentReceived && transactionId != null)? 'Payment Complete' : 'Make a Payment'}}</h3>
+      <h3>{{(appData.payment && (appData.payment.amountOwed === 0 || appData.payment.paidOnLoad)) || (paymentReceived && !!transactionId)? 'Payment Complete' : 'Make a Payment'}}</h3>
     </div>
   </div>
 </header>
@@ -90,20 +90,15 @@
       </table>
     </div>
     <div *ngIf="!paymentReceived && !codeDisabled" class="mb-4">
-      <input name="have-code" id="have-code" type="checkbox" [checked]="hasCode" (change)="hasCode = !hasCode">
-      <label for="have-code" class="ms-2">I have a discount code</label>
-
-      <div *ngIf="hasCode">
-        <label for="code">Discount Code</label>
-        <div class="default">
-          <input type="text" class="w-50"
-                 [(ngModel)]="enteredCode"
-                 name="code"
-                 id="code"
-                 maxlength="50"
-                 pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
-          <button (click)="applyCode()" class="btn btn-default ms-3">Apply</button>
-        </div>
+      <label for="code">Discount Code</label>
+      <div class="default">
+        <input type="text" class="w-50"
+               [(ngModel)]="enteredCode"
+               name="code"
+               id="code"
+               maxlength="50"
+               pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
+        <button (click)="applyCode()" class="btn btn-default ms-3">Apply</button>
       </div>
       <div *ngIf="appData.payment.waiverDescription" class="mt-2" class="reviewError">
         <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
