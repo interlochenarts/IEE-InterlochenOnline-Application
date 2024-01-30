@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Student} from '../../../../_classes/student';
 import {Parent} from '../../../../_classes/parent';
 import {Address} from '../../../../_classes/address';
@@ -24,6 +24,12 @@ export class StudentComponent implements OnInit, OnChanges {
   ethnicityOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   yearOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
+  keyword = 'name'
+  showError:boolean = false;
+  studentState:string = '';
+
+  @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
+  @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
 
   monthOptions = [
     {label: 'January', value: '01'},
@@ -64,6 +70,8 @@ export class StudentComponent implements OnInit, OnChanges {
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
       this.filterStates(this.student?.mailingAddress?.country);
+
+      this.studentState = this.getState(this.student?.mailingAddress?.stateProvince);
     });
 
     this.loadEthnicityOptions();
@@ -123,6 +131,9 @@ export class StudentComponent implements OnInit, OnChanges {
   filterStates(event: string): void {
     const countryCode = this.countryCodes.find(c => c.name === event);
     this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
+    if (countryCode && countryCode.id) {
+      this.showError = false;
+    }
   }
 
   zipRequired(): boolean {
@@ -132,8 +143,13 @@ export class StudentComponent implements OnInit, OnChanges {
 
   clearState(event: string): void {
     if (event !== this.student.mailingAddress.country) {
-      this.student.mailingAddress.stateProvince = null;
+      this.clearStateVal();
     }
+  }
+
+  clearStateVal(): void {
+    this.student.mailingAddress.stateProvince = null;
+    this.studentState = '';
   }
 
   copyAddressFrom(parentAddress: Address): void {
@@ -143,6 +159,7 @@ export class StudentComponent implements OnInit, OnChanges {
     this.filterStates(this.student.mailingAddress.country);
     this.student.mailingAddress.stateProvince = parentAddress.stateProvince;
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
+    this.studentState = this.getState(this.student.mailingAddress.stateProvince);
   }
 
   showCopyAddressButton(parent: Parent): boolean {
@@ -151,5 +168,33 @@ export class StudentComponent implements OnInit, OnChanges {
       && parent.lastName
       && parent.mailingAddress
       && parent.mailingAddress.hasAddress());
+  }
+
+  focusout(): void {
+    const countryCode = this.countryCodes.find(c => c.name === this.countryAutocomplete.query);
+    if (!countryCode) {
+      this.showError = true;
+      this.clearState(this.countryAutocomplete.query);
+      this.filteredStates = new Array<StateCode>();
+      this.student.mailingAddress.country = null;
+      this.stateAutocomplete.query = null;
+    } else {
+      this.showError = false;
+      this.student.mailingAddress.country = countryCode.name;
+    }
+  }
+
+  stateSelected(event: StateCode): void {
+    this.student.mailingAddress.stateProvince = event.isoCode;
+    this.studentState = this.getState(this.student.mailingAddress.stateProvince);
+  }
+
+  getState(isoCode:string): string {
+    if (isoCode) {
+      let thisState = this.filteredStates.find(x => x.isoCode === isoCode);
+      return thisState.name;
+    } else {
+      return '';
+    }
   }
 }

@@ -58,4 +58,12 @@ export class ApplicationData {
       this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false))) &&
       this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
+
+  //this does not include program
+  public studentInfoIsComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    return this.student.isComplete(countryCodes, stateCodes) &&
+      (this.isAdultApplicant || (this.parents.length > 0 &&
+        this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
+        this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false)));
+  }
 }
