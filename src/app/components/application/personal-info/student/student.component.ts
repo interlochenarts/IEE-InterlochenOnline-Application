@@ -26,6 +26,7 @@ export class StudentComponent implements OnInit, OnChanges {
   dayOptions: Array<SalesforceOption> = new Array<SalesforceOption>();
   keyword = 'name'
   showError:boolean = false;
+  studentState:string = '';
 
   @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
   @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
@@ -69,6 +70,8 @@ export class StudentComponent implements OnInit, OnChanges {
     this.appDataService.stateData.asObservable().subscribe(stateCodes => {
       this.stateCodes = stateCodes;
       this.filterStates(this.student?.mailingAddress?.country);
+
+      this.studentState = this.getState(this.student?.mailingAddress?.stateProvince);
     });
 
     this.loadEthnicityOptions();
@@ -128,6 +131,9 @@ export class StudentComponent implements OnInit, OnChanges {
   filterStates(event: string): void {
     const countryCode = this.countryCodes.find(c => c.name === event);
     this.filteredStates = this.stateCodes.filter(s => s.countryId === countryCode?.id);
+    if (countryCode && countryCode.id) {
+      this.showError = false;
+    }
   }
 
   zipRequired(): boolean {
@@ -143,6 +149,7 @@ export class StudentComponent implements OnInit, OnChanges {
 
   clearStateVal(): void {
     this.student.mailingAddress.stateProvince = null;
+    this.studentState = '';
   }
 
   copyAddressFrom(parentAddress: Address): void {
@@ -152,6 +159,7 @@ export class StudentComponent implements OnInit, OnChanges {
     this.filterStates(this.student.mailingAddress.country);
     this.student.mailingAddress.stateProvince = parentAddress.stateProvince;
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
+    this.studentState = this.getState(this.student.mailingAddress.stateProvince);
   }
 
   showCopyAddressButton(parent: Parent): boolean {
@@ -177,6 +185,16 @@ export class StudentComponent implements OnInit, OnChanges {
   }
 
   stateSelected(event: StateCode): void {
-    this.student.mailingAddress.stateProvince = event.name;
+    this.student.mailingAddress.stateProvince = event.isoCode;
+    this.studentState = this.getState(this.student.mailingAddress.stateProvince);
+  }
+
+  getState(isoCode:string): string {
+    if (isoCode) {
+      let thisState = this.filteredStates.find(x => x.isoCode === isoCode);
+      return thisState.name;
+    } else {
+      return '';
+    }
   }
 }

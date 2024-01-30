@@ -1,7 +1,7 @@
 <header xmlns="http://www.w3.org/1999/html">
   <div class="row">
     <div class="col-12">
-      <h3>{{(appData.payment && (appData.payment.amountOwed == 0 || appData.payment.paidOnLoad)) || (paymentReceived && transactionId != null)? 'Payment Complete' : 'Make a Payment'}}</h3>
+      <h3>{{(appData.payment && (appData.payment.amountOwed === 0 || appData.payment.paidOnLoad)) || (paymentReceived && !!transactionId)? 'Payment Complete' : 'Make a Payment'}}</h3>
     </div>
   </div>
 </header>
