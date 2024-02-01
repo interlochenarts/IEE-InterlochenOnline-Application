@@ -64,11 +64,16 @@
             </tr>
           </ng-container>
           <ng-container *ngIf="appData.payment.appliedWaivers > 0">
-            <tr>
-              <td>Discount Amount <span class="ms-3 waiver">{{appData.payment.waiverCode}} <i
-                *ngIf="!paymentReceived && !appData.payment.hasWaiverTransactions" (click)="removeCode()"
-                class="fa fa-times remove alert-text"></i></span></td>
-              <td>-{{appData.payment.appliedWaivers | currency:'USD'}}</td>
+            <tr *ngFor="let appliedDiscount of appData.payment.appliedDiscounts">
+              <td>Discount Amount <span class="ms-3 waiver">{{appliedDiscount.split('&')[1]}}</span> {{appliedDiscount.split('&')[2] | date:'short'}}</td>
+              <td>-{{appliedDiscount.split('&')[0] | currency:'USD'}}</td>
+            </tr>
+            <tr *ngFor="let pendingDiscount of appData.payment.pendingDiscounts">
+              <td>Discount Amount <span class="ms-3 waiver">{{pendingDiscount.split('&')[1]}} <i
+                (click)="removeCode(pendingDiscount.split('&')[1])" class="fa fa-times remove alert-text"></i></span>
+                {{pendingDiscount.split('&')[2] | date:'short'}}
+              </td>
+              <td>-{{pendingDiscount.split('&')[0] | currency:'USD'}}</td>
             </tr>
           </ng-container>
           <tr>
