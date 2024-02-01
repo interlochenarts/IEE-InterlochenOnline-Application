@@ -24,6 +24,7 @@ export class PrivateLessonInfoComponent implements OnInit {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
+  otherInstrument: string;
 
   get filteredLessons(): Array<Program> {
     return this.appData.programData.privateLessons.filter(p =>
@@ -38,6 +39,10 @@ export class PrivateLessonInfoComponent implements OnInit {
 
   get programsDisabled(): boolean {
     return false;
+  }
+
+  get isOtherInstrument() :boolean {
+    return this.modalInstrumentChoice === 'Other';
   }
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
@@ -100,6 +105,7 @@ export class PrivateLessonInfoComponent implements OnInit {
 
             if (this.isMusic) {
               program.selectedInstrument = result.instrumentChoice;
+                program.selectedInstrumentOther = this.otherInstrument;
             }
             program.lessonCount = result.lessonCount;
 
@@ -183,6 +189,7 @@ export class PrivateLessonInfoComponent implements OnInit {
     this.modalLessonCount = null;
     this.isMusic = null;
     this.isRegistered = null;
+    this.otherInstrument = null;
   }
 
   protected readonly ListTypes = ListTypes;

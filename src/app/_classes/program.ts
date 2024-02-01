@@ -25,7 +25,7 @@ export class Program {
   isPrivateLesson = false;
   certificateGroupId: string;
   certificateGroupOption: SalesforceOption;
-
+  selectedInstrumentOther: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();

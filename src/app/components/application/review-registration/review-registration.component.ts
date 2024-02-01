@@ -38,5 +38,7 @@ export class ReviewRegistrationComponent implements OnInit {
     this.appDataService.stateData.asObservable().subscribe(states => {
       this.stateCodes = states;
     });
+
+    this.appDataService.reviewCompleted.next(true);
   }
 }

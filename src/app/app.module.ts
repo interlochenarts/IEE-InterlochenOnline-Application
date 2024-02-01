@@ -23,6 +23,7 @@ import {BundleModalComponent} from './components/application/program-tabs/certif
 import {ProgramTabsComponent} from './components/application/program-tabs/program-tabs.component';
 import {CertificateInfoComponent} from './components/application/program-tabs/certificate-info/certificate-info.component';
 import { PrivateLessonInfoComponent } from './components/application/program-tabs/private-lesson-info/private-lesson-info.component';
+import {AutocompleteLibModule} from "angular-ng-autocomplete";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { PrivateLessonInfoComponent } from './components/application/program-tab
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    AutocompleteLibModule
   ],
   providers: [],
   bootstrap: [AppComponent]

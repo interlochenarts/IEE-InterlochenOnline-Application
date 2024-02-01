@@ -137,6 +137,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
           this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.appDataService.paymentReceived.next(this.paymentReceived);
         } else {
           console.error('error applying code for app id: ' + this.appData.appId);
           console.dir(result);
@@ -156,6 +157,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.appDataService.paymentReceived.next(this.paymentReceived);
           this.selectedPrograms = null;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
@@ -178,6 +180,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
           this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.appDataService.paymentReceived.next(this.paymentReceived);
           this.enteredCode = null;
         } else {
           console.error('error removing code for app id: ' + this.appData.appId);
@@ -219,6 +222,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
             this.selectedPrograms = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
+            this.appDataService.paymentReceived.next(this.paymentReceived);
 
             // Mark selected app choices as registered
             this.appData.acProgramData.programs.forEach(program => { program.isRegistered = true;});

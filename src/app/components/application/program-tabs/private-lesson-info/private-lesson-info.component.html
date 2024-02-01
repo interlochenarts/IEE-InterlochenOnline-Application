@@ -72,12 +72,11 @@
       lessons</h4>
     <button type="button" class="close btn btn-sm" aria-label="Close"
             (click)="modal.dismiss('Close clicked')">
-      <span aria-hidden="true">
-      <i class="fa fa-close fa-2x"></i></span>
+      <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
     </button>
   </div>
   <div class="modal-body">
-    <label *ngIf="modalList === ListTypes.SELECTED" for="lessonCountAdd" class="mt-4 required">Number of lessons (max 52)</label>
+    <label *ngIf="modalList === ListTypes.SELECTED" for="lessonCountAdd" class="mt-4 required">Number of lessons</label>
     <label *ngIf="modalList === ListTypes.REGISTERED" for="lessonCountAdd" class="mt-4 required">
       Number of lessons (max {{ 52 - modalExistingCount }})</label>
     <div class="default required">
@@ -108,9 +107,7 @@
     <h4 *ngIf="isMusic" class="modal-title" id="modal-basic-title">Select an Instrument and Number of lessons</h4>
     <h4 *ngIf="!isMusic" class="modal-title" id="modal-basic-title">Select Number of lessons</h4>
     <button type="button" class="close btn btn-sm" aria-label="Close" (click)="modal.dismiss('Close clicked')">
-      <span aria-hidden="true">
-        <i class="fa fa-close fa-2x"></i>
-      </span>
+      <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
     </button>
   </div>
   <div class="modal-body">
@@ -126,6 +123,15 @@
                   [defaultSelected]="instrument.defaultValue">{{ instrument.label }}
           </option>
         </select>
+      </div>
+
+      <label *ngIf="isOtherInstrument" class="mt-4 required">Other Instrument</label>
+      <div *ngIf="isOtherInstrument" class="default required">
+        <input type="text" class="w-100"
+               [(ngModel)]="otherInstrument"
+               name="otherInstrument"
+               id="otherInstrument"
+               maxlength="50"/>
       </div>
     </div>
 

@@ -26,6 +26,8 @@ export class AppDataService {
   public isSaving = new BehaviorSubject<boolean>(false);
   public routerLinks = new BehaviorSubject<Array<RouterLink>>([]);
   public credentialStatus = new BehaviorSubject<string>(null);
+  public reviewCompleted = new BehaviorSubject<boolean>(false);
+  public paymentReceived = new BehaviorSubject<boolean>(false);
   public daysSelectedBySession = new BehaviorSubject<Map<string, Set<string>>>(new Map<string, Set<string>>());
 
   constructor() {
