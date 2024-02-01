@@ -42,9 +42,6 @@ export class PaymentComponent implements OnInit, OnDestroy {
     this.appDataService.applicationData.asObservable().subscribe(appData => {
       if (appData) {
         this.appData = appData;
-        // HERE How does this work with the switch????
-        // HERE How does this work with the switch????
-        // HERE How does this work with the switch????
         this.paymentReceived = appData.payment.paidOnLoad && !appData.isRegistered ? appData.payment.paidOnLoad : this.paymentReceived;
         this.isLoading = true;
         // Load payment info in case they picked programs since the data was last loaded
