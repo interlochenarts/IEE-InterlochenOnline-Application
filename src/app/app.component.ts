@@ -71,16 +71,17 @@ export class AppComponent implements OnInit {
 
   buildLinks(): void {
     const appId = this.applicationId || this.appData.appId;
-    const txnId = this.transactionId ? '/' + this.applicationId : '';
+    const txnId = this.transactionId ? '/' + this.transactionId : '';
+    const rootPath = `/${appId}${txnId}`;
 
     this.appDataService.routerLinks.next([
-      new RouterLink('/' + appId + txnId + '/student-info', this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
+      new RouterLink(`${rootPath}/student-info`, this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
         () => false, () => true),
-      new RouterLink('/' + appId + txnId + '/program', 'Select a Program',
+      new RouterLink(`${rootPath}/program`, 'Select a Program',
         () => false, () => true),
-      new RouterLink('/' + appId + txnId + '/review-registration', 'Review Registration',
+      new RouterLink(`${rootPath}/review-registration`, 'Review Registration',
         () => false, () => true),
-      new RouterLink('/' + appId + txnId + '/pay-registration', 'Pay Registration',
+      new RouterLink(`${rootPath}/pay-registration`, 'Pay Registration',
         this.linkDisabled, () => true),
     ]);
 
