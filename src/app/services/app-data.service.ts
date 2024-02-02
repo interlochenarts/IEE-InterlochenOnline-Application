@@ -153,7 +153,9 @@ export class AppDataService {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       appData.appId, program.id, program.sessionId,
-      (program.selectedInstrument ? program.selectedInstrument : ''), (program.lessonCount ? program.lessonCount : ' '),
+      (program.selectedInstrument ? program.selectedInstrument : ''),
+      (program.lessonCount ? program.lessonCount : ''),
+      (program.selectedInstrumentOther ? program.selectedInstrumentOther : ''),
       (result: string) => {
         if (result.startsWith('ERR')) {
           console.error(result);
@@ -257,7 +259,9 @@ export class AppDataService {
       this.applicationData.getValue().appId, program.appChoiceId,
       (result: string) => {
         // console.log(result);
-        program.isSaving = false;
+        if (result) {
+          program.isSaving = false;
+        }
       },
       {buffer: false, escape: false}
     );

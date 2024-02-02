@@ -67,9 +67,10 @@
 
 <ng-template #addLessonsModal let-modal>
   <div class="modal-header">
-    <h4 *ngIf="modalList === ListTypes.SELECTED" class="modal-title" id="modal-basic-title">Adjust Lessons</h4>
-    <h4 *ngIf="modalList === ListTypes.REGISTERED " class="modal-title" id="modal-basic-title">Select number of additional
-      lessons</h4>
+    <h4 class="modal-title" id="add-lesson-modal-basic-title">
+      <span *ngIf="modalList === ListTypes.SELECTED">Adjust Lessons</span>
+      <span *ngIf="modalList === ListTypes.REGISTERED">Select number of additional lessons</span>
+    </h4>
     <button type="button" class="close btn btn-sm" aria-label="Close"
             (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
@@ -78,12 +79,11 @@
   <div class="modal-body">
     <label *ngIf="modalList === ListTypes.SELECTED" for="lessonCountAdd" class="mt-4 required">Number of lessons</label>
     <label *ngIf="modalList === ListTypes.REGISTERED" for="lessonCountAdd" class="mt-4 required">
-      Number of lessons (max {{ 52 - modalExistingCount }})</label>
+      Number of lessons</label>
     <div class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCountAdd"
              name="lessonCountAdd"
-             max="52"
              id="lessonCountAdd"/>
     </div>
   </div>
@@ -104,8 +104,10 @@
 
 <ng-template #newLessonModal let-modal>
   <div class="modal-header">
-    <h4 *ngIf="isMusic" class="modal-title" id="modal-basic-title">Select an Instrument and Number of lessons</h4>
-    <h4 *ngIf="!isMusic" class="modal-title" id="modal-basic-title">Select Number of lessons</h4>
+    <h4 class="modal-title" id="new-lesson-modal-basic-title">
+      <span *ngIf="isMusic">Select an Instrument and Number of lessons</span>
+      <span *ngIf="!isMusic">Select Number of lessons</span>
+    </h4>
     <button type="button" class="close btn btn-sm" aria-label="Close" (click)="modal.dismiss('Close clicked')">
       <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
     </button>
@@ -135,12 +137,11 @@
       </div>
     </div>
 
-    <label for="lessonCount" class="mt-4 required">Add lessons (max 52)</label>
+    <label for="lessonCount" class="mt-4 required">Add lessons</label>
     <div class="default required">
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCount"
              name="lessonCount"
-             max="52"
              id="lessonCount"/>
     </div>
   </div>
