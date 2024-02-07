@@ -2,7 +2,7 @@
 
 #############################
 ### This script takes two parameters:
-###   1: The name of the sandbox you want to push to
+###   1 (Required): The name of the sandbox you want to push to
 ###   2 (Optional): "auth" if you want to authenticate/create a connection to the sandbox
 ###                  Only necessary the first time you connect to the sandbox with sfdx
 #############################
@@ -24,6 +24,12 @@ fi
 # compress the build
 cd ..
 ./compressBuild.sh
+
+# lets us use the nvm commands
+source "$HOME/.nvm/nvm.sh"
+nvm install # use .nvmrc version
+
+echo -e "using Node.js $(node --version) ==> $(which node)"
 
 if [[ $2 == "auth" ]]; then
   # log in to a sandbox
