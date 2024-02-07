@@ -19,7 +19,7 @@ fi
 # Assumes nvm and @salesforce/cli are installed
 
 # build using GoCD script
-../gocd_scripts/build.sh skip
+../gocd_scripts/build.sh skip_npm
 
 # compress the build
 cd ..

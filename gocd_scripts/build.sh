@@ -14,7 +14,7 @@ fi
 source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 
-if [[ $1 != "skip" ]]; then
+if [[ $1 != "skip_npm" ]]; then
   # get our dependencies
   echo -e "===> npm install <===\n"
   npm clean-install;
