@@ -4,7 +4,7 @@
       <h4>Parent or Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
     </div>
     <div class="col-4 text-end">
-      <a *ngIf="!locked" [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+      <a *ngIf="!locked" [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
     </div>
   </div>
 
@@ -77,5 +77,5 @@
 </div>
 
 <div *ngIf="!parents || parents.length === 0" class="alert alert-danger">
-  Please <a [routerLink]="[link.routerLink]" class="alert-link">add a parent or guardian</a> before completing your registration.
+  Please <a [routerLink]="[link.link]" class="alert-link">add a parent or guardian</a> before completing your registration.
 </div>

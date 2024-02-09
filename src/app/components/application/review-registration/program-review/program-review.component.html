@@ -3,7 +3,7 @@
     <h4>Selected Programs</h4>
   </div>
   <div class="col-4 text-end">
-    <a [routerLink]="[link.routerLink]" class="btn btn-primary">Edit</a>
+    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
   </div>
 </div>
 
@@ -28,5 +28,5 @@
 </div>
 
 <div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
-  <i class="fa fa-warning alert-text"></i><span class="reviewError"> No programs selected</span>
+  <i class="fa fa-warning reviewErrorIcon"></i><span class="reviewError"> No programs selected</span>
 </div>

@@ -85,13 +85,13 @@ export class AppComponent implements OnInit {
     const rootPath = `/${appId}${txnId}`;
 
     this.appDataService.routerLinks.next([
-      new RouterLink('/' + rootPath + '/student-info', this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
+      new RouterLink(`${rootPath}/student-info`, this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
           () => false, () => true, this.studentInfoComplete),
-      new RouterLink('/' + rootPath + '/program', 'Select a Program',
+      new RouterLink(`${rootPath}/program`, 'Select a Program',
           () => false, () => true, this.selectProgramComplete),
-      new RouterLink('/' + rootPath + '/review-registration', 'Review Registration',
+      new RouterLink(`${rootPath}/review-registration`, 'Review Registration',
           () => false, () => true, this.reviewRegistrationComplete),
-      new RouterLink('/' + rootPath + '/pay-registration', 'Pay Registration',
+      new RouterLink(`${rootPath}/pay-registration`, 'Pay Registration',
           this.linkDisabled, () => true,  this.registrationPayed),
     ]);
 

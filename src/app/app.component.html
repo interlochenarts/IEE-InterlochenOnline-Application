@@ -9,7 +9,7 @@
         <ul>
           <li *ngFor="let link of links" [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}">
             <a *ngIf="link.show(appData)"
-               [routerLink]="[link.routerLink]" routerLinkActive="active"
+               [routerLink]="[link.link]" routerLinkActive="active"
                [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}"
                [tabIndex]="link.disabled(appData, countryCodes, stateCodes) ? -1 : 0"
                (click)="saveApplication(link.disabled(appData, countryCodes, stateCodes))"

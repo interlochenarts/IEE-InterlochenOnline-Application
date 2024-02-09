@@ -16,12 +16,10 @@ export class ProgramTabsComponent implements OnInit {
 
   get selectedDivision(): string {
     if (!this._selectedDivision) {
-      if (this.appData?.isAdultApplicant) {
-        this._selectedDivision = 'Adult';
-        this.appData.programData.selectedDivision = 'Adult';
-      }
+        this._selectedDivision = this.appData?.programData?.selectedDivision;
     }
 
+    console.log('selectedDivision', this._selectedDivision, 'appData.division', this.appData?.programData?.selectedDivision);
     return this._selectedDivision;
   }
 
