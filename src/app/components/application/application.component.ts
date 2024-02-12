@@ -117,8 +117,4 @@ export class ApplicationComponent implements OnInit {
       document.getElementById('Top').scrollIntoView();
     }
   }
-
-  canRegister(): boolean {
-    return this.applicationData.isComplete(this.countryCodes, this.stateCodes);
-  }
 }

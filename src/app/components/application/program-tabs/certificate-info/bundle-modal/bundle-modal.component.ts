@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CertificateGroup} from "../../../../../_classes/certificate-group";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'iee-bundle-modal',
@@ -7,7 +8,7 @@ import {CertificateGroup} from "../../../../../_classes/certificate-group";
   styleUrls: ['./bundle-modal.component.less']
 })
 export class BundleModalComponent implements OnInit {
-  @Input() modal: any;
+  @Input() modal: NgbActiveModal;
   @Input() group: CertificateGroup;
   @Input() selectedDivision: string;
 

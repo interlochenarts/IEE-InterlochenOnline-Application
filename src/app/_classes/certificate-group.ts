@@ -1,4 +1,3 @@
-import {Program} from "./program";
 import {Course} from "./course";
 
 export class CertificateGroup {
@@ -8,12 +7,11 @@ export class CertificateGroup {
   courses: Array<Course>;
   isSelected: boolean;
   isSaving: boolean;
-  // INFO: bundle size is hardcoded for now, but this should be stored on the CertificateGroup record if it's ever not 3
-  bundleSize: number = 3;
+  bundleSize: number;
   appChoiceIds: Array<string> = [];
 
   public static createFromNestedJson(json: any): CertificateGroup {
-    const certificateGroup = new CertificateGroup();
+    const certificateGroup: CertificateGroup = new CertificateGroup();
     Object.assign(certificateGroup, json);
 
     certificateGroup.courses = json.courses?.map((c: any) => Course.createFromNestedJson(c));

@@ -9,6 +9,7 @@ import {SalesforceOption} from '../../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
 
+// noinspection JSUnresolvedReference
 @Component({
   selector: 'iee-student',
   templateUrl: './student.component.html',

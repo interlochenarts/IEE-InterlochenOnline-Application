@@ -5,6 +5,7 @@ import {AppDataService} from '../../../../../services/app-data.service';
 
 declare const Visualforce: any;
 
+// noinspection JSUnresolvedReference
 @Component({
   selector: 'iee-ach',
   templateUrl: './ach.component.html',

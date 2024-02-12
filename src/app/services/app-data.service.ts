@@ -12,6 +12,7 @@ import {CertificateGroup} from "../_classes/certificate-group";
 
 declare const Visualforce: any;
 
+// noinspection JSUnresolvedReference
 @Injectable({
   providedIn: 'root'
 })
