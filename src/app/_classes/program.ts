@@ -82,7 +82,7 @@ export class Program {
       return true;
     }
 
-    // allow changes to selected
+    // allow changes to "selected"
     if (this.isSelected) {
       return false;
     }
@@ -101,5 +101,11 @@ export class Program {
 
   get artsAreaList(): Array<string> {
     return this.artsArea.split(';');
+  }
+
+  public static sort(a: Program, b: Program): number {
+    return a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
+      (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
+        new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0;
   }
 }

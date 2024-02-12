@@ -1,3 +1,5 @@
+// noinspection JSIgnoredPromiseFromCall
+
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';

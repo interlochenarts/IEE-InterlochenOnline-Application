@@ -44,6 +44,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         this.paymentReceived = appData.payment.paidOnLoad && !appData.isRegistered ? appData.payment.paidOnLoad : this.paymentReceived;
         this.isLoading = true;
         // Load payment info in case they picked programs since the data was last loaded
+        // noinspection JSUnresolvedReference
         Visualforce.remoting.Manager.invokeAction(
           'IEE_OnlineApplicationController.getPaymentJSON',
           this.appData.appId,
@@ -61,18 +62,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.selectedPrograms.sort((a, b) =>
-          a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
-            (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
+        this.selectedPrograms.sort(Program.sort);
 
         // Only registered programs
         this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.registeredPrograms.sort((a, b) =>
-          a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
-            (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
+        this.registeredPrograms.sort(Program.sort);
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
@@ -102,17 +97,20 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
 
   confirmCredit(): void {
-    // Do VF here to call confirmCredit function, set .credit to response.. add to applied? figure out new owed?
+    // Do VF here to call confirmCredit function, set .credit to response... add to applied? figure out new owed?
+
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.confirmCredit',
       this.appData.appId, this.appData.payment.useCredit,
-      result => {
+      (result: string) => {
         if (result && result !== 'null') {
+
           this.useCredit = false;
           this.appData.payment.useCredit = false;
-          this.appData.payment.amountOwed -= result;
-          this.appData.payment.credits -= result;
-          this.appData.payment.appliedCredits += result;
+          this.appData.payment.amountOwed -= +result;
+          this.appData.payment.credits -= +result;
+          this.appData.payment.appliedCredits += +result;
           // Only set tuition paid if this actually covered the fee completely
           if (this.appData.payment.amountOwed <= 0) {
             this.appData.payment.tuitionPaid = true;
@@ -129,10 +127,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
   applyCode(): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.applyFeeWaiver',
       this.appData.appId, this.enteredCode,
-      result => {
+      (result: string) => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
@@ -150,10 +149,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
   addProgramsWithWaiver(): void {
     this.isLoading = true;
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addProgramsWithWaiver',
       this.appData.appId,
-      result => {
+      (result: string) => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.paymentReceived = this.appData.payment.tuitionPaid;
@@ -172,10 +172,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
   removeCode(): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeFeeWaiver',
       this.appData.appId,
-      result => {
+      (result: string) => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
@@ -206,10 +207,11 @@ export class PaymentComponent implements OnInit, OnDestroy {
   }
   checkPayment(): void {
     this.isLoading = true;
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.getPaymentJSON',
       this.appData.appId,
-      result => {
+      (result: string) => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.hasCode = this.appData.payment.waiverCode != null;
@@ -231,10 +233,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
             // Only registered programs
             this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
             // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-            this.registeredPrograms.sort((a, b) =>
-              a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
-              (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-              new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
+            this.registeredPrograms.sort(Program.sort);
 
             this.transactionId = null;
             this.appDataService.transactionId.next(null);

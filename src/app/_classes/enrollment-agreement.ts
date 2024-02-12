@@ -7,14 +7,6 @@ export class EnrollmentAgreement {
   birthdateMonth: string;
   birthdateDay: string;
 
-  public updateBirthdate(): void {
-    if (this.birthdateYear && this.birthdateMonth && this.birthdateDay) {
-      this.birthdate = `${this.birthdateYear}-${this.birthdateMonth}-${this.birthdateDay}`;
-    } else {
-      this.birthdate = null;
-    }
-  }
-
   public canCheckAcceptance(): boolean {
     return !!this.signature && !!this.birthdate;
   }

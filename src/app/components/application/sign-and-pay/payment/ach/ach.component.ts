@@ -5,7 +5,6 @@ import {AppDataService} from '../../../../../services/app-data.service';
 
 declare const Visualforce: any;
 
-// noinspection JSUnresolvedReference
 @Component({
   selector: 'iee-ach',
   templateUrl: './ach.component.html',
@@ -37,6 +36,8 @@ export class AchComponent implements OnInit, OnChanges {
     if (this.appData.payment != null && this.appData.payment.useCredit != null) {
       // Get FACTS link
       // console.log('getting FACTS link for app ' + this.appData.appId);
+
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getLinkFACTS',
         this.appData.appId, this.appData.payment.useCredit, this.appData.isRegistered,

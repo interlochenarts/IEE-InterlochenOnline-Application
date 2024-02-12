@@ -89,7 +89,7 @@
                pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
         <button (click)="applyCode()" class="btn btn-default ms-3">Apply</button>
       </div>
-      <div *ngIf="appData.payment.waiverDescription" class="mt-2" class="reviewError">
+      <div *ngIf="appData.payment.waiverDescription" class="mt-2 reviewError">
         <i class="fa fa-warning"></i> {{appData.payment.waiverDescription}}
       </div>
     </div>

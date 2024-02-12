@@ -12,7 +12,6 @@ import {CertificateGroup} from "../_classes/certificate-group";
 
 declare const Visualforce: any;
 
-// noinspection JSUnresolvedReference
 @Injectable({
   providedIn: 'root'
 })
@@ -36,6 +35,7 @@ export class AppDataService {
 
   public getApplicationData(applicationId: string): void {
     if (applicationId && !this.applicationData.getValue()) {
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getApplicationData',
         applicationId,
@@ -52,6 +52,7 @@ export class AppDataService {
   }
 
   public getUserType(): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.getUserType',
       (userType: string) => {
@@ -62,6 +63,7 @@ export class AppDataService {
   }
 
   public getUserContactId(): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.getUserContactId',
       (userContactId: string) => {
@@ -72,6 +74,7 @@ export class AppDataService {
   }
 
   public getCountryData(): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getCountryData',
       (json: string) => {
@@ -86,6 +89,7 @@ export class AppDataService {
   }
 
   public getStateData(): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getStateData',
       (json: string) => {
@@ -111,6 +115,7 @@ export class AppDataService {
     // only save if we have an app and appId. Also wait until previous save is done.
     if (appData && appId && (this.isSaving.getValue() === false)) {
       this.isSaving.next(true);
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveApplication',
         JSON.stringify(appDataCopy),
@@ -132,6 +137,7 @@ export class AppDataService {
   }
 
   public sendParentCredentials(parent: Parent, student: Student): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_UserUtilityController.sendUserLoginByContactId',
       parent.contactId, student.contactId, 'Adult',
@@ -151,6 +157,7 @@ export class AppDataService {
     program.isSelected = true;
     this.addDaysSelected(program);
     const appData = this.applicationData.getValue();
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addAppChoice',
       appData.appId, program.id, program.sessionId,
@@ -164,6 +171,7 @@ export class AppDataService {
           // console.log('Saved new program: ' + result);
           program.appChoiceId = result;
           // Update payment info
+          // noinspection JSUnresolvedReference
           Visualforce.remoting.Manager.invokeAction(
             'IEE_OnlineApplicationController.getPaymentJSON',
             appData.appId,
@@ -186,6 +194,7 @@ export class AppDataService {
     const appData = this.applicationData.getValue();
 
     console.log('saveBundle', appData.appId, group.id, programIds);
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
       appData.appId, group.id, programIds,
@@ -217,6 +226,7 @@ export class AppDataService {
   public updateProgram(program: Program): void {
     const appData = this.applicationData.getValue();
 
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.updateAppChoiceLessons',
       appData.appId, program.appChoiceId, program.lessonCount, program.lessonCountAdd,
@@ -230,6 +240,7 @@ export class AppDataService {
             program.lessonCountAdd = 0;
           }
           // Update payment info
+          // noinspection JSUnresolvedReference
           Visualforce.remoting.Manager.invokeAction(
             'IEE_OnlineApplicationController.getPaymentJSON',
             appData.appId,
@@ -255,6 +266,7 @@ export class AppDataService {
       daysSelected.delete(d);
     });
     this.daysSelectedBySession.getValue().set(program.sessionName, daysSelected);
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoice',
       this.applicationData.getValue().appId, program.appChoiceId,

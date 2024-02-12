@@ -6,7 +6,6 @@ import {Address} from './address';
 import {ProgramData} from './program-data';
 import {CountryCode} from './country-code';
 import {StateCode} from './state-code';
-import {CertificateGroup} from './certificate-group';
 
 export class ApplicationData {
   student: Student;
@@ -54,10 +53,7 @@ export class ApplicationData {
   }
 
   public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    return this.student.isComplete(countryCodes, stateCodes) &&
-      (this.isAdultApplicant || (this.parents.length > 0 &&
-        this.parents.reduce((complete: boolean, parent: Parent) => complete && parent.isComplete(countryCodes, stateCodes), true) &&
-        this.parents.reduce((verified: boolean, parent: Parent) => verified || parent.isVerified, false))) &&
+    return this.studentInfoIsComplete(countryCodes, stateCodes) &&
       this.acProgramData.programs.filter(p => p.isSelected).length > 0;
   }
 

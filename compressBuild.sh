@@ -25,7 +25,7 @@ cd $DIST_FOLDER || exit;
 
 # compress new version
 echo -e "Compressing files to $FILE.$EXT"
-zip -r "../../$RESOURCE_FOLDER/$FILE.$EXT" *
+zip -r "../../$RESOURCE_FOLDER/$FILE.$EXT" ./*
 
 if [ ! -f "../../$RESOURCE_FOLDER/$FILE.$EXT" ]; then
   >&2 echo -e "Failed to create resource"

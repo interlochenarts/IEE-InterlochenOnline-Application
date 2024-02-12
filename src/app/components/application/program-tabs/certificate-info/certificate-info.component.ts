@@ -5,8 +5,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Program} from "../../../../_classes/program";
 import {CertificateGroup} from "../../../../_classes/certificate-group";
 
-declare const Visualforce: any;
-
 @Component({
   selector: 'iee-certificate-info',
   templateUrl: './certificate-info.component.html',

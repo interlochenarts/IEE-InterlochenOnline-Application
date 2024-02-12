@@ -11,7 +11,6 @@ import {StateCode} from './_classes/state-code';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'IEE-InterlochenOnline-Application';
 
   appData: ApplicationData = new ApplicationData();
   applicationId: string;
@@ -74,9 +73,6 @@ export class AppComponent implements OnInit {
   linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
     return !appData.isComplete(countryCodes, stateCodes) ||
         (appData.isRegistered && appData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd  > 0) )).length === 0);
-  }
-  linkShow(appData: ApplicationData): boolean {
-    return !appData.isRegistered;
   }
 
   buildLinks(): void {

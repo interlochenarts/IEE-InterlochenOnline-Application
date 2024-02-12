@@ -30,10 +30,7 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
     // Only registered programs
     this.registeredPrograms = this.programData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
     // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-    this.registeredPrograms.sort((a, b) =>
-      a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
-        (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-          new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0);
+    this.registeredPrograms.sort(Program.sort);
   }
 
 }

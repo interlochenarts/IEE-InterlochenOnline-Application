@@ -18,7 +18,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 `--aot` changes the build mode to 'ahead of time' so more compilation happens before the JIT compiler on the browser gets reached.
 
-`--output-hashing=none` makes the file names not have any hashed character sequences so we can refer to
+`--output-hashing=none` makes the file names not have any hashed character sequences, so we can refer to
 them nicely in the static resource bundles.
 
 ## Uploading to SalesForce
