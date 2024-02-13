@@ -48,31 +48,6 @@
     There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }}Arts Area.
   </div>
 
-  <div class="col-12 my-4" *ngIf="registeredPrograms.length > 0">
-    <h5>Previously Registered Courses</h5>
-    <div *ngFor="let program of registeredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
-         style="cursor: auto !important;">
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving"
-           (click)="clickProgram(program, instrumentModal, ListTypes.REGISTERED)">
-        <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
-               [checked]="program.isSelected"
-               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
-        <label *ngIf="!program.isRegistered"
-               [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.REGISTERED)}">
-          <i class="fa fa-check ps-4"></i>
-        </label>
-      </div>
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
-        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-      </div>
-      <div class="col-9 col-md-10 description">
-        <h4>{{ program.name }}  {{ program.selectedInstrument }}</h4>
-        <div>{{ program.sessionDates }}</div>
-        <div *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
-      </div>
-    </div>
-  </div>
-
   <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
     <h5>Selected Courses</h5>
     <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
@@ -94,6 +69,7 @@
         <h4>{{ program.name }}  {{ program.selectedInstrument }}</h4>
         <div>{{ program.sessionDates }}</div>
         <div *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+        <div *ngIf="program.certificateGroupName">Selected as part of {{program.certificateGroupName}}</div>
       </div>
     </div>
   </div>
@@ -122,6 +98,7 @@
         <h4>{{ program.name }}</h4>
         <div>{{ program.sessionDates }}</div>
         <div *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+        <div *ngIf="program.certificateGroupName">Selected as part of {{program.certificateGroupName}}</div>
       </div>
     </div>
   </div>

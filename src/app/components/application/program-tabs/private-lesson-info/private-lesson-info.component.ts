@@ -160,8 +160,8 @@ export class PrivateLessonInfoComponent implements OnInit {
         program.isSaving = false;
         delete this.modalLessonCountAdd;
         delete this.modalList;
-      }, reason => {
-        // console.log(`Not Saving: Instrument closed (${reason})`);
+      }, (reason: string) => {
+        // console.info(`Not Saving: Instrument closed (${reason})`);
         program.isSaving = false;
         delete this.modalLessonCountAdd;
         delete this.modalList;

@@ -24,6 +24,7 @@ export class Program {
   lessonCountAdd = 0;
   isPrivateLesson = false;
   certificateGroupId: string;
+  certificateGroupName: string;
   certificateGroupOption: SalesforceOption;
   selectedInstrumentOther: string;
 
@@ -66,6 +67,11 @@ export class Program {
   public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: ListTypes): boolean {
     // Don't let them re-select it if they already had this program selected and canceled or withdrew
     if (this.isCancelOrWithdrawn) {
+      return true;
+    }
+
+    // disable program if it has been selected as part of a bundle
+    if (this.certificateGroupId || this.certificateGroupName) {
       return true;
     }
 
