@@ -69,7 +69,7 @@
               <td>-{{appliedDiscount.split('&')[0] | currency:'USD'}}</td>
             </tr>
             <tr *ngFor="let pendingDiscount of appData.payment.pendingDiscounts">
-              <td>Discount Amount <span class="ms-3 waiver">{{pendingDiscount.split('&')[1]}} <i *ngIf="selectedPrograms != null"
+              <td>Discount Amount <span class="ms-3 waiver">{{pendingDiscount.split('&')[1]}} <i *ngIf="!paymentReceived"
                 (click)="removeCode(pendingDiscount.split('&')[1])" class="fa fa-times remove alert-text"></i></span>
                 {{pendingDiscount.split('&')[2] | date:'short'}}
               </td>
