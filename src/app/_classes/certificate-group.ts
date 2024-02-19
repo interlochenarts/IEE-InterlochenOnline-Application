@@ -8,6 +8,7 @@ export class CertificateGroup {
   isSelected: boolean;
   isSaving: boolean;
   bundleSize: number;
+  bundleChoices: Array<string> = [];
   appChoiceIds: Array<string> = [];
 
   public static createFromNestedJson(json: any): CertificateGroup {

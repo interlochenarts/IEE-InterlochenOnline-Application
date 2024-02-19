@@ -29,6 +29,9 @@ export class CertificateInfoComponent {
             this.addDaysSelected(p);
           }
         });
+
+        console.dir(this.appData.programData.certificateGroups);
+
         this.isLoading = false;
       } else {
         this.appData = new ApplicationData();

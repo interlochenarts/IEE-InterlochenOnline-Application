@@ -19,7 +19,7 @@ export class ProgramTabsComponent implements OnInit {
         this._selectedDivision = this.appData?.programData?.selectedDivision;
     }
 
-    console.log('selectedDivision', this._selectedDivision, 'appData.division', this.appData?.programData?.selectedDivision);
+    // console.log('selectedDivision', this._selectedDivision, 'appData.division', this.appData?.programData?.selectedDivision);
     return this._selectedDivision;
   }
 

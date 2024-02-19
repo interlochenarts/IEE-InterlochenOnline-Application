@@ -29,12 +29,14 @@ cd ..
 source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 
+npm clean-install
+
 echo -e "using Node.js $(node --version) ==> $(which node)"
 
 if [[ $2 == "auth" ]]; then
   # log in to a sandbox
-  sf org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
+  ./node_modules/.bin/sf org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
 fi
 
 # deploy to sandbox
-sf project deploy start --target-org="${SANDBOX}" --metadata-dir="Salesforce/src"
+./node_modules/.bin/sf project deploy start --target-org="${SANDBOX}" --metadata-dir="Salesforce/src"
