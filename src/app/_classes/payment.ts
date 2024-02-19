@@ -6,6 +6,8 @@ export class Payment {
   cancelAmount: number;
   payments: Array<string>;
   creditPayments: Array<string>;
+  pendingDiscounts: Array<string>;
+  appliedDiscounts: Array<string>;
   credits: number;
   ccFee: number;
   ccPercent: number;
