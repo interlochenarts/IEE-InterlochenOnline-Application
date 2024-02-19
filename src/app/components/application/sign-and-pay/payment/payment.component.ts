@@ -169,13 +169,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
     );
   }
 
-  removeCode(): void {
+  removeCode(waiverCode): void {
     this.isLoading = true;
     this.useCredit = this.appData.payment.useCredit;
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeFeeWaiver',
       this.appData.appId,
+      waiverCode,
       (result: string) => {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
