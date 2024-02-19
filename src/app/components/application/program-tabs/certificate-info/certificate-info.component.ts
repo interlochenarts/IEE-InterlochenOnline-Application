@@ -37,7 +37,6 @@ export class CertificateInfoComponent {
         this.appData = new ApplicationData();
       }
     });
-
   }
 
   private addDaysSelected(p: Program): void {
@@ -50,7 +49,7 @@ export class CertificateInfoComponent {
     });
   }
 
-  clickCertificate(group: CertificateGroup, modal: any) {
+  addOrEditCertificate(group: CertificateGroup, modal: any) {
     this.selectedGroup = group;
     const modalRef = this.modalService.open(modal, {size: 'lg'});
 
@@ -59,5 +58,9 @@ export class CertificateInfoComponent {
       this.selectedGroup.isSaving = true;
       this.appDataService.saveBundle(this.selectedGroup, programIds);
     })
+  }
+
+  removeCertificate(group: CertificateGroup) {
+
   }
 }

@@ -11,13 +11,10 @@ export class BundleModalComponent implements OnInit {
   @Input() modal: NgbActiveModal;
   @Input() group: CertificateGroup;
   @Input() selectedDivision: string;
-
-  bundleChoices: Array<string> = [];
-
   isValid: boolean;
 
   get bundleChoiceString(): string  {
-    return this.bundleChoices.join(';');
+    return this.group.bundleChoices.join(';');
   }
 
   ngOnInit() {
@@ -30,8 +27,8 @@ export class BundleModalComponent implements OnInit {
 
   ok() {
     // console.dir(this.bundleChoices);
-    this.isValid = this.bundleChoices.length === this.group.bundleSize
-      && this.bundleChoices.reduce((prev, cur) => prev || !!cur, false);
+    this.isValid = this.group.bundleChoices.length === this.group.bundleSize
+      && this.group.bundleChoices.reduce((prev, cur) => prev || !!cur, false);
 
     if (this.isValid) {
       this.modal.close(this.bundleChoiceString);

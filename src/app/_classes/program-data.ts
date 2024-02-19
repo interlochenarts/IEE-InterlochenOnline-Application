@@ -9,7 +9,11 @@ export class ProgramData {
   sessionDates: Map<string, string>;
   selectedDivision: string;
   gradeInSchool: string;
-  certificateGroups: Array<CertificateGroup>;
+  /**
+   * All `CertificateGroup`s
+   */
+  certificateGroups: Array<CertificateGroup>; // all groups, selected or not
+
 
   constructor() {
     this.programs = new Array<Program>();
@@ -31,6 +35,28 @@ export class ProgramData {
     programData.certificateGroups = json.certificateGroups?.map((cg: CertificateGroup) => CertificateGroup.createFromNestedJson(cg));
 
     return programData;
+  }
+
+  /**
+   * get only the `CertificateGroup`s marked as selected
+   */
+  get selectedCertificates(): Array<CertificateGroup> {
+    if (this.certificateGroups) {
+      return this.certificateGroups.filter(g => g.isSelected);
+    }
+
+    return [];
+  }
+
+  /**
+   * get only the `CertificateGroup`s NOT marked as selected
+   */
+  get availableCertificates(): Array<CertificateGroup> {
+    if (this.certificateGroups) {
+      return this.certificateGroups.filter(g => !g.isSelected);
+    }
+
+    return [];
   }
 
   get divisionGradeMap(): Map<number, string> {
