@@ -14,11 +14,11 @@
 
 <div *ngIf="!isLoading">
   <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
-  <div *ngFor="let group of appData.programData.selectedCertificates" (click)="removeCertificate(group)"
+  <div *ngFor="let group of appData.programData.selectedCertificates"
        class="checkbox-container col-12 align-items-center d-flex my-3">
-    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving">
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
       <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
-      <label>
+      <label class="clickable">
         <i class="fa fa-check ps-4"></i>
       </label>
     </div>

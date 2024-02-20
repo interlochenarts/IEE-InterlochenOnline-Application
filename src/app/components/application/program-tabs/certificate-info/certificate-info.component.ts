@@ -30,8 +30,6 @@ export class CertificateInfoComponent {
           }
         });
 
-        console.dir(this.appData.programData.certificateGroups);
-
         this.isLoading = false;
       } else {
         this.appData = new ApplicationData();
@@ -54,13 +52,12 @@ export class CertificateInfoComponent {
     const modalRef = this.modalService.open(modal, {size: 'lg'});
 
     modalRef.closed.subscribe(programIds => {
-      console.log(programIds);
       this.selectedGroup.isSaving = true;
       this.appDataService.saveBundle(this.selectedGroup, programIds);
-    })
+    });
   }
 
   removeCertificate(group: CertificateGroup) {
-
+    this.appDataService.removeBundle(group)
   }
 }

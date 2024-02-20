@@ -193,18 +193,17 @@ export class AppDataService {
     group.isSelected = true;
     const appData = this.applicationData.getValue();
 
-    console.log('saveBundle', appData.appId, group.id, programIds);
+    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', group.appChoiceIds.join(';'));
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
-      appData.appId, group.id, programIds,
+      appData.appId, group.id, programIds, group.appChoiceIds?.join(';'),
       (result: string) => {
         if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           group.appChoiceIds = result.split(';');
-
-          // console.log('Saved new program: ' + result);
+          console.log('Saved new program: ' + result);
           // Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
@@ -216,6 +215,28 @@ export class AppDataService {
           //   },
           //   {buffer: false, escape: false}
           // );
+        }
+        group.isSaving = false;
+      },
+      {buffer: false, escape: false}
+    );
+  }
+
+  public removeBundle(group: CertificateGroup): void {
+    group.isSelected = false;
+    const appData: ApplicationData = this.applicationData.getValue();
+    const appChoiceIds: string = group.appChoiceIds.join(';')
+
+    console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
+    // noinspection JSUnresolvedReference
+    Visualforce.remoting.Manager.invokeAction(
+      'IEE_OnlineApplicationController.removeAppChoiceList',
+      appData.appId, appChoiceIds,
+      (result: string) => {
+        if (result.startsWith('ERR')) {
+          console.error(result);
+        } else {
+          group.appChoiceIds.length = 0;
         }
         group.isSaving = false;
       },
