@@ -193,17 +193,22 @@ export class AppDataService {
     group.isSelected = true;
     const appData = this.applicationData.getValue();
 
-    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', group.appChoiceIds.join(';'));
+    const appChoiceString = group.appChoiceIds.filter(ac => !!ac).join(';');
+
+    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
-      appData.appId, group.id, programIds, group.appChoiceIds?.join(';'),
+      appData.appId, group.id, programIds, appChoiceString,
       (result: string) => {
-        if (result.startsWith('ERR')) {
+        if (!result) {
+          console.error('something went wrong on the server');
+        }
+        else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           group.appChoiceIds = result.split(';');
-          console.log('Saved new program: ' + result);
+          console.info('Saved new program: ' + result);
           // Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
@@ -233,10 +238,15 @@ export class AppDataService {
       'IEE_OnlineApplicationController.removeAppChoiceList',
       appData.appId, appChoiceIds,
       (result: string) => {
-        if (result.startsWith('ERR')) {
+        if (!result) {
+          console.error('something went wrong on the server');
+        }
+        else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           group.appChoiceIds.length = 0;
+          group.bundleChoices.length = 0;
+          console.info('removed Certificate Group');
         }
         group.isSaving = false;
       },
