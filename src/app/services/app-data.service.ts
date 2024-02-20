@@ -209,7 +209,7 @@ export class AppDataService {
         } else {
           group.appChoiceIds = result.split(';');
           console.info('Saved new program: ' + result);
-          // Update payment info
+          // TODO: Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
           //   appData.appId,
@@ -247,6 +247,8 @@ export class AppDataService {
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
           console.info('removed Certificate Group');
+
+          //TODO: Update Payment info?
         }
         group.isSaving = false;
       },
