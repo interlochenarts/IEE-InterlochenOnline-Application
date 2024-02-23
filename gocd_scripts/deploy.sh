@@ -20,19 +20,15 @@ if [[ -z ${KEY_FILE} ]]; then
   echo -e "Missing KEY_FILE environment variable"
 fi
 
-if [[ -z ${SFDX_CLI_VERSION} ]]; then
-  echo -e "Missing SFDX_CLI_VERSION environment variable"
-fi
-
 source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
+npm clean-install;
 
-echo -e "\n===> SFDX Update <===\n"
-npm install -g "@salesforce/cli@${SFDX_CLI_VERSION}"
-sf --version
+echo -e "\n===> SFDX Version <===\n"
+../node_modules/.bin/sf --version
 
 echo -e "sf auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
-sf auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
+../node_modules/.bin/sf auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
 
 echo -e "sf project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
-sf project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60
+../node_modules/.bin/sf project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60
