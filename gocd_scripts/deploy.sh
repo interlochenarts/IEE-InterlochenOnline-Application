@@ -29,8 +29,8 @@ npm clean-install;
 echo -e "\n===> SFDX Version <===\n"
 eval $SF --version
 
-echo -e "sf auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
+echo -e "${SF} auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
 eval $SF auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
 
-echo -e "sf project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
+echo -e "${SF} project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
 eval $SF project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60
