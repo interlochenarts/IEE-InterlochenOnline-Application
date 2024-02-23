@@ -37,7 +37,8 @@ echo -e "using Node.js $(node --version) ==> $(which node)"
 
 if [[ $2 == "auth" ]]; then
   # log in to a sandbox
-  eval $SF org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
+  # eval $SF org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
+  eval $SF auth device login --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
 fi
 
 # deploy to sandbox
