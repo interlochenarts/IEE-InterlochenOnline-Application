@@ -27,10 +27,13 @@ nvm install # use .nvmrc version
 npm clean-install;
 
 echo -e "\n===> SFDX Version <===\n"
-eval $SF --version
+version=($SF --version)
+"${version[@]}" # run the version command
 
 echo -e "${SF} auth jwt grant --client-id=${SFDC_CONSUMER_KEY} --jwt-key-file=/home/wwadmin/certificates/${KEY_FILE} --username=${sfdcUser} --alias=${DX_ENV} --instance-url=${LOGIN_SERVER}"
-eval $SF auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}"
+auth=($SF auth jwt grant --client-id="${SFDC_CONSUMER_KEY}" --jwt-key-file="/home/wwadmin/certificates/${KEY_FILE}" --username="${sfdcUser}" --alias="${DX_ENV}" --instance-url="${LOGIN_SERVER}")
+"${auth[@]}" # run the auth command
 
 echo -e "${SF} project deploy start --metadata-dir=Salesforce/src --target-org=${DX_ENV} --wait=60"
-eval $SF project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60
+deploy=($SF project deploy start --metadata-dir=Salesforce/src --target-org="${DX_ENV}" --wait=60)
+"${deploy[@]}" # run the deploy command
