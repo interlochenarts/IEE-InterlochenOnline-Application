@@ -7,6 +7,8 @@
 ###                  Only necessary the first time you connect to the sandbox with sfdx
 #############################
 
+
+SF="./node_modules/.bin/sf"
 SANDBOX=""
 
 if [[ -z $1 ]]; then
@@ -35,8 +37,8 @@ echo -e "using Node.js $(node --version) ==> $(which node)"
 
 if [[ $2 == "auth" ]]; then
   # log in to a sandbox
-  ./node_modules/.bin/sf org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
+  eval $SF org login web --instance-url="https://interlochen--${SANDBOX}.sandbox.my.salesforce.com" --alias="${SANDBOX}"
 fi
 
 # deploy to sandbox
-./node_modules/.bin/sf project deploy start --target-org="${SANDBOX}" --metadata-dir="Salesforce/src"
+eval $SF project deploy start --target-org="${SANDBOX}" --metadata-dir="Salesforce/src"
