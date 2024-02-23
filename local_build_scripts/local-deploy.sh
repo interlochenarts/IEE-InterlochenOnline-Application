@@ -31,7 +31,7 @@ cd ..
 source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 
-npm clean-install
+npm install
 
 echo -e "using Node.js $(node --version) ==> $(which node)"
 
