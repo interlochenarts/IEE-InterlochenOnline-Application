@@ -88,7 +88,7 @@ export class PrivateLessonInfoComponent implements OnInit {
         // if music, ask for instrument
         if (this.isMusic) {
           this.selectedProgramInstruments = program.programOptionsArray;
-          // disable instruments from list if they exist in currently selected programs selected instrument, but only for private lessons.
+          // disable instruments from list if they exist in currently selected courses selected instrument, but only for private lessons.
           this.selectedProgramInstruments.forEach((o: SalesforceOption) => {
             this.appData.acProgramData.privateLessons.forEach(p => {
               if (p.isPrivateLesson && p.selectedInstrument === o.value) {

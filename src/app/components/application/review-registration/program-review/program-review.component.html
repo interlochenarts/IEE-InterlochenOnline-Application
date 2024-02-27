@@ -1,6 +1,7 @@
-<div class="row mt-3">
+<!-- selected programs (courses) -->
+<div *ngIf="selectedPrograms && selectedPrograms.length > 0" class="row mt-3">
   <div class="col-8">
-    <h4>Selected Programs</h4>
+    <h4>Selected Courses</h4>
   </div>
   <div class="col-4 text-end">
     <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
@@ -8,23 +9,46 @@
 </div>
 
 <div *ngFor="let program of selectedPrograms" class="my-2">
+  <div>
+    <b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+  </div>
+  <div class="ms-3">Session: {{program.sessionDates}} </div>
+  <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
+</div>
+
+<!-- selected private lessons -->
+<div *ngIf="selectedPrivateLessons && selectedPrivateLessons.length > 0" class="row mt-3">
+  <div class="col-8">
+    <h4>Selected Private Lessons</h4>
+  </div>
+  <div class="col-4 text-end">
+    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+  </div>
+</div>
+<div *ngFor="let program of selectedPrivateLessons" class="my-2">
   <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
     <span *ngIf="isRegistered && (!program.isRegistered)"> - <span class="new-program">New</span></span>
     <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
   </div>
-  <div *ngIf="!program.isPrivateLesson" class="ms-3">Session: {{program.sessionDates}} </div>
-  <div *ngIf="!program.isPrivateLesson && program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
-  <div *ngIf="program.isPrivateLesson">Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
-  <div *ngIf="program.isPrivateLesson">Meets on various days (selected by student according to instructor's availability)</div>
+  <div>Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
+  <div>Meets on various days (selected by student according to instructor's availability)</div>
 </div>
-<div *ngFor="let program of registeredPrograms" class="my-2">
-  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
-    - Registered on {{program.registeredDate}}
+
+<!-- selected certificate groups -->
+<div *ngIf="selectedCertificates && selectedCertificates.length > 0" class="row mt-3">
+  <div class="col-8">
+    <h4>Selected Certificates</h4>
   </div>
-  <div *ngIf="!program.isPrivateLesson" class="ms-3">Session: {{program.sessionDates}} </div>
-  <div *ngIf="!program.isPrivateLesson && program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
-  <div *ngIf="program.isPrivateLesson">Number of lessons: {{program.lessonCount}}</div>
-  <div *ngIf="program.isPrivateLesson">Meets on various days (selected by student according to instructor's availability)</div>
+  <div class="col-4 text-end">
+    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+  </div>
+</div>
+<div *ngFor="let cert of selectedCertificates" class="my-2">
+  <div><b>{{cert.name}}</b>
+    <ul>
+      <li *ngFor="let course of cert.courses">{{course.name}}</li>
+    </ul>
+  </div>
 </div>
 
 <div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
