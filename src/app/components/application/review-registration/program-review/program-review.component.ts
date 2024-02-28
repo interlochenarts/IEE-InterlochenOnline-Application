@@ -23,6 +23,9 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+  }
+
+  ngOnChanges(): void {
     // Only unregistered programs
     this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates)
       // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
@@ -36,11 +39,6 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
 
     this.selectedPrivateLessons = this.acProgramData.privateLessons.filter(pl => pl.isSelected);
     this.selectedCertificates = this.programData.selectedCertificates;
-    console.dir(this.programData);
-    console.dir(this.selectedCertificates);
-  }
-
-  ngOnChanges(): void {
   }
 
 }

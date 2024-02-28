@@ -16,6 +16,23 @@
   <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
+<!-- selected certificate groups -->
+<div *ngIf="selectedCertificates && selectedCertificates.length > 0" class="row mt-3">
+  <div class="col-8">
+    <h4>Selected Certificates</h4>
+  </div>
+  <div class="col-4 text-end">
+    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+  </div>
+</div>
+<div *ngFor="let cert of selectedCertificates" class="my-2">
+  <div><b>{{cert.name}}</b>
+    <ul>
+      <li *ngFor="let course of cert.courses">{{course.name}}</li>
+    </ul>
+  </div>
+</div>
+
 <!-- selected private lessons -->
 <div *ngIf="selectedPrivateLessons && selectedPrivateLessons.length > 0" class="row mt-3">
   <div class="col-8">
@@ -32,23 +49,6 @@
   </div>
   <div>Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
   <div>Meets on various days (selected by student according to instructor's availability)</div>
-</div>
-
-<!-- selected certificate groups -->
-<div *ngIf="selectedCertificates && selectedCertificates.length > 0" class="row mt-3">
-  <div class="col-8">
-    <h4>Selected Certificates</h4>
-  </div>
-  <div class="col-4 text-end">
-    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
-  </div>
-</div>
-<div *ngFor="let cert of selectedCertificates" class="my-2">
-  <div><b>{{cert.name}}</b>
-    <ul>
-      <li *ngFor="let course of cert.courses">{{course.name}}</li>
-    </ul>
-  </div>
 </div>
 
 <div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
