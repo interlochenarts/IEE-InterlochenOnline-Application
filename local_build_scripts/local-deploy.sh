@@ -5,6 +5,8 @@
 ###   1 (Required): The name of the sandbox you want to push to
 ###   2 (Optional): "auth" if you want to authenticate/create a connection to the sandbox
 ###                  Only necessary the first time you connect to the sandbox with sfdx
+###
+### INFO: This script assumes nvm and @salesforce/cli are installed
 #############################
 
 
@@ -17,8 +19,6 @@ if [[ -z $1 ]]; then
 else
   SANDBOX=$1
 fi
-
-# Assumes nvm and @salesforce/cli are installed
 
 # build using GoCD script
 ../gocd_scripts/build.sh skip_npm
