@@ -18,33 +18,33 @@
     three-course bundles, which can apply towards high school credit. Or sign up for weekly private lessons in a variety
     of areas.
   </p>
-  <ul class="nav nav-pills mx-0 mb-3 flex-column flex-xl-nowrap flex-xl-row" id="pills-tab" role="tablist">
-    <li class="nav-item w-100 w-md-auto mb-1 mb-xl-0 me-0 me-xl-1" role="presentation">
-      <button class="nav-link" id="pills-program-tab" data-bs-toggle="pill" data-bs-target="#pills-program"
+  <ul class="nav nav-tabs mx-0 mb-3 flex-column flex-xl-nowrap flex-xl-row" id="tabs-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="tabs-program-tab" data-bs-toggle="tab" data-bs-target="#tabs-program"
               type="button"
-              role="tab" aria-controls="pills-program" aria-selected="false">Courses
-      </button>
+              role="tab" aria-controls="tabs-program" aria-selected="false">Courses
+      </a>
     </li>
-    <li class="nav-item w-100 w-md-auto mb-1 mb-xl-0 me-0 me-xl-1" role="presentation"
+    <li class="nav-item" role="presentation"
         *ngIf="selectedDivision !== 'Kids'">
-      <button class="nav-link" id="pills-bundle-tab" data-bs-toggle="pill" data-bs-target="#pills-bundle" type="button"
-              role="tab" aria-controls="pills-bundle" aria-selected="false">Certificates
-      </button>
+      <a class="nav-link" id="tabs-bundle-tab" data-bs-toggle="tab" data-bs-target="#tabs-bundle" type="button"
+              role="tab" aria-controls="tabs-bundle" aria-selected="false">Certificates
+      </a>
     </li>
-    <li class="nav-item w-100 w-md-auto mb-1 mb-xl-0 me-0" role="presentation">
-      <button class="nav-link" id="pills-lesson-tab" data-bs-toggle="pill" data-bs-target="#pills-lesson" type="button"
-              role="tab" aria-controls="pills-lesson" aria-selected="false">Private Lessons
-      </button>
+    <li class="nav-item" role="presentation">
+      <a class="nav-link" id="tabs-lesson-tab" data-bs-toggle="tab" data-bs-target="#tabs-lesson" type="button"
+              role="tab" aria-controls="tabs-lesson" aria-selected="false">Private Lessons
+      </a>
     </li>
   </ul>
-  <div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade" id="pills-program" role="tabpanel" aria-labelledby="pills-program-tab">
+  <div class="tab-content" id="tabs-tabContent">
+    <div class="tab-pane fade" id="tabs-program" role="tabpanel" aria-labelledby="tabs-program-tab">
       <iee-program-info></iee-program-info>
     </div>
-    <div class="tab-pane fade" id="pills-bundle" role="tabpanel" aria-labelledby="pills-bundle-tab">
+    <div class="tab-pane fade" id="tabs-bundle" role="tabpanel" aria-labelledby="tabs-bundle-tab">
       <iee-certificate-info></iee-certificate-info>
     </div>
-    <div class="tab-pane fade" id="pills-lesson" role="tabpanel" aria-labelledby="pills-lesson-tab">
+    <div class="tab-pane fade" id="tabs-lesson" role="tabpanel" aria-labelledby="tabs-lesson-tab">
       <iee-private-lesson-info></iee-private-lesson-info>
     </div>
   </div>
