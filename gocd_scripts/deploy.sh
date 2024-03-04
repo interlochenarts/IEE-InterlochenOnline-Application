@@ -26,6 +26,9 @@ source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 npm clean-install;
 
+
+pwd
+
 echo -e "\n===> SFDX Version <===\n"
 version=("${SF}" --version)
 "${version[@]}" # run the version command
