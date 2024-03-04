@@ -41,7 +41,7 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     });
   }
 
-  ngOnChanges(event): void {
+  ngOnChanges(): void {
     if (this.parent && this.stateCodes) {
       this.filterStates(this.parent.mailingAddress?.country);
     }
@@ -85,10 +85,11 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     this.parent.isEditing = false;
     this.parent.isSaving = true;
 
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.saveParent',
       JSON.stringify(this.parent), this.student.contactId,
-      result => {
+      (result: string) => {
         this.parent.isSaving = false;
         if (result.startsWith('ERR')) {
           console.error('ERROR: Could not save parent');

@@ -11,7 +11,6 @@ import {StateCode} from './_classes/state-code';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'IEE-InterlochenOnline-Application';
 
   appData: ApplicationData = new ApplicationData();
   applicationId: string;
@@ -75,22 +74,20 @@ export class AppComponent implements OnInit {
     return !appData.isComplete(countryCodes, stateCodes) ||
         (appData.isRegistered && appData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd  > 0) )).length === 0);
   }
-  linkShow(appData: ApplicationData): boolean {
-    return !appData.isRegistered;
-  }
 
   buildLinks(): void {
     const appId = this.applicationId || this.appData.appId;
-    const txnId = this.transactionId ? '/' + this.applicationId : '';
+    const txnId = this.transactionId ? '/' + this.transactionId : '';
+    const rootPath = `/${appId}${txnId}`;
 
     this.appDataService.routerLinks.next([
-      new RouterLink('/' + appId + txnId + '/student-info', this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
+      new RouterLink(`${rootPath}/student-info`, this.appData.isAdultApplicant ? 'Your Information' : 'Student Information',
           () => false, () => true, this.studentInfoComplete),
-      new RouterLink('/' + appId + txnId + '/program', 'Select a Program',
+      new RouterLink(`${rootPath}/program`, 'Select a Program',
           () => false, () => true, this.selectProgramComplete),
-      new RouterLink('/' + appId + txnId + '/review-registration', 'Review Registration',
+      new RouterLink(`${rootPath}/review-registration`, 'Review Registration',
           () => false, () => true, this.reviewRegistrationComplete),
-      new RouterLink('/' + appId + txnId + '/pay-registration', 'Pay Registration',
+      new RouterLink(`${rootPath}/pay-registration`, 'Pay Registration',
           this.linkDisabled, () => true,  this.registrationPayed),
     ]);
 

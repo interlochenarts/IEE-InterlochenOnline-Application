@@ -1,0 +1,73 @@
+<header>
+  <div class="row">
+    <div class="col-12">
+      <h3>Select a Certificate Program</h3>
+    </div>
+  </div>
+</header>
+
+
+<div *ngIf="isLoading">
+  <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
+</div>
+
+
+<div *ngIf="!isLoading">
+  <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
+  <div *ngFor="let group of appData.programData.selectedCertificates"
+       class="checkbox-container col-12 align-items-center d-flex my-3">
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
+      <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
+      <label class="clickable">
+        <i class="fa fa-check ps-4"></i>
+      </label>
+    </div>
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="group.isSaving">
+      <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+    </div>
+    <div class="col-9 col-md-10 description">
+      <h4 class="col-12">{{ group.name }}</h4>
+      <div class="row">
+        <div class="col-9">
+          <ul>
+            <li *ngFor="let course of group.courses">
+              {{ course.name }}
+            </li>
+          </ul>
+        </div>
+        <div class="col-3 pe-4">
+          <div class="text-end mb-5"><a href="javascript:void(0);" (click)="addOrEditCertificate(group, certificateModal)"><i class="fa fa-pencil"></i> Edit</a></div>
+          <div class="text-end"><a href="javascript:void(0);" (click)="removeCertificate(group)"><i class="fa fa-trash"></i> Remove</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h5>Available Certificate Programs</h5>
+  <div *ngFor="let group of appData.programData.availableCertificates" (click)="addOrEditCertificate(group, certificateModal)"
+       class="checkbox-container checkbox-container-clickable col-12 align-items-center d-flex my-3">
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving">
+      <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
+      <label>
+        <i class="fa fa-check ps-4"></i>
+      </label>
+    </div>
+    <div class="checkbox col-3 col-md-2 text-center" *ngIf="group.isSaving">
+      <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+    </div>
+    <div class="col-9 col-md-10 description">
+      <h4>{{ group.name }}</h4>
+      <ul>
+        <li *ngFor="let course of group.courses">
+          {{ course.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #certificateModal let-modal>
+  <iee-bundle-modal [group]="selectedGroup" [modal]="modal"
+                    [selectedDivision]="appData.programData.selectedDivision"></iee-bundle-modal>
+</ng-template>
