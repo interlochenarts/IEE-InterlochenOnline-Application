@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SF="../node_modules/.bin/sf"
+SF="node_modules/.bin/sf"
 
 if [[ -z ${SFDC_CONSUMER_KEY} ]]; then
   echo -e "Missing SFDC_CONSUMER_KEY environment variable"
@@ -26,12 +26,6 @@ source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 npm clean-install;
 
-pwd
-ls
-
-cd ..
-pwd
-ls
 
 echo -e "\n===> SFDX Version <===\n"
 version=("${SF}" --version)
