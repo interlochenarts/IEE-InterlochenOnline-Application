@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NG_CLI_VERSION=16
+NG_CLI_VERSION=17
 
 cd ..;
 
@@ -14,9 +14,11 @@ fi
 source "$HOME/.nvm/nvm.sh"
 nvm install # use .nvmrc version
 
-# get our dependencies
-echo -e "===> npm install <===\n"
-npm clean-install;
+if [[ $1 != "skip_npm" ]]; then
+  # get our dependencies
+  echo -e "===> npm install <===\n"
+  npm clean-install;
+fi
 
 # check for angular-cli and install if not found
 if ! command -v ng &>/dev/null; then
@@ -26,5 +28,3 @@ fi
 
 echo -e "\n===> Compiling... <===\n"
 ng build --configuration production --aot --output-hashing=none
-#ng build --output-hashing=none
-

@@ -1,3 +1,5 @@
+// noinspection JSIgnoredPromiseFromCall
+
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';
@@ -38,8 +40,8 @@ export class ApplicationComponent implements OnInit {
       this.routerLinks = links;
 
       if (event instanceof NavigationEnd) {
-        this.routerIndex = links.findIndex(l => l.routerLink === event.urlAfterRedirects);
-        this.showBackLink = this.routerIndex !== 0 && !this.transactionId;
+        this.routerIndex = links.findIndex(l => l.link === event.urlAfterRedirects);
+        this.showBackLink = this.routerIndex > 0 && !this.transactionId;
         this.showNextLink = this.routerIndex !== (links.length - 1) && !this.transactionId;
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1) && !this.transactionId;
 
@@ -104,7 +106,7 @@ export class ApplicationComponent implements OnInit {
 
   saveAndNext(): void {
     if (this.isSaving === false && this.disableNextLink === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex + 1].routerLink]);
+      this.router.navigate([this.routerLinks[this.routerIndex + 1].link]);
       this.appDataService.saveApplication();
       document.getElementById('Top').scrollIntoView();
     }
@@ -112,13 +114,9 @@ export class ApplicationComponent implements OnInit {
 
   saveAndBack(): void {
     if (this.isSaving === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex - 1].routerLink]);
+      this.router.navigate([this.routerLinks[this.routerIndex - 1].link]);
       this.appDataService.saveApplication();
       document.getElementById('Top').scrollIntoView();
     }
-  }
-
-  canRegister(): boolean {
-    return this.applicationData.isComplete(this.countryCodes, this.stateCodes);
   }
 }
