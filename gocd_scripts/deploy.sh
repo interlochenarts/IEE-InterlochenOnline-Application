@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SF="node_modules/.bin/sf"
+SF="./node_modules/.bin/sf"
 
 if [[ -z ${SFDC_CONSUMER_KEY} ]]; then
   echo -e "Missing SFDC_CONSUMER_KEY environment variable"
