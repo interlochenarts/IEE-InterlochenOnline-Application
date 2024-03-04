@@ -27,8 +27,10 @@ nvm install # use .nvmrc version
 npm clean-install;
 
 pwd
+ls
 
 cd ..
+pwd
 ls
 
 echo -e "\n===> SFDX Version <===\n"
