@@ -79,6 +79,9 @@ export class ProgramInfoComponent implements OnInit {
       });
     });
 
+    // console.dir(this.filteredPrograms);
+    // console.dir(artsAreaSet);
+
     if (artsAreaSet.size > 1) {
       this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
       this.sortedArtsAreas.unshift(new SalesforceOption('All', '', true));
