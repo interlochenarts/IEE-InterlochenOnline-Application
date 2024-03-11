@@ -50,7 +50,10 @@ export class ProgramTabsComponent implements OnInit {
           }
         });
 
-        this.divisionOptions = this.appData.divisions.map(d => new SalesforceOption(d, d, false));
+        this.divisionOptions = [];
+        for (const [value, label] of this.appData.programData.divisions.entries()) {
+          this.divisionOptions.push(new SalesforceOption(label, value, false));
+        }
 
         this.isLoading = false;
       } else {
