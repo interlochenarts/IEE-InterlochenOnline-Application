@@ -32,7 +32,7 @@ export class Program {
     const program = new Program();
     Object.assign(program, json);
 
-    const label = program.sessionName || 'Future';
+    const label = program.sessionName || 'Will Schedule in the Future';
 
     program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 

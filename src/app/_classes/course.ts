@@ -5,6 +5,8 @@ export class Course {
   name: string;
   displayOrder: number;
   programsByDivision: Map<string, Array<Program>>;
+  selectedSessionDates: string;
+
 
   public static createFromNestedJson(json: any): Course {
     const course = new Course();
@@ -23,6 +25,4 @@ export class Course {
   getProgramsByDivision(division: string): Array<Program> {
     return this.programsByDivision.get(division);
   }
-
-
 }
