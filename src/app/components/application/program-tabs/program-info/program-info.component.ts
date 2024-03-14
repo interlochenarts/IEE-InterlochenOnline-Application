@@ -95,18 +95,29 @@ export class ProgramInfoComponent implements OnInit {
 
   updateSessions(): void {
     this.selectedSession = '';
-    const sessionSet: Set<string> = new Set<string>();
-    this.filteredPrograms.forEach(p => {
-      sessionSet.add(p.sessionName);
+    const sessionStartDateSet = new Set<number>();
+    const sessionNameByStartDate = new Map<number, string>();
+    this.filteredPrograms.forEach((p: Program) => {
+      sessionStartDateSet.add(p.sessionStartDate);
+      sessionNameByStartDate.set(p.sessionStartDate, p.sessionName);
     });
-    if (sessionSet.size > 1) {
+
+    const sortedSessionStartDates = Array.from(sessionStartDateSet).sort();
+
+    if (sortedSessionStartDates.length > 1) {
       // sort is now coming from SOQL ORDER BY in IEE_OnlineApplicationController.getProgramData
-      this.sortedSessions = Array.from(sessionSet)
-        .map(s => new SalesforceOption(this.appData.programData.sessionDates.get(s), s, false));
+      this.sortedSessions = sortedSessionStartDates
+        .map(sd => {
+          const sessionName = sessionNameByStartDate.get(sd);
+          return new SalesforceOption(this.appData.programData.sessionDates.get(sessionName), sessionName, false)
+        });
       this.sortedSessions.unshift(new SalesforceOption('All', '', true));
-    } else if (sessionSet.size === 1) {
-      this.sortedSessions = Array.from(sessionSet)
-        .map(s => new SalesforceOption(this.appData.programData.sessionDates.get(s), s, true));
+    } else if (sortedSessionStartDates.length === 1) {
+      this.sortedSessions = sortedSessionStartDates
+        .map(sd => {
+          const sessionName = sessionNameByStartDate.get(sd);
+          return new SalesforceOption(this.appData.programData.sessionDates.get(sessionName), sessionName, true)
+        });
       this.selectedSession = this.sortedSessions[0].value;
     }
   }

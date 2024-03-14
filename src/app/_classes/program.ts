@@ -16,6 +16,7 @@ export class Program {
   isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
+  sessionStartDate: number;
   sessionName: string;
   programOptions: string;
   selectedInstrument: string;
