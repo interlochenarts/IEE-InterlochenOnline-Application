@@ -10,66 +10,79 @@
   <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
 </div>
 <div *ngIf="!isLoading">
-
-  <label for="selectedArtsArea" class="mt-4">Arts Area</label>
-  <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
-    <div class="select">
-      <select [(ngModel)]="selectedArtsArea"
-              (change)="updateSessions()"
-              name="selectedArtsArea"
-              class="w-100"
-              [disabled]="programsDisabled"
-              id="selectedArtsArea">
-        <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
-                [defaultSelected]="artsArea.defaultValue">{{ artsArea.label }}
-        </option>
-      </select>
-    </div>
-  </div>
-
-  <div *ngIf="sortedSessions.length > 0">
-    <label for="selectedSession" class="mt-4">Session</label>
+  <div class="my-4">
+    <label for="selectedArtsArea">Arts Area</label>
     <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
       <div class="select">
-        <select [(ngModel)]="selectedSession"
-                name="selectedSession"
+        <select [(ngModel)]="selectedArtsArea"
+                (change)="updateSessions()"
+                name="selectedArtsArea"
                 class="w-100"
                 [disabled]="programsDisabled"
-                id="selectedSession">
-          <option *ngFor="let session of sortedSessions" [value]="session.value"
-                  [defaultSelected]="session.defaultValue">{{ session.label }}
+                id="selectedArtsArea">
+          <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
+                  [defaultSelected]="artsArea.defaultValue">{{ artsArea.label }}
           </option>
         </select>
       </div>
     </div>
+
+    <div *ngIf="sortedSessions.length > 0">
+      <label for="selectedSession" class="mt-4">Session</label>
+      <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
+        <div class="select">
+          <select [(ngModel)]="selectedSession"
+                  name="selectedSession"
+                  class="w-100"
+                  [disabled]="programsDisabled"
+                  id="selectedSession">
+            <option *ngFor="let session of sortedSessions" [value]="session.value"
+                    [defaultSelected]="session.defaultValue">{{ session.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
-    There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }}Arts Area.
+  <div class="my-4">
+    <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
+      There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }}Arts Area.
+    </div>
   </div>
 
   <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
     <h5>Selected Courses</h5>
-    <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
+    <div *ngFor="let program of selectedPrograms"
+         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving"
-           (click)="clickProgram(program, instrumentModal, ListTypes.SELECTED)">
-        <input *ngIf="!program.isRegistered" type="checkbox" [id]="program.id" [name]="program.id"
-               [checked]="program.isSelected"
-               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
-        <label *ngIf="!program.isRegistered"
-               [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
-          <i class="fa fa-check ps-4"></i>
-        </label>
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving"
+             (click)="clickProgram(program, instrumentModal, ListTypes.SELECTED)">
+          <input type="checkbox" [id]="program.id" [name]="program.id"
+                 [checked]="program.isSelected"
+                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
+          <label
+            [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ program.name }}  {{ program.selectedInstrument }}</h4>
+        </div>
       </div>
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
-        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-      </div>
-      <div class="col-9 col-md-10 description">
-        <h4>{{ program.name }}  {{ program.selectedInstrument }}</h4>
-        <div>{{ program.sessionDates }}</div>
-        <div *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
-        <div *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected as part of {{program.certificateGroupName}}</div>
+      <div class="col-12">
+        <div class="list-group list-group-flush mt-3">
+          <div class="list-group-item">{{ program.sessionDates }}</div>
+          <div class="list-group-item" *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+          <div class="list-group-item" *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected
+            as part
+            of {{ program.certificateGroupName }} Certificate
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -80,25 +93,36 @@
 
   <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
     <h5>Available Courses <span *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
-    <div *ngFor="let program of filteredPrograms" class="checkbox-container col-12 align-items-center d-flex my-3"
+    <div *ngFor="let program of filteredPrograms"
+         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
          (click)="clickProgram(program, instrumentModal, ListTypes.FILTERED)"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="!program.isSaving">
-        <input type="checkbox" [id]="program.id" [name]="program.id"
-               [checked]="program.isSelected"
-               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)">
-        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
-          <i class="fa fa-check ps-4"></i>
-        </label>
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving">
+          <input type="checkbox" [id]="program.id" [name]="program.id"
+                 [checked]="program.isSelected"
+                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)">
+          <label
+            [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ program.name }}</h4>
+        </div>
       </div>
-      <div class="checkbox col-3 col-md-2 text-center" *ngIf="program.isSaving">
-        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-      </div>
-      <div class="col-9 col-md-10 description">
-        <h4>{{ program.name }}</h4>
-        <div>{{ program.sessionDates }}</div>
-        <div *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
-        <div *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected as part of {{program.certificateGroupName}}</div>
+      <div class="col-12">
+        <div class="list-group list-group-flush mt-3">
+          <div class="list-group-item">{{ program.sessionDates }}</div>
+          <div class="list-group-item" *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+          <div class="list-group-item" *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected
+            as part
+            of {{ program.certificateGroupName }} Certificate
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -135,7 +159,8 @@
   <div class="modal-footer">
     <button *ngIf="isMusic" type="button" class="btn btn-primary"
             [disabled]="!modalInstrumentChoice"
-            (click)="modal.close(modalInstrumentChoice)">Ok</button>
+            (click)="modal.close(modalInstrumentChoice)">Ok
+    </button>
 
   </div>
 </ng-template>

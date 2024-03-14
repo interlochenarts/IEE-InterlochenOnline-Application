@@ -102,7 +102,7 @@ export class ProgramInfoComponent implements OnInit {
     if (sessionSet.size > 1) {
       // sort is now coming from SOQL ORDER BY in IEE_OnlineApplicationController.getProgramData
       this.sortedSessions = Array.from(sessionSet)
-        .map(ss => new SalesforceOption(this.appData.programData.sessionDates.get(ss), ss, false));
+        .map(s => new SalesforceOption(this.appData.programData.sessionDates.get(s), s, false));
       this.sortedSessions.unshift(new SalesforceOption('All', '', true));
     } else if (sessionSet.size === 1) {
       this.sortedSessions = Array.from(sessionSet)
