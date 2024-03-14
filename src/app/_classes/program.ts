@@ -16,6 +16,7 @@ export class Program {
   isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
+  sessionStartDate: number;
   sessionName: string;
   programOptions: string;
   selectedInstrument: string;
@@ -32,7 +33,7 @@ export class Program {
     const program = new Program();
     Object.assign(program, json);
 
-    const label = program.sessionName || 'Will Schedule in the Future';
+    const label = program.sessionDates || 'Will Schedule in the Future';
 
     program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 

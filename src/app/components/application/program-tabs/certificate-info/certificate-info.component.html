@@ -13,55 +13,64 @@
 
 
 <div *ngIf="!isLoading">
-  <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
-  <div class="checkbox-container col-12 p-4" *ngFor="let group of appData.programData.selectedCertificates">
-    <div class="d-flex align-items-baseline">
-      <div class="checkbox col-2 col-lg-1" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
-        <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
-        <label class="clickable">
-          <i class="fa fa-check ps-4"></i>
-        </label>
+  <div class="my-4">
+    <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
+    <div *ngFor="let group of appData.programData.selectedCertificates" class="checkbox-container col-12 p-4 my-3">
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
+          <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
+          <label class="clickable">
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="group.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ group.name }}</h4>
+        </div>
       </div>
-      <div class="checkbox col-2 col-lg-1" *ngIf="group.isSaving">
-        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+      <div class="col-12">
+        <ul class="my-3 list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let course of group.courses">
+            <b>{{ course.name }}</b><br/>
+            {{ course.selectedSessionDates }}
+          </li>
+        </ul>
       </div>
-      <div>
-        <h4>{{ group.name }}</h4>
+      <div class="col-12">
+        <a href="javascript:void(0);" (click)="addOrEditCertificate(group, certificateModal)"><i
+          class="fa fa-pencil"></i> Edit</a>
       </div>
-    </div>
-    <div class="col-12">
-      <ul class="my-3">
-        <li *ngFor="let course of group.courses">
-          {{ course.name }} - {{ course.selectedSessionDates }}
-        </li>
-      </ul>
-    </div>
-    <div class="col-12">
-      <a href="javascript:void(0);" (click)="addOrEditCertificate(group, certificateModal)"><i
-        class="fa fa-pencil"></i> Edit</a>
     </div>
   </div>
 
-  <h5>Available Certificate Programs</h5>
-  <div *ngFor="let group of appData.programData.availableCertificates"
-       (click)="addOrEditCertificate(group, certificateModal)"
-       class="checkbox-container checkbox-container-clickable col-12 align-items-center d-flex my-3">
-    <div class="checkbox col-3 col-md-2 text-center" *ngIf="!group.isSaving">
-      <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
-      <label>
-        <i class="fa fa-check ps-4"></i>
-      </label>
-    </div>
-    <div class="checkbox col-3 col-md-2 text-center" *ngIf="group.isSaving">
-      <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-    </div>
-    <div class="col-9 col-md-10 description">
-      <h4>{{ group.name }}</h4>
-      <ul>
-        <li *ngFor="let course of group.courses">
-          {{ course.name }}
-        </li>
-      </ul>
+  <div class="my-4">
+    <h5>Available Certificate Programs</h5>
+    <div *ngFor="let group of appData.programData.availableCertificates"
+         (click)="addOrEditCertificate(group, certificateModal)"
+         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4">
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!group.isSaving">
+          <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
+          <label>
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="group.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ group.name }}</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <ul class="my-3 list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let course of group.courses">
+            <b>{{ course.name }}</b>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
