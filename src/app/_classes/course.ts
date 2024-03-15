@@ -23,6 +23,13 @@ export class Course {
   }
 
   getProgramsByDivision(division: string): Array<Program> {
-    return this.programsByDivision.get(division);
+    let programs: Array<Program> = [];
+    programs = this.programsByDivision.get(division);
+    if (this.displayOrder === 1) {
+      // remove the sessionless (stub) program from the list
+      programs = programs.filter(p => p.sessionId);
+    }
+
+    return programs;
   }
 }

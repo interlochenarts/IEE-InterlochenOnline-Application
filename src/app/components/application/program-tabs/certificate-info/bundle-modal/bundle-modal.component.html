@@ -10,7 +10,6 @@
   <div *ngFor="let course of group.courses; let i = index" class="row mb-3">
     <div class="col-12 col-lg-6">{{ course.name }}</div>
     <div class="col-12 col-lg-6">
-
       <div class="default required">
         <div class="select">
           <select [(ngModel)]="group.bundleChoices[i]"
