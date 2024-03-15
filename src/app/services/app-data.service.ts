@@ -207,7 +207,18 @@ export class AppDataService {
         else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
-          group.appChoiceIds = result.split(';');
+          const appChoices = result.split(';');
+          const appChoiceIds = []
+          const appChoiceSessions = [];
+          appChoices.forEach(ac => {
+            const [id, dates] = ac.split('|');
+            appChoiceIds.push(id);
+            appChoiceSessions.push(dates);
+          });
+          for (let i = 0; i < appChoices.length; i++) {
+            group.courses[i].selectedSessionDates = appChoiceSessions[i];
+          }
+          group.appChoiceIds = appChoiceIds;
           console.info('Saved new program: ' + result);
           // TODO: Update payment info
           // Visualforce.remoting.Manager.invokeAction(
