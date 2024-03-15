@@ -30,7 +30,7 @@ export class PrivateLessonInfoComponent implements OnInit {
     return this.appData.programData.privateLessons.filter(p =>
       (this.appData.programData.selectedDivision === p.division) &&
       (this.appData.isAdultApplicant ? p.division === 'Adult' : p.division !== 'Adult') &&
-      !p.isSelected);
+      (!p.isSelected || p.artsAreaList.includes('Music')));
   }
 
   get selectedPrograms(): Array<Program> {
