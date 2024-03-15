@@ -27,8 +27,8 @@ export class BundleModalComponent implements OnInit {
 
   ok() {
     // console.dir(this.bundleChoices);
-    this.isValid = this.group.bundleChoices.length === this.group.bundleSize
-      && this.group.bundleChoices.reduce((prev, cur) => prev || !!cur, false);
+    const allSelected = this.group.bundleChoices.reduce((prev, cur) => prev && !!cur, true);
+    this.isValid = this.group.bundleChoices.length === this.group.bundleSize && allSelected;
 
     if (this.isValid) {
       this.modal.close(this.bundleChoiceString);
