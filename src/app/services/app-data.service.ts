@@ -203,8 +203,7 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           const appChoices = result.split(';');
@@ -239,6 +238,7 @@ export class AppDataService {
   }
 
   public removeBundle(group: CertificateGroup): void {
+    group.isSaving = true;
     group.isSelected = false;
     const appData: ApplicationData = this.applicationData.getValue();
     const appChoiceIds: string = group.appChoiceIds.join(';')
@@ -251,14 +251,13 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
           console.info('removed Certificate Group');
-
+          // console.dir(group);
           //TODO: Update Payment info?
         }
         group.isSaving = false;
