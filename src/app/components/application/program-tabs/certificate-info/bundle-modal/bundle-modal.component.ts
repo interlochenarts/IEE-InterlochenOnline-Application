@@ -26,7 +26,7 @@ export class BundleModalComponent implements OnInit {
   }
 
   ok() {
-    console.dir(this.group.bundleChoices);
+    // console.dir(this.group.bundleChoices);
     let allSelected = true;
     for (let i = 0; i < this.group.bundleSize; i++) {
       if (!this.group.bundleChoices[i]) {

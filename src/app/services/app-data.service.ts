@@ -195,7 +195,7 @@ export class AppDataService {
 
     const appChoiceString = group.appChoiceIds.filter(ac => !!ac).join(';');
 
-    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
+    // console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
@@ -218,7 +218,7 @@ export class AppDataService {
             group.courses[i].selectedSessionDates = appChoiceSessions[i];
           }
           group.appChoiceIds = appChoiceIds;
-          console.info('Saved new program: ' + result);
+          // console.info('Saved new bundle: ' + result);
           // TODO: Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
@@ -256,7 +256,7 @@ export class AppDataService {
         } else {
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
-          console.info('removed Certificate Group');
+          // console.info('removed Certificate Group');
           // console.dir(group);
           //TODO: Update Payment info?
         }
