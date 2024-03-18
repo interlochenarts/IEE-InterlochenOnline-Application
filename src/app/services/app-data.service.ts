@@ -243,7 +243,7 @@ export class AppDataService {
     const appData: ApplicationData = this.applicationData.getValue();
     const appChoiceIds: string = group.appChoiceIds.join(';')
 
-    console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
+    // console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoiceList',
