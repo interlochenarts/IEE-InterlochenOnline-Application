@@ -18,33 +18,36 @@
     three-course bundles, which can apply towards high school credit. Or sign up for weekly private lessons in a variety
     of areas.
   </p>
-  <ul class="nav nav-tabs mx-0 mb-3 flex-column flex-xl-nowrap flex-xl-row user-select-none" id="tabs-tab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" id="tabs-program-tab" data-bs-toggle="tab" data-bs-target="#tabs-program" type="button"
-         role="tab" aria-controls="tabs-program" aria-selected="false">Courses
-      </a>
-    </li>
-    <li class="nav-item" role="presentation"
-        *ngIf="selectedDivision !== 'Kids'">
-      <a class="nav-link" id="tabs-bundle-tab" data-bs-toggle="tab" data-bs-target="#tabs-bundle" type="button"
-              role="tab" aria-controls="tabs-bundle" aria-selected="false">Certificates
-      </a>
-    </li>
-    <li class="nav-item" role="presentation">
-      <a class="nav-link" id="tabs-lesson-tab" data-bs-toggle="tab" data-bs-target="#tabs-lesson" type="button"
-              role="tab" aria-controls="tabs-lesson" aria-selected="false">Private Lessons
-      </a>
-    </li>
-  </ul>
-  <div class="tab-content" id="tabs-tabContent">
-    <div class="tab-pane" id="tabs-program" role="tabpanel" aria-labelledby="tabs-program-tab">
-      <iee-program-info></iee-program-info>
+  <div ngbAccordion [closeOthers]="true">
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Courses</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-program-info></iee-program-info>
+        </div>
+      </div>
     </div>
-    <div class="tab-pane" id="tabs-bundle" role="tabpanel" aria-labelledby="tabs-bundle-tab">
-      <iee-certificate-info></iee-certificate-info>
+    <div ngbAccordionItem *ngIf="selectedDivision !== 'Kids'">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Certificates</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-certificate-info></iee-certificate-info>
+        </div>
+      </div>
     </div>
-    <div class="tab-pane" id="tabs-lesson" role="tabpanel" aria-labelledby="tabs-lesson-tab">
-      <iee-private-lesson-info></iee-private-lesson-info>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton>Private Lessons</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-private-lesson-info></iee-private-lesson-info>
+        </div>
+      </div>
     </div>
   </div>
 </div>
