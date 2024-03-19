@@ -20,7 +20,7 @@ import {ProgramReviewComponent} from './components/application/review-registrati
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
 import {BundleModalComponent} from './components/application/program-tabs/certificate-info/bundle-modal/bundle-modal.component';
-import {ProgramTabsComponent} from './components/application/program-tabs/program-tabs.component';
+import {ProgramTypeComponent} from './components/application/program-tabs/program-type.component';
 import {CertificateInfoComponent} from './components/application/program-tabs/certificate-info/certificate-info.component';
 import { PrivateLessonInfoComponent } from './components/application/program-tabs/private-lesson-info/private-lesson-info.component';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
@@ -42,7 +42,7 @@ import {AutocompleteLibModule} from "angular-ng-autocomplete";
     ParentReviewComponent,
     StudentReviewComponent,
     BundleModalComponent,
-    ProgramTabsComponent,
+    ProgramTypeComponent,
     CertificateInfoComponent,
     PrivateLessonInfoComponent,
   ],

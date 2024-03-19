@@ -9,7 +9,7 @@ import {SalesforceOption} from "../../../../_classes/salesforce-option";
 @Component({
   selector: 'iee-private-lesson-info',
   templateUrl: './private-lesson-info.component.html',
-  styleUrls: ['../program-tabs.component.less', 'private-lesson-info.component.less']
+  styleUrls: ['../program-type.component.less', 'private-lesson-info.component.less']
 })
 export class PrivateLessonInfoComponent implements OnInit {
   appData: ApplicationData;
