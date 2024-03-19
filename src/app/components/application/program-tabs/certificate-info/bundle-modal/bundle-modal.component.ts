@@ -16,6 +16,14 @@ export class BundleModalComponent implements OnInit {
   allSelected: boolean;
   allInSequence: boolean;
 
+  get certIsSequenced(): boolean {
+    if (this.group) {
+      return !!this.group.courses[0].displayOrder;
+    } else {
+      return false;
+    }
+  }
+
   get bundleChoiceString(): string {
     return this.group.bundleChoices.join(';');
   }
