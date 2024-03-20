@@ -1,0 +1,53 @@
+<div *ngIf="appData && !appData.isAdultApplicant" class="mb-3">
+  <label for="selectedDivision">Choose your age group</label>
+  <div class="default">
+    <div class="select">
+      <select [(ngModel)]="selectedDivision"
+              name="selectedGrade"
+              class="w-100"
+              id="selectedDivision">
+        <option *ngFor="let division of divisionOptions" [value]="division.value">{{ division.label }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedDivision">
+  <p class="mb-3">
+    To begin, please choose from our individual programs, which offer 4-week courses. Certificate programs are
+    three-course bundles, which can apply towards high school credit. Or sign up for weekly private lessons in a variety
+    of areas.
+  </p>
+  <div ngbAccordion [closeOthers]="true" #typeAccordion>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Courses</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-program-info></iee-program-info>
+        </div>
+      </div>
+    </div>
+    <div ngbAccordionItem *ngIf="selectedDivision !== 'Kids'">
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Certificates</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-certificate-info></iee-certificate-info>
+        </div>
+      </div>
+    </div>
+    <div ngbAccordionItem>
+      <h2 ngbAccordionHeader>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Private Lessons</button>
+      </h2>
+      <div ngbAccordionCollapse>
+        <div ngbAccordionBody>
+          <iee-private-lesson-info></iee-private-lesson-info>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

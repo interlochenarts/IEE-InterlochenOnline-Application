@@ -4,7 +4,7 @@ import {ReviewRegistrationComponent} from './components/application/review-regis
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
-import {ProgramTabsComponent} from "./components/application/program-tabs/program-tabs.component";
+import {ProgramTypeComponent} from "./components/application/program-tabs/program-type.component";
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
       {path: 'student-info', component: PersonalInfoComponent},
-      {path: 'program', component: ProgramTabsComponent},
+      {path: 'program', component: ProgramTypeComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'pay-registration', component: PaymentComponent}
     ]
@@ -24,7 +24,7 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
       {path: 'student-info', component: PersonalInfoComponent},
-      {path: 'program', component: ProgramTabsComponent},
+      {path: 'program', component: ProgramTypeComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'pay-registration', component: PaymentComponent}
     ]

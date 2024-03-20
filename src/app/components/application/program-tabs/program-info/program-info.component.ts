@@ -9,7 +9,7 @@ import {ListTypes} from "../../../../_enums/enums";
 @Component({
   selector: 'iee-program-info',
   templateUrl: './program-info.component.html',
-  styleUrls: ['../program-tabs.component.less', 'program-info.component.less']
+  styleUrls: ['../program-type.component.less', 'program-info.component.less']
 })
 export class ProgramInfoComponent implements OnInit {
   appData: ApplicationData;
