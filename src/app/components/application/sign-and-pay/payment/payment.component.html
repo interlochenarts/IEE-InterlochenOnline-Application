@@ -31,43 +31,57 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Total tuition for {{appData.termName}}
-              <ul *ngIf="appData.payment.cancelAmount > 0" class="mb-0">
-                <li>Completed & New Registrations</li>
-                <li>Cancelled Registrations</li>
-              </ul>
-            </td>
-            <td>{{totalTuition | currency:'USD'}}
-              <span *ngIf="appData.payment.cancelAmount > 0"><br/>
-                {{totalTuition - appData.payment.cancelAmount | currency:'USD'}}<br/>
-                {{appData.payment.cancelAmount | currency:'USD'}}
-              </span>
-            </td>
-          </tr>
-          <ng-container *ngIf="appData.payment.amountPaid > 0">
-            <tr *ngFor="let payment of appData.payment.payments">
-              <td>Registration Paid {{payment.split('&')[1] | date:'short'}}</td>
-              <td>-{{payment.split('&')[0] | currency:'USD'}}</td>
-            </tr>
-          </ng-container>
-          <ng-container *ngIf="appData.payment.appliedCredits > 0">
-            <tr *ngFor="let creditPayment of appData.payment.creditPayments">
-              <td>Credit Used {{creditPayment.split('&')[1] | date:'short'}}</td>
-              <td>-{{creditPayment.split('&')[0] | currency:'USD'}}</td>
-            </tr>
-          </ng-container>
-          <ng-container *ngIf="appData.payment.spendableCredit > 0 && appData.payment.useCredit">
+<!--        Can this go away?? -->
+<!--          <tr>-->
+<!--            <td>Total tuition for {{appData.termName}}</td>-->
+<!--            <td>{{totalTuition | currency:'USD'}}</td>-->
+<!--          </tr>-->
+          <!-- Bundles -->
+          <ng-container *ngFor="let pendingBundle of appData.payment.pendingBundles">
             <tr>
-              <td>Credit Used:</td>
-              <td>-{{appData.payment.spendableCredit | currency:'USD'}}</td>
+              <td>{{pendingBundle.name}}</td>
+              <td>
+                <!-- This page was intentionally left blank. -->
+              </td>
+            </tr>
+            <tr>
+              <td>{{pendingBundle.discount.name}}</td>
+              <td>{{pendingBundle.discount.amount | currency: 'USD'}}</td>
+            </tr>
+            <ng-container *ngFor="let appChoice of pendingBundle.appChoices">
+              <tr>
+                <td>{{appChoice.name}}</td>
+                <td>{{appChoice.amount | currency: 'USD'}}</td>
+              </tr>
+              <tr *ngIf="appChoice.waiver">
+                <td>Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
+                  <i *ngIf="!paymentReceived" (click)="removeCode(appChoice.waiver.code)" class="fa fa-times remove alert-text"></i></span>
+                </td>
+                <td>{{appChoice.waiver.amount | currency: 'USD'}}</td>
+              </tr>
+            </ng-container>
+          </ng-container>
+          <!-- Non-Bundle App Choices -->
+          <ng-container *ngFor="let appChoice of appData.payment.pendingAppChoices">
+            <tr>
+              <td>{{appChoice.name}}</td>
+              <td>{{appChoice.amount | currency: 'USD'}}</td>
+            </tr>
+            <tr *ngIf="appChoice.waiver">
+              <td>Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
+                <i *ngIf="!paymentReceived" (click)="removeCode(appChoice.waiver.code)" class="fa fa-times remove alert-text"></i></span>
+              </td>
+              <td>{{appChoice.waiver.amount | currency: 'USD'}}</td>
+            </tr>
+          </ng-container>
+          <!-- Other Credits - Can't get more info about these because loosely tied -->
+          <ng-container *ngIf="appData.payment.pendingCredit > 0">
+            <tr>
+              <td>Other Credit</td>
+              <td>-{{appData.payment.pendingCredit | currency:'USD'}}</td>
             </tr>
           </ng-container>
           <ng-container *ngIf="appData.payment.appliedWaivers > 0">
-            <tr *ngFor="let appliedDiscount of appData.payment.appliedDiscounts">
-              <td>Discount Amount <span class="ms-3 waiver">{{appliedDiscount.split('&')[1]}}</span> {{appliedDiscount.split('&')[2] | date:'short'}}</td>
-              <td>-{{appliedDiscount.split('&')[0] | currency:'USD'}}</td>
-            </tr>
             <tr *ngFor="let pendingDiscount of appData.payment.pendingDiscounts">
               <td>Discount Amount <span class="ms-3 waiver">{{pendingDiscount.split('&')[1]}} <i *ngIf="!paymentReceived"
                 (click)="removeCode(pendingDiscount.split('&')[1])" class="fa fa-times remove alert-text"></i></span>
