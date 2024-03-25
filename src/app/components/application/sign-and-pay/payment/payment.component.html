@@ -45,16 +45,16 @@
               </td>
             </tr>
             <tr>
-              <td>{{pendingBundle.discount.name}}</td>
+              <td class="ps-4">{{pendingBundle.discount.name}}</td>
               <td>{{pendingBundle.discount.amount | currency: 'USD'}}</td>
             </tr>
             <ng-container *ngFor="let appChoice of pendingBundle.appChoices">
               <tr>
-                <td>{{appChoice.name}}</td>
+                <td class="ps-4">{{appChoice.name}}</td>
                 <td>{{appChoice.amount | currency: 'USD'}}</td>
               </tr>
               <tr *ngIf="appChoice.waiver">
-                <td>Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
+                <td class="ps-6">Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
                   <i *ngIf="!paymentReceived" (click)="removeCode(appChoice.waiver.code)" class="fa fa-times remove alert-text"></i></span>
                 </td>
                 <td>{{appChoice.waiver.amount | currency: 'USD'}}</td>
