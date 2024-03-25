@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -8,9 +8,9 @@ import {CertificateGroup} from "../../../../_classes/certificate-group";
 @Component({
   selector: 'iee-certificate-info',
   templateUrl: './certificate-info.component.html',
-  styleUrls: ['../program-tabs.component.less', 'certificate-info.component.less']
+  styleUrls: ['../program-type.component.less', 'certificate-info.component.less']
 })
-export class CertificateInfoComponent {
+export class CertificateInfoComponent implements OnInit {
   isLoading: boolean = true;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();

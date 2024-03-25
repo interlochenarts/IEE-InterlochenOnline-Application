@@ -2,13 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {AppDataService} from "../../../services/app-data.service";
 import {ApplicationData} from "../../../_classes/application-data";
 import {SalesforceOption} from "../../../_classes/salesforce-option";
+import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'iee-program-tabs',
-  templateUrl: './program-tabs.component.html',
-  styleUrls: ['./program-tabs.component.less']
+  selector: 'iee-program-type',
+  templateUrl: './program-type.component.html',
+  styleUrls: ['./program-type.component.less']
 })
-export class ProgramTabsComponent implements OnInit {
+export class ProgramTypeComponent implements OnInit {
   isLoading: boolean = true;
   appData: ApplicationData;
   _selectedDivision: string;
@@ -16,7 +17,7 @@ export class ProgramTabsComponent implements OnInit {
 
   get selectedDivision(): string {
     if (!this._selectedDivision) {
-        this._selectedDivision = this.appData?.programData?.selectedDivision;
+      this._selectedDivision = this.appData?.programData?.selectedDivision;
     }
 
     // console.log('selectedDivision', this._selectedDivision, 'appData.division', this.appData?.programData?.selectedDivision);
@@ -60,5 +61,16 @@ export class ProgramTabsComponent implements OnInit {
         this.appData = new ApplicationData();
       }
     });
+  }
+
+  changeType(typeAccordion: HTMLDivElement) {
+    let scrollOffset = typeAccordion.offsetTop;
+    if(window.scrollY > scrollOffset) {
+      window.scroll({
+        top: scrollOffset,
+        left: 0,
+        behavior: 'smooth'
+      });
+    }
   }
 }

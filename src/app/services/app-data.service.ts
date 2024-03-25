@@ -195,7 +195,7 @@ export class AppDataService {
 
     const appChoiceString = group.appChoiceIds.filter(ac => !!ac).join(';');
 
-    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
+    // console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
@@ -203,8 +203,7 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           const appChoices = result.split(';');
@@ -219,7 +218,7 @@ export class AppDataService {
             group.courses[i].selectedSessionDates = appChoiceSessions[i];
           }
           group.appChoiceIds = appChoiceIds;
-          console.info('Saved new program: ' + result);
+          // console.info('Saved new bundle: ' + result);
           // TODO: Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
@@ -239,11 +238,12 @@ export class AppDataService {
   }
 
   public removeBundle(group: CertificateGroup): void {
+    group.isSaving = true;
     group.isSelected = false;
     const appData: ApplicationData = this.applicationData.getValue();
     const appChoiceIds: string = group.appChoiceIds.join(';')
 
-    console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
+    // console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoiceList',
@@ -251,14 +251,13 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
-          console.info('removed Certificate Group');
-
+          // console.info('removed Certificate Group');
+          // console.dir(group);
           //TODO: Update Payment info?
         }
         group.isSaving = false;
