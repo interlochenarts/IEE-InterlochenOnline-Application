@@ -51,6 +51,6 @@
   <div>Meets on various days (selected by student according to instructor's availability)</div>
 </div>
 
-<div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
+<div *ngIf="showError">
   <i class="fa fa-warning reviewErrorIcon"></i><span class="reviewError"> No programs selected</span>
 </div>

@@ -29,12 +29,30 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
     // Only unregistered programs
     this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates).sort(Program.sort);
     // Only registered programs
-    this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
-    // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-    this.registeredPrograms.sort(Program.sort);
+    this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0)).sort(Program.sort);
 
     this.selectedPrivateLessons = this.acProgramData.privateLessons.filter(pl => pl.isSelected);
     this.selectedCertificates = this.programData.selectedCertificates;
   }
 
+  get showError(): boolean {
+    let missingProgram = true;
+
+    // check individual courses
+    if (this.selectedPrograms && this.selectedPrograms.length > 0) {
+      missingProgram = false;
+    }
+
+    // check certificate programs
+    if (missingProgram && this.selectedCertificates && this.selectedCertificates.length > 0) {
+      missingProgram = false;
+    }
+
+    // check private lessons
+    if (missingProgram && this.selectedPrivateLessons && this.selectedPrivateLessons.length > 0) {
+      missingProgram = false;
+    }
+
+    return missingProgram;
+  }
 }
