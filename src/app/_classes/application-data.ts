@@ -53,8 +53,28 @@ export class ApplicationData {
   }
 
   public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    return this.studentInfoIsComplete(countryCodes, stateCodes) &&
-      this.acProgramData.programs.filter(p => p.isSelected).length > 0;
+    return this.studentInfoIsComplete(countryCodes, stateCodes) && this.hasPrograms();
+  }
+
+  private hasPrograms(): boolean {
+    let hasProgram = false;
+
+    // check individual courses
+    if (this.acProgramData.programs.filter(p => p.isSelected).length > 0) {
+      hasProgram = true;
+    }
+
+    // check certificate programs
+    if (!hasProgram && this.acProgramData.selectedCertificates.length > 0) {
+      hasProgram = true;
+    }
+
+    // check private lessons
+    if (!hasProgram && this.acProgramData.privateLessons.filter(pl => pl.isSelected).length > 0) {
+      hasProgram = true;
+    }
+
+    return hasProgram;
   }
 
   //this does not include program

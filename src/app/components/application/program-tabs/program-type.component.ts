@@ -15,7 +15,7 @@ export class ProgramTypeComponent implements OnInit {
   _selectedDivision: string;
   divisionOptions: Array<SalesforceOption>;
 
-get selectedDivision(): string {
+  get selectedDivision(): string {
     if (!this._selectedDivision) {
       this._selectedDivision = this.appData?.programData?.selectedDivision;
     }
