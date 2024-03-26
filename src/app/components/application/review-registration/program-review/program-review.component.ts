@@ -28,7 +28,6 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
   ngOnChanges(): void {
     // Only unregistered programs
     this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates).sort(Program.sort);
-    console.dir(this.selectedPrograms);
     // Only registered programs
     this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
     // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
