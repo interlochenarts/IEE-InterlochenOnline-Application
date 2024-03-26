@@ -3,7 +3,7 @@
 </div>
 <div *ngIf="!isLoading">
   <div class="my-4">
-    <label for="selectedArtsArea">Arts Area</label>
+    <label for="selectedArtsArea">Area of Study</label>
     <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
       <div class="select">
         <select [(ngModel)]="selectedArtsArea"
@@ -39,7 +39,7 @@
 
   <div class="my-4">
     <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
-      There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }}Arts Area.
+      There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
     </div>
   </div>
 
