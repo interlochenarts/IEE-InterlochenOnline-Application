@@ -79,6 +79,8 @@
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCountAdd"
              name="lessonCountAdd"
+             max="999"
+             min="0"
              id="lessonCountAdd"/>
     </div>
   </div>
@@ -137,6 +139,7 @@
       <input type="number" class="w-25"
              [(ngModel)]="modalLessonCount"
              name="lessonCount"
+             max="999" min="0"
              id="lessonCount"/>
     </div>
   </div>
