@@ -39,7 +39,7 @@
           <!-- Bundles -->
           <ng-container *ngFor="let pendingBundle of appData.payment.pendingBundles">
             <tr>
-              <td>{{pendingBundle.name}}</td>
+              <td class="fw-bold">{{pendingBundle.name}}</td>
               <td>
                 <!-- This page was intentionally left blank. -->
               </td>
@@ -54,7 +54,7 @@
                 <td>{{appChoice.amount | currency: 'USD'}}</td>
               </tr>
               <tr *ngIf="appChoice.waiver">
-                <td class="ps-6">Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
+                <td class="ps-5">Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
                   <i *ngIf="!paymentReceived" (click)="removeCode(appChoice.waiver.code)" class="fa fa-times remove alert-text"></i></span>
                 </td>
                 <td>{{appChoice.waiver.amount | currency: 'USD'}}</td>
@@ -68,7 +68,7 @@
               <td>{{appChoice.amount | currency: 'USD'}}</td>
             </tr>
             <tr *ngIf="appChoice.waiver">
-              <td>Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
+              <td class="ps-4">Discount <span class="ms-3 waiver">{{appChoice.waiver.code}}
                 <i *ngIf="!paymentReceived" (click)="removeCode(appChoice.waiver.code)" class="fa fa-times remove alert-text"></i></span>
               </td>
               <td>{{appChoice.waiver.amount | currency: 'USD'}}</td>
