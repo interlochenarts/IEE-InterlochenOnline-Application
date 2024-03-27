@@ -56,7 +56,7 @@ export class ApplicationData {
     return this.studentInfoIsComplete(countryCodes, stateCodes) && this.hasPrograms();
   }
 
-  private hasPrograms(): boolean {
+  public hasPrograms(): boolean {
     let hasProgram = false;
 
     // check individual courses
