@@ -4,6 +4,7 @@ export class PaymentAppChoice {
   name: string;
   amount: number;
   waiver: PaymentWaiver;
+  session: string;
 
   public static createFromNestedJson(json: any): PaymentAppChoice {
     const paymentAppChoice = new PaymentAppChoice();
