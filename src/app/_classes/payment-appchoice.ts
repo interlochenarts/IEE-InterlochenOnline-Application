@@ -9,7 +9,9 @@ export class PaymentAppChoice {
     const paymentAppChoice = new PaymentAppChoice();
     Object.assign(paymentAppChoice, json);
 
-    paymentAppChoice.waiver = json.waiver?.map((w) => PaymentWaiver.createFromNestedJson(w));
+    if (json.waiver) {
+      paymentAppChoice.waiver = PaymentWaiver.createFromNestedJson(json.waiver);
+    }
 
     return paymentAppChoice;
   }
