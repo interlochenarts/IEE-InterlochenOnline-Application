@@ -191,6 +191,7 @@ export class AppDataService {
 
   public saveBundle(group: CertificateGroup, programIds: string): void {
     group.isSelected = true;
+    group.isSaving = true;
     const appData = this.applicationData.getValue();
 
     const appChoiceString = group.appChoiceIds.filter(ac => !!ac).join(';');

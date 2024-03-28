@@ -65,7 +65,7 @@ export class ApplicationData {
     }
 
     // check certificate programs
-    if (!hasProgram && this.acProgramData.selectedCertificates.length > 0) {
+    if (!hasProgram && this.programData.selectedCertificates.length > 0) {
       hasProgram = true;
     }
 
