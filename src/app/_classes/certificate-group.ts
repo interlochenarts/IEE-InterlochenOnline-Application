@@ -1,4 +1,5 @@
 import {Course} from "./course";
+import {Program} from './program';
 
 export class CertificateGroup {
   id: string;
@@ -19,5 +20,14 @@ export class CertificateGroup {
     certificateGroup.courses.sort((a, b) => a.displayOrder - b.displayOrder);
 
     return certificateGroup;
+  }
+
+  selectedPrograms(selectedDivision: string): Program[] {
+    const selected: Program[] = [];
+    this.bundleChoices.forEach(bc => {
+      this.courses.forEach(c =>
+        selected.push(c.getProgramsByDivision(selectedDivision).find(p => p.id === bc)));
+    });
+    return selected.sort(Program.sort);
   }
 }
