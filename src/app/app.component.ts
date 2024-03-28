@@ -71,8 +71,7 @@ export class AppComponent implements OnInit {
   }
 
   linkDisabled(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    return !appData.isComplete(countryCodes, stateCodes) ||
-      (appData.isRegistered && appData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd > 0))).length === 0);
+    return !appData.isComplete(countryCodes, stateCodes);
   }
 
   buildLinks(): void {
@@ -88,7 +87,7 @@ export class AppComponent implements OnInit {
       new RouterLink(`${rootPath}/review-registration`, 'Review Registration',
         () => false, () => true, this.reviewRegistrationComplete),
       new RouterLink(`${rootPath}/pay-registration`, 'Pay Registration',
-        this.linkDisabled, () => true, this.registrationPayed),
+        this.linkDisabled, () => true, this.registrationPaid),
     ]);
 
     this.links = this.appDataService.routerLinks.getValue();
@@ -103,8 +102,6 @@ export class AppComponent implements OnInit {
   }
 
   selectProgramComplete = (appData: ApplicationData): boolean => {
-    let selectedPrograms = appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered));
-
     if (this.paymentComplete()) {
       return true;
     } else if (appData.hasPrograms()) {
@@ -115,7 +112,7 @@ export class AppComponent implements OnInit {
   }
 
   reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    let result = (this.reviewComplete || this.registrationPayed(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    let result = (this.reviewComplete || this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
     if (this.paymentComplete() || result) {
       return true;
     } else {
@@ -124,7 +121,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-  registrationPayed = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
+  registrationPaid = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
     return this.paymentComplete() || (!this.linkDisabled(appData, countryCodes, stateCodes) && appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0);
   }
 

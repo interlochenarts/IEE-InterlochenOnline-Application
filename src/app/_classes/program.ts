@@ -111,7 +111,7 @@ export class Program {
   }
 
   public static sort(a: Program, b: Program): number {
-    return a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
+    return a.sessionDates?.includes(':') && b.sessionDates?.includes(':') ?
       (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
         new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0;
   }
