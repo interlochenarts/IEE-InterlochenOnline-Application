@@ -53,6 +53,8 @@ export class ApplicationData {
   }
 
   public isComplete(countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+    // console.log('studentInfoIsComplete', this.studentInfoIsComplete(countryCodes, stateCodes));
+    // console.log('hasPrograms', this.hasPrograms());
     return this.studentInfoIsComplete(countryCodes, stateCodes) && this.hasPrograms();
   }
 

@@ -29,6 +29,9 @@ export class ApplicationComponent implements OnInit {
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
 
+  get nextLinkDisabled() {
+    return this.disableNextLink;
+  }
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute, private router: Router) {
 
@@ -44,11 +47,6 @@ export class ApplicationComponent implements OnInit {
         this.showBackLink = this.routerIndex > 0 && !this.transactionId;
         this.showNextLink = this.routerIndex !== (links.length - 1) && !this.transactionId;
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1) && !this.transactionId;
-
-        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
-          && ((!this.applicationData.isRegistered && !this.applicationData.isComplete(this.countryCodes, this.stateCodes))
-          || (this.applicationData.isRegistered &&
-              this.applicationData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd > 0) )).length === 0));
       }
     });
 
@@ -72,6 +70,14 @@ export class ApplicationComponent implements OnInit {
       this.transactionId = p.get('txnId');
       if (this.transactionId) {
         this.appDataService.transactionId.next(this.transactionId);
+      }
+    });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
+          && !this.applicationData.isRegistered
+          && !this.applicationData.isComplete(this.countryCodes, this.stateCodes);
       }
     });
 
