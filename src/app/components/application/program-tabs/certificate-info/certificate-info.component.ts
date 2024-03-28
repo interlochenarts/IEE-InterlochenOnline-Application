@@ -52,7 +52,6 @@ export class CertificateInfoComponent implements OnInit {
     const modalRef = this.modalService.open(modal, {size: 'lg'});
 
     modalRef.closed.subscribe(programIds => {
-      this.selectedGroup.isSaving = true;
       this.appDataService.saveBundle(this.selectedGroup, programIds);
     });
   }
