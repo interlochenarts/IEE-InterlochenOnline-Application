@@ -27,9 +27,9 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     // Only unregistered programs
-    this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates).sort(Program.sort);
+    this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates).sort(Program.sortBySessionStartNullsFirst);
     // Only registered programs
-    this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0)).sort(Program.sort);
+    this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0)).sort(Program.sortBySessionStartNullsFirst);
 
     this.selectedPrivateLessons = this.acProgramData.privateLessons.filter(pl => pl.isSelected);
     this.selectedCertificates = this.programData.selectedCertificates;

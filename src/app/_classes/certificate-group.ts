@@ -17,7 +17,6 @@ export class CertificateGroup {
     Object.assign(certificateGroup, json);
 
     certificateGroup.courses = json.courses?.map((c: any) => Course.createFromNestedJson(c));
-    certificateGroup.courses.sort((a, b) => a.displayOrder - b.displayOrder);
 
     return certificateGroup;
   }
@@ -32,6 +31,6 @@ export class CertificateGroup {
         }
       });
     });
-    return selected.sort(Program.sort);
+    return selected.sort(Program.sortBySessionStartNullsLast);
   }
 }
