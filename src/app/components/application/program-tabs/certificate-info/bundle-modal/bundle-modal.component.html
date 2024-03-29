@@ -32,6 +32,7 @@
 </div>
 <div class="modal-footer">
   <span *ngIf="allSelected === false" class="alert-text me-3">Please make a selection for each course.</span>
+  <span *ngIf="allHaveSessions === false" class="alert-text me-3">Please make sure to schedule at least one course.</span>
   <span *ngIf="allInSequence === false" class="alert-text me-3">Courses must be taken in the order listed.</span>
   <button class="btn btn-primary" (click)="ok()">Ok</button>
 </div>

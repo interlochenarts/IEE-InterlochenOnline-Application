@@ -15,6 +15,7 @@ export class BundleModalComponent implements OnInit {
   isValid: boolean;
   allSelected: boolean;
   allInSequence: boolean;
+  allHaveSessions: boolean;
 
   get certIsSequenced(): boolean {
     if (this.group) {
@@ -71,10 +72,12 @@ export class BundleModalComponent implements OnInit {
       }
     }
 
+    this.allHaveSessions = this.selectedIOCourses.reduce((hasSessions: boolean, p: Program) => hasSessions && !!p.sessionId, true)
+
     this.allSelected = this.group.bundleChoices.length === this.group.bundleSize && allSelected;
     this.allInSequence = allOrderedInSuccession;
 
-    this.isValid = this.allSelected && this.allInSequence;
+    this.isValid = this.allSelected && this.allInSequence && this.allHaveSessions;
 
     if (this.isValid) {
       this.modal.close(this.bundleChoiceString);

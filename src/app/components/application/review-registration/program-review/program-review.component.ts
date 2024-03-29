@@ -55,4 +55,6 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
 
     return missingProgram;
   }
+
+  protected readonly Program = Program;
 }
