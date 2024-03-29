@@ -29,6 +29,7 @@ export class Course {
       // remove the sessionless (stub) program from the list
       programs = programs.filter(p => p.sessionId);
     }
+    programs.sort(Program.sortBySessionStartNullsFirst);
 
     return programs;
   }

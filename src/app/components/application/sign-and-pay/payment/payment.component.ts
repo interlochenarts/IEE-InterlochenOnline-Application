@@ -62,12 +62,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.selectedPrograms.sort(Program.sort);
+        this.selectedPrograms.sort(Program.sortBySessionStartNullsFirst);
 
         // Only registered programs
         this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.registeredPrograms.sort(Program.sort);
+        this.registeredPrograms.sort(Program.sortBySessionStartNullsFirst);
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
@@ -234,7 +234,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
             // Only registered programs
             this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
             // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-            this.registeredPrograms.sort(Program.sort);
+            this.registeredPrograms.sort(Program.sortBySessionStartNullsFirst);
 
             this.transactionId = null;
             this.appDataService.transactionId.next(null);

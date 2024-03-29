@@ -115,9 +115,32 @@ export class Program {
     return this.artsArea.split(';');
   }
 
-  public static sort(a: Program, b: Program): number {
-    return a.sessionDates?.includes(':') && b.sessionDates?.includes(':') ?
-      (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-        new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0;
+  /**
+   * sort nulls to the top
+   * @param a
+   * @param b
+   */
+  public static sortBySessionStartNullsFirst(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate;
+    } else if (a.sessionStartDate) {
+      return 1;
+    } else if (b.sessionStartDate) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  public static sortBySessionStartNullsLast(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate
+    } else if (a.sessionStartDate) {
+      return -1;
+    } else if (b.sessionStartDate) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }
