@@ -25,8 +25,12 @@ export class CertificateGroup {
   selectedPrograms(selectedDivision: string): Program[] {
     const selected: Program[] = [];
     this.bundleChoices.forEach(bc => {
-      this.courses.forEach(c =>
-        selected.push(c.getProgramsByDivision(selectedDivision).find(p => p.id === bc)));
+      this.courses.forEach(c => {
+        const program = c.getProgramsByDivision(selectedDivision).find(p => p.id === bc);
+        if (program) {
+          selected.push(program);
+        }
+      });
     });
     return selected.sort(Program.sort);
   }

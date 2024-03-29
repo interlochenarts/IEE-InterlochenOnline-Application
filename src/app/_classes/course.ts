@@ -6,6 +6,7 @@ export class Course {
   displayOrder: number;
   programsByDivision: Map<string, Array<Program>>;
   selectedSessionDates: string;
+  ioRegistrationFee: number;
 
 
   public static createFromNestedJson(json: any): Course {
@@ -16,7 +17,7 @@ export class Course {
     course.programsByDivision = new Map<string, Array<Program>>();
 
     keys.forEach(k => {
-      course.programsByDivision.set(k, json.programsByDivision[k].map(p => Program.createFromNestedJson(p)));
+      course.programsByDivision.set(k, json.programsByDivision[k].map((p: any) => Program.createFromNestedJson(p)));
     });
 
     return course;
