@@ -28,7 +28,7 @@
 <div *ngFor="let cert of selectedCertificates" class="my-2">
   <div><b>{{cert.name}}</b>
     <ul>
-      <li *ngFor="let program of cert.selectedPrograms(programData.selectedDivision)">{{program.name}} - {{program.sessionDates}}</li>
+      <li *ngFor="let program of cert.selectedPrograms(programData.selectedDivision)">{{program.courseName}} - {{program.sessionDates}}</li>
     </ul>
   </div>
 </div>

@@ -1,5 +1,6 @@
 import {SalesforceOption} from './salesforce-option';
 import {ListTypes} from "../_enums/enums";
+import {Course} from './course';
 
 export class Program {
   id: string;
@@ -28,12 +29,16 @@ export class Program {
   certificateGroupName: string;
   certificateGroupOption: SalesforceOption;
   selectedInstrumentOther: string;
+  courseNumber: string;
+  courseId: string;
+  courseName: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
     Object.assign(program, json);
 
-    const label = program.sessionDates || 'Will Schedule in the Future';
+    program.sessionDates = program.sessionDates || 'Will Schedule in the Future';
+    const label = program.sessionDates;
 
     program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 
