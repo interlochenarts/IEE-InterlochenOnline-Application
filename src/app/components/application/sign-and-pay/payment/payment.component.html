@@ -137,13 +137,13 @@
 <!--    </div>-->
 
     <p *ngIf="appData.payment.earlyBirdDiscountInfo" class="reviewError">{{appData.payment.earlyBirdDiscountInfo}}</p>
-    <div *ngIf="!canPay() && appData.payment.paidOnLoad && selectedPrograms && selectedPrograms.length > 0">
+    <div *ngIf="!canPay() && appData.payment.paidOnLoad && hasUnregistered">
       <p>By registering, you agree to the terms of our <a href="https://interlochencdn.s3.us-east-2.amazonaws.com/io/Interlochen+Online+Enrollment+Agreement.pdf" target="_blank">enrollment agreement</a>, which will also be available in the Education Community once registered.</p>
       <button class="btn btn-primary" (click)="addProgramsWithWaiver()">Register</button>
     </div>
-    <iee-ach *ngIf="canPay() && selectedPrograms && selectedPrograms.length > 0" [useCredit]="appData.payment.useCredit"></iee-ach>
+    <iee-ach *ngIf="canPay() && hasUnregistered" [useCredit]="appData.payment.useCredit"></iee-ach>
 
-    <div *ngIf="!canPay() && appData.payment.paidOnLoad && (!selectedPrograms || selectedPrograms.length === 0)">
+    <div *ngIf="!canPay() && appData.payment.paidOnLoad && !hasUnregistered">
 <!--     Some of this might come back, they just want to see it without this stuff -->
 <!--      <div *ngFor="let program of registeredPrograms" class="my-2">-->
 <!--        <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>-->
@@ -157,7 +157,7 @@
 
       <p>Congratulations! Your registration is now complete.</p>
     </div>
-    <a class="btn btn-primary" href="/interlochen/IEE_OnlineLanding?appId={{appData.appId}}"  *ngIf="!canPay() && appData.payment.paidOnLoad && (!selectedPrograms || selectedPrograms.length === 0)" target="_self">Next Step: View Registration</a>
+    <a class="btn btn-primary" href="/interlochen/IEE_OnlineLanding?appId={{appData.appId}}"  *ngIf="!canPay() && appData.payment.paidOnLoad && !hasUnregistered" target="_self">Next Step: View Registration</a>
   </div>
 </div>
 
