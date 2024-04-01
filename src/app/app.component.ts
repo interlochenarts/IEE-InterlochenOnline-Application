@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
 
   studentInfoComplete(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
     let result = appData.studentInfoIsComplete(countryCodes, stateCodes);
-    if (!result) {
+    if (!result && this.appDataService) {
       this.appDataService.reviewCompleted.next(false);
     }
     return result;
