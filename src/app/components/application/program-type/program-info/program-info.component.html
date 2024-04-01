@@ -38,7 +38,7 @@
   </div>
 
   <div class="my-4">
-    <div *ngIf="appData.programData.selectedDivision && sortedSessions.length === 0">
+    <div *ngIf="appData.ageGroup && sortedSessions.length === 0">
       There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
     </div>
   </div>
@@ -79,11 +79,11 @@
     </div>
   </div>
 
-  <div *ngIf="!appData.programData.selectedDivision" class="mt-4">
+  <div *ngIf="!appData.ageGroup" class="mt-4">
     Please use the filters above to view available courses.
   </div>
 
-  <div class="col-12 my-4" *ngIf="appData.programData.selectedDivision">
+  <div class="col-12 my-4" *ngIf="appData.ageGroup">
     <h5>Available Courses <span *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
     <div *ngFor="let program of filteredPrograms"
          class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
@@ -118,7 +118,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="appData.programData.selectedDivision && filteredPrograms.length === 0">
+  <div *ngIf="appData.ageGroup && filteredPrograms.length === 0">
     There are no additional courses available for your selected session.
   </div>
 </div>

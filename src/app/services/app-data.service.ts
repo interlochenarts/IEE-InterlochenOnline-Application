@@ -138,20 +138,23 @@ export class AppDataService {
 
   public saveAgeGroup(ageGroup: string): void {
     const appId: string = this.applicationId.getValue();
+    const isSaving: boolean = this.isSaving.getValue();
 
     // wait until previous save is done.
-    if (this.isSaving.getValue() === false) {
+    if (!isSaving) {
       this.isSaving.next(true);
       // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveGradeInSchool',
         appId, ageGroup,
         (result: string) => {
-          console.info(result);
           this.isSaving.next(false);
         },
         {buffer: false, escape: false}
       );
+    } else {
+      // repeat the save until it goes through
+      setTimeout(this.saveAgeGroup, 1000, ageGroup);
     }
   }
 

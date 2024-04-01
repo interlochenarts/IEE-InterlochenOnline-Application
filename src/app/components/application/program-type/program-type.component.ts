@@ -69,10 +69,9 @@ export class ProgramTypeComponent implements OnInit {
 
   changeType(typeAccordion: HTMLDivElement) {
     const scrollOffset = typeAccordion.offsetTop;
-    // console.log('scrollOffset', scrollOffset);
-    // console.log('window.scrollY', window.scrollY);
 
     if(window.scrollY > scrollOffset) {
+      console.info(`scrolling to ${scrollOffset} from ${window.scrollY}`);
       window.scroll({
         top: scrollOffset,
         left: 0,

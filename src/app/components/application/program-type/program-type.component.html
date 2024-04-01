@@ -6,7 +6,7 @@
               name="selectedGrade"
               class="w-100"
               id="selectedDivision"
-              (selectionchange)="saveAgeGroup()">
+              (change)="saveAgeGroup()">
         <option *ngFor="let division of divisionOptions" [value]="division.value">{{ division.label }}</option>
       </select>
     </div>
