@@ -5,6 +5,7 @@ import {Payment} from '../../../../_classes/payment';
 import {Parent} from '../../../../_classes/parent';
 import {Router} from '@angular/router';
 import {Program} from '../../../../_classes/program';
+import {CertificateGroup} from "../../../../_classes/certificate-group";
 
 declare const Visualforce: any;
 
@@ -21,7 +22,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
   appData: ApplicationData = new ApplicationData();
   selectedPrograms: Array<Program>;
   registeredPrograms: Array<Program>;
+  selectedBundles: Array<CertificateGroup>;
   isLoading: boolean;
+  hasUnregistered: boolean = false;
   enteredCode: string;
   totalTuition: number;
   timer: number;
@@ -60,9 +63,13 @@ export class PaymentComponent implements OnInit, OnDestroy {
           {buffer: false, escape: false}
         );
 
+        this.selectedBundles = this.appData.programData.certificateGroups.filter(g => g.isSelected);
+
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
         this.selectedPrograms.sort(Program.sortBySessionStartNullsFirst);
+
+        this.hasUnregistered = (this.selectedBundles && this.selectedBundles.length > 0) || (this.selectedPrograms && this.selectedPrograms.length > 0);
 
         // Only registered programs
         this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
@@ -159,6 +166,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.paymentReceived = this.appData.payment.tuitionPaid;
           this.appDataService.paymentReceived.next(this.paymentReceived);
           this.selectedPrograms = null;
+          this.selectedBundles = null;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
           console.dir(result);
@@ -223,6 +231,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
 
             this.selectedPrograms?.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
             this.selectedPrograms = null;
+            this.selectedBundles = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
             this.appDataService.paymentReceived.next(this.paymentReceived);
