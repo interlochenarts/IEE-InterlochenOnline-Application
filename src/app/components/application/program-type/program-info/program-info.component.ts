@@ -51,12 +51,12 @@ export class ProgramInfoComponent implements OnInit {
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.selectedDivision;
+    return this.appData.ageGroup;
   }
 
   get filteredPrograms(): Array<Program> {
     return this.appData.programData.programs.filter(p => !p.isSelected &&
-      ((p.division === this.appData.programData.selectedDivision) &&
+      ((p.division === this.appData.ageGroup) &&
         (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
         (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
   }

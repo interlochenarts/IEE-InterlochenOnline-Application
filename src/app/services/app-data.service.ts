@@ -136,6 +136,28 @@ export class AppDataService {
     }
   }
 
+  public saveAgeGroup(ageGroup: string): void {
+    const appId: string = this.applicationId.getValue();
+    const isSaving: boolean = this.isSaving.getValue();
+
+    // wait until previous save is done.
+    if (!isSaving) {
+      this.isSaving.next(true);
+      // noinspection JSUnresolvedReference
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_OnlineApplicationController.saveGradeInSchool',
+        appId, ageGroup,
+        (result: string) => {
+          this.isSaving.next(false);
+        },
+        {buffer: false, escape: false}
+      );
+    } else {
+      // repeat the save until it goes through
+      setTimeout(this.saveAgeGroup, 1000, ageGroup);
+    }
+  }
+
   public sendParentCredentials(parent: Parent, student: Student): void {
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(

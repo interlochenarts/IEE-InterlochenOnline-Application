@@ -6,7 +6,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './components/header/header.component';
 
-import {ProgramInfoComponent} from './components/application/program-tabs/program-info/program-info.component';
+import {ProgramInfoComponent} from './components/application/program-type/program-info/program-info.component';
 import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {StudentComponent} from './components/application/personal-info/student/student.component';
@@ -19,10 +19,10 @@ import {ApplicationComponent} from './components/application/application.compone
 import {ProgramReviewComponent} from './components/application/review-registration/program-review/program-review.component';
 import {ParentReviewComponent} from './components/application/review-registration/parent-review/parent-review.component';
 import {StudentReviewComponent} from './components/application/review-registration/student-review/student-review.component';
-import {BundleModalComponent} from './components/application/program-tabs/certificate-info/bundle-modal/bundle-modal.component';
-import {ProgramTypeComponent} from './components/application/program-tabs/program-type.component';
-import {CertificateInfoComponent} from './components/application/program-tabs/certificate-info/certificate-info.component';
-import { PrivateLessonInfoComponent } from './components/application/program-tabs/private-lesson-info/private-lesson-info.component';
+import {BundleModalComponent} from './components/application/program-type/certificate-info/bundle-modal/bundle-modal.component';
+import {ProgramTypeComponent} from './components/application/program-type/program-type.component';
+import {CertificateInfoComponent} from './components/application/program-type/certificate-info/certificate-info.component';
+import { PrivateLessonInfoComponent } from './components/application/program-type/private-lesson-info/private-lesson-info.component';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
 
 @NgModule({

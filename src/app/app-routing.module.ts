@@ -4,7 +4,7 @@ import {ReviewRegistrationComponent} from './components/application/review-regis
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
-import {ProgramTypeComponent} from "./components/application/program-tabs/program-type.component";
+import {ProgramTypeComponent} from "./components/application/program-type/program-type.component";
 
 const routes: Routes = [
   {
