@@ -17,7 +17,7 @@ export class ProgramTypeComponent implements OnInit {
 
   get selectedDivision(): string {
     if (!this._selectedDivision) {
-      this._selectedDivision = this.appData?.programData?.selectedDivision;
+      this._selectedDivision = this.appData?.ageGroup;
     }
 
     // console.log('selectedDivision', this._selectedDivision, 'appData.division', this.appData?.programData?.selectedDivision);
@@ -26,10 +26,14 @@ export class ProgramTypeComponent implements OnInit {
 
   set selectedDivision(value) {
     this._selectedDivision = value;
-    this.appData.programData.selectedDivision = value;
+    this.appData.ageGroup = value;
   }
 
   constructor(private appDataService: AppDataService) {
+  }
+
+  saveAgeGroup(): void {
+    this.appDataService.saveAgeGroup(this.selectedDivision);
   }
 
   ngOnInit(): void {
