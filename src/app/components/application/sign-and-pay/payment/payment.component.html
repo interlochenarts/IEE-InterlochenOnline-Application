@@ -59,7 +59,7 @@
           <!-- Non-Bundle App Choices -->
           <ng-container *ngFor="let appChoice of appData.payment.pendingAppChoices">
             <tr>
-              <td class="fw-bold">{{appChoice.name}} - {{appChoice.session}}</td>
+              <td><span class="fw-bold">{{appChoice.name}}</span> - {{appChoice.session}}</td>
               <td>{{appChoice.amount | currency: 'USD'}}</td>
             </tr>
             <tr *ngIf="appChoice.waiver">
