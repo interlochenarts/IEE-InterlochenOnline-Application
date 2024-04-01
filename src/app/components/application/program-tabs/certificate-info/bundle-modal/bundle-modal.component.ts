@@ -72,7 +72,6 @@ export class BundleModalComponent implements OnInit {
       }
     }
 
-    console.dir(this.selectedIOCourses);
     this.atLeastOneScheduled = this.selectedIOCourses.reduce((hasSessions: boolean, p: Program) => hasSessions || !!p.sessionId, false);
 
     this.allSelected = this.group.bundleChoices.length === this.group.bundleSize && allSelected;
