@@ -104,6 +104,7 @@ export class AppDataService {
   }
 
   public saveApplication(): void {
+    this.reviewCompleted.next(false);
     const appData: ApplicationData = this.applicationData.getValue();
     const appId: string = this.applicationId.getValue();
 
@@ -137,6 +138,7 @@ export class AppDataService {
   }
 
   public saveAgeGroup(ageGroup: string): void {
+    this.reviewCompleted.next(false);
     const appId: string = this.applicationId.getValue();
     const isSaving: boolean = this.isSaving.getValue();
 
@@ -176,6 +178,7 @@ export class AppDataService {
   }
 
   public saveProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     program.isSelected = true;
     this.addDaysSelected(program);
     const appData = this.applicationData.getValue();
@@ -212,6 +215,7 @@ export class AppDataService {
   }
 
   public saveBundle(group: CertificateGroup, programIds: string): void {
+    this.reviewCompleted.next(false);
     group.isSelected = true;
     group.isSaving = true;
     const appData = this.applicationData.getValue();
@@ -261,6 +265,7 @@ export class AppDataService {
   }
 
   public removeBundle(group: CertificateGroup): void {
+    this.reviewCompleted.next(false);
     group.isSaving = true;
     group.isSelected = false;
     const appData: ApplicationData = this.applicationData.getValue();
@@ -290,6 +295,7 @@ export class AppDataService {
   }
 
   public updateProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     const appData = this.applicationData.getValue();
 
     // noinspection JSUnresolvedReference
@@ -326,6 +332,7 @@ export class AppDataService {
   }
 
   public removeProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     program.isSelected = false;
     const daysSelected = this.daysSelectedBySession.getValue().get(program.sessionName);
     program.daysArrayApi?.forEach(d => {
