@@ -94,11 +94,11 @@ export class AppComponent implements OnInit {
   }
 
   studentInfoComplete(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    let result = appData.studentInfoIsComplete(countryCodes, stateCodes);
-    if (!result && this.appDataService) {
+    let studentComplete = appData.studentInfoIsComplete(countryCodes, stateCodes);
+    if (!studentComplete && this.appDataService) {
       this.appDataService.reviewCompleted.next(false);
     }
-    return result;
+    return this.paymentComplete() || studentComplete;
   }
 
   selectProgramComplete = (appData: ApplicationData): boolean => {
@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
   }
 
   reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    const reviewComplete = (this.reviewComplete || this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    const reviewComplete = (this.reviewComplete && this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
     return this.paymentComplete() || reviewComplete;
   }
 
