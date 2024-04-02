@@ -93,9 +93,13 @@ export class AppComponent implements OnInit {
     this.links = this.appDataService.routerLinks.getValue();
   }
 
-  studentInfoComplete(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
+  paymentComplete = (): boolean => {
+    return this.paymentReceived && !!this.transactionId;
+  }
+
+  studentInfoComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
     let studentComplete = appData.studentInfoIsComplete(countryCodes, stateCodes);
-    if (!studentComplete && this.appDataService) {
+    if (!studentComplete) {
       this.appDataService.reviewCompleted.next(false);
     }
     return this.paymentComplete() || studentComplete;
@@ -106,15 +110,15 @@ export class AppComponent implements OnInit {
   }
 
   reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    const reviewComplete = (this.reviewComplete && this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    const reviewComplete = (this.reviewComplete || this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
     return this.paymentComplete() || reviewComplete;
   }
 
   registrationPaid = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    return this.paymentComplete() || (!this.linkDisabled(appData, countryCodes, stateCodes) && appData.acProgramData?.programs.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0);
-  }
-
-  paymentComplete = (): boolean => {
-    return this.paymentReceived && !!this.transactionId;
+    return this.paymentComplete()
+      || (!this.linkDisabled(appData, countryCodes, stateCodes)
+        && appData.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered).length === 0
+        && appData.programData?.certificateGroups.filter(g => g.isSelected).length === 0
+        && appData.programData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0);
   }
 }
