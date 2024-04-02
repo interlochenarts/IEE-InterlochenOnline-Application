@@ -12,6 +12,7 @@ import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 export class ProgramTypeComponent implements OnInit {
   isLoading: boolean = true;
   appData: ApplicationData;
+  appDataTime: number = 0;
   _selectedDivision: string;
   divisionOptions: Array<SalesforceOption>;
 
@@ -34,27 +35,29 @@ export class ProgramTypeComponent implements OnInit {
   }
 
   saveAgeGroup(): void {
+    this.appDataService.reviewCompleted.next(false);
     this.appDataService.saveAgeGroup(this.selectedDivision);
   }
 
   ngOnInit(): void {
     this.appDataService.applicationData.asObservable().subscribe(app => {
       if (app) {
+        console.info('program-type updating app data');
         this.appData = app;
 
-        // pre-check boxes for app choices in the main program list
-        this.appData.acProgramData.programs.forEach(acp => {
-          if (acp.sessionId) { // ignore stub programs for IO bundles
-            this.appData.programData.programs.find(p => p.id === acp.id).isSelected = true;
-          }
-        });
-
-        // pre-check boxes for app choices in the main private lesson list
-        this.appData.acProgramData.privateLessons.forEach(acp => {
-          if (!acp.artsAreaList.includes('Music')) {
-            this.appData.programData.privateLessons.find(p => p.id === acp.id).isSelected = true;
-          }
-        });
+        // // pre-check boxes for app choices in the main program list
+        // this.appData.acProgramData.programs.forEach(acp => {
+        //   if (acp.sessionId) { // ignore stub programs for IO bundles
+        //     this.appData.programData.programs.find(p => p.id === acp.id).isSelected = true;
+        //   }
+        // });
+        //
+        // // pre-check boxes for app choices in the main private lesson list
+        // this.appData.acProgramData.privateLessons.forEach(acp => {
+        //   if (!acp.artsAreaList.includes('Music')) {
+        //     this.appData.programData.privateLessons.find(p => p.id === acp.id).isSelected = true;
+        //   }
+        // });
 
         this.divisionOptions = [];
         for (const [value, label] of this.appData.programData.divisions.entries()) {
@@ -62,6 +65,7 @@ export class ProgramTypeComponent implements OnInit {
         }
 
         this.isLoading = false;
+        this.appDataTime = new Date().getTime();
       } else {
         this.appData = new ApplicationData();
       }

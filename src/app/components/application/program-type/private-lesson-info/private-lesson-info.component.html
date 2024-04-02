@@ -1,60 +1,55 @@
-<div *ngIf="isLoading">
-  <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i> Loading
-</div>
-
-<div *ngIf="!isLoading">
-  <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
-    <h5>Selected Private Lessons</h5>
-    <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 p-4 my-3"
-         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
-      <div class="d-flex align-items-end">
-        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving"
-             (click)="clickProgram(program, newLessonModal, ListTypes.SELECTED)">
-          <input type="checkbox" [id]="program.id" [name]="program.id"
-                 [checked]="program.isSelected"
-                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
-          <label class="clickable">
-            <i class="fa fa-check ps-4"></i>
-          </label>
-        </div>
-        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
-          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-        </div>
-        <div>
-          <h4 class="m-0">{{ program.name }} {{ program.selectedInstrument }}</h4>
-        </div>
+<div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
+  <h5>Selected Private Lessons</h5>
+  <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 p-4 my-3"
+       [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
+    <div class="d-flex align-items-end">
+      <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving"
+           (click)="clickProgram(program, newLessonModal, ListTypes.SELECTED)">
+        <input type="checkbox" [id]="program.id" [name]="program.id"
+               [checked]="program.isSelected"
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
+        <label class="clickable">
+          <i class="fa fa-check ps-4"></i>
+        </label>
       </div>
-      <div class="col-12">
-        <div class="list-group list-group-flush my-3">
-          <div class="list-group-item">{{ program.lessonCount }} Lessons</div>
-        </div>
-        <div>
-          <a href="javascript:void(0);" (click)="addLessons(program, addLessonsModal, ListTypes.SELECTED)"> Update Lessons</a>
-        </div>
+      <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+      </div>
+      <div>
+        <h4 class="m-0">{{ program.name }} {{ program.selectedInstrument }}</h4>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="list-group list-group-flush my-3">
+        <div class="list-group-item">{{ program.lessonCount }} Lessons</div>
+      </div>
+      <div>
+        <a href="javascript:void(0);" (click)="addLessons(program, addLessonsModal, ListTypes.SELECTED)"> Update
+          Lessons</a>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="col-12 my-4">
-    <h5>Available Private Lessons</h5>
-    <div *ngFor="let program of filteredLessons"
-         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
-         (click)="clickProgram(program, newLessonModal, ListTypes.FILTERED)"
-         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
-      <div class="d-flex align-items-end">
-        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving">
-          <input type="checkbox" [id]="program.id" [name]="program.id"
-                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)">
-          <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
-            <i class="fa fa-check ps-4"></i>
-          </label>
-        </div>
-        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
-          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
-        </div>
-        <div>
-          <h4 class="m-0">{{ program.name }}</h4>
-        </div>
+<div class="col-12 my-4">
+  <h5>Available Private Lessons</h5>
+  <div *ngFor="let program of filteredLessons"
+       class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
+       (click)="clickProgram(program, newLessonModal, ListTypes.FILTERED)"
+       [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
+    <div class="d-flex align-items-end">
+      <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving">
+        <input type="checkbox" [id]="program.id" [name]="program.id"
+               [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)">
+        <label [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
+          <i class="fa fa-check ps-4"></i>
+        </label>
+      </div>
+      <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+        <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+      </div>
+      <div>
+        <h4 class="m-0">{{ program.name }}</h4>
       </div>
     </div>
   </div>

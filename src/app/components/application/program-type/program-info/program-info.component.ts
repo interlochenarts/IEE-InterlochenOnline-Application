@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Program} from '../../../../_classes/program';
@@ -11,7 +11,9 @@ import {ListTypes} from "../../../../_enums/enums";
   templateUrl: './program-info.component.html',
   styleUrls: ['../program-type.component.less', 'program-info.component.less']
 })
-export class ProgramInfoComponent implements OnInit {
+export class ProgramInfoComponent implements OnInit, OnChanges {
+  @Input() ageGroup: string;
+  @Input() appDataTime: number;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>>;
   selectedArtsArea = '';
@@ -23,42 +25,43 @@ export class ProgramInfoComponent implements OnInit {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
-  isLoading: boolean = true;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
-
-        this.appData.acProgramData.programs.forEach(acp => {
-          this.appDataService.addDaysSelected(acp);
-        });
-        this.updateArtsAreas();
-        this.isLoading = false;
-      } else {
-        this.appData = new ApplicationData();
-      }
-    });
+    this.appData = this.appDataService.applicationData.getValue();
+    this.updateAreasOfStudy();
 
     this.appDataService.daysSelectedBySession.asObservable().subscribe(daysSelected => {
       if (daysSelected) {
         this.daysSelectedBySession = daysSelected;
       }
-    })
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.ageGroup) {
+      console.info('updating arts areas because ageGroup changed');
+    } else if (changes.appDataTime) {
+      this.appData = this.appDataService.applicationData.getValue();
+    }
+    this.updateAreasOfStudy();
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.ageGroup;
+    return this.ageGroup;
   }
 
   get filteredPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => !p.isSelected &&
-      ((p.division === this.appData.ageGroup) &&
-        (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-        (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+    if (this.appData) {
+      return this.appData.programData.programs.filter(p => !p.isSelected &&
+        ((p.division === this.ageGroup) &&
+          (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
+          (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+    }
+
+    return [];
   }
 
   get selectedPrograms(): Array<Program> {
@@ -69,8 +72,7 @@ export class ProgramInfoComponent implements OnInit {
     return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered && p.sessionId));
   }
 
-
-  updateArtsAreas(): void {
+  updateAreasOfStudy(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {

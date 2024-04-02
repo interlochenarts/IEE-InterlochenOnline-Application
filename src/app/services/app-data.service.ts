@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, findIndex} from 'rxjs';
 import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
@@ -104,7 +104,6 @@ export class AppDataService {
   }
 
   public saveApplication(): void {
-    this.reviewCompleted.next(false);
     const appData: ApplicationData = this.applicationData.getValue();
     const appId: string = this.applicationId.getValue();
 
@@ -138,7 +137,6 @@ export class AppDataService {
   }
 
   public saveAgeGroup(ageGroup: string): void {
-    this.reviewCompleted.next(false);
     const appId: string = this.applicationId.getValue();
     const isSaving: boolean = this.isSaving.getValue();
 
@@ -234,6 +232,7 @@ export class AppDataService {
         } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
+          group.bundleChoices = programIds.split(';');
           const appChoices = result.split(';');
           const appChoiceIds = []
           const appChoiceSessions = [];
@@ -258,6 +257,25 @@ export class AppDataService {
           //   },
           //   {buffer: false, escape: false}
           // );
+          console.info('bundle saved, updating app data');
+          group.getSelectedPrograms(appData.ageGroup)
+            .forEach((p, index) => {
+              p.isSelected = true;
+              p.certificateGroupId = group.id;
+              // move newly selected from programData to acProgramData
+              const mainProgramIndex = appData.programData.programs.findIndex(fp => p.id === fp.id);
+              if (mainProgramIndex > -1) {
+                // might not find one because it's unscheduled (session-less)
+                const mainProgram = appData.programData.programs[mainProgramIndex];
+                mainProgram.isSelected = true;
+                mainProgram.certificateGroupId = group.id;
+                mainProgram.appChoiceId = appChoiceIds[index];
+
+                console.log('updated', mainProgram);
+                appData.programData.programs.splice(mainProgramIndex, 1);
+                appData.acProgramData.programs.push(mainProgram);
+              }
+            });
           this.applicationData.next(appData);
         }
         group.isSaving = false;
@@ -284,13 +302,21 @@ export class AppDataService {
         } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
+          group.getSelectedPrograms(appData.ageGroup).forEach(p => p.isSelected = false);
+          group.getSelectedPrograms(appData.ageGroup).forEach((p: Program) => {
+            const acProgram = appData.acProgramData.programs.find(acp => acp.id === p.id);
+            acProgram.isSelected = false;
+            acProgram.certificateGroupId = null;
+          });
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
+
           // console.info('removed Certificate Group');
           // console.dir(group);
           //TODO: Update Payment info?
         }
         group.isSaving = false;
+        console.info('bundle removed, updating app data');
         this.applicationData.next(appData);
       },
       {buffer: false, escape: false}
