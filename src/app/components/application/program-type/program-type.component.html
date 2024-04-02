@@ -20,7 +20,8 @@
   <div ngbAccordion [closeOthers]="true" #typeAccordion>
     <div ngbAccordionItem>
       <h2 ngbAccordionHeader>
-        <button ngbAccordionButton (click)="changeType(typeAccordion)">Courses</button>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Courses
+          <span class="smaller ps-3">{{ selectedCoursesText }}</span></button>
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
@@ -30,7 +31,8 @@
     </div>
     <div ngbAccordionItem *ngIf="selectedDivision !== 'Kids'">
       <h2 ngbAccordionHeader>
-        <button ngbAccordionButton (click)="changeType(typeAccordion)">Certificate Programs</button>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Certificate Programs
+          <span class="smaller ps-3">{{ selectedCertificatesText }}</span></button>
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
@@ -40,7 +42,8 @@
     </div>
     <div ngbAccordionItem>
       <h2 ngbAccordionHeader>
-        <button ngbAccordionButton (click)="changeType(typeAccordion)">Private Lessons</button>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">Private Lessons
+          <span class="smaller ps-3">{{ selectedLessonsText }}</span></button>
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
