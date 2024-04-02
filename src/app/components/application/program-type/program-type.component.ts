@@ -45,20 +45,6 @@ export class ProgramTypeComponent implements OnInit {
         console.info('program-type updating app data');
         this.appData = app;
 
-        // // pre-check boxes for app choices in the main program list
-        // this.appData.acProgramData.programs.forEach(acp => {
-        //   if (acp.sessionId) { // ignore stub programs for IO bundles
-        //     this.appData.programData.programs.find(p => p.id === acp.id).isSelected = true;
-        //   }
-        // });
-        //
-        // // pre-check boxes for app choices in the main private lesson list
-        // this.appData.acProgramData.privateLessons.forEach(acp => {
-        //   if (!acp.artsAreaList.includes('Music')) {
-        //     this.appData.programData.privateLessons.find(p => p.id === acp.id).isSelected = true;
-        //   }
-        // });
-
         this.divisionOptions = [];
         for (const [value, label] of this.appData.programData.divisions.entries()) {
           this.divisionOptions.push(new SalesforceOption(label, value, false));
