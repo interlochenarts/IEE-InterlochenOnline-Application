@@ -204,6 +204,7 @@ export class AppDataService {
               if (payment && payment !== 'null') {
                 appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
               }
+              this.applicationData.next(appData);
             },
             {buffer: false, escape: false}
           );
@@ -257,6 +258,7 @@ export class AppDataService {
           //   },
           //   {buffer: false, escape: false}
           // );
+          this.applicationData.next(appData);
         }
         group.isSaving = false;
       },
@@ -289,6 +291,7 @@ export class AppDataService {
           //TODO: Update Payment info?
         }
         group.isSaving = false;
+        this.applicationData.next(appData);
       },
       {buffer: false, escape: false}
     );

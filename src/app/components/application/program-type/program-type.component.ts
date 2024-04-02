@@ -27,6 +27,7 @@ export class ProgramTypeComponent implements OnInit {
   set selectedDivision(value) {
     this._selectedDivision = value;
     this.appData.ageGroup = value;
+    this.appDataService.applicationData.next(this.appData);
   }
 
   constructor(private appDataService: AppDataService) {
