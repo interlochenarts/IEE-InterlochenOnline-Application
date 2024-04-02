@@ -131,6 +131,7 @@ export class PrivateLessonInfoComponent implements OnInit {
           if (p.id === program.id && (p.artsArea !== 'Music' || p.selectedInstrument === program.selectedInstrument)) { // have to id by instrument because multiples
             this.appDataService.removeProgram(p);
             this.appData.acProgramData.privateLessons.splice(x, 1);
+            this.appDataService.applicationData.next(this.appData);
           }
         }));
         // sync up the filtered list.

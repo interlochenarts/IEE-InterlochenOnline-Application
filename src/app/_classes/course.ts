@@ -24,13 +24,13 @@ export class Course {
   }
 
   getProgramsByDivision(division: string): Array<Program> {
-    console.log('division', division);
+    // console.log('division', division);
     let programs: Array<Program> = this.programsByDivision.get(division);
     if (this.displayOrder === 1) {
       // remove the sessionless (stub) program from the list
       programs = programs.filter(p => p.sessionId);
     }
-    console.log(this.programsByDivision);
+    // console.log(this.programsByDivision);
     if (programs) {
       programs.sort(Program.sortBySessionStartNullsFirst);
     }

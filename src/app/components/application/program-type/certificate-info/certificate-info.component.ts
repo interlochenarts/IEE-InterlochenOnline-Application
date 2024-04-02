@@ -57,6 +57,6 @@ export class CertificateInfoComponent implements OnInit {
   }
 
   removeCertificate(group: CertificateGroup) {
-    this.appDataService.removeBundle(group)
+    this.appDataService.removeBundle(group);
   }
 }
