@@ -1,4 +1,4 @@
-import {Component, Input, input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
