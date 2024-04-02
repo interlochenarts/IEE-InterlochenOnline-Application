@@ -303,9 +303,14 @@ export class AppDataService {
         } else {
           group.getSelectedPrograms(appData.ageGroup).forEach(p => p.isSelected = false);
           group.getSelectedPrograms(appData.ageGroup).forEach((p: Program) => {
-            const acProgram = appData.acProgramData.programs.find(acp => acp.id === p.id);
-            acProgram.isSelected = false;
-            acProgram.certificateGroupId = null;
+            const acProgramIndex = appData.acProgramData.programs.findIndex(acp => acp.id === p.id);
+            if (acProgramIndex > -1) {
+              const acProgram = appData.acProgramData.programs[acProgramIndex];
+              acProgram.isSelected = false;
+              acProgram.certificateGroupId = null;
+              appData.acProgramData.programs.splice(acProgramIndex, 1);
+              appData.programData.programs.push(acProgram);
+            }
           });
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
