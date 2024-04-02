@@ -271,7 +271,6 @@ export class AppDataService {
                 mainProgram.certificateGroupId = group.id;
                 mainProgram.appChoiceId = appChoiceIds[index];
 
-                console.log('updated', mainProgram);
                 appData.programData.programs.splice(mainProgramIndex, 1);
                 appData.acProgramData.programs.push(mainProgram);
               }

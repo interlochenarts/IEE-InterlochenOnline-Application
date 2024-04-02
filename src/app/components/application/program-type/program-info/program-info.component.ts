@@ -41,9 +41,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.ageGroup) {
-      console.info('updating arts areas because ageGroup changed');
-    } else if (changes.appDataTime) {
+    if (changes.appDataTime) {
       this.appData = this.appDataService.applicationData.getValue();
     }
     this.updateAreasOfStudy();
