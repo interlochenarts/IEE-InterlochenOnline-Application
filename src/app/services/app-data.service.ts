@@ -258,7 +258,7 @@ export class AppDataService {
           //   {buffer: false, escape: false}
           // );
           console.info('bundle saved, updating app data');
-          group.getSelectedPrograms(appData.ageGroup)
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup)
             .forEach((p, index) => {
               p.isSelected = true;
               p.certificateGroupId = group.id;
@@ -301,8 +301,8 @@ export class AppDataService {
         } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
-          group.getSelectedPrograms(appData.ageGroup).forEach(p => p.isSelected = false);
-          group.getSelectedPrograms(appData.ageGroup).forEach((p: Program) => {
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup).forEach(p => p.isSelected = false);
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup).forEach((p: Program) => {
             const acProgramIndex = appData.acProgramData.programs.findIndex(acp => acp.id === p.id);
             if (acProgramIndex > -1) {
               const acProgram = appData.acProgramData.programs[acProgramIndex];

@@ -10,9 +10,9 @@
 
 <div *ngFor="let program of selectedPrograms" class="my-2">
   <div>
-    <b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+    <b>{{program.name}}<span *ngIf="appData.ageGroup !== program.division"> ({{ program.division }})</span><span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
   </div>
-  <div class="ms-3">Session: {{program.sessionDates}} </div>
+  <div class="ms-3">{{program.sessionDates}} </div>
   <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
@@ -28,7 +28,8 @@
 <div *ngFor="let cert of selectedCertificates" class="my-2">
   <div><b>{{cert.name}}</b>
     <ul>
-      <li *ngFor="let program of cert.getSelectedPrograms(appData.ageGroup)">{{program.courseName}} - {{program.sessionDates}}</li>
+      <li *ngFor="let program of cert.getAllSelectedPrograms()">{{program.courseName}}
+        <span *ngIf="appData.ageGroup !== program.division">({{program.division}})</span> - {{program.sessionDates}}</li>
     </ul>
   </div>
 </div>
@@ -43,10 +44,10 @@
   </div>
 </div>
 <div *ngFor="let program of selectedPrivateLessons" class="my-2">
-  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+  <div><b>{{program.name}}<span *ngIf="appData.ageGroup !== program.division"> ({{ program.division }})</span> <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
     <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
   </div>
-  <div>Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
+  <div>Number of lessons: {{program.lessonCount}} <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
   <div>Meets on various days (selected by student according to instructor's availability)</div>
 </div>
 

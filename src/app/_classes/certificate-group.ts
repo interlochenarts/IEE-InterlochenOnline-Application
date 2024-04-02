@@ -24,16 +24,33 @@ export class CertificateGroup {
     return certificateGroup;
   }
 
-  getSelectedPrograms(selectedDivision: string): Program[] {
+  getSelectedProgramsByAgeGroup(ageGroup: string): Program[] {
     const selected: Program[] = [];
     this.bundleChoices.forEach(bc => {
       this.courses.forEach(c => {
-        const program = c.getProgramsByDivision(selectedDivision).find(p => p.id === bc);
+        const program = c.getProgramsByDivision(ageGroup).find(p => p.id === bc);
         if (program) {
           selected.push(program);
         }
       });
     });
+    return selected.sort(Program.sortBySessionStartNullsLast);
+  }
+
+  getAllSelectedPrograms(): Program[] {
+    const selected: Program[] = [];
+    this.bundleChoices.forEach(bc => {
+      this.courses.forEach(c => {
+        for (const [key, programs ] of c.programsByDivision.entries()) {
+          console.info('key', key);
+          const program = programs.find(p => p.id === bc);
+          if (program) {
+            selected.push(program);
+          }
+        }
+      });
+    });
+    console.dir(selected);
     return selected.sort(Program.sortBySessionStartNullsLast);
   }
 }

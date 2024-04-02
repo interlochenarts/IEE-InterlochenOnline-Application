@@ -31,6 +31,36 @@ export class ProgramTypeComponent implements OnInit {
     this.appDataService.applicationData.next(this.appData);
   }
 
+  get selectedCoursesText(): string {
+    const courseCount = this.appData.acProgramData.programs.filter(p => p.isSelected).length;
+    if (courseCount > 0) {
+      return `${courseCount} Selected`;
+    }
+
+    // return empty string if no courses
+    return '';
+  }
+
+  get selectedCertificatesText(): string {
+    const certCount = this.appData.programData.certificateGroups.filter(cg => cg.isSelected).length;
+    if (certCount > 0) {
+      return `${certCount} Selected`;
+    }
+
+    // return empty string if no certs
+    return '';
+  }
+
+  get selectedLessonsText(): string {
+    const lessonCount = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected).length;
+    if (lessonCount > 0) {
+      return `${lessonCount} Selected`;
+    }
+
+    // return empty string if no lessons
+    return '';
+  }
+
   constructor(private appDataService: AppDataService) {
   }
 
