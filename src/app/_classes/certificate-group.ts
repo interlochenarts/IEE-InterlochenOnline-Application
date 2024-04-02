@@ -9,6 +9,9 @@ export class CertificateGroup {
   isSelected: boolean;
   isSaving: boolean;
   bundleSize: number;
+  /**
+   * List of Program/Major ids
+   */
   bundleChoices: Array<string> = [];
   appChoiceIds: Array<string> = [];
 
@@ -21,7 +24,7 @@ export class CertificateGroup {
     return certificateGroup;
   }
 
-  selectedPrograms(selectedDivision: string): Program[] {
+  getSelectedPrograms(selectedDivision: string): Program[] {
     const selected: Program[] = [];
     this.bundleChoices.forEach(bc => {
       this.courses.forEach(c => {

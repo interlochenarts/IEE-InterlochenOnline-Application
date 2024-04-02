@@ -24,7 +24,7 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
-          <iee-program-info></iee-program-info>
+          <iee-program-info [appDataTime]="appDataTime" [ageGroup]="appData.ageGroup"></iee-program-info>
         </div>
       </div>
     </div>
@@ -34,7 +34,7 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
-          <iee-certificate-info></iee-certificate-info>
+          <iee-certificate-info [appDataTime]="appDataTime"></iee-certificate-info>
         </div>
       </div>
     </div>
@@ -44,7 +44,7 @@
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
-          <iee-private-lesson-info></iee-private-lesson-info>
+          <iee-private-lesson-info [appDataTime]="appDataTime"></iee-private-lesson-info>
         </div>
       </div>
     </div>

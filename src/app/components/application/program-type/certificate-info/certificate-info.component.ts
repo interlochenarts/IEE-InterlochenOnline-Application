@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -10,8 +10,8 @@ import {CertificateGroup} from "../../../../_classes/certificate-group";
   templateUrl: './certificate-info.component.html',
   styleUrls: ['../program-type.component.less', 'certificate-info.component.less']
 })
-export class CertificateInfoComponent implements OnInit {
-  isLoading: boolean = true;
+export class CertificateInfoComponent implements OnInit, OnChanges {
+  @Input() appDataTime: number = 0;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedGroup: CertificateGroup;
@@ -20,21 +20,13 @@ export class CertificateInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
+    this.appData = this.appDataService.applicationData.getValue();
+  }
 
-        this.appData.acProgramData.programs.forEach(p => {
-          if (p.isSelected) {
-            this.addDaysSelected(p);
-          }
-        });
-
-        this.isLoading = false;
-      } else {
-        this.appData = new ApplicationData();
-      }
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.appDataTime) {
+      this.appData = this.appDataService.applicationData.getValue();
+    }
   }
 
   private addDaysSelected(p: Program): void {

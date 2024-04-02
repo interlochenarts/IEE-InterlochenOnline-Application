@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from '../../../../services/app-data.service';
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -11,9 +11,9 @@ import {SalesforceOption} from "../../../../_classes/salesforce-option";
   templateUrl: './private-lesson-info.component.html',
   styleUrls: ['../program-type.component.less', 'private-lesson-info.component.less']
 })
-export class PrivateLessonInfoComponent implements OnInit {
+export class PrivateLessonInfoComponent implements OnInit, OnChanges {
+  @Input() appDataTime: number = 0;
   appData: ApplicationData;
-  isLoading: boolean = true;
   modalList: ListTypes;
   daysSelectedBySession: Map<string, Set<string>>;
 
@@ -49,28 +49,19 @@ export class PrivateLessonInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
-
-        // pre-check boxes for app choices in the main list
-        this.appData.acProgramData.privateLessons.forEach(acp => {
-          if (!acp.artsAreaList.includes('Music')) {
-            this.appData.programData.privateLessons.find(p => p.id === acp.id).isSelected = true;
-          }
-        });
-
-        this.isLoading = false;
-      } else {
-        this.appData = new ApplicationData();
-      }
-    });
+    this.appData = this.appDataService.applicationData.getValue();
 
     this.appDataService.daysSelectedBySession.asObservable().subscribe(days => {
       if (days) {
         this.daysSelectedBySession = days;
       }
     });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.appDataTime) {
+      this.appData = this.appDataService.applicationData.getValue();
+    }
   }
 
   clickProgram(program: Program, modal: any, list: ListTypes): void {
