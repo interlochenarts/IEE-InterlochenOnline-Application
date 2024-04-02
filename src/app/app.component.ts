@@ -94,31 +94,20 @@ export class AppComponent implements OnInit {
   }
 
   studentInfoComplete(appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean {
-    let result = appData.studentInfoIsComplete(countryCodes, stateCodes);
-    if (!result) {
-      this.reviewComplete = false;
+    let studentComplete = appData.studentInfoIsComplete(countryCodes, stateCodes);
+    if (!studentComplete && this.appDataService) {
+      this.appDataService.reviewCompleted.next(false);
     }
-    return result;
+    return this.paymentComplete() || studentComplete;
   }
 
   selectProgramComplete = (appData: ApplicationData): boolean => {
-    if (this.paymentComplete()) {
-      return true;
-    } else if (appData.hasPrograms()) {
-      return true;
-    }
-
-    return false;
+    return this.paymentComplete() || appData.hasPrograms();
   }
 
   reviewRegistrationComplete = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
-    let result = (this.reviewComplete || this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
-    if (this.paymentComplete() || result) {
-      return true;
-    } else {
-      this.reviewComplete = false;
-      return false;
-    }
+    const reviewComplete = (this.reviewComplete && this.registrationPaid(appData, countryCodes, stateCodes)) && this.studentInfoComplete(appData, countryCodes, stateCodes) && this.selectProgramComplete(appData);
+    return this.paymentComplete() || reviewComplete;
   }
 
   registrationPaid = (appData: ApplicationData, countryCodes: Array<CountryCode>, stateCodes: Array<StateCode>): boolean => {
