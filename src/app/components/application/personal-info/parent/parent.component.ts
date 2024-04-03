@@ -173,7 +173,7 @@ export class ParentComponent implements OnInit {
 
   removeParent(parentContactId: string): void {
     this.isDisable = true;
-    console.log(`removing ${parentContactId}`);
+    console.info(`removing ${parentContactId}`);
     const pi = this.parents.findIndex(p => p.contactId === parentContactId);
     if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
       this.deletingParentId = parentContactId;
