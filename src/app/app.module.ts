@@ -24,6 +24,8 @@ import {ProgramTypeComponent} from './components/application/program-type/progra
 import {CertificateInfoComponent} from './components/application/program-type/certificate-info/certificate-info.component';
 import { PrivateLessonInfoComponent } from './components/application/program-type/private-lesson-info/private-lesson-info.component';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
+import {NewLessonModalComponent} from './components/application/program-type/private-lesson-info/new-lesson-modal/new-lesson-modal.component';
+import {AddLessonModalComponent} from './components/application/program-type/private-lesson-info/add-lesson-modal/add-lesson-modal.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import {AutocompleteLibModule} from "angular-ng-autocomplete";
     AppRoutingModule,
     FormsModule,
     NgbModule,
-    AutocompleteLibModule
+    AutocompleteLibModule,
+    NewLessonModalComponent,
+    AddLessonModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
