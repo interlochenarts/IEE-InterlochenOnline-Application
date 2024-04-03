@@ -34,7 +34,7 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.acProgramData.privateLessons.filter(p => (p.isSelected && !p.isRegistered));
+    return this.appData.acProgramData.privateLessons.filter(p => (p.isSelected && p.division === this.appData.ageGroup));
   }
 
   get programsDisabled(): boolean {

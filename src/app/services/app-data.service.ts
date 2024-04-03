@@ -275,6 +275,10 @@ export class AppDataService {
                 appData.acProgramData.programs.push(mainProgram);
               }
             });
+          // force an update to the group in appdata
+          const groupIndex = appData.programData.certificateGroups.findIndex(g => g.id === group.id);
+          appData.programData.certificateGroups[groupIndex] = group;
+          // make sure appData gets a new value for observers
           this.applicationData.next(appData);
         }
         group.isSaving = false;
