@@ -42,7 +42,7 @@ export class CertificateGroup {
     this.bundleChoices.forEach(bc => {
       this.courses.forEach(c => {
         for (const [key, programs ] of c.programsByDivision.entries()) {
-          console.info('key', key);
+          // console.info('key', key);
           const program = programs.find(p => p.id === bc);
           if (program) {
             selected.push(program);
@@ -50,7 +50,7 @@ export class CertificateGroup {
         }
       });
     });
-    console.dir(selected);
+    // console.dir(selected);
     return selected.sort(Program.sortBySessionStartNullsLast);
   }
 }

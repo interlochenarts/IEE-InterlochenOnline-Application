@@ -275,6 +275,7 @@ export class AppDataService {
                 appData.acProgramData.programs.push(mainProgram);
               }
             });
+          // make sure appData gets a new value for observers
           this.applicationData.next(appData);
         }
         group.isSaving = false;
@@ -339,7 +340,6 @@ export class AppDataService {
         if (result.startsWith('ERR')) {
           console.error(result);
         } else {
-          console.log('updated program: ' + result);
           if (!program.isRegistered) {
             program.lessonCount += program.lessonCountAdd;
             program.lessonCountAdd = 0;
