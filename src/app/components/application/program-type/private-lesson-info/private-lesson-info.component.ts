@@ -76,7 +76,6 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
       && !this.appData.isRegistered && !this.appData.isCancelOrWithdrawn, list) && !program.isSaving) {
 
-      program.isSaving = true;
       if (!program.isSelected) {
         // if music, ask for instrument
         if (this.isMusic) {
@@ -108,8 +107,6 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           this.appData.acProgramData.privateLessons.push(pgmCopy);
           this.appDataService.saveProgram(pgmCopy);
           program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
-
-          program.isSaving = false;
         });
 
       } else {
@@ -125,7 +122,6 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
         this.appData.programData.privateLessons.forEach((p => {
           if (p.id === program.id) { // only one music program in filtered list
             p.isSelected = false;
-            p.isSaving = false;
           }
         }));
       }
