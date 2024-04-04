@@ -119,6 +119,6 @@ export class AppComponent implements OnInit {
       || (!this.linkDisabled(appData, countryCodes, stateCodes)
         && appData.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered).length === 0
         && appData.programData?.certificateGroups.filter(g => g.isSelected).length === 0
-        && appData.programData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0);
+        && appData.acProgramData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0).length === 0);
   }
 }
