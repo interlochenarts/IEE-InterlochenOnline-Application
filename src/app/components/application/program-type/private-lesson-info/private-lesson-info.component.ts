@@ -1,10 +1,11 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from '../../../../services/app-data.service';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Program} from "../../../../_classes/program";
 import {ListTypes} from "../../../../_enums/enums";
 import {SalesforceOption} from "../../../../_classes/salesforce-option";
+import {PrivateLessonResult} from '../../../../_classes/private-lesson-result';
 
 @Component({
   selector: 'iee-private-lesson-info',
@@ -14,17 +15,20 @@ import {SalesforceOption} from "../../../../_classes/salesforce-option";
 export class PrivateLessonInfoComponent implements OnInit, OnChanges {
   @Input() appDataTime: number = 0;
   appData: ApplicationData;
-  modalList: ListTypes;
   daysSelectedBySession: Map<string, Set<string>>;
 
-  modalInstrumentChoice: string;
-  modalLessonCount: number;
-  modalLessonCountAdd: number;
   modalExistingCount: number;
+  modalListType: ListTypes;
   isMusic: boolean;
   isRegistered: boolean;
+  selectedProgram: Program;
   selectedProgramInstruments: Array<SalesforceOption> = [];
-  otherInstrument: string;
+
+  modalOptions = {
+    ariaLabelledBy: 'modal-basic-title',
+    animation: true,
+    size: 'lg',
+  };
 
   get filteredLessons(): Array<Program> {
     return this.appData.programData.privateLessons.filter(p =>
@@ -39,10 +43,6 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
 
   get programsDisabled(): boolean {
     return false;
-  }
-
-  get isOtherInstrument() :boolean {
-    return this.modalInstrumentChoice === 'Other';
   }
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
@@ -65,8 +65,8 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
   }
 
   clickProgram(program: Program, modal: any, list: ListTypes): void {
-    this.modalList = list;
     this.isMusic = program.artsAreaList.includes('Music');
+    this.selectedProgram = program;
 
     if (!program.isDisabled(this.daysSelectedBySession,
       (this.appData.payment.tuitionPaid && this.appData.payment.amountOwed >= 0)
@@ -74,47 +74,39 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
 
       program.isSaving = true;
       if (!program.isSelected) {
-
-
         // if music, ask for instrument
         if (this.isMusic) {
           this.selectedProgramInstruments = program.programOptionsArray;
           // disable instruments from list if they exist in currently selected courses selected instrument, but only for private lessons.
-          this.selectedProgramInstruments.forEach((o: SalesforceOption) => {
+          this.selectedProgramInstruments.forEach((option: SalesforceOption) => {
             this.appData.acProgramData.privateLessons.forEach(p => {
-              if (p.isPrivateLesson && p.selectedInstrument === o.value) {
-                o.disabled = true;
+              if (p.isPrivateLesson && p.selectedInstrument === option.value) {
+                option.disabled = true;
               }
             });
           });
         }
 
-        this.modalLessonCount = !this.modalLessonCount ? null : this.modalLessonCount;
-        this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title', animation: true}).result
-          .then((newModalResult: string) => {
-            const result = JSON.parse(newModalResult);
+        const modalRef = this.modalService.open(modal, this.modalOptions);
 
-            if (this.isMusic) {
-              program.selectedInstrument = result.instrumentChoice;
-                program.selectedInstrumentOther = this.otherInstrument;
-            }
-            program.lessonCount = result.lessonCount;
+        modalRef.closed.subscribe((newLesson: string) => {
+          const result: PrivateLessonResult = JSON.parse(newLesson);
 
-            program.isSelected = true;
+          if (this.isMusic) {
+            program.selectedInstrument = result.instrument;
+            program.selectedInstrumentOther = result.otherInstrument;
+          }
+          program.lessonCount = result.lessonCount;
 
-            let pgmCopy: Program = Program.duplicateMe(program);
-            this.appData.acProgramData.privateLessons.push(pgmCopy);
-            this.appDataService.saveProgram(pgmCopy);
-            program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
+          program.isSelected = true;
 
-            program.isSaving = false;
-            this.clearModalVars();
-          }, (reason: string) => {
-            // console.info(`Not Saving: Instrument closed (${reason})`);
-            program.isSaving = false;
-            this.clearModalVars();
-          });
+          let pgmCopy: Program = Program.duplicateMe(program);
+          this.appData.acProgramData.privateLessons.push(pgmCopy);
+          this.appDataService.saveProgram(pgmCopy);
+          program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
 
+          program.isSaving = false;
+        });
 
       } else {
         // remove program from 'selected' list in memory
@@ -136,52 +128,24 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
     }
   }
 
-  addLessons(program: Program, modal: any, modalList: ListTypes): void {
-    this.modalList = modalList;
-    this.modalExistingCount = program.lessonCount;
-    this.modalLessonCountAdd = program.isRegistered ? program.lessonCountAdd : program.lessonCount;
-    this.modalLessonCountAdd = this.modalLessonCountAdd === 0 ? null : this.modalLessonCountAdd;
-    this.modalService.open(modal, {ariaLabelledBy: 'modal-basic-title', animation: true}).result
-      .then(lessonResult => {
-        if (program.isRegistered) {
-          program.lessonCountAdd = this.modalLessonCountAdd || 0;
-        } else {
-          program.lessonCount = this.modalLessonCountAdd || 0;
-        }
-        this.appDataService.updateProgram(program);
-        program.isSaving = false;
-        delete this.modalLessonCountAdd;
-        delete this.modalList;
-      }, (reason: string) => {
-        // console.info(`Not Saving: Instrument closed (${reason})`);
-        program.isSaving = false;
-        delete this.modalLessonCountAdd;
-        delete this.modalList;
-      });
-  }
-
-  closeAddLessonModal(modal: NgbActiveModal) {
-    const values = {
-      lessonCount: this.modalLessonCount
+  addLessons(program: Program, modal: any): void {
+    if (program.isRegistered) {
+      this.modalExistingCount = program.lessonCountAdd;
+    } else {
+      this.modalExistingCount = program.lessonCount;
     }
-    modal.close(JSON.stringify(values));
-  }
-
-  closeNewLessonModal(modal: NgbActiveModal) {
-    const values = {
-      instrumentChoice: this.modalInstrumentChoice,
-      lessonCount: this.modalLessonCount
-    }
-    modal.close(JSON.stringify(values));
-  }
-
-  private clearModalVars() {
-    // clear stuff
-    this.modalInstrumentChoice = null;
-    this.modalLessonCount = null;
-    this.isMusic = null;
-    this.isRegistered = null;
-    this.otherInstrument = null;
+    this.modalListType = program.isRegistered ? ListTypes.REGISTERED : ListTypes.SELECTED;
+    this.selectedProgram = program;
+    const modalRef = this.modalService.open(modal, this.modalOptions);
+    modalRef.closed.subscribe((lessonResult: string) => {
+      const result = JSON.parse(lessonResult);
+      if (program.isRegistered) {
+        program.lessonCountAdd = result.lessonCountAdd || 0;
+      } else {
+        program.lessonCount = result.lessonCountAdd || 0;
+      }
+      this.appDataService.updateProgram(program);
+    });
   }
 
   protected readonly ListTypes = ListTypes;

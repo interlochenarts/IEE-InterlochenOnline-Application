@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <h4 class="modal-title" id="new-lesson-modal-basic-title">
+    {{program.name}}
+  </h4>
+  <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
+  </button>
+</div>
+<div class="modal-body">
+  <h5 *ngIf="isMusic">Select an Instrument and Number of lessons</h5>
+  <h5 *ngIf="!isMusic">Select Number of lessons</h5>
+  <label *ngIf="isMusic" for="selectedInstrument" class="mt-4 required">Instrument</label>
+  <div *ngIf="isMusic" class="default required">
+    <div class="select">
+      <select [(ngModel)]="data.instrument"
+              name="selectedInstrument"
+              class="w-100"
+              id="selectedInstrument">
+        <option *ngFor="let instrument of instrumentOptions" [value]="instrument.value"
+                [disabled]="instrument.disabled"
+                [defaultSelected]="instrument.defaultValue">{{ instrument.label }}
+        </option>
+      </select>
+    </div>
+
+    <label *ngIf="isOtherInstrument" class="mt-4 required">Other Instrument</label>
+    <div *ngIf="isOtherInstrument" class="default required">
+      <input type="text" class="w-100"
+             [(ngModel)]="data.otherInstrument"
+             name="otherInstrument"
+             id="otherInstrument"
+             maxlength="50"/>
+    </div>
+  </div>
+
+  <label for="lessonCount" class="mt-4 required">Add lessons</label>
+  <div class="default required">
+    <input type="number" class="w-25"
+           [(ngModel)]="data.lessonCount"
+           name="lessonCount"
+           max="999"
+           min="0"
+           step="1"
+           pattern="\d*"
+           id="lessonCount"/>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary"
+          [disabled]="buttonDisabled()"
+          (click)="ok()">Ok
+  </button>
+</div>
