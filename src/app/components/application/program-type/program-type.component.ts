@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AppDataService} from "../../../services/app-data.service";
 import {ApplicationData} from "../../../_classes/application-data";
 import {SalesforceOption} from "../../../_classes/salesforce-option";
-import {NgbAccordionDirective} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'iee-program-type',
