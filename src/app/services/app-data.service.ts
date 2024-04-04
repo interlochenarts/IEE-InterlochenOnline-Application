@@ -182,6 +182,7 @@ export class AppDataService {
   public saveProgram(program: Program): void {
     this.reviewCompleted.next(false);
     program.isSelected = true;
+    program.isSaving = true;
     this.addDaysSelected(program);
     const appData = this.applicationData.getValue();
     // noinspection JSUnresolvedReference
@@ -335,6 +336,7 @@ export class AppDataService {
   public updateProgram(program: Program): void {
     this.reviewCompleted.next(false);
     const appData = this.applicationData.getValue();
+    program.isSaving = true;
 
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
@@ -371,6 +373,7 @@ export class AppDataService {
   public removeProgram(program: Program): void {
     this.reviewCompleted.next(false);
     program.isSelected = false;
+    program.isSaving = true;
     const daysSelected = this.daysSelectedBySession.getValue().get(program.sessionName);
     program.daysArrayApi?.forEach(d => {
       daysSelected.delete(d);
@@ -382,9 +385,7 @@ export class AppDataService {
       this.applicationData.getValue().appId, program.appChoiceId,
       (result: string) => {
         // console.log(result);
-        if (result) {
-          program.isSaving = false;
-        }
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );
