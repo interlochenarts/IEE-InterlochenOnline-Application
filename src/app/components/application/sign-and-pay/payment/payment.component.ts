@@ -65,7 +65,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         );
 
         this.selectedBundles = this.appData.programData?.certificateGroups.filter(g => g.isSelected);
-        this.selectedPLs = appData.programData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0);
+        this.selectedPLs = this.appData.acProgramData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0);
 
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
