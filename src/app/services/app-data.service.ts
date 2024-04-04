@@ -274,6 +274,7 @@ export class AppDataService {
                 const mainProgram = appData.programData.programs[mainProgramIndex];
                 mainProgram.isSelected = true;
                 mainProgram.certificateGroupId = group.id;
+                mainProgram.certificateGroupName = group.name;
                 mainProgram.appChoiceId = appChoiceIds[index];
 
                 appData.programData.programs.splice(mainProgramIndex, 1);
