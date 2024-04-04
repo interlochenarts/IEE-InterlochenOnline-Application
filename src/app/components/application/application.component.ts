@@ -76,7 +76,6 @@ export class ApplicationComponent implements OnInit {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
-          && !this.applicationData.isRegistered
           && !this.applicationData.isComplete(this.countryCodes, this.stateCodes);
       }
     });

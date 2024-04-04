@@ -31,7 +31,7 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
     // Only registered programs
     this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0)).sort(Program.sortBySessionStartNullsFirst);
 
-    this.selectedPrivateLessons = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected);
+    this.selectedPrivateLessons = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0));
     this.selectedCertificates = this.appData.programData.selectedCertificates;
   }
 
