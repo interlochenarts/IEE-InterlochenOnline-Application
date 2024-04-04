@@ -73,7 +73,7 @@ export class ApplicationData {
     }
 
     // check private lessons
-    if (!hasProgram && this.acProgramData.privateLessons.filter(pl => pl.isSelected).length > 0) {
+    if (!hasProgram && this.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0)).length > 0) {
       hasProgram = true;
     }
 

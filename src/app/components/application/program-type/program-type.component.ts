@@ -32,7 +32,7 @@ export class ProgramTypeComponent implements OnInit {
   }
 
   get selectedCoursesText(): string {
-    const courseCount = this.appData.acProgramData.programs.filter(p => p.isSelected).length;
+    const courseCount = this.appData.acProgramData.programs.filter(p => p.isSelected && !p.certificateGroupId).length;
     if (courseCount > 0) {
       return `${courseCount} Selected`;
     }
@@ -52,7 +52,7 @@ export class ProgramTypeComponent implements OnInit {
   }
 
   get selectedLessonsText(): string {
-    const lessonCount = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected).length;
+    const lessonCount = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0)).length;
     if (lessonCount > 0) {
       return `${lessonCount} Selected`;
     }
