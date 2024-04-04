@@ -31,8 +31,12 @@
     </div>
     <div ngbAccordionItem *ngIf="selectedDivision !== 'Kids'">
       <h2 ngbAccordionHeader>
-        <button ngbAccordionButton (click)="changeType(typeAccordion)">Certificate Programs
-          <span class="smaller ps-3">{{ selectedCertificatesText }}</span></button>
+        <button ngbAccordionButton (click)="changeType(typeAccordion)">
+          <div>
+            <span>Certificate Programs</span><br class="d-md-none"/>
+            <span class="smaller ps-md-3">{{ selectedCertificatesText }}</span>
+          </div>
+        </button>
       </h2>
       <div ngbAccordionCollapse>
         <div ngbAccordionBody>
