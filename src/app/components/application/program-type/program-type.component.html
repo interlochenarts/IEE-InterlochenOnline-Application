@@ -14,10 +14,10 @@
 </div>
 
 <div *ngIf="selectedDivision">
-  <p class="mb-3">
+  <p class="mb-3" *ngIf="selectedDivision !== 'Kids'">
     Select from Courses, Certificate Programs, or Private Lessons.
   </p>
-  <div ngbAccordion [closeOthers]="true" #typeAccordion>
+  <div ngbAccordion [closeOthers]="true" #typeAccordion *ngIf="selectedDivision !== 'Kids'">
     <div ngbAccordionItem>
       <h2 ngbAccordionHeader>
         <button ngbAccordionButton (click)="changeType(typeAccordion)">Courses
@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <div ngbAccordionItem *ngIf="selectedDivision !== 'Kids'">
+    <div ngbAccordionItem>
       <h2 ngbAccordionHeader>
         <button ngbAccordionButton (click)="changeType(typeAccordion)">
           <div>
@@ -55,5 +55,8 @@
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="selectedDivision === 'Kids'">
+    <iee-private-lesson-info [appDataTime]="appDataTime"></iee-private-lesson-info>
   </div>
 </div>
