@@ -88,6 +88,6 @@ export class ProgramTypeComponent implements OnInit {
   }
 
   changeType(typeAccordion: HTMLDivElement) {
-    typeAccordion.scrollIntoView();
+    typeAccordion.scrollIntoView({behavior: 'instant', block: 'start', inline: 'nearest'});
   }
 }
