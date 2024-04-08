@@ -88,15 +88,6 @@ export class ProgramTypeComponent implements OnInit {
   }
 
   changeType(typeAccordion: HTMLDivElement) {
-    const scrollOffset = typeAccordion.offsetTop;
-
-    if(window.scrollY > scrollOffset) {
-      console.info(`scrolling to ${scrollOffset} from ${window.scrollY}`);
-      window.scroll({
-        top: scrollOffset,
-        left: 0,
-        behavior: 'smooth'
-      });
-    }
+    typeAccordion.scrollIntoView({behavior: 'instant', block: 'start', inline: 'nearest'});
   }
 }
