@@ -95,7 +95,7 @@ export class ProgramTypeComponent implements OnInit {
       window.scroll({
         top: scrollOffset,
         left: 0,
-        behavior: 'smooth'
+        behavior: 'instant'
       });
     }
   }
