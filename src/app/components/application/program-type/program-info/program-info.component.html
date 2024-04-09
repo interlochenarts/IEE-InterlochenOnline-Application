@@ -1,4 +1,3 @@
-
 <div *ngIf="appData.ageGroup && filteredPrograms.length > 0">
   <div class="my-4">
     <label for="selectedArtsArea">Area of Study</label>
@@ -35,16 +34,15 @@
     </div>
   </div>
 
-  <div class="my-4">
-    <div *ngIf="sortedSessions.length === 0">
-      There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
-    </div>
+  <div *ngIf="sortedSessions.length === 0" class="my-4">
+    There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
   </div>
 
-  <div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
+  <div class="col-12 my-4" #selectedContainer id="selectedCoursesContainer">
     <h5 *ngIf="selectedPrograms.length > 1">Selected Courses</h5>
     <h5 *ngIf="selectedPrograms.length === 1">Selected Course</h5>
     <div *ngFor="let program of selectedPrograms"
+         id="prog_{{program.id}}"
          (click)="clickProgram(program, instrumentModal, ListTypes.SELECTED)"
          class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
          [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
@@ -78,8 +76,10 @@
   </div>
 
   <div class="col-12 my-4" *ngIf="appData.ageGroup">
-    <h5 *ngIf="!selectedPrograms || selectedPrograms.length === 0">Select your Course(s) <span *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
-    <h5 *ngIf="selectedPrograms.length > 0">Additional Available Courses <span *ngIf="!appData.isAdultApplicant">for {{ selectedDivisionDescription }}</span></h5>
+    <h5 *ngIf="!selectedPrograms || selectedPrograms.length === 0">Select your Course(s) <span
+      *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
+    <h5 *ngIf="selectedPrograms.length > 0">Additional Available Courses <span
+      *ngIf="!appData.isAdultApplicant">for {{ selectedDivisionDescription }}</span></h5>
     <div *ngFor="let program of filteredPrograms"
          class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
          (click)="clickProgram(program, instrumentModal, ListTypes.FILTERED)"

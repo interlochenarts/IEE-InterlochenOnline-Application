@@ -1,4 +1,13 @@
-import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Program} from '../../../../_classes/program';
@@ -25,6 +34,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
+  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
@@ -155,6 +165,12 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
           program.isSelected = true;
           program.isSaving = false;
         }
+
+        window.scroll({
+          top: window.scrollY + this.selectedContainerRef.nativeElement.getBoundingClientRect().top,
+          left: 0,
+          behavior: 'instant'
+        });
 
         // clean up
         delete this.modalInstrumentChoice;

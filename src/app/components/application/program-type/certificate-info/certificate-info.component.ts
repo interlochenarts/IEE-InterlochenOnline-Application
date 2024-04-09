@@ -1,4 +1,13 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -15,6 +24,7 @@ export class CertificateInfoComponent implements OnInit, OnChanges {
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedGroup: CertificateGroup;
+  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
@@ -45,6 +55,12 @@ export class CertificateInfoComponent implements OnInit, OnChanges {
 
     modalRef.closed.subscribe(programIds => {
       this.appDataService.saveBundle(this.selectedGroup, programIds);
+
+      window.scroll({
+        top: window.scrollY + this.selectedContainerRef.nativeElement.getBoundingClientRect().top,
+        left: 0,
+        behavior: 'instant'
+      });
     });
   }
 
