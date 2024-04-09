@@ -34,7 +34,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
-  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
+  @ViewChild('selectedCoursesContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }

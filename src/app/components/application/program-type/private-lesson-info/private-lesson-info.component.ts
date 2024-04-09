@@ -23,7 +23,7 @@ import {PrivateLessonResult} from '../../../../_classes/private-lesson-result';
 })
 export class PrivateLessonInfoComponent implements OnInit, OnChanges {
   @Input() appDataTime: number = 0;
-  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
+  @ViewChild('selectedLessonContainer') selectedContainerRef: ElementRef;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>>;
 
