@@ -1,4 +1,4 @@
-<div class="my-4" #selectedContainer id="selectedGroupsContainer">
+<div class="my-4" #selectedGroupsContainer id="selectedGroupsContainer">
   <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
   <div *ngFor="let group of appData.programData.selectedCertificates" class="checkbox-container col-12 p-4 my-3" id="cg_{{group.id}}">
     <div class="d-flex align-items-end">

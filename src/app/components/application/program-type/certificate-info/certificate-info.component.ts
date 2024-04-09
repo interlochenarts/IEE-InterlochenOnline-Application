@@ -24,7 +24,7 @@ export class CertificateInfoComponent implements OnInit, OnChanges {
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedGroup: CertificateGroup;
-  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
+  @ViewChild('selectedGroupsContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }

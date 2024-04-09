@@ -32,7 +32,7 @@
   </div>
 </div>
 
-<div class="col-12 my-4" #selectedContainer id="selectedLessonContainer">
+<div class="col-12 my-4" #selectedLessonContainer id="selectedLessonContainer">
   <h5 *ngIf="selectedPrograms.length > 0">Selected Private Lessons</h5>
   <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 p-4 my-3"
        id="pl_{{program.id}}"

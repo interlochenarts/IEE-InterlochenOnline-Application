@@ -38,7 +38,7 @@
     There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
   </div>
 
-  <div class="col-12 my-4" #selectedContainer id="selectedCoursesContainer">
+  <div class="col-12 my-4" #selectedCoursesContainer id="selectedCoursesContainer">
     <h5 *ngIf="selectedPrograms.length > 1">Selected Courses</h5>
     <h5 *ngIf="selectedPrograms.length === 1">Selected Course</h5>
     <div *ngFor="let program of selectedPrograms"
