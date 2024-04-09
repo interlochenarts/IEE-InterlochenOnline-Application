@@ -1,5 +1,4 @@
-<div class="col-12 col-md-8">
-  <div id="Top"></div>
+<div class="col-12 col-md-8" #applicationTop id="applicationTop">
   <router-outlet *ngIf="applicationData"></router-outlet>
   <div class="text-end my-5">
     <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>

@@ -1,4 +1,13 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from '../../../../services/app-data.service';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -14,6 +23,7 @@ import {PrivateLessonResult} from '../../../../_classes/private-lesson-result';
 })
 export class PrivateLessonInfoComponent implements OnInit, OnChanges {
   @Input() appDataTime: number = 0;
+  @ViewChild('selectedContainer') selectedContainerRef: ElementRef;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>>;
 
@@ -101,12 +111,16 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           }
           program.lessonCount = result.lessonCount;
 
-          program.isSelected = true;
-
           let pgmCopy: Program = Program.duplicateMe(program);
           this.appData.acProgramData.privateLessons.push(pgmCopy);
           this.appDataService.saveProgram(pgmCopy);
           program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
+
+          window.scroll({
+            top: window.scrollY + this.selectedContainerRef.nativeElement.getBoundingClientRect().top,
+            left: 0,
+            behavior: 'instant'
+          });
         });
 
       } else {

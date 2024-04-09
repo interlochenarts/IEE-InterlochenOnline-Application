@@ -1,6 +1,6 @@
 // noinspection JSIgnoredPromiseFromCall
 
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';
 import {RouterLink} from '../../_classes/router-link';
@@ -25,6 +25,7 @@ export class ApplicationComponent implements OnInit {
   disableNextLink = false;
   showSaveAndQuit = true;
   applicationData: ApplicationData = new ApplicationData();
+  @ViewChild('applicationTop') applicationTopRef: ElementRef;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
@@ -111,17 +112,22 @@ export class ApplicationComponent implements OnInit {
 
   saveAndNext(): void {
     if (this.isSaving === false && this.disableNextLink === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex + 1].link]);
       this.appDataService.saveApplication();
-      document.getElementById('Top').scrollIntoView();
+      this.scrollToTop();
+      this.router.navigate([this.routerLinks[this.routerIndex + 1].link]);
     }
   }
 
   saveAndBack(): void {
     if (this.isSaving === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex - 1].link]);
       this.appDataService.saveApplication();
-      document.getElementById('Top').scrollIntoView();
+      this.scrollToTop();
+      this.router.navigate([this.routerLinks[this.routerIndex - 1].link]);
     }
+  }
+
+  scrollToTop = () => {
+    const scrollTo: number = window.scrollY + this.applicationTopRef.nativeElement.getBoundingClientRect().top;
+    window.scroll({top: scrollTo, left: 0, behavior: 'instant'});
   }
 }

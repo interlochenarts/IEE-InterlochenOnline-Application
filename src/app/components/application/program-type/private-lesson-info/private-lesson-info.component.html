@@ -32,9 +32,10 @@
   </div>
 </div>
 
-<div class="col-12 my-4" *ngIf="selectedPrograms.length > 0">
-  <h5>Selected Private Lessons</h5>
+<div class="col-12 my-4" #selectedContainer id="selectedLessonContainer">
+  <h5 *ngIf="selectedPrograms.length > 0">Selected Private Lessons</h5>
   <div *ngFor="let program of selectedPrograms" class="checkbox-container col-12 p-4 my-3"
+       id="pl_{{program.id}}"
        [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
     <div class="d-flex align-items-end">
       <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving"
