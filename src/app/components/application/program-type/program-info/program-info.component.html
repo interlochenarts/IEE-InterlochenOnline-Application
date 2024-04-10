@@ -39,8 +39,10 @@
   </div>
 
   <div class="col-12 my-4" #selectedCoursesContainer id="selectedCoursesContainer">
-    <h5 *ngIf="selectedPrograms.length > 1">Selected Courses</h5>
-    <h5 *ngIf="selectedPrograms.length === 1">Selected Course</h5>
+    <h5>Selected Courses</h5>
+    <div *ngIf="selectedPrograms.length === 0" class="col-12 my-3 p-4">
+      Nothing selected.
+    </div>
     <div *ngFor="let program of selectedPrograms"
          id="prog_{{program.id}}"
          (click)="clickProgram(program, instrumentModal, ListTypes.SELECTED)"

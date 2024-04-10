@@ -1,5 +1,8 @@
 <div class="my-4" #selectedGroupsContainer id="selectedGroupsContainer">
-  <h5 *ngIf="appData.programData.selectedCertificates.length > 0">Selected Certificate Programs</h5>
+  <h5>Selected Certificate Programs</h5>
+  <div *ngIf="appData.programData.selectedCertificates.length === 0" class="col-12 p-4 my-3">
+    Nothing selected.
+  </div>
   <div *ngFor="let group of appData.programData.selectedCertificates" class="checkbox-container col-12 p-4 my-3" id="cg_{{group.id}}">
     <div class="d-flex align-items-end">
       <div class="checkbox col-2 col-xl-1" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
