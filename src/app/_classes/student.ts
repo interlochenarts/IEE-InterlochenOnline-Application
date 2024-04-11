@@ -54,15 +54,7 @@ export class Student {
     return !!this.preferredName &&
       !!this.email &&
       !!this.mobilePhone &&
-      (!!this.mailingAddress &&
-        !!this.mailingAddress.street &&
-        !!this.mailingAddress.city &&
-        !!this.mailingAddress.country &&
-        (states.length > 0 ? !!this.mailingAddress.stateProvince : true) &&
-        (countryCode ?
-          (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true) :
-          false)
-      ) &&
+      (!!this.mailingAddress && this.mailingAddress.isComplete(countryCode, states)) &&
       !!this.genderIdentity &&
       (!!this.birthdate || this.isAdult);
   }

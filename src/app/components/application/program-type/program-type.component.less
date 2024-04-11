@@ -9,13 +9,32 @@
   border: 1px solid #cccccc;
 
   transition: all 0.3s cubic-bezier(.25, .8, .7, 1);
-
-  cursor: pointer;
   padding: 0.5em;
 
   h4 {
     font-size: 1.3rem;
   }
+
+  .checkbox {
+    label {
+      i {
+        position: relative;
+        left: -25px;
+      }
+
+      &.clickable {
+        cursor: pointer;
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.checkbox-container-clickable {
+  cursor: pointer;
 
   &:hover {
     background-color: #a7e6fb;
@@ -28,25 +47,12 @@
     border-color: #bbb;
     cursor: not-allowed;
   }
-
-  .description {
-    margin: 10px 0;
-  }
-
-  .checkbox {
-    label {
-      i {
-        position: relative;
-        left: -25px;
-      }
-
-      &.disabled {
-        cursor: not-allowed;
-      }
-    }
-  }
 }
 
 button.disabled {
   cursor: not-allowed;
+}
+
+.smaller {
+  font-size: 0.6em;
 }

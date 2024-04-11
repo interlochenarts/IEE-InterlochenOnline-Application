@@ -1,7 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ApplicationData} from '../../_classes/application-data';
 import {AppDataService} from '../../services/app-data.service';
-import {Student} from '../../_classes/student';
 
 @Component({
   selector: 'iee-header',

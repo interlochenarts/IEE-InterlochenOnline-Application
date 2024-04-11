@@ -55,6 +55,7 @@ export class ParentReviewComponent implements OnInit, OnChanges {
   }
 
   reSendVerification(parent: Parent): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
         'IEE_CampApplication_ParentController.sendVerificationEmail',
         this.student.contactId, parent.contactId,

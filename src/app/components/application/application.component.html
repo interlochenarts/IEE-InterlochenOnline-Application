@@ -1,5 +1,4 @@
-<div class="col-12 col-md-8">
-  <div id="Top"></div>
+<div class="col-12 col-md-8" #applicationTop id="applicationTop">
   <router-outlet *ngIf="applicationData"></router-outlet>
   <div class="text-end my-5">
     <i class="fa fa-spinner fa-pulse fa-fw" *ngIf="isSaving"></i>
@@ -8,7 +7,7 @@
     <a *ngIf="showSaveAndQuit" (click)="saveAndQuit()" [ngClass]="{disabled: isSaving}" href="javascript:void(0);" class="btn btn-ghost ms-1 my-1">Save
       & Quit</a>
     <span *ngIf="showNextLink"> <a href="javascript:void(0);" class="btn btn-primary ms-1 my-1"
-        [ngClass]="{disabled: isSaving || disableNextLink}" (click)="isSaving || disableNextLink || saveAndNext()">
+        [ngClass]="{disabled: isSaving || nextLinkDisabled}" (click)="isSaving || nextLinkDisabled || saveAndNext()">
         Save & Next <i class="fa fa-long-arrow-right"></i>
       </a></span>
   </div>

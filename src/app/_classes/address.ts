@@ -1,3 +1,6 @@
+import {CountryCode} from "./country-code";
+import {StateCode} from "./state-code";
+
 export class Address {
   street: string;
   city: string;
@@ -18,5 +21,15 @@ export class Address {
       !!this.country ||
       !!this.stateProvince ||
       !!this.zipPostalCode;
+  }
+
+  public isComplete(countryCode: CountryCode, states: StateCode[]): boolean {
+    return !!this.street &&
+    !!this.city &&
+    !!this.country &&
+    (states.length > 0 ? !!this.stateProvince : true) &&
+    (countryCode ?
+      (countryCode.zipRequired ? !!this.zipPostalCode : true) :
+      false);
   }
 }

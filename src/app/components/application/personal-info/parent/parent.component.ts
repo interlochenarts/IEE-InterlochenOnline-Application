@@ -1,5 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Address} from '../../../../_classes/address';
+import {Component, Input, OnInit} from '@angular/core';
 import {Parent} from '../../../../_classes/parent';
 import {Student} from '../../../../_classes/student';
 import {ParentVerification} from '../../../../_classes/parent-verification';
@@ -55,10 +54,11 @@ export class ParentComponent implements OnInit {
   }
 
   reSendVerification(parent: Parent): void {
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.sendVerificationEmail',
       this.student.contactId, parent.contactId,
-      result => {
+      (result: string) => {
         if (!result.includes('@')) {
           console.error('ERROR: Failed to send verification email');
         } else {
@@ -86,11 +86,12 @@ export class ParentComponent implements OnInit {
 
     if (this.searchFormComplete()) {
       // search salesforce for an existing person
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_CampApplication_ParentController.findParentContact',
         this.student.contactId,
         JSON.stringify(this.parentVerification),
-        result => {
+        (result: string) => {
           if (result && result !== 'null') {
             this.parentResult = JSON.parse(result);
             // console.log('found parent: ' + this.parentResult);
@@ -104,10 +105,11 @@ export class ParentComponent implements OnInit {
 
             // save parent on create
             emptyParent.isSaving = true;
+            // noinspection JSUnresolvedReference
             Visualforce.remoting.Manager.invokeAction(
               'IEE_OnlineApplicationController.saveParent',
               JSON.stringify(emptyParent), this.student.contactId,
-              parentSaveResult => {
+              (parentSaveResult: string) => {
                 emptyParent.isSaving = false;
                 if (parentSaveResult.startsWith('ERR')) {
                   console.error('ERROR: Could not save parent');
@@ -128,11 +130,13 @@ export class ParentComponent implements OnInit {
   verifyParent(): void {
     this.addingUnverifiedParent = true;
     // console.log('verifying parent: %s, student: %s', this.student.contactId, this.parentResult.contactIdParent.value);
+
+    // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_CampApplication_ParentController.verifyParentContactById',
       this.student.contactId, this.parentResult.contactIdParent.value,
       JSON.stringify(this.parentVerification),
-      result => {
+      (result: string) => {
         // console.dir(result);
         const obj = JSON.parse(result);
 
@@ -169,15 +173,17 @@ export class ParentComponent implements OnInit {
 
   removeParent(parentContactId: string): void {
     this.isDisable = true;
-    console.log(`removing ${parentContactId}`);
+    console.info(`removing ${parentContactId}`);
     const pi = this.parents.findIndex(p => p.contactId === parentContactId);
     if (!this.isSaving || !this.parents[pi].isSaving || !this.parents[pi].isDeleting) {
       this.deletingParentId = parentContactId;
       this.parents[pi].isDeleting = true;
+
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.removeParent',
         parentContactId, this.student.contactId,
-        result => {
+        (result: boolean) => {
           if (result === true) {
             // console.log('removed parent');
             this.parents.splice(pi, 1);

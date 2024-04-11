@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {ProgramInfoComponent} from './components/application/program-info/program-info.component';
 import {ReviewRegistrationComponent} from './components/application/review-registration/review-registration.component';
 import {PersonalInfoComponent} from './components/application/personal-info/personal-info.component';
 import {ApplicationComponent} from './components/application/application.component';
 import {PaymentComponent} from './components/application/sign-and-pay/payment/payment.component';
+import {ProgramTypeComponent} from "./components/application/program-type/program-type.component";
 
 const routes: Routes = [
   {
@@ -13,7 +13,7 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
       {path: 'student-info', component: PersonalInfoComponent},
-      {path: 'program', component: ProgramInfoComponent},
+      {path: 'program', component: ProgramTypeComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'pay-registration', component: PaymentComponent}
     ]
@@ -24,7 +24,7 @@ const routes: Routes = [
     children: [
       {path: '', redirectTo: 'student-info', pathMatch: 'prefix'},
       {path: 'student-info', component: PersonalInfoComponent},
-      {path: 'program', component: ProgramInfoComponent},
+      {path: 'program', component: ProgramTypeComponent},
       {path: 'review-registration', component: ReviewRegistrationComponent},
       {path: 'pay-registration', component: PaymentComponent}
     ]

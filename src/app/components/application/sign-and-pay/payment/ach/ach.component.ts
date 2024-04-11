@@ -36,6 +36,8 @@ export class AchComponent implements OnInit, OnChanges {
     if (this.appData.payment != null && this.appData.payment.useCredit != null) {
       // Get FACTS link
       // console.log('getting FACTS link for app ' + this.appData.appId);
+
+      // noinspection JSUnresolvedReference
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.getLinkFACTS',
         this.appData.appId, this.appData.payment.useCredit, this.appData.isRegistered,
@@ -45,7 +47,7 @@ export class AchComponent implements OnInit, OnChanges {
             // console.log('got facts link! ' + this.linkFACTS);
           } else {
             console.error('error getting FACTS link for app id: ' + this.appData.appId);
-            console.dir(result);
+            // console.dir(result);
             this.linkFACTS = null;
           }
         },

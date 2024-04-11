@@ -55,16 +55,7 @@ export class Parent {
     const countryCode = this.getCountryCode(countryCodes);
     const states = this.getStates(countryCode, stateCodes);
 
-    return !!this.email &&
-      (!!this.mailingAddress &&
-        !!this.mailingAddress.street &&
-        !!this.mailingAddress.city &&
-        !!this.mailingAddress.country &&
-        (states.length > 0 ? !!this.mailingAddress.stateProvince : true) &&
-        (countryCode ?
-          (countryCode.zipRequired ? !!this.mailingAddress.zipPostalCode : true) :
-          false)
-      );
+    return !!this.email && this.mailingAddress && this.mailingAddress.isComplete(countryCode, states);
   }
 
   public get isVerified(): boolean {

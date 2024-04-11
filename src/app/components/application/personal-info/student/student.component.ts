@@ -9,6 +9,7 @@ import {SalesforceOption} from '../../../../_classes/salesforce-option';
 
 declare const Visualforce: any;
 
+// noinspection JSUnresolvedReference
 @Component({
   selector: 'iee-student',
   templateUrl: './student.component.html',
@@ -80,10 +81,10 @@ export class StudentComponent implements OnInit, OnChanges {
   loadEthnicityOptions(): void {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_DataController.getEthnicityOptions',
-      json => {
+      (json: string) => {
         if (json !== null) {
           const j = JSON.parse(json);
-          this.ethnicityOptions = j.map(o => SalesforceOption.createFromJson(o));
+          this.ethnicityOptions = j.map((o: string) => SalesforceOption.createFromJson(o));
         }
       },
       {buffer: false, escape: false}
@@ -95,11 +96,8 @@ export class StudentComponent implements OnInit, OnChanges {
     const daysInMonth = new Date(+this.student.birthdateYear, +this.student.birthdateMonth, 0).getDate();
 
     for (let i = 1; i <= daysInMonth; i++) {
-      options.push(new SalesforceOption(
-        ('0' + i).slice(-2),
-        ('0' + i).slice(-2),
-        false
-      ));
+      const value = ('0' + i).slice(-2);
+      options.push(new SalesforceOption(value, value, false));
     }
 
     this.dayOptions = options;

@@ -9,11 +9,10 @@
         <ul>
           <li *ngFor="let link of links" [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}">
             <a *ngIf="link.show(appData)"
-               [routerLink]="[link.routerLink]" routerLinkActive="active"
+               [routerLink]="[link.link]" routerLinkActive="active"
                [ngClass]="{disabled: link.disabled(appData, countryCodes, stateCodes)}"
                [tabIndex]="link.disabled(appData, countryCodes, stateCodes) ? -1 : 0"
-               (click)="saveApplication(link.disabled(appData, countryCodes, stateCodes))"
-            >
+               (click)="saveApplication(link.disabled(appData, countryCodes, stateCodes))">
               <i class="fa fa-square-o max-auto" aria-hidden="true" *ngIf="!link.completed(appData, countryCodes, stateCodes)"></i>
               <i class="fa fa-check-square-o max-auto" aria-hidden="true" *ngIf="link.completed(appData, countryCodes, stateCodes)"></i>
               {{link.text}}

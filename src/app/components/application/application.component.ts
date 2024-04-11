@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+// noinspection JSIgnoredPromiseFromCall
+
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {AppDataService} from '../../services/app-data.service';
 import {RouterLink} from '../../_classes/router-link';
@@ -23,10 +25,14 @@ export class ApplicationComponent implements OnInit {
   disableNextLink = false;
   showSaveAndQuit = true;
   applicationData: ApplicationData = new ApplicationData();
+  @ViewChild('applicationTop') applicationTopRef: ElementRef;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
 
+  get nextLinkDisabled() {
+    return this.disableNextLink;
+  }
 
   constructor(private appDataService: AppDataService, private activatedRoute: ActivatedRoute, private router: Router) {
 
@@ -38,15 +44,10 @@ export class ApplicationComponent implements OnInit {
       this.routerLinks = links;
 
       if (event instanceof NavigationEnd) {
-        this.routerIndex = links.findIndex(l => l.routerLink === event.urlAfterRedirects);
-        this.showBackLink = this.routerIndex !== 0 && !this.transactionId;
+        this.routerIndex = links.findIndex(l => l.link === event.urlAfterRedirects);
+        this.showBackLink = this.routerIndex > 0 && !this.transactionId;
         this.showNextLink = this.routerIndex !== (links.length - 1) && !this.transactionId;
         this.showSaveAndQuit = this.routerIndex !== (links.length - 1) && !this.transactionId;
-
-        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
-          && ((!this.applicationData.isRegistered && !this.applicationData.isComplete(this.countryCodes, this.stateCodes))
-          || (this.applicationData.isRegistered &&
-              this.applicationData.acProgramData.programs.filter(program => ((program.isSelected && !program.isRegistered) || (program.lessonCountAdd && program.lessonCountAdd > 0) )).length === 0));
       }
     });
 
@@ -70,6 +71,13 @@ export class ApplicationComponent implements OnInit {
       this.transactionId = p.get('txnId');
       if (this.transactionId) {
         this.appDataService.transactionId.next(this.transactionId);
+      }
+    });
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.disableNextLink = event.urlAfterRedirects.toLowerCase().includes('review')
+          && !this.applicationData.isComplete(this.countryCodes, this.stateCodes);
       }
     });
 
@@ -104,21 +112,22 @@ export class ApplicationComponent implements OnInit {
 
   saveAndNext(): void {
     if (this.isSaving === false && this.disableNextLink === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex + 1].routerLink]);
       this.appDataService.saveApplication();
-      document.getElementById('Top').scrollIntoView();
+      this.scrollToTop();
+      this.router.navigate([this.routerLinks[this.routerIndex + 1].link]);
     }
   }
 
   saveAndBack(): void {
     if (this.isSaving === false) {
-      this.router.navigate([this.routerLinks[this.routerIndex - 1].routerLink]);
       this.appDataService.saveApplication();
-      document.getElementById('Top').scrollIntoView();
+      this.scrollToTop();
+      this.router.navigate([this.routerLinks[this.routerIndex - 1].link]);
     }
   }
 
-  canRegister(): boolean {
-    return this.applicationData.isComplete(this.countryCodes, this.stateCodes);
+  scrollToTop = () => {
+    const scrollTo: number = window.scrollY + this.applicationTopRef.nativeElement.getBoundingClientRect().top;
+    window.scroll({top: scrollTo, left: 0, behavior: 'instant'});
   }
 }

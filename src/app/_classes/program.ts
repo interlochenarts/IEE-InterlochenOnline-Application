@@ -1,4 +1,6 @@
 import {SalesforceOption} from './salesforce-option';
+import {ListTypes} from "../_enums/enums";
+import {Course} from './course';
 
 export class Program {
   id: string;
@@ -15,6 +17,7 @@ export class Program {
   isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
+  sessionStartDate: number;
   sessionName: string;
   programOptions: string;
   selectedInstrument: string;
@@ -22,11 +25,22 @@ export class Program {
   lessonCount = 0;
   lessonCountAdd = 0;
   isPrivateLesson = false;
+  certificateGroupId: string;
+  certificateGroupName: string;
+  certificateGroupOption: SalesforceOption;
   selectedInstrumentOther: string;
+  courseNumber: string;
+  courseId: string;
+  courseName: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
     Object.assign(program, json);
+
+    program.sessionDates = program.sessionDates || 'Will Schedule in the Future';
+    const label = program.sessionDates;
+
+    program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 
     return program;
   }
@@ -56,26 +70,31 @@ export class Program {
     return this.programOptions?.split(';').map(i => new SalesforceOption(i, i, false));
   }
 
-  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: string): boolean {
+  public isDisabled(daysSelectedBySession: Map<string, Set<string>>, feePaid: boolean, list: ListTypes): boolean {
     // Don't let them re-select it if they already had this program selected and canceled or withdrew
     if (this.isCancelOrWithdrawn) {
+      return true;
+    }
+
+    // disable program if it has been selected as part of a bundle
+    if (this.certificateGroupId || this.certificateGroupName) {
       return true;
     }
 
     // disable everything if fee already paid
     // "feePaid" is the passed in result of the program-info.programsDisabled() function currently commented out, except where called in program-info.clickProgram()
     // we're leaving the private lesson music re-selectable (because their existing instruments will be disabled, but they can pick new ones for pvt lessons)
-    if (list === 'selected' && (feePaid || this.isRegistered)) {
+    if (list === ListTypes.SELECTED && (feePaid || this.isRegistered)) {
       return true;
     }
 
-    if (list === 'filtered' &&
+    if (list === ListTypes.FILTERED &&
       ((this.isRegistered && this.isPrivateLesson && this.artsArea != 'Music')
         || (this.isRegistered && !this.isPrivateLesson))) {
       return true;
     }
 
-    // allow changes to selected
+    // allow changes to "selected"
     if (this.isSelected) {
       return false;
     }
@@ -94,5 +113,34 @@ export class Program {
 
   get artsAreaList(): Array<string> {
     return this.artsArea.split(';');
+  }
+
+  /**
+   * sort nulls to the top
+   * @param a
+   * @param b
+   */
+  public static sortBySessionStartNullsFirst(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate;
+    } else if (a.sessionStartDate) {
+      return 1;
+    } else if (b.sessionStartDate) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  public static sortBySessionStartNullsLast(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate
+    } else if (a.sessionStartDate) {
+      return -1;
+    } else if (b.sessionStartDate) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }
