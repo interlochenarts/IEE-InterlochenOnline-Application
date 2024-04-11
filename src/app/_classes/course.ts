@@ -5,6 +5,9 @@ export class Course {
   name: string;
   displayOrder: number;
   programsByDivision: Map<string, Array<Program>>;
+  selectedSessionDates: string;
+  ioRegistrationFee: number;
+
 
   public static createFromNestedJson(json: any): Course {
     const course = new Course();
@@ -14,15 +17,24 @@ export class Course {
     course.programsByDivision = new Map<string, Array<Program>>();
 
     keys.forEach(k => {
-      course.programsByDivision.set(k, json.programsByDivision[k].map(p => Program.createFromNestedJson(p)));
+      course.programsByDivision.set(k, json.programsByDivision[k].map((p: any) => Program.createFromNestedJson(p)));
     });
 
     return course;
   }
 
   getProgramsByDivision(division: string): Array<Program> {
-    return this.programsByDivision.get(division);
+    // console.log('division', division);
+    let programs: Array<Program> = this.programsByDivision.get(division);
+    if (this.displayOrder === 1) {
+      // remove the sessionless (stub) program from the list
+      programs = programs.filter(p => p.sessionId);
+    }
+    // console.log(this.programsByDivision);
+    if (programs) {
+      programs.sort(Program.sortBySessionStartNullsFirst);
+    }
+
+    return programs || [];
   }
-
-
 }

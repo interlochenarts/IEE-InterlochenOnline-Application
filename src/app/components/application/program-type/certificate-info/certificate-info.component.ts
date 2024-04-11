@@ -1,4 +1,13 @@
-import {Component} from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {ApplicationData} from "../../../../_classes/application-data";
 import {AppDataService} from "../../../../services/app-data.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -8,33 +17,26 @@ import {CertificateGroup} from "../../../../_classes/certificate-group";
 @Component({
   selector: 'iee-certificate-info',
   templateUrl: './certificate-info.component.html',
-  styleUrls: ['../program-tabs.component.less', 'certificate-info.component.less']
+  styleUrls: ['../program-type.component.less', 'certificate-info.component.less']
 })
-export class CertificateInfoComponent {
-  isLoading: boolean = true;
+export class CertificateInfoComponent implements OnInit, OnChanges {
+  @Input() appDataTime: number = 0;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>> = new Map<string, Set<string>>();
   selectedGroup: CertificateGroup;
+  @ViewChild('selectedGroupsContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
+    this.appData = this.appDataService.applicationData.getValue();
+  }
 
-        this.appData.acProgramData.programs.forEach(p => {
-          if (p.isSelected) {
-            this.addDaysSelected(p);
-          }
-        });
-
-        this.isLoading = false;
-      } else {
-        this.appData = new ApplicationData();
-      }
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.appDataTime) {
+      this.appData = this.appDataService.applicationData.getValue();
+    }
   }
 
   private addDaysSelected(p: Program): void {
@@ -52,12 +54,17 @@ export class CertificateInfoComponent {
     const modalRef = this.modalService.open(modal, {size: 'lg'});
 
     modalRef.closed.subscribe(programIds => {
-      this.selectedGroup.isSaving = true;
       this.appDataService.saveBundle(this.selectedGroup, programIds);
+
+      window.scroll({
+        top: window.scrollY + this.selectedContainerRef.nativeElement.getBoundingClientRect().top,
+        left: 0,
+        behavior: 'instant'
+      });
     });
   }
 
   removeCertificate(group: CertificateGroup) {
-    this.appDataService.removeBundle(group)
+    this.appDataService.removeBundle(group);
   }
 }

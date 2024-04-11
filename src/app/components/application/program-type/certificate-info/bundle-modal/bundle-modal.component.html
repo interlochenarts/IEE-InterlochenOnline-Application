@@ -1,5 +1,9 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ group.name }}</h4>
+  <div class="modal-title">
+    <h4>{{ group.name }}</h4>
+    <div class="modal-title" *ngIf="certIsSequenced">Courses must be taken in the order listed below.</div>
+    <div class="modal-title" *ngIf="!certIsSequenced">Courses can be taken in any order.</div>
+  </div>
   <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
     <span aria-hidden="true">
       <i class="fa fa-close fa-2x"></i>
@@ -8,9 +12,8 @@
 </div>
 <div class="modal-body">
   <div *ngFor="let course of group.courses; let i = index" class="row mb-3">
-    <div class="col-6">{{ course.name }}</div>
-    <div class="col-6">
-
+    <div class="col-12 col-lg-6">{{ course.name }}</div>
+    <div class="col-12 col-lg-6">
       <div class="default required">
         <div class="select">
           <select [(ngModel)]="group.bundleChoices[i]"
@@ -28,6 +31,8 @@
   </div>
 </div>
 <div class="modal-footer">
-  <span *ngIf="isValid === false" class="alert-text me-3">Please select all options.</span>
+  <span *ngIf="allSelected === false" class="alert-text me-3">Please make a selection for each course.</span>
+  <span *ngIf="atLeastOneScheduled === false" class="alert-text me-3">Please make sure to schedule at least one course.</span>
+  <span *ngIf="allInSequence === false" class="alert-text me-3">Courses must be taken in the order listed.</span>
   <button class="btn btn-primary" (click)="ok()">Ok</button>
 </div>

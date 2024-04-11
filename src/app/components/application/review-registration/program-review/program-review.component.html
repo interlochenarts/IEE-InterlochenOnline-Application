@@ -1,56 +1,50 @@
 <!-- selected programs (courses) -->
-<div *ngIf="selectedPrograms && selectedPrograms.length > 0" class="row mt-3">
+<div class="row mt-3">
   <div class="col-8 d-flex align-items-end">
-    <h4>Selected Courses</h4>
+    <h4>Selected Programs</h4>
   </div>
   <div class="col-4 text-end">
     <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
   </div>
+</div>
+
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Age Group</div>
+  <div class="col-7 hideOverflow" *ngIf="!appData.ageGroup">
+    <i class="fa fa-warning" style="reviewErrorIcon"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="appData.ageGroup">{{appData.ageGroup}}</div>
 </div>
 
 <div *ngFor="let program of selectedPrograms" class="my-2">
   <div>
-    <b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+    <b>{{program.name}}<span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span><span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
   </div>
-  <div class="ms-3">Session: {{program.sessionDates}} </div>
+  <div class="ms-3">{{program.sessionDates}} </div>
   <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
 <!-- selected certificate groups -->
-<div *ngIf="selectedCertificates && selectedCertificates.length > 0" class="row mt-3">
-  <div class="col-8 d-flex align-items-end">
-    <h4>Selected Certificates</h4>
-  </div>
-  <div class="col-4 text-end">
-    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
-  </div>
-</div>
 <div *ngFor="let cert of selectedCertificates" class="my-2">
   <div><b>{{cert.name}}</b>
     <ul>
-      <li *ngFor="let course of cert.courses">{{course.name}}</li>
+      <li *ngFor="let program of cert.getAllSelectedPrograms()">{{program.courseName}}
+        <span *ngIf="appData.ageGroup !== program.division" class="reviewError">
+          {{program.division}}</span> - {{program.sessionDates}}</li>
     </ul>
   </div>
 </div>
 
 <!-- selected private lessons -->
-<div *ngIf="selectedPrivateLessons && selectedPrivateLessons.length > 0" class="row mt-3">
-  <div class="col-8 d-flex align-items-end">
-    <h4>Selected Private Lessons</h4>
-  </div>
-  <div class="col-4 text-end">
-    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
-  </div>
-</div>
 <div *ngFor="let program of selectedPrivateLessons" class="my-2">
-  <div><b>{{program.name}} <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
-    <span *ngIf="isRegistered && (!program.isRegistered)"> - <span class="new-program">New</span></span>
+  <div><b>{{program.name}}</b><span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span>
+    <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span>
     <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
   </div>
-  <div>Number of lessons: {{program.lessonCount}}  <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
+  <div>Number of lessons: {{program.lessonCount}} <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
   <div>Meets on various days (selected by student according to instructor's availability)</div>
 </div>
 
-<div *ngIf="(!selectedPrograms && !registeredPrograms) || (selectedPrograms.length === 0 && registeredPrograms.length === 0)">
+<div *ngIf="showError">
   <i class="fa fa-warning reviewErrorIcon"></i><span class="reviewError"> No programs selected</span>
 </div>

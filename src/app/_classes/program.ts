@@ -1,5 +1,6 @@
 import {SalesforceOption} from './salesforce-option';
 import {ListTypes} from "../_enums/enums";
+import {Course} from './course';
 
 export class Program {
   id: string;
@@ -16,6 +17,7 @@ export class Program {
   isCancelOrWithdrawn = false;
   appChoiceId: string;
   sessionDates: string;
+  sessionStartDate: number;
   sessionName: string;
   programOptions: string;
   selectedInstrument: string;
@@ -27,12 +29,16 @@ export class Program {
   certificateGroupName: string;
   certificateGroupOption: SalesforceOption;
   selectedInstrumentOther: string;
+  courseNumber: string;
+  courseId: string;
+  courseName: string;
 
   public static createFromNestedJson(json: any): Program {
     const program = new Program();
     Object.assign(program, json);
 
-    const label = program.sessionName || 'Future';
+    program.sessionDates = program.sessionDates || 'Will Schedule in the Future';
+    const label = program.sessionDates;
 
     program.certificateGroupOption = new SalesforceOption(label, program.id, false);
 
@@ -109,9 +115,32 @@ export class Program {
     return this.artsArea.split(';');
   }
 
-  public static sort(a: Program, b: Program): number {
-    return a.sessionDates.includes(':') && b.sessionDates.includes(':') ?
-      (new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-        new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime()): 0;
+  /**
+   * sort nulls to the top
+   * @param a
+   * @param b
+   */
+  public static sortBySessionStartNullsFirst(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate;
+    } else if (a.sessionStartDate) {
+      return 1;
+    } else if (b.sessionStartDate) {
+      return -1;
+    } else {
+      return 0;
+    }
+  }
+
+  public static sortBySessionStartNullsLast(a: Program, b: Program): number {
+    if (a.sessionStartDate && b.sessionStartDate) {
+      return a.sessionStartDate - b.sessionStartDate
+    } else if (a.sessionStartDate) {
+      return -1;
+    } else if (b.sessionStartDate) {
+      return 1;
+    } else {
+      return 0;
+    }
   }
 }

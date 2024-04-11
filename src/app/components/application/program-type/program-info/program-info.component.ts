@@ -1,4 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {
+  afterNextRender,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Program} from '../../../../_classes/program';
@@ -9,9 +18,11 @@ import {ListTypes} from "../../../../_enums/enums";
 @Component({
   selector: 'iee-program-info',
   templateUrl: './program-info.component.html',
-  styleUrls: ['../program-tabs.component.less', 'program-info.component.less']
+  styleUrls: ['../program-type.component.less', 'program-info.component.less']
 })
-export class ProgramInfoComponent implements OnInit {
+export class ProgramInfoComponent implements OnInit, OnChanges {
+  @Input() ageGroup: string;
+  @Input() appDataTime: number;
   appData: ApplicationData;
   daysSelectedBySession: Map<string, Set<string>>;
   selectedArtsArea = '';
@@ -23,42 +34,42 @@ export class ProgramInfoComponent implements OnInit {
   isMusic: boolean;
   isRegistered: boolean;
   selectedProgramInstruments: Array<SalesforceOption> = [];
-  isLoading: boolean = true;
+  @ViewChild('selectedCoursesContainer') selectedContainerRef: ElementRef;
 
   constructor(private appDataService: AppDataService, private modalService: NgbModal) {
   }
 
   ngOnInit(): void {
-    this.appDataService.applicationData.asObservable().subscribe(app => {
-      if (app) {
-        this.appData = app;
-
-        this.appData.acProgramData.programs.forEach(acp => {
-          this.appDataService.addDaysSelected(acp);
-        });
-        this.updateArtsAreas();
-        this.isLoading = false;
-      } else {
-        this.appData = new ApplicationData();
-      }
-    });
+    this.appData = this.appDataService.applicationData.getValue();
+    this.updateAreasOfStudy();
 
     this.appDataService.daysSelectedBySession.asObservable().subscribe(daysSelected => {
       if (daysSelected) {
         this.daysSelectedBySession = daysSelected;
       }
-    })
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.appDataTime) {
+      this.appData = this.appDataService.applicationData.getValue();
+    }
+    this.updateAreasOfStudy();
   }
 
   get selectedDivisionDescription(): string {
-    return this.appData.programData.selectedDivision;
+    return this.ageGroup;
   }
 
   get filteredPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => !p.isSelected &&
-      ((p.division === this.appData.programData.selectedDivision) &&
-        (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-        (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+    if (this.appData) {
+      return this.appData.programData.programs.filter(p => !p.isSelected &&
+        ((p.division === this.ageGroup) &&
+          (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
+          (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+    }
+
+    return [];
   }
 
   get selectedPrograms(): Array<Program> {
@@ -69,8 +80,7 @@ export class ProgramInfoComponent implements OnInit {
     return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered && p.sessionId));
   }
 
-
-  updateArtsAreas(): void {
+  updateAreasOfStudy(): void {
     this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
@@ -78,6 +88,9 @@ export class ProgramInfoComponent implements OnInit {
         artsAreaSet.add(aa);
       });
     });
+
+    // console.dir(this.filteredPrograms);
+    // console.dir(artsAreaSet);
 
     if (artsAreaSet.size > 1) {
       this.sortedArtsAreas = Array.from(artsAreaSet).sort().map(aa => new SalesforceOption(aa, aa, false));
@@ -92,18 +105,29 @@ export class ProgramInfoComponent implements OnInit {
 
   updateSessions(): void {
     this.selectedSession = '';
-    const sessionSet: Set<string> = new Set<string>();
-    this.filteredPrograms.forEach(p => {
-      sessionSet.add(p.sessionName);
+    const sessionStartDateSet = new Set<number>();
+    const sessionNameByStartDate = new Map<number, string>();
+    this.filteredPrograms.forEach((p: Program) => {
+      sessionStartDateSet.add(p.sessionStartDate);
+      sessionNameByStartDate.set(p.sessionStartDate, p.sessionName);
     });
-    if (sessionSet.size > 1) {
+
+    const sortedSessionStartDates = Array.from(sessionStartDateSet).sort();
+
+    if (sortedSessionStartDates.length > 1) {
       // sort is now coming from SOQL ORDER BY in IEE_OnlineApplicationController.getProgramData
-      this.sortedSessions = Array.from(sessionSet)
-        .map(ss => new SalesforceOption(this.appData.programData.sessionDates.get(ss), ss, false));
+      this.sortedSessions = sortedSessionStartDates
+        .map(sd => {
+          const sessionName = sessionNameByStartDate.get(sd);
+          return new SalesforceOption(this.appData.programData.sessionDates.get(sessionName), sessionName, false)
+        });
       this.sortedSessions.unshift(new SalesforceOption('All', '', true));
-    } else if (sessionSet.size === 1) {
-      this.sortedSessions = Array.from(sessionSet)
-        .map(s => new SalesforceOption(this.appData.programData.sessionDates.get(s), s, true));
+    } else if (sortedSessionStartDates.length === 1) {
+      this.sortedSessions = sortedSessionStartDates
+        .map(sd => {
+          const sessionName = sessionNameByStartDate.get(sd);
+          return new SalesforceOption(this.appData.programData.sessionDates.get(sessionName), sessionName, true)
+        });
       this.selectedSession = this.sortedSessions[0].value;
     }
   }
@@ -142,6 +166,12 @@ export class ProgramInfoComponent implements OnInit {
           program.isSaving = false;
         }
 
+        window.scroll({
+          top: window.scrollY + this.selectedContainerRef.nativeElement.getBoundingClientRect().top,
+          left: 0,
+          behavior: 'instant'
+        });
+
         // clean up
         delete this.modalInstrumentChoice;
         delete this.isMusic;
@@ -153,6 +183,7 @@ export class ProgramInfoComponent implements OnInit {
           if (p.id === program.id && (p.artsArea !== 'Music' || (p.selectedInstrument === program.selectedInstrument))) { // have to id by instrument because multiples
             this.appDataService.removeProgram(p);
             this.appData.acProgramData.programs.splice(x, 1);
+            this.appDataService.applicationData.next(this.appData);
           }
         }));
         // sync up the filtered list.

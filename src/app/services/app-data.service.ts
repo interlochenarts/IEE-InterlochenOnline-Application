@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, findIndex} from 'rxjs';
 import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
@@ -135,6 +135,32 @@ export class AppDataService {
       );
     }
   }
+  /**
+   * Save the Age Group to the application record
+   * @param ageGroup The Age Group to save to the application
+   * @param that should never be specified by the calling function, only used in the timeout
+   */
+  public saveAgeGroup(ageGroup: string, that = this): void {
+    const appId: string = that.applicationId.getValue();
+    const isSaving: boolean = that.isSaving.getValue();
+
+    // wait until previous save is done.
+    if (!isSaving) {
+      that.isSaving.next(true);
+      // noinspection JSUnresolvedReference
+      Visualforce.remoting.Manager.invokeAction(
+        'IEE_OnlineApplicationController.saveGradeInSchool',
+        appId, ageGroup,
+        (result: string) => {
+          that.isSaving.next(false);
+        },
+        {buffer: false, escape: false}
+      );
+    } else {
+      // repeat the save until it goes through
+      setTimeout(that.saveAgeGroup, 1000, ageGroup, that);
+    }
+  }
 
   public sendParentCredentials(parent: Parent, student: Student): void {
     // noinspection JSUnresolvedReference
@@ -154,7 +180,9 @@ export class AppDataService {
   }
 
   public saveProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     program.isSelected = true;
+    program.isSaving = true;
     this.addDaysSelected(program);
     const appData = this.applicationData.getValue();
     // noinspection JSUnresolvedReference
@@ -179,6 +207,7 @@ export class AppDataService {
               if (payment && payment !== 'null') {
                 appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
               }
+              this.applicationData.next(appData);
             },
             {buffer: false, escape: false}
           );
@@ -190,12 +219,14 @@ export class AppDataService {
   }
 
   public saveBundle(group: CertificateGroup, programIds: string): void {
+    this.reviewCompleted.next(false);
     group.isSelected = true;
+    group.isSaving = true;
     const appData = this.applicationData.getValue();
 
     const appChoiceString = group.appChoiceIds.filter(ac => !!ac).join(';');
 
-    console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
+    // console.log('saveBundle() - appId: ', appData.appId, ', groupId: ', group.id, ', programIds: ', programIds, ', appChoices: ', appChoiceString);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.addCertificateAppChoices',
@@ -203,12 +234,23 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
-          group.appChoiceIds = result.split(';');
-          console.info('Saved new program: ' + result);
+          group.bundleChoices = programIds.split(';');
+          const appChoices = result.split(';');
+          const appChoiceIds = []
+          const appChoiceSessions = [];
+          appChoices.forEach(ac => {
+            const [id, dates] = ac.split('|');
+            appChoiceIds.push(id);
+            appChoiceSessions.push(dates);
+          });
+          for (let i = 0; i < appChoices.length; i++) {
+            group.courses[i].selectedSessionDates = appChoiceSessions[i];
+          }
+          group.appChoiceIds = appChoiceIds;
+          // console.info('Saved new bundle: ' + result);
           // TODO: Update payment info
           // Visualforce.remoting.Manager.invokeAction(
           //   'IEE_OnlineApplicationController.getPaymentJSON',
@@ -220,6 +262,27 @@ export class AppDataService {
           //   },
           //   {buffer: false, escape: false}
           // );
+          console.info('bundle saved, updating app data');
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup)
+            .forEach((p, index) => {
+              p.isSelected = true;
+              p.certificateGroupId = group.id;
+              // move newly selected from programData to acProgramData
+              const mainProgramIndex = appData.programData.programs.findIndex(fp => p.id === fp.id);
+              if (mainProgramIndex > -1) {
+                // might not find one because it's unscheduled (session-less)
+                const mainProgram = appData.programData.programs[mainProgramIndex];
+                mainProgram.isSelected = true;
+                mainProgram.certificateGroupId = group.id;
+                mainProgram.certificateGroupName = group.name;
+                mainProgram.appChoiceId = appChoiceIds[index];
+
+                appData.programData.programs.splice(mainProgramIndex, 1);
+                appData.acProgramData.programs.push(mainProgram);
+              }
+            });
+          // make sure appData gets a new value for observers
+          this.applicationData.next(appData);
         }
         group.isSaving = false;
       },
@@ -228,11 +291,13 @@ export class AppDataService {
   }
 
   public removeBundle(group: CertificateGroup): void {
+    this.reviewCompleted.next(false);
+    group.isSaving = true;
     group.isSelected = false;
     const appData: ApplicationData = this.applicationData.getValue();
     const appChoiceIds: string = group.appChoiceIds.join(';')
 
-    console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
+    // console.log('removeBundle() - appId:', appData.appId, ', appChoiceIds:', appChoiceIds);
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoiceList',
@@ -240,24 +305,39 @@ export class AppDataService {
       (result: string) => {
         if (!result) {
           console.error('something went wrong on the server');
-        }
-        else if (result.startsWith('ERR')) {
+        } else if (result.startsWith('ERR')) {
           console.error(result);
         } else {
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup).forEach(p => p.isSelected = false);
+          group.getSelectedProgramsByAgeGroup(appData.ageGroup).forEach((p: Program) => {
+            const acProgramIndex = appData.acProgramData.programs.findIndex(acp => acp.id === p.id);
+            if (acProgramIndex > -1) {
+              const acProgram = appData.acProgramData.programs[acProgramIndex];
+              acProgram.isSelected = false;
+              acProgram.certificateGroupId = null;
+              appData.acProgramData.programs.splice(acProgramIndex, 1);
+              appData.programData.programs.push(acProgram);
+            }
+          });
           group.appChoiceIds.length = 0;
           group.bundleChoices.length = 0;
-          console.info('removed Certificate Group');
 
+          // console.info('removed Certificate Group');
+          // console.dir(group);
           //TODO: Update Payment info?
         }
         group.isSaving = false;
+        console.info('bundle removed, updating app data');
+        this.applicationData.next(appData);
       },
       {buffer: false, escape: false}
     );
   }
 
   public updateProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     const appData = this.applicationData.getValue();
+    program.isSaving = true;
 
     // noinspection JSUnresolvedReference
     Visualforce.remoting.Manager.invokeAction(
@@ -267,7 +347,6 @@ export class AppDataService {
         if (result.startsWith('ERR')) {
           console.error(result);
         } else {
-          console.log('updated program: ' + result);
           if (!program.isRegistered) {
             program.lessonCount += program.lessonCountAdd;
             program.lessonCountAdd = 0;
@@ -293,7 +372,9 @@ export class AppDataService {
   }
 
   public removeProgram(program: Program): void {
+    this.reviewCompleted.next(false);
     program.isSelected = false;
+    program.isSaving = true;
     const daysSelected = this.daysSelectedBySession.getValue().get(program.sessionName);
     program.daysArrayApi?.forEach(d => {
       daysSelected.delete(d);
@@ -305,9 +386,7 @@ export class AppDataService {
       this.applicationData.getValue().appId, program.appChoiceId,
       (result: string) => {
         // console.log(result);
-        if (result) {
-          program.isSaving = false;
-        }
+        program.isSaving = false;
       },
       {buffer: false, escape: false}
     );

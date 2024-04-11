@@ -3,6 +3,7 @@ import {ProgramData} from '../../../../_classes/program-data';
 import {Program} from '../../../../_classes/program';
 import {RouterLink} from '../../../../_classes/router-link';
 import {CertificateGroup} from '../../../../_classes/certificate-group';
+import {ApplicationData} from '../../../../_classes/application-data';
 
 @Component({
   selector: 'iee-program-review',
@@ -10,8 +11,7 @@ import {CertificateGroup} from '../../../../_classes/certificate-group';
   styleUrls: ['./program-review.component.less']
 })
 export class ProgramReviewComponent implements OnInit, OnChanges {
-  @Input() programData: ProgramData = new ProgramData();
-  @Input() acProgramData: ProgramData = new ProgramData();
+  @Input() appData: ApplicationData = new ApplicationData();
   @Input() link: RouterLink;
   @Input() isRegistered: boolean;
   selectedPrograms: Array<Program>;
@@ -27,18 +27,34 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     // Only unregistered programs
-    this.selectedPrograms = this.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates)
-      // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-      .sort((a, b) =>
-        new Date(a.sessionDates.split(':')[1].split('-')[0].trim()).getTime() -
-        new Date(b.sessionDates.split(':')[1].split('-')[0].trim()).getTime());
+    this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && !p.isRegistered && !p.certificateGroupId && p.sessionDates).sort(Program.sortBySessionStartNullsFirst);
     // Only registered programs
-    this.registeredPrograms = this.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
-    // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-    this.registeredPrograms.sort(Program.sort);
+    this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0)).sort(Program.sortBySessionStartNullsFirst);
 
-    this.selectedPrivateLessons = this.acProgramData.privateLessons.filter(pl => pl.isSelected);
-    this.selectedCertificates = this.programData.selectedCertificates;
+    this.selectedPrivateLessons = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0));
+    this.selectedCertificates = this.appData.programData.selectedCertificates;
   }
 
+  get showError(): boolean {
+    let missingProgram = true;
+
+    // check individual courses
+    if (this.selectedPrograms && this.selectedPrograms.length > 0) {
+      missingProgram = false;
+    }
+
+    // check certificate programs
+    if (missingProgram && this.selectedCertificates && this.selectedCertificates.length > 0) {
+      missingProgram = false;
+    }
+
+    // check private lessons
+    if (missingProgram && this.selectedPrivateLessons && this.selectedPrivateLessons.length > 0) {
+      missingProgram = false;
+    }
+
+    return missingProgram;
+  }
+
+  protected readonly Program = Program;
 }

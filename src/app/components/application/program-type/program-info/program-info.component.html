@@ -1,0 +1,158 @@
+<div *ngIf="appData.ageGroup && filteredPrograms.length > 0">
+  <div class="my-4">
+    <label for="selectedArtsArea">Area of Study</label>
+    <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
+      <div class="select">
+        <select [(ngModel)]="selectedArtsArea"
+                (change)="updateSessions()"
+                name="selectedArtsArea"
+                class="w-100"
+                [disabled]="programsDisabled"
+                id="selectedArtsArea">
+          <option *ngFor="let artsArea of sortedArtsAreas" [value]="artsArea.value"
+                  [defaultSelected]="artsArea.defaultValue">{{ artsArea.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="sortedSessions.length > 0">
+      <label for="selectedSession" class="mt-4">Session</label>
+      <div class="default" [ngClass]="{disabledDiv: programsDisabled}">
+        <div class="select">
+          <select [(ngModel)]="selectedSession"
+                  name="selectedSession"
+                  class="w-100"
+                  [disabled]="programsDisabled"
+                  id="selectedSession">
+            <option *ngFor="let session of sortedSessions" [value]="session.value"
+                    [defaultSelected]="session.defaultValue">{{ session.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="sortedSessions.length === 0" class="my-4">
+    There are currently no sessions available for this {{ appData.isAdultApplicant ? '' : 'Grade and ' }} Area of Study.
+  </div>
+
+  <div class="col-12 my-4" #selectedCoursesContainer id="selectedCoursesContainer">
+    <h5>Selected Courses</h5>
+    <div *ngIf="selectedPrograms.length === 0" class="col-12 my-3 p-4">
+      Nothing selected.
+    </div>
+    <div *ngFor="let program of selectedPrograms"
+         id="prog_{{program.id}}"
+         (click)="clickProgram(program, instrumentModal, ListTypes.SELECTED)"
+         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
+         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving">
+          <input type="checkbox" [id]="program.id" [name]="program.id"
+                 [checked]="program.isSelected"
+                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)">
+          <label
+            [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.SELECTED)}">
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ program.name }}  {{ program.selectedInstrument }}</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="list-group list-group-flush mt-3">
+          <div class="list-group-item">{{ program.sessionDates }}</div>
+          <div class="list-group-item" *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+          <div class="list-group-item" *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected
+            as part of {{ program.certificateGroupName }} Certificate
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 my-4" *ngIf="appData.ageGroup">
+    <h5 *ngIf="!selectedPrograms || selectedPrograms.length === 0">Select your Course(s) <span
+      *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
+    <h5 *ngIf="selectedPrograms.length > 0">Additional Available Courses <span
+      *ngIf="!appData.isAdultApplicant">for {{ selectedDivisionDescription }}</span></h5>
+    <div *ngFor="let program of filteredPrograms"
+         class="checkbox-container checkbox-container-clickable col-12 my-3 p-4"
+         (click)="clickProgram(program, instrumentModal, ListTypes.FILTERED)"
+         [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
+      <div class="d-flex align-items-end">
+        <div class="checkbox col-2 col-xl-1" *ngIf="!program.isSaving">
+          <input type="checkbox" [id]="program.id" [name]="program.id"
+                 [checked]="program.isSelected"
+                 [disabled]="program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)">
+          <label
+            [ngClass]="{disabled: program.isDisabled(daysSelectedBySession, programsDisabled, ListTypes.FILTERED)}">
+            <i class="fa fa-check ps-4"></i>
+          </label>
+        </div>
+        <div class="checkbox col-2 col-xl-1" *ngIf="program.isSaving">
+          <i class="fa fa-2x fa-spinner fa-pulse fa-fw"></i>
+        </div>
+        <div>
+          <h4 class="m-0">{{ program.name }}</h4>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="list-group list-group-flush mt-3">
+          <div class="list-group-item">{{ program.sessionDates }}</div>
+          <div class="list-group-item" *ngIf="program.daysDisplay">Meets on {{ program.daysDisplay }}</div>
+          <div class="list-group-item" *ngIf="program.certificateGroupName"><i class="fa fa-info-circle"></i> Selected
+            as part of {{ program.certificateGroupName }} Certificate
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="filteredPrograms.length === 0 && selectedSession">
+    There are no additional courses available for your selected session.
+  </div>
+</div>
+<div *ngIf="appData.ageGroup && filteredPrograms.length === 0">
+  <h5>Available Courses <span *ngIf="!appData.isAdultApplicant"> for {{ selectedDivisionDescription }}</span></h5>
+  There are no courses available for your age group.
+</div>
+
+
+<ng-template #instrumentModal let-modal>
+  <div class="modal-header">
+    <h4 *ngIf="isMusic" class="modal-title" id="modal-basic-title">Select an Instrument</h4>
+    <button type="button" class="close btn btn-sm" aria-label="Close" (click)="modal.dismiss('Close clicked')">
+      <span aria-hidden="true">
+        <i class="fa fa-close fa-2x"></i>
+      </span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="default required">
+      <div *ngIf="isMusic" class="select">
+        <select [(ngModel)]="modalInstrumentChoice"
+                name="selectedInstrument"
+                class="w-100"
+                id="selectedInstrument">
+          <option *ngFor="let instrument of selectedProgramInstruments" [value]="instrument.value"
+                  [disabled]="instrument.disabled"
+                  [defaultSelected]="instrument.defaultValue">{{ instrument.label }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="isMusic" type="button" class="btn btn-primary"
+            [disabled]="!modalInstrumentChoice"
+            (click)="modal.close(modalInstrumentChoice)">Ok
+    </button>
+
+  </div>
+</ng-template>

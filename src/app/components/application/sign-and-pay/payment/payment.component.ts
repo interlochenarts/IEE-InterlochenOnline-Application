@@ -5,6 +5,7 @@ import {Payment} from '../../../../_classes/payment';
 import {Parent} from '../../../../_classes/parent';
 import {Router} from '@angular/router';
 import {Program} from '../../../../_classes/program';
+import {CertificateGroup} from "../../../../_classes/certificate-group";
 
 declare const Visualforce: any;
 
@@ -21,10 +22,14 @@ export class PaymentComponent implements OnInit, OnDestroy {
   appData: ApplicationData = new ApplicationData();
   selectedPrograms: Array<Program>;
   registeredPrograms: Array<Program>;
+  selectedBundles: Array<CertificateGroup>;
+  selectedPLs: Array<Program>;
   isLoading: boolean;
+  hasUnregistered: boolean = false;
   enteredCode: string;
   totalTuition: number;
   timer: number;
+  firstLoad: boolean = true;
 
   userType = 'student';
   credentialStatus: string;
@@ -60,14 +65,19 @@ export class PaymentComponent implements OnInit, OnDestroy {
           {buffer: false, escape: false}
         );
 
+        this.selectedBundles = this.appData.programData?.certificateGroups.filter(g => g.isSelected);
+        this.selectedPLs = this.appData.acProgramData?.privateLessons.filter(p => (p.isSelected && !p.isRegistered) || p.lessonCountAdd > 0);
+
         this.selectedPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && (!p.isRegistered || (p.isRegistered && p.lessonCountAdd > 0)));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.selectedPrograms.sort(Program.sort);
+        this.selectedPrograms.sort(Program.sortBySessionStartNullsFirst);
+
+        this.hasUnregistered = (this.selectedBundles && this.selectedBundles.length > 0) || (this.selectedPrograms && this.selectedPrograms.length > 0) || (this.selectedPLs && this.selectedPLs.length > 0);
 
         // Only registered programs
         this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
         // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-        this.registeredPrograms.sort(Program.sort);
+        this.registeredPrograms.sort(Program.sortBySessionStartNullsFirst);
       }
     });
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
@@ -159,6 +169,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.paymentReceived = this.appData.payment.tuitionPaid;
           this.appDataService.paymentReceived.next(this.paymentReceived);
           this.selectedPrograms = null;
+          this.selectedBundles = null;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
           console.dir(result);
@@ -218,11 +229,12 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.hasCode = this.appData.payment.waiverCode != null;
           this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
           this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
-          if (this.appData.payment.amountOwed <= 0) {
+          if (this.appData.payment.amountOwed <= 0 && !this.firstLoad) {
             clearInterval(this.timer);
 
             this.selectedPrograms?.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
             this.selectedPrograms = null;
+            this.selectedBundles = null;
             this.appData.payment.tuitionPaid = true;
             this.paymentReceived = true;
             this.appDataService.paymentReceived.next(this.paymentReceived);
@@ -234,12 +246,15 @@ export class PaymentComponent implements OnInit, OnDestroy {
             // Only registered programs
             this.registeredPrograms = this.appData.acProgramData?.programs.filter(p => p.isSelected && p.isRegistered && (!p.lessonCountAdd || p.lessonCountAdd === 0));
             // Sort by Session Date, sessionDates comes in like SessionName: MM-DD-YYYY - MM-DD-YYYY
-            this.registeredPrograms.sort(Program.sort);
+            this.registeredPrograms.sort(Program.sortBySessionStartNullsFirst);
 
             this.transactionId = null;
             this.appDataService.transactionId.next(null);
 
             this.isLoading = false;
+            // This firstLoad check lets it run the timer one last time, giving future methods enough time to finish
+          } else if (this.appData.payment.amountOwed <= 0 && this.firstLoad) {
+            this.firstLoad = false;
           }
         }
       },
