@@ -15,7 +15,7 @@ export class PaymentBundle {
     Object.assign(paymentBundle, json);
 
     paymentBundle.discount = PaymentWaiver.createFromNestedJson(paymentBundle.discount);
-    paymentBundle.appChoices = json.appChoices?.map((ac) => PaymentWaiver.createFromNestedJson(ac));
+    paymentBundle.appChoices = json.appChoices?.map((ac) => PaymentAppChoice.createFromNestedJson(ac));
 
     return paymentBundle;
   }

@@ -16,12 +16,14 @@
   <div class="col-7 hideOverflow" *ngIf="appData.ageGroup">{{appData.ageGroup}}</div>
 </div>
 
-<div *ngFor="let program of selectedPrograms" class="my-2">
-  <div>
-    <b>{{program.name}}<span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span><span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
+<!-- selected private lessons -->
+<div *ngFor="let program of selectedPrivateLessons" class="my-2">
+  <div><b>{{program.name}}</b><span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span>
+    <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span>
+    <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
   </div>
-  <div class="ms-3">{{program.sessionDates}} </div>
-  <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
+  <div>Number of lessons: {{program.lessonCount}} <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
+  <div>Meets on various days (selected by student according to instructor's availability)</div>
 </div>
 
 <!-- selected certificate groups -->
@@ -35,14 +37,12 @@
   </div>
 </div>
 
-<!-- selected private lessons -->
-<div *ngFor="let program of selectedPrivateLessons" class="my-2">
-  <div><b>{{program.name}}</b><span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span>
-    <span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span>
-    <span *ngIf="isRegistered && program.isRegistered"> - Registered</span>
+<div *ngFor="let program of selectedPrograms" class="my-2">
+  <div>
+    <b>{{program.name}}<span *ngIf="appData.ageGroup !== program.division" class="reviewError"> {{ program.division }}</span><span *ngIf="program.selectedInstrument"> - {{program.selectedInstrument}}</span></b>
   </div>
-  <div>Number of lessons: {{program.lessonCount}} <span *ngIf="program.lessonCountAdd > 0" class="new-program"> Pending additional lessons: {{program.lessonCountAdd}}</span></div>
-  <div>Meets on various days (selected by student according to instructor's availability)</div>
+  <div class="ms-3">{{program.sessionDates}} </div>
+  <div *ngIf="program.daysDisplay" class="ms-3">Meeting Days: {{program.daysDisplay}}</div>
 </div>
 
 <div *ngIf="showError">
