@@ -170,6 +170,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.appDataService.paymentReceived.next(this.paymentReceived);
           this.selectedPrograms = null;
           this.selectedBundles = null;
+          this.selectedPLs = null;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
           console.dir(result);
