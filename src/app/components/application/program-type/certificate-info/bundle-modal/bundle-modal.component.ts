@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CertificateGroup} from "../../../../../_classes/certificate-group";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {Program} from '../../../../../_classes/program';
+import {Course} from '../../../../../_classes/course';
+import {AppDataService} from '../../../../../services/app-data.service';
 
 @Component({
   selector: 'iee-bundle-modal',
@@ -40,6 +42,8 @@ export class BundleModalComponent implements OnInit {
     });
     return selectedPrograms;
   }
+
+  constructor(private appDataService: AppDataService) {}
 
   ngOnInit() {
     // console.dir(this.group);
@@ -88,5 +92,12 @@ export class BundleModalComponent implements OnInit {
         console.error('OPTIONS CHOSEN OUT OF SEQUENCE');
       }
     }
+  }
+
+  getUnselectedProgramsByCourse(course: Course): Array<Program> {
+    const selectedPrograms = this.appDataService.applicationData.getValue().acProgramData.programs;
+    return course.getProgramsByDivision(this.selectedDivision).filter(courseProgram => {
+      return selectedPrograms.findIndex(sp => sp.id === courseProgram.id) < 0;
+    });
   }
 }

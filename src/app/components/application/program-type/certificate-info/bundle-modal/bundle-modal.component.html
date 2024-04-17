@@ -20,7 +20,7 @@
                   name="bundleChoice_{{i}}"
                   class="w-100"
                   id="bundleChoice_{{i}}">
-            <option *ngFor="let program of course.getProgramsByDivision(selectedDivision)"
+            <option *ngFor="let program of getUnselectedProgramsByCourse(course)"
                     [value]="program.certificateGroupOption.value"
                     [defaultSelected]="program.certificateGroupOption.defaultValue">{{ program.certificateGroupOption.label }}
             </option>

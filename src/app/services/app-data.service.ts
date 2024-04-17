@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, findIndex} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {ApplicationData} from '../_classes/application-data';
 import {CountryCode} from '../_classes/country-code';
 import {StateCode} from '../_classes/state-code';
@@ -135,6 +135,7 @@ export class AppDataService {
       );
     }
   }
+
   /**
    * Save the Age Group to the application record
    * @param ageGroup The Age Group to save to the application
@@ -151,7 +152,7 @@ export class AppDataService {
       Visualforce.remoting.Manager.invokeAction(
         'IEE_OnlineApplicationController.saveGradeInSchool',
         appId, ageGroup,
-        (result: string) => {
+        () => {
           that.isSaving.next(false);
         },
         {buffer: false, escape: false}
@@ -250,18 +251,6 @@ export class AppDataService {
             group.courses[i].selectedSessionDates = appChoiceSessions[i];
           }
           group.appChoiceIds = appChoiceIds;
-          // console.info('Saved new bundle: ' + result);
-          // TODO: Update payment info
-          // Visualforce.remoting.Manager.invokeAction(
-          //   'IEE_OnlineApplicationController.getPaymentJSON',
-          //   appData.appId,
-          //   (payment: string) => {
-          //     if (payment && payment !== 'null') {
-          //       appData.payment = Payment.createFromNestedJson(JSON.parse(payment));
-          //     }
-          //   },
-          //   {buffer: false, escape: false}
-          // );
           console.info('bundle saved, updating app data');
           group.getSelectedProgramsByAgeGroup(appData.ageGroup)
             .forEach((p, index) => {
@@ -315,6 +304,7 @@ export class AppDataService {
               const acProgram = appData.acProgramData.programs[acProgramIndex];
               acProgram.isSelected = false;
               acProgram.certificateGroupId = null;
+              acProgram.certificateGroupName = null;
               appData.acProgramData.programs.splice(acProgramIndex, 1);
               appData.programData.programs.push(acProgram);
             }
@@ -384,7 +374,7 @@ export class AppDataService {
     Visualforce.remoting.Manager.invokeAction(
       'IEE_OnlineApplicationController.removeAppChoice',
       this.applicationData.getValue().appId, program.appChoiceId,
-      (result: string) => {
+      () => {
         // console.log(result);
         program.isSaving = false;
       },
