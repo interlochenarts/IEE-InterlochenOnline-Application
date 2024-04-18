@@ -21,6 +21,10 @@ export class CertificateGroup {
 
     certificateGroup.courses = json.courses?.map((c: any) => Course.createFromNestedJson(c));
 
+    // if (certificateGroup.isSelected) {
+    //   console.log('group:', certificateGroup.id, 'appChoices', certificateGroup.appChoiceIds);
+    // }
+
     return certificateGroup;
   }
 
@@ -41,7 +45,7 @@ export class CertificateGroup {
     const selected: Program[] = [];
     this.bundleChoices.forEach(bc => {
       this.courses.forEach(c => {
-        for (const [key, programs ] of c.programsByDivision.entries()) {
+        for (const [key, programs] of c.programsByDivision.entries()) {
           // console.info('key', key);
           const program = programs.find(p => p.id === bc);
           if (program) {
