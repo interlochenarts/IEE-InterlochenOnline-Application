@@ -12,6 +12,7 @@ export class Payment {
   pendingDiscounts: Array<string>;
   pendingBundles: Array<PaymentBundle>;
   pendingAppChoices: Array<PaymentAppChoice>;
+  pendingPLs: Array<PaymentAppChoice>;
   credits: number;
   ccFee: number;
   ccPercent: number;
@@ -23,10 +24,13 @@ export class Payment {
   waiverDescription: string;
   appliedWaivers: number;
   hasWaiverTransactions: boolean;
+  fees: number;
+  courseFee: number;
 
   constructor() {
     this.pendingBundles = new Array<PaymentBundle>();
     this.pendingAppChoices = new Array<PaymentAppChoice>();
+    this.pendingPLs = new Array<PaymentAppChoice>();
   }
 
   public static createFromNestedJson(json: any): Payment {
@@ -35,6 +39,7 @@ export class Payment {
 
     payment.pendingBundles = json.pendingBundles?.map((b) => PaymentBundle.createFromNestedJson(b));
     payment.pendingAppChoices = json.pendingAppChoices?.map((ac) => PaymentAppChoice.createFromNestedJson(ac));
+    payment.pendingPLs = json.pendingPLs?.map((ac) => PaymentAppChoice.createFromNestedJson(ac));
 
     // Don't let them use more credit than they owe
     payment.spendableCredit = payment.credits > 0 && payment.credits > payment.amountOwed ? payment.amountOwed : payment.credits;

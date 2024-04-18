@@ -29,6 +29,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   enteredCode: string;
   totalTuition: number;
   timer: number;
+  firstLoad: boolean = true;
 
   userType = 'student';
   credentialStatus: string;
@@ -169,6 +170,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.appDataService.paymentReceived.next(this.paymentReceived);
           this.selectedPrograms = null;
           this.selectedBundles = null;
+          this.selectedPLs = null;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
           console.dir(result);
@@ -228,7 +230,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.hasCode = this.appData.payment.waiverCode != null;
           this.totalTuition = this.appData.payment.appliedCredits + this.appData.payment.appliedWaivers;
           this.totalTuition += this.appData.payment.amountOwed + this.appData.payment.amountPaid;
-          if (this.appData.payment.amountOwed <= 0) {
+          if (this.appData.payment.amountOwed <= 0 && !this.firstLoad) {
             clearInterval(this.timer);
 
             this.selectedPrograms?.forEach(program => { program.registeredDate = new Date().toLocaleDateString()});
@@ -251,6 +253,9 @@ export class PaymentComponent implements OnInit, OnDestroy {
             this.appDataService.transactionId.next(null);
 
             this.isLoading = false;
+            // This firstLoad check lets it run the timer one last time, giving future methods enough time to finish
+          } else if (this.appData.payment.amountOwed <= 0 && this.firstLoad) {
+            this.firstLoad = false;
           }
         }
       },
