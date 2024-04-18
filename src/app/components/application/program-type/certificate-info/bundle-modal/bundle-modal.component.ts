@@ -97,7 +97,8 @@ export class BundleModalComponent implements OnInit {
   getUnselectedProgramsByCourse(course: Course): Array<Program> {
     const selectedPrograms = this.appDataService.applicationData.getValue().acProgramData.programs;
     return course.getProgramsByDivision(this.selectedDivision).filter(courseProgram => {
-      return selectedPrograms.findIndex(sp => sp.id === courseProgram.id) < 0;
+      // match on program id, ignore any that are part of this bundle
+      return selectedPrograms.findIndex(sp => sp.id === courseProgram.id && sp.certificateGroupId !== this.group.id) < 0;
     });
   }
 }
