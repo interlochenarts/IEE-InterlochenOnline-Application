@@ -241,14 +241,10 @@ export class AppDataService {
           group.bundleChoices = programIds.split(';');
           const appChoices = result.split(';');
           const appChoiceIds = []
-          const appChoiceSessions = [];
-          appChoices.forEach(ac => {
-            const [id, dates] = ac.split('|');
-            appChoiceIds.push(id);
-            appChoiceSessions.push(dates);
-          });
           for (let i = 0; i < appChoices.length; i++) {
-            group.courses[i].selectedSessionDates = appChoiceSessions[i];
+            const [id, dates] = appChoices[i].split('|');
+            appChoiceIds.push(id);
+            group.courses[i].selectedSessionDates = dates;
           }
           group.appChoiceIds = appChoiceIds;
           console.info('bundle saved, updating app data');
