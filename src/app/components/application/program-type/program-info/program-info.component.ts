@@ -66,7 +66,9 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
       return this.appData.programData.programs.filter(p => !p.isSelected &&
         ((p.division === this.ageGroup) &&
           (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
-          (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)));
+          (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)))
+        .sort(Program.sortBySessionStartNullsLast)
+        .sort(Program.sortByName);
     }
 
     return [];

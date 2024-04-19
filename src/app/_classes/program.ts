@@ -116,7 +116,7 @@ export class Program {
   }
 
   /**
-   * sort nulls to the top
+   * Sort by session start with nulls first
    * @param a
    * @param b
    */
@@ -132,6 +132,11 @@ export class Program {
     }
   }
 
+  /**
+   * Sort by session start with nulls last
+   * @param a
+   * @param b
+   */
   public static sortBySessionStartNullsLast(a: Program, b: Program): number {
     if (a.sessionStartDate && b.sessionStartDate) {
       return a.sessionStartDate - b.sessionStartDate
@@ -142,5 +147,17 @@ export class Program {
     } else {
       return 0;
     }
+  }
+
+  /**
+   * Sort programs by name Ascending
+   * @param a
+   * @param b
+   */
+  public static sortByName(a: Program, b: Program): number {
+    if (a.name === b.name) {
+      return 0;
+    }
+    return (a.name > b.name) ? 1 : -1;
   }
 }
