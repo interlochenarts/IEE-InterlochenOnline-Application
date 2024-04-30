@@ -30,6 +30,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
   totalTuition: number;
   timer: number;
   firstLoad: boolean = true;
+  paidWithCredit: boolean = false
 
   userType = 'student';
   credentialStatus: string;
@@ -145,7 +146,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
         if (result && result !== 'null') {
           this.appData.payment = Payment.createFromNestedJson(JSON.parse(result));
           this.appData.payment.useCredit = this.useCredit;
-          this.paymentReceived = this.appData.payment.tuitionPaid;
+          this.paymentReceived = this.appData.payment.paidOnLoad && !this.appData.isRegistered ? this.appData.payment.paidOnLoad : this.paymentReceived;
           this.appDataService.paymentReceived.next(this.paymentReceived);
         } else {
           console.error('error applying code for app id: ' + this.appData.appId);
@@ -171,6 +172,8 @@ export class PaymentComponent implements OnInit, OnDestroy {
           this.selectedPrograms = null;
           this.selectedBundles = null;
           this.selectedPLs = null;
+          this.hasUnregistered = false;
+          this.paidWithCredit = true;
         } else {
           console.error('error adding program with waiver for app id: ' + this.appData.appId);
           console.dir(result);
@@ -206,7 +209,7 @@ export class PaymentComponent implements OnInit, OnDestroy {
     );
   }
   get codeDisabled(): boolean {
-    return this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied';
+    return (this.appData.payment.waiverCode != null && this.appData.payment.waiverDescription === 'Waiver applied' || this.appData.payment.amountOwed == 0);
   }
   get achAmount(): number {
     // Assigned for convenience and because linting was yelling at me
