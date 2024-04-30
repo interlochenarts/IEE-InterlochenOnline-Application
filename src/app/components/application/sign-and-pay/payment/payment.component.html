@@ -1,7 +1,7 @@
 <header xmlns="http://www.w3.org/1999/html">
   <div class="row">
     <div class="col-12">
-      <h3>{{(appData.payment && (appData.payment.amountOwed === 0 || appData.payment.paidOnLoad)) || (paymentReceived && !!transactionId)? 'Payment Complete' : 'Make a Payment'}}</h3>
+      <h3>{{(appData.payment && (appData.payment.amountOwed === 0 || appData.payment.paidOnLoad)) || (paymentReceived && !!transactionId)? hasUnregistered ? 'Confirm Registration' : 'Payment Complete' : 'Make a Payment'}}</h3>
     </div>
   </div>
 </header>
@@ -12,17 +12,17 @@
   </div>
   <div *ngIf="!isLoading">
     <div class="default mb-2"
-         *ngIf="appData.payment.amountPaid > 0 && transactionId == null && appData.payment.amountOwed == 0">
+         *ngIf="appData.payment.amountPaid > 0 && transactionId == null && appData.payment.amountOwed == 0 && !hasUnregistered && !paidWithCredit">
       You have paid your registration fee of {{appData.payment.amountPaid | currency:'USD'}}.
     </div>
-    <div class="default mb-2" *ngIf="paymentReceived && transactionId != null">
+    <div class="default mb-2" *ngIf="paymentReceived && transactionId != null && !hasUnregistered && !paidWithCredit">
       You have paid your registration fee of {{appData.payment.payments[0].split('&')[0] | currency:'USD'}}.
     </div>
     <div
-      *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0 && appData.payment.appliedWaivers <= 0">
+      *ngIf="!paymentReceived && appData.payment.amountOwed === 0.00 && appData.payment.appliedCredits <= 0 && appData.payment.appliedWaivers <= 0 && !hasUnregistered">
       You must choose a program before you can pay.
     </div>
-    <div *ngIf="!paymentReceived && transactionId == null">
+    <div *ngIf="hasUnregistered">
       <table class="table table-striped my-3">
         <thead>
           <tr>
@@ -85,7 +85,7 @@
           <!-- Other Credits - Can't get more info about these because loosely tied -->
           <ng-container *ngIf="appData.payment.pendingCredit > 0">
             <tr>
-              <td>Other Credit</td>
+              <td>Applied Credit</td>
               <td>-{{appData.payment.pendingCredit | currency:'USD'}}</td>
             </tr>
           </ng-container>
