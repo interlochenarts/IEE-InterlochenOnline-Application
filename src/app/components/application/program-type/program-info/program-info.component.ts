@@ -83,7 +83,6 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   }
 
   updateAreasOfStudy(): void {
-    this.selectedArtsArea = '';
     const artsAreaSet: Set<string> = new Set<string>();
     this.filteredPrograms.forEach(p => {
       p.artsAreaList.forEach(aa => {
@@ -106,7 +105,6 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   }
 
   updateSessions(): void {
-    this.selectedSession = '';
     const sessionStartDateSet = new Set<number>();
     const sessionNameByStartDate = new Map<number, string>();
     this.filteredPrograms.forEach((p: Program) => {
