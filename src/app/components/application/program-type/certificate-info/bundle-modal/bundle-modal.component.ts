@@ -73,6 +73,13 @@ export class BundleModalComponent implements OnInit {
           allOrderedInSuccession = false;
         }
         previousSessionStart = program.sessionStartDate;
+
+        if (i > 0) { // for courses that are ordered, don't let them select 'will schedule later' for the second option if they pick a date for the 3rd
+          const previousProgram = this.selectedIOCourses[i-1];
+          if (!!program.sessionStartDate && !previousProgram.sessionStartDate) {
+            allOrderedInSuccession = false;
+          }
+        }
       }
     }
 
