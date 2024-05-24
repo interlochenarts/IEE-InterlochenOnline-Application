@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
 import {SalesforceOption} from '../../../../../_classes/salesforce-option';
@@ -23,7 +23,21 @@ export class NewLessonModalComponent {
   @Input() instrumentOptions: Array<SalesforceOption>;
   @Input() program: Program;
 
+  @ViewChild('lessonCountField') lessonCountFieldRef: ElementRef;
+
   data: PrivateLessonResult = new PrivateLessonResult();
+
+  get invalidLessonCount(): boolean {
+    return this.data.lessonCount < 1 || this.data.lessonCount > 99 || !this.lessonCountFieldRef?.nativeElement.checkValidity();
+  }
+
+  get formInvalid(): boolean {
+    if (this.isMusic) {
+      return (!this.data.instrument || !this.data.lessonCount) || this.invalidLessonCount;
+    } else {
+      return !this.data.lessonCount || this.invalidLessonCount;
+    }
+  }
 
   get isOtherInstrument(): boolean {
     return this.data.instrument === 'Other';
@@ -38,10 +52,6 @@ export class NewLessonModalComponent {
   }
 
   buttonDisabled(): boolean {
-    if (this.isMusic) {
-      return (!this.data.instrument || !this.data.lessonCount) || this.data.lessonCount < 1 || this.data.lessonCount > 999;
-    } else {
-      return !this.data.lessonCount || this.data.lessonCount < 1 || this.data.lessonCount > 999;
-    }
+    return this.formInvalid;
   }
 }
