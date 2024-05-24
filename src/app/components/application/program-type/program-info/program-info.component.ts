@@ -61,11 +61,14 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
     return this.ageGroup;
   }
 
+  get divisionPrograms(): Array<Program> {
+    return this.appData.programData.programs.filter(p => p.division === this.ageGroup);
+  }
+
   get filteredPrograms(): Array<Program> {
     if (this.appData) {
-      return this.appData.programData.programs.filter(p => !p.isSelected &&
-        ((p.division === this.ageGroup) &&
-          (this.selectedSession ? p.sessionName === this.selectedSession : true) &&
+      return this.divisionPrograms.filter(p => !p.isSelected &&
+        ((this.selectedSession ? p.sessionName === this.selectedSession : true) &&
           (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)))
         .sort(Program.sortBySessionStartNullsLast)
         .sort(Program.sortByName);
@@ -84,7 +87,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
 
   updateAreasOfStudy(): void {
     const artsAreaSet: Set<string> = new Set<string>();
-    this.filteredPrograms.forEach(p => {
+    this.divisionPrograms.forEach(p => {
       p.artsAreaList.forEach(aa => {
         artsAreaSet.add(aa);
       });
@@ -107,7 +110,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   updateSessions(): void {
     const sessionStartDateSet = new Set<number>();
     const sessionNameByStartDate = new Map<number, string>();
-    this.filteredPrograms.forEach((p: Program) => {
+    this.divisionPrograms.forEach((p: Program) => {
       sessionStartDateSet.add(p.sessionStartDate);
       sessionNameByStartDate.set(p.sessionStartDate, p.sessionName);
     });
