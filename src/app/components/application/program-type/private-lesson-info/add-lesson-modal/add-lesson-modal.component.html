@@ -1,8 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title" id="add-lesson-modal-basic-title">{{ program.name }}</h4>
-  <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
-    <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
-  </button>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="dismiss()"></button>
 </div>
 <div class="modal-body">
   <h5 *ngIf="modalList === ListTypes.SELECTED">Adjust Lessons</h5>
