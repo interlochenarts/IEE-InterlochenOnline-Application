@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title" id="new-lesson-modal-basic-title">
-    {{program.name}}
+    {{ program.name }}
   </h4>
   <button type="button" class="close btn btn-sm" aria-label="Close" (click)="dismiss()">
     <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
@@ -35,15 +35,19 @@
 
   <label for="lessonCount" class="mt-4 required">Add lessons</label>
   <div class="default required">
-    <input type="number" class="w-25"
+    <input #lessonCountField
+           type="number" class="w-25"
            [(ngModel)]="data.lessonCount"
-           name="lessonCount"
-           max="52"
+           max="99"
            min="0"
-           maxlength="3"
            step="1"
-           pattern="\d*"
+           pattern="\d{1,2}"
+           name="lessonCount"
            id="lessonCount"/>
+  </div>
+
+  <div *ngIf="invalidLessonCount" class="alert alert-danger mt-2">
+    Please enter whole numbers, 1 through 99
   </div>
 </div>
 <div class="modal-footer">
