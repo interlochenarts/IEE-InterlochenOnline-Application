@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ListTypes} from "../../../../../_enums/enums";
 import {FormsModule} from '@angular/forms';
 import {NgIf} from '@angular/common';
@@ -22,9 +22,15 @@ export class AddLessonModalComponent implements OnInit {
   @Input() previousCount: number;
   @Input() program: Program;
 
+  @ViewChild('lessonCountAdd') lessonCountAddRef: ElementRef;
+
   data: PrivateLessonResult = new PrivateLessonResult();
 
   protected readonly ListTypes = ListTypes;
+
+  get invalidLessonCount(): boolean {
+    return this.data.lessonCountAdd < 1 || this.data.lessonCountAdd > 99 || !this.lessonCountAddRef?.nativeElement.checkValidity();
+  }
 
   ngOnInit() {
     this.data.lessonCountAdd = this.previousCount;
@@ -39,6 +45,6 @@ export class AddLessonModalComponent implements OnInit {
   }
 
   buttonDisabled(): boolean {
-    return this.data.lessonCountAdd < 0 || this.data.lessonCountAdd > 999;
+    return this.invalidLessonCount;
   }
 }
