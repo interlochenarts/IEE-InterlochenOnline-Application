@@ -4,6 +4,7 @@ import {Program} from '../../../../_classes/program';
 import {RouterLink} from '../../../../_classes/router-link';
 import {CertificateGroup} from '../../../../_classes/certificate-group';
 import {ApplicationData} from '../../../../_classes/application-data';
+import {AppDataService} from '../../../../services/app-data.service';
 
 @Component({
   selector: 'iee-program-review',
@@ -14,15 +15,41 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
   @Input() appData: ApplicationData = new ApplicationData();
   @Input() link: RouterLink;
   @Input() isRegistered: boolean;
+
   selectedPrograms: Array<Program>;
   selectedPrivateLessons: Array<Program>;
   selectedCertificates: Array<CertificateGroup>;
   registeredPrograms: Array<Program>;
+  editBtnClass = 'btn btn-primary';
+  transactionId = '';
+  paymentReceived = false;
 
-  constructor() {
+  constructor(private appDataService: AppDataService) {
   }
 
   ngOnInit(): void {
+
+    this.appDataService.transactionId.asObservable().subscribe(trxId => {
+      if (trxId) {
+        this.transactionId = trxId;
+        this.setButtonClass();
+      }
+    });
+
+    this.appDataService.paymentReceived.asObservable().subscribe(x => {
+      this.paymentReceived = x;
+      this.setButtonClass();
+    });
+
+    this.setButtonClass();
+  }
+
+  setButtonClass() {
+    if ((this.paymentReceived && !!this.transactionId) || this.appData.hasPrograms()) {
+      this.editBtnClass = 'btn btn-ghost';
+    } else {
+      this.editBtnClass = 'btn btn-primary';
+    }
   }
 
   ngOnChanges(): void {

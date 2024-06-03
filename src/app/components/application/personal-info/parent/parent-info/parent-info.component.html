@@ -11,7 +11,7 @@
 <br/>
 <h4>Mailing Address</h4>
 
-<button class="btn btn-default mt-4" *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()" (click)="copyAddressFromStudent()">
+<button class="{{copyBtnClass}}" *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()" (click)="copyAddressFromStudent()">
   Copy address from student
 </button>
 
@@ -19,6 +19,7 @@
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.street"
+         (change)="addressChanged()"
          name="parentMailingStreet"
          maxlength="255"
          id="parentMailingStreet"/>
@@ -28,6 +29,7 @@
 <div class="default required">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.city"
+         (change)="addressChanged()"
          name="parentMailingCity"
          maxlength="40"
          id="parentMailingCity"/>
@@ -40,9 +42,9 @@
                      [data]="countryCodes"
                      [searchKeyword]="keyword"
                      placeholder="Enter the Country name"
-                     (selected)='filterStates($event.name); clearState($event.name)'
-                     (inputChanged)='filterStates($event.name); clearState($event.name)'
-                     (inputCleared)='clearStateVal()'
+                     (selected)='filterStates($event.name); clearState($event.name); addressChanged()'
+                     (inputChanged)='filterStates($event.name); clearState($event.name); addressChanged()'
+                     (inputCleared)='clearStateVal(); addressChanged()'
                      (closed)="focusout()"
                      [itemTemplate]="itemTemplate"
                      [notFoundTemplate]="notFoundTemplate"
@@ -70,8 +72,8 @@
                      [searchKeyword]="keyword"
                      [disabled]="filteredStates.length === 0"
                      placeholder="Enter the State name"
-                     (selected)="stateSelected($event)"
-                     (inputCleared)="clearStateVal()"
+                     (selected)="stateSelected($event); addressChanged()"
+                     (inputCleared)="clearStateVal(); addressChanged()"
                      [itemTemplate]="itemTemplate"
                      [notFoundTemplate]="notFoundTemplate"
                      [ngModel]="parentState"
@@ -91,6 +93,7 @@
 <div class="default" [ngClass]="{required: zipRequired()}">
   <input type="text" class="w-100"
          [(ngModel)]="parent.mailingAddress.zipPostalCode"
+         (change)="addressChanged()"
          name="parentMailingPostalCode"
          maxlength="20"
          id="parentMailingPostalCode"/>

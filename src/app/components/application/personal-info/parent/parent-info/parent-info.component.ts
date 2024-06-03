@@ -16,12 +16,14 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   @Input() parent: Parent;
   @Input() student: Student;
   @Input() isSaving: boolean;
+
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
   keyword = 'name'
   showError:boolean = false;
   parentState:string = '';
+  copyBtnClass = 'btn btn-default mt-4';
 
   @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
   @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
@@ -39,6 +41,8 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       this.filterStates(this.parent?.mailingAddress?.country);
       this.parentState = this.getState(this.parent?.mailingAddress?.stateProvince)
     });
+
+    this.addressChanged();
   }
 
   ngOnChanges(): void {
@@ -127,5 +131,23 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     } else {
       return '';
     }
+  }
+
+  isAddressComplete() {
+    return this.parent.mailingAddress.street && this.parent.mailingAddress.street !== '' &&
+      this.parent.mailingAddress.city && this.parent.mailingAddress.city !== '' &&
+      this.parent.mailingAddress.country && this.parent.mailingAddress.country !== '' &&
+      this.parent.mailingAddress.stateProvince && this.parent.mailingAddress.stateProvince !== '' &&
+      this.parent.mailingAddress.zipPostalCode && this.parent.mailingAddress.zipPostalCode !== '';
+  }
+
+  addressChanged(): void {
+    this.copyBtnClass = 'btn';
+    if (this.isAddressComplete()) {
+      this.copyBtnClass += ' btn-ghost';
+    } else {
+      this.copyBtnClass += ' btn-primary';
+    }
+    this.copyBtnClass += ' mt-4';
   }
 }

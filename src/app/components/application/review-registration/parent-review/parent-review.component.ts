@@ -5,6 +5,7 @@ import {CountryCode} from '../../../../_classes/country-code';
 import {StateCode} from '../../../../_classes/state-code';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Student} from '../../../../_classes/student';
+import {ApplicationData} from '../../../../_classes/application-data';
 
 declare const Visualforce: any;
 
@@ -16,12 +17,14 @@ declare const Visualforce: any;
 export class ParentReviewComponent implements OnInit, OnChanges {
   @Input() parents: Array<Parent> = [];
   @Input() student: Student;
+  @Input() appData: ApplicationData;
   @Input() link: RouterLink;
   @Input() locked: boolean;
 
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStateCodesByParent: Map<string, Array<StateCode>> = new Map<string, Array<StateCode>>();
+  editBtnClass = 'btn btn-primary';
 
   constructor(private appDataService: AppDataService) {
     appDataService.countryData.asObservable().subscribe(countries => {
@@ -34,6 +37,12 @@ export class ParentReviewComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.filterStates();
+
+    if (this.appData.parentComplete(this.countryCodes, this.stateCodes)) {
+      this.editBtnClass = 'btn btn-ghost';
+    } else {
+      this.editBtnClass = 'btn btn-primary';
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
