@@ -21,7 +21,6 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   stateCodes: Array<StateCode> = [];
   filteredStateCodes: Array<StateCode> = [];
   countryCode: CountryCode = new CountryCode();
-  editBtnClass = 'btn btn-primary';
 
   get formattedBirthdate(): string {
     if (this.student.birthdate) {
@@ -46,12 +45,6 @@ export class StudentReviewComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.filterStates();
     this.countryCode = this.getCountryCode(this.student);
-
-    if (this.student.isComplete(this.countryCodes, this.stateCodes)) {
-      this.editBtnClass = 'btn btn-ghost';
-    } else {
-      this.editBtnClass = 'btn btn-primary';
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

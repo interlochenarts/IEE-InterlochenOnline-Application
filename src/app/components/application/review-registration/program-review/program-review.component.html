@@ -4,7 +4,7 @@
     <h4>Selected Programs</h4>
   </div>
   <div class="col-4 text-end">
-    <a [routerLink]="[link.link]" class="{{editBtnClass}}">Edit</a>
+    <a [routerLink]="[link.link]" class="btn" [ngClass]="{'btn-ghost': programComplete, 'btn-primary': !programComplete}">Edit</a>
   </div>
 </div>
 

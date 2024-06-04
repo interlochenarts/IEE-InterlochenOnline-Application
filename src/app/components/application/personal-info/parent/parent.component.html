@@ -6,19 +6,12 @@
       <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
     </div>
     <div *ngIf="!parent.isEditing">
-      <!-- begin button color formatting -->
-      <div *ngIf="parent.isVerified && parent.isComplete(countryCodes, stateCodes)">
-        <button class="btn btn-ghost" (click)="editParent(parent)">
-          Update {{parent.firstName}}'s Contact Information
-        </button>
-      </div>
-      <div *ngIf="parent.isVerified && !parent.isComplete(countryCodes, stateCodes)">
-        <button class="btn btn-primary" (click)="editParent(parent)">
-          Update {{parent.firstName}}'s Contact Information
-        </button>
-      </div>
-      <!-- end button formatting -->
-
+      <button class="btn"
+              [ngClass]="{'btn-ghost': parent.isComplete(countryCodes, stateCodes), 'btn-primary': !parent.isComplete(countryCodes, stateCodes)}"
+              (click)="editParent(parent)"
+              *ngIf="parent.isVerified">
+        Update {{parent.firstName}}'s Contact Information
+      </button>
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>

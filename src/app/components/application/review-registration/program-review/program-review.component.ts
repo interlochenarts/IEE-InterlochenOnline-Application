@@ -20,7 +20,6 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
   selectedPrivateLessons: Array<Program>;
   selectedCertificates: Array<CertificateGroup>;
   registeredPrograms: Array<Program>;
-  editBtnClass = 'btn btn-primary';
   transactionId = '';
   paymentReceived = false;
 
@@ -32,24 +31,16 @@ export class ProgramReviewComponent implements OnInit, OnChanges {
     this.appDataService.transactionId.asObservable().subscribe(trxId => {
       if (trxId) {
         this.transactionId = trxId;
-        this.setButtonClass();
       }
     });
 
     this.appDataService.paymentReceived.asObservable().subscribe(x => {
       this.paymentReceived = x;
-      this.setButtonClass();
     });
-
-    this.setButtonClass();
   }
 
-  setButtonClass() {
-    if ((this.paymentReceived && !!this.transactionId) || this.appData.hasPrograms()) {
-      this.editBtnClass = 'btn btn-ghost';
-    } else {
-      this.editBtnClass = 'btn btn-primary';
-    }
+  get programComplete() {
+    return (this.paymentReceived && !!this.transactionId) || this.appData.hasPrograms();
   }
 
   ngOnChanges(): void {

@@ -3,7 +3,12 @@
     <h4>{{isAdultApplicant ? '' : 'Student: '}}{{student.preferredName || student.firstName}} {{student.lastName}}</h4>
   </div>
   <div class="col-4 text-end">
-    <a *ngIf="!locked" [routerLink]="[link.link]" class="{{editBtnClass}}">Edit</a>
+    <a *ngIf="!locked"
+       [routerLink]="[link.link]"
+       class="btn"
+       [ngClass]="{'btn-ghost': student.isComplete(this.countryCodes, this.stateCodes), 'btn-primary': !student.isComplete(this.countryCodes, this.stateCodes)}">
+      Edit
+    </a>
   </div>
 </div>
 

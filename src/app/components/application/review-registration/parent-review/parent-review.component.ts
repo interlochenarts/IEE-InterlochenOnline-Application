@@ -24,7 +24,6 @@ export class ParentReviewComponent implements OnInit, OnChanges {
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStateCodesByParent: Map<string, Array<StateCode>> = new Map<string, Array<StateCode>>();
-  editBtnClass = 'btn btn-primary';
 
   constructor(private appDataService: AppDataService) {
     appDataService.countryData.asObservable().subscribe(countries => {
@@ -37,12 +36,6 @@ export class ParentReviewComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.filterStates();
-
-    if (this.appData.parentComplete(this.countryCodes, this.stateCodes)) {
-      this.editBtnClass = 'btn btn-ghost';
-    } else {
-      this.editBtnClass = 'btn btn-primary';
-    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {

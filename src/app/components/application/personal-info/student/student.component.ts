@@ -29,7 +29,6 @@ export class StudentComponent implements OnInit, OnChanges {
   keyword = 'name'
   showError:boolean = false;
   studentState:string = '';
-  copyBtnClass = 'btn btn-default mt-4';
 
   @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
   @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
@@ -78,7 +77,6 @@ export class StudentComponent implements OnInit, OnChanges {
     });
 
     this.loadEthnicityOptions();
-    this.addressChanged(); // load copyButton class
   }
 
   loadEthnicityOptions(): void {
@@ -169,16 +167,6 @@ export class StudentComponent implements OnInit, OnChanges {
       this.student.mailingAddress.country && this.student.mailingAddress.country !== '' &&
       this.student.mailingAddress.stateProvince && this.student.mailingAddress.stateProvince !== '' &&
       this.student.mailingAddress.zipPostalCode && this.student.mailingAddress.zipPostalCode !== '';
-  }
-
-  addressChanged(): void {
-    this.copyBtnClass = 'btn';
-    if (this.isAddressComplete()) {
-      this.copyBtnClass += ' btn-ghost';
-    } else {
-      this.copyBtnClass += ' btn-primary';
-    }
-    this.copyBtnClass += ' mt-4';
   }
 
   showCopyAddressButton(parent: Parent): boolean {
