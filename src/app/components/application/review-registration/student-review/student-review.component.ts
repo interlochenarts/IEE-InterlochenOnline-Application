@@ -4,7 +4,6 @@ import {RouterLink} from '../../../../_classes/router-link';
 import {StateCode} from '../../../../_classes/state-code';
 import {CountryCode} from '../../../../_classes/country-code';
 import {AppDataService} from '../../../../services/app-data.service';
-import {ApplicationData} from '../../../../_classes/application-data';
 
 @Component({
   selector: 'iee-student-review',
