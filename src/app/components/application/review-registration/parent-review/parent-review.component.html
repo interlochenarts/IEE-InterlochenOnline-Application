@@ -4,7 +4,12 @@
       <h4>Parent or Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
     </div>
     <div class="col-4 text-end">
-      <a *ngIf="!locked" [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+      <a *ngIf="!locked"
+         [routerLink]="[link.link]"
+         class="btn"
+         [ngClass]="{'btn-ghost': appData.parentComplete(countryCodes, stateCodes), 'btn-primary': !appData.parentComplete(countryCodes, stateCodes)}">
+        Edit
+      </a>
     </div>
   </div>
 

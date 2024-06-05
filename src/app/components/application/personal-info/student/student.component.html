@@ -35,8 +35,10 @@
 
   <div *ngIf="!isAdultApplicant">
     <div *ngFor="let parent of parents">
-      <button *ngIf="showCopyAddressButton(parent)" (click)="copyAddressFrom(parent.mailingAddress)"
-              class="btn btn-default mt-4">
+      <button *ngIf="showCopyAddressButton(parent)"
+              (click)="copyAddressFrom(parent.mailingAddress)"
+              class="btn mt-4"
+              [ngClass]="{'btn-ghost': isAddressComplete(), 'btn-primary': !isAddressComplete()}">
         Copy Address from {{parent.firstName}} {{parent.lastName}}
       </button>
     </div>

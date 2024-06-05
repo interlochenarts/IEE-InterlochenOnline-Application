@@ -19,6 +19,7 @@ export class StudentComponent implements OnInit, OnChanges {
   @Input() student: Student;
   @Input() parents: Array<Parent>;
   @Input() isAdultApplicant: boolean;
+
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
@@ -158,6 +159,14 @@ export class StudentComponent implements OnInit, OnChanges {
     this.student.mailingAddress.stateProvince = parentAddress.stateProvince;
     this.student.mailingAddress.zipPostalCode = parentAddress.zipPostalCode;
     this.studentState = this.getState(this.student.mailingAddress.stateProvince);
+  }
+
+  isAddressComplete() {
+    return this.student.mailingAddress.street && this.student.mailingAddress.street !== '' &&
+      this.student.mailingAddress.city && this.student.mailingAddress.city !== '' &&
+      this.student.mailingAddress.country && this.student.mailingAddress.country !== '' &&
+      this.student.mailingAddress.stateProvince && this.student.mailingAddress.stateProvince !== '' &&
+      this.student.mailingAddress.zipPostalCode && this.student.mailingAddress.zipPostalCode !== '';
   }
 
   showCopyAddressButton(parent: Parent): boolean {

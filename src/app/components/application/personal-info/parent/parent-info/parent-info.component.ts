@@ -16,6 +16,7 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   @Input() parent: Parent;
   @Input() student: Student;
   @Input() isSaving: boolean;
+
   countryCodes: Array<CountryCode> = [];
   stateCodes: Array<StateCode> = [];
   filteredStates: Array<StateCode> = new Array<StateCode>();
@@ -127,5 +128,13 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     } else {
       return '';
     }
+  }
+
+  isAddressComplete() {
+    return this.parent.mailingAddress.street && this.parent.mailingAddress.street !== '' &&
+      this.parent.mailingAddress.city && this.parent.mailingAddress.city !== '' &&
+      this.parent.mailingAddress.country && this.parent.mailingAddress.country !== '' &&
+      this.parent.mailingAddress.stateProvince && this.parent.mailingAddress.stateProvince !== '' &&
+      this.parent.mailingAddress.zipPostalCode && this.parent.mailingAddress.zipPostalCode !== '';
   }
 }
