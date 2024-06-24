@@ -6,8 +6,11 @@
       <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
     </div>
     <div *ngIf="!parent.isEditing">
-      <button class="btn btn-default" (click)="editParent(parent)"
-              *ngIf="parent.isVerified">Update {{parent.firstName}}'s Contact Information
+      <button class="btn"
+              [ngClass]="{'btn-ghost': parent.isComplete(countryCodes, stateCodes), 'btn-primary': !parent.isComplete(countryCodes, stateCodes)}"
+              (click)="editParent(parent)"
+              *ngIf="parent.isVerified">
+        Update {{parent.firstName}}'s Contact Information
       </button>
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
@@ -86,7 +89,7 @@
 
       <label for="parentVerificationPhone">Phone</label>
       <div class="default required">
-        <input type="text" class="w-100"
+        <input type="tel" class="w-100"
                [(ngModel)]="parentVerification.phone"
                name="parentVerificationPhone"
                maxlength="40"

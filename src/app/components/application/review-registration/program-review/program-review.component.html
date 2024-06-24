@@ -1,10 +1,10 @@
 <!-- selected programs (courses) -->
 <div class="row mt-3">
-  <div class="col-8 d-flex align-items-end">
+  <div class="col-7 col-md-8 d-flex align-items-end">
     <h4>Selected Programs</h4>
   </div>
-  <div class="col-4 text-end">
-    <a [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+  <div class="col-5 col-md-4 text-end">
+    <a [routerLink]="[link.link]" class="btn" [ngClass]="{'btn-ghost': programComplete, 'btn-primary': !programComplete}">Edit</a>
   </div>
 </div>
 
