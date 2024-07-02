@@ -11,7 +11,10 @@
 <br/>
 <h4>Mailing Address</h4>
 
-<button class="btn btn-default mt-4" *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()" (click)="copyAddressFromStudent()">
+<button class="btn mt-4"
+        [ngClass]="{'btn-ghost' : isAddressComplete(), 'btn-primary': !isAddressComplete()}"
+        *ngIf="student && student.mailingAddress && student.mailingAddress.hasAddress()"
+        (click)="copyAddressFromStudent()">
   Copy address from student
 </button>
 

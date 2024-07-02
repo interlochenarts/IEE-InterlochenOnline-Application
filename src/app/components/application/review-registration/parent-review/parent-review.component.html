@@ -1,10 +1,15 @@
 <div *ngFor="let parent of parents" class="my-4">
   <div class="row">
-    <div class="col-8 d-flex align-items-end">
+    <div class="col-7 col-md-8 d-flex align-items-end">
       <h4>Parent or Guardian: {{parent.firstName}} {{parent.lastName}}</h4>
     </div>
-    <div class="col-4 text-end">
-      <a *ngIf="!locked" [routerLink]="[link.link]" class="btn btn-primary">Edit</a>
+    <div class="col-5 col-md-4 text-end">
+      <a *ngIf="!locked"
+         [routerLink]="[link.link]"
+         class="btn"
+         [ngClass]="{'btn-ghost': appData.parentComplete(countryCodes, stateCodes), 'btn-primary': !appData.parentComplete(countryCodes, stateCodes)}">
+        Edit
+      </a>
     </div>
   </div>
 
