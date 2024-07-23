@@ -54,7 +54,7 @@ export class ProgramTypeComponent implements OnInit {
     let hasError = false;
     this.appData.programData.selectedCertificates.forEach(cert => {
       cert.getAllSelectedPrograms().forEach(program => {
-        hasError = hasError || !program.isSessionActive || !program.isActive;
+        hasError = hasError || (program.sessionId && (!program.isSessionActive || !program.isActive));
       });
     });
 

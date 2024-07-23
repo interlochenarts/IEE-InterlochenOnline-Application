@@ -54,7 +54,7 @@ export class BundleModalComponent implements OnInit {
     this.group.courses.forEach(course => {
       course.programsByDivision.get(this.selectedDivision).forEach(program => {
         if (this.selectedIOCourses.includes(program)) {
-          course.isInvalid = !program.isActive || !program.isSessionActive;
+          course.isInvalid = program.sessionId && (!program.isActive || !program.isSessionActive);
         }
       });
     });
@@ -98,7 +98,7 @@ export class BundleModalComponent implements OnInit {
 
     this.allSelected = this.group.bundleChoices.length === this.group.bundleSize && allSelected;
     this.allInSequence = allOrderedInSuccession;
-    this.atLeastOneInvalid = this.selectedIOCourses.reduce((hasInvalid: boolean, p: Program) => hasInvalid || !p.isSessionActive || !p.isActive, false);
+    this.atLeastOneInvalid = this.selectedIOCourses.reduce((hasInvalid: boolean, p: Program) => hasInvalid || (p.sessionId && (!p.isSessionActive || !p.isActive)), false);
 
     this.isValid = this.allSelected && this.allInSequence && this.atLeastOneScheduled && !this.atLeastOneInvalid;
 
