@@ -17,6 +17,7 @@
       <div class="default required">
         <div class="select">
           <select [(ngModel)]="group.bundleChoices[i]"
+                  (ngModelChange)="checkInvalid()"
                   name="bundleChoice_{{i}}"
                   class="w-100"
                   id="bundleChoice_{{i}}">
@@ -25,6 +26,7 @@
                     [defaultSelected]="program.certificateGroupOption.defaultValue">{{ program.certificateGroupOption.label }}
             </option>
           </select>
+          <span *ngIf="course.isInvalid" class="reviewError">This selection is no longer valid.</span>
         </div>
       </div>
     </div>
@@ -34,5 +36,6 @@
   <span *ngIf="allSelected === false" class="alert-text me-3">Please make a selection for each course.</span>
   <span *ngIf="atLeastOneScheduled === false" class="alert-text me-3">Please make sure to schedule at least one course.</span>
   <span *ngIf="allInSequence === false" class="alert-text me-3">Courses must be taken in the order listed.</span>
+  <span *ngIf="atLeastOneInvalid === true" class="alert-text me-3">One or more of your selections are no longer valid.</span>
   <button class="btn btn-primary" (click)="ok()">Ok</button>
 </div>

@@ -32,7 +32,9 @@
     <ul>
       <li *ngFor="let program of cert.getAllSelectedPrograms()">{{program.courseName}}
         <span *ngIf="appData.ageGroup !== program.division" class="reviewError">
-          {{program.division}}</span> - {{program.sessionDates}}</li>
+          {{program.division}}</span> - {{program.sessionDates}}
+        <span *ngIf="program.sessionId && (!program.isSessionActive || !program.isActive)" class="reviewError"> (Invalid Selection)</span>
+      </li>
     </ul>
   </div>
 </div>

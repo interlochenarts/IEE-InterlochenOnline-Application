@@ -19,6 +19,8 @@ export class Program {
   sessionDates: string;
   sessionStartDate: number;
   sessionName: string;
+  isSessionActive: boolean;
+  isActive: boolean;
   programOptions: string;
   selectedInstrument: string;
   isSaving = false;

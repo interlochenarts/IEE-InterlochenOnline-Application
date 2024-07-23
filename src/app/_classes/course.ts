@@ -7,6 +7,7 @@ export class Course {
   programsByDivision: Map<string, Array<Program>>;
   selectedSessionDates: string;
   ioRegistrationFee: number;
+  isInvalid: boolean;
 
 
   public static createFromNestedJson(json: any): Course {

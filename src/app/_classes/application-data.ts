@@ -6,6 +6,7 @@ import {Address} from './address';
 import {ProgramData} from './program-data';
 import {CountryCode} from './country-code';
 import {StateCode} from './state-code';
+import {CertificateGroup} from './certificate-group';
 
 export class ApplicationData {
   student: Student;
@@ -67,14 +68,20 @@ export class ApplicationData {
       hasProgram = true;
     }
 
-    // check certificate programs
-    if (!hasProgram && this.programData.selectedCertificates.length > 0) {
-      hasProgram = true;
-    }
-
     // check private lessons
     if (!hasProgram && this.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0)).length > 0) {
       hasProgram = true;
+    }
+
+    // check certificate programs
+    if (this.programData.selectedCertificates.length > 0) {
+      hasProgram = true;
+
+      this.programData.selectedCertificates.forEach(cert => {
+        cert.getAllSelectedPrograms().forEach(program => {
+          hasProgram = hasProgram && (!program.sessionId || (program.isActive && program.isSessionActive));
+        });
+      });
     }
 
     return hasProgram;
