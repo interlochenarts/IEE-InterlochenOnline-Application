@@ -50,6 +50,17 @@ export class ProgramTypeComponent implements OnInit {
     return '';
   }
 
+  get hasCertError(): boolean {
+    let hasError = false;
+    this.appData.programData.selectedCertificates.forEach(cert => {
+      cert.getAllSelectedPrograms().forEach(program => {
+        hasError = hasError || (program.sessionId && (!program.isSessionActive || !program.isActive));
+      });
+    });
+
+    return hasError;
+  }
+
   get selectedLessonsText(): string {
     const lessonCount = this.appData.acProgramData.privateLessons.filter(pl => pl.isSelected || (pl.isRegistered && pl.lessonCountAdd > 0)).length;
     if (lessonCount > 0) {

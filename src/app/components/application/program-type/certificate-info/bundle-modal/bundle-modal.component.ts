@@ -18,6 +18,7 @@ export class BundleModalComponent implements OnInit {
   allSelected: boolean;
   allInSequence: boolean;
   atLeastOneScheduled: boolean;
+  atLeastOneInvalid: boolean;
 
   get certIsSequenced(): boolean {
     if (this.group) {
@@ -47,6 +48,16 @@ export class BundleModalComponent implements OnInit {
 
   ngOnInit() {
     // console.dir(this.group);
+  }
+
+  checkInvalid() {
+    this.group.courses.forEach(course => {
+      course.programsByDivision.get(this.selectedDivision).forEach(program => {
+        if (this.selectedIOCourses.includes(program)) {
+          course.isInvalid = program.sessionId && (!program.isActive || !program.isSessionActive);
+        }
+      });
+    });
   }
 
   dismiss() {
@@ -87,8 +98,9 @@ export class BundleModalComponent implements OnInit {
 
     this.allSelected = this.group.bundleChoices.length === this.group.bundleSize && allSelected;
     this.allInSequence = allOrderedInSuccession;
+    this.atLeastOneInvalid = this.selectedIOCourses.reduce((hasInvalid: boolean, p: Program) => hasInvalid || (p.sessionId && (!p.isSessionActive || !p.isActive)), false);
 
-    this.isValid = this.allSelected && this.allInSequence && this.atLeastOneScheduled;
+    this.isValid = this.allSelected && this.allInSequence && this.atLeastOneScheduled && !this.atLeastOneInvalid;
 
     if (this.isValid) {
       this.modal.close(this.bundleChoiceString);

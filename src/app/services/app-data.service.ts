@@ -260,7 +260,19 @@ export class AppDataService {
                     console.log('removing from acProgramData', acProgram.name, acProgram.sessionName);
                     this.clearProgramFlags(acProgram);
                     appData.acProgramData.programs.splice(acProgramIndex, 1);
-                    appData.programData.programs.push(acProgram);
+                    // Don't add it back if it's an inactive program from an expired cert
+                    if (acProgram.isActive && acProgram.isSessionActive) {
+                      appData.programData.programs.push(acProgram);
+                    } else {
+                      // If the removed program was expired, reset the course data to no longer be invalid
+                      group.courses.forEach(course => {
+                        course.getProgramsByDivision(acProgram.division).forEach(program => {
+                          if (program.id == acProgram.id) {
+                            course.isInvalid = false;
+                          }
+                        });
+                      });
+                    }
                   }
                 });
 
