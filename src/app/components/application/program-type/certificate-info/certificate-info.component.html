@@ -24,7 +24,7 @@
       <ul class="mb-3 list-group list-group-flush">
         <li class="list-group-item" *ngFor="let course of group.courses">
           <b>{{ course.name }}</b><br/>
-          {{ course.selectedSessionDates }} <span *ngIf="course.isInvalid" class="reviewError">(Invalid Selection)</span>
+          {{ course.selectedSessionDates }} <span *ngIf="course.isInvalid" class="reviewError">(No longer valid)</span>
         </li>
       </ul>
     </div>
