@@ -16,6 +16,7 @@ export class Parent {
   isDeleting = false; // used to prevent saves from re-adding deleting parents
   verification: string;
   verificationSent: boolean;
+  optIn: boolean;
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
