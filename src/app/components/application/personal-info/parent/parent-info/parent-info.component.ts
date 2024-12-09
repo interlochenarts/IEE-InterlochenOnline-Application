@@ -60,14 +60,12 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     if (!this.parent.preferredPhone) {
       this.homeRequired = '';
       this.mobileRequired = '';
-    } else {
-      if (this.parent.preferredPhone === 'Home') {
-        this.homeRequired = 'required';
-        this.mobileRequired = '';
-      } else if (this.parent.preferredPhone === 'Mobile') {
-        this.homeRequired = '';
-        this.mobileRequired = 'required';
-      }
+    } else if (this.parent.preferredPhone === 'Home') {
+      this.homeRequired = 'required';
+      this.mobileRequired = '';
+    } else if (this.parent.preferredPhone === 'Mobile') {
+      this.homeRequired = '';
+      this.mobileRequired = 'required';
     }
 
     //don't need to set it to not required because the above if block wil initialize it

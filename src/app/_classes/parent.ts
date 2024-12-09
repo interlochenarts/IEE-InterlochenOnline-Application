@@ -64,7 +64,7 @@ export class Parent {
     } else {
       phoneComplete = (this.preferredPhone === 'Home' && !!this.homePhone) || (this.preferredPhone === 'Mobile' && !!this.mobilePhone);
     }
-    phoneComplete = phoneComplete && this.optIn && !!this.mobilePhone;
+    phoneComplete = phoneComplete && (!this.optIn || this.optIn && !!this.mobilePhone);
 
     return !!this.email && phoneComplete && this.mailingAddress && this.mailingAddress.isComplete(countryCode, states);
   }
