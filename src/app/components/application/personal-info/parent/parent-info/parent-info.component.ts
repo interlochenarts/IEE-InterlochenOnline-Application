@@ -23,6 +23,14 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   keyword = 'name'
   showError:boolean = false;
   parentState:string = '';
+  homeRequired:string;
+  mobileRequired:string;
+
+  preferredPhoneOptions = [
+    {label: '', value: null},
+    {label: 'Home', value: 'Home'},
+    {label: 'Mobile', value: 'Mobile'}
+  ];
 
   @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
   @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
@@ -40,6 +48,32 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       this.filterStates(this.parent?.mailingAddress?.country);
       this.parentState = this.getState(this.parent?.mailingAddress?.stateProvince)
     });
+
+    this.setRequiredPhones();
+  }
+
+  setRequiredPhones(): void {
+    if (this.parent.preferredPhone === 'null') {
+      this.parent.preferredPhone = null;
+    }
+
+    if (!this.parent.preferredPhone) {
+      this.homeRequired = '';
+      this.mobileRequired = '';
+    } else {
+      if (this.parent.preferredPhone === 'Home') {
+        this.homeRequired = 'required';
+        this.mobileRequired = '';
+      } else if (this.parent.preferredPhone === 'Mobile') {
+        this.homeRequired = '';
+        this.mobileRequired = 'required';
+      }
+    }
+
+    //don't need to set it to not required because the above if block wil initialize it
+    if (this.parent.optIn) {
+      this.mobileRequired = 'required';
+    }
   }
 
   ngOnChanges(): void {
