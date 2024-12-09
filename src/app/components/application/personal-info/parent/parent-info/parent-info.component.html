@@ -8,13 +8,35 @@
          pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"/>
 </div>
 
-<label for="parentPhone" class="mt-4 required">Mobile Phone</label>
+<label for="parentPreferredPhone" class="mt-4 required">Preferred Phone</label>
 <div class="default required">
+  <div class="select">
+    <select [(ngModel)]="parent.preferredPhone"
+            name="parentPreferredPhone"
+            class="w-100"
+            id="parentPreferredPhone"
+            (click)="setRequiredPhones()">
+      <option [value]="option.value" *ngFor="let option of preferredPhoneOptions">{{option.label}}</option>
+    </select>
+  </div>
+</div>
+
+<label for="parentHomePhone" class="mt-4 {{homeRequired}}">Home Phone</label>
+<div class="default {{homeRequired}}">
+  <input type="tel" class="w-100"
+         [(ngModel)]="parent.homePhone"
+         name="parentHomePhone"
+         maxlength="20"
+         id="parentHomePhone"/>
+</div>
+
+<label for="parentMobilePhone" class="mt-4 {{mobileRequired}}">Mobile Phone</label>
+<div class="default {{mobileRequired}}">
   <input type="tel" class="w-100"
          [(ngModel)]="parent.mobilePhone"
-         name="parentPhone"
+         name="parentMobilePhone"
          maxlength="20"
-         id="parentPhone"/>
+         id="parentMobilePhone"/>
 </div>
 
 <div class="row mt-3">
@@ -23,7 +45,8 @@
       <input type="checkbox"
              id="parentOptIn"
              name="parentOptIn"
-             [(ngModel)]="parent.optIn"/>
+             [(ngModel)]="parent.optIn"
+             (ngModelChange)="setRequiredPhones()"/>
       <label for="parentOptIn" class="checkbox-box">
         <i class="fa fa-check"></i>
       </label>
