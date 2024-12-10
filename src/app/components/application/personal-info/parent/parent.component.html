@@ -6,25 +6,33 @@
       <i class="fa fa-warning" style="color:red"></i><span class="reviewError">Email Sent - Waiting For Verification</span>
     </div>
     <div *ngIf="!parent.isEditing">
-      <button class="btn"
-              [ngClass]="{'btn-ghost': parent.isComplete(countryCodes, stateCodes), 'btn-primary': !parent.isComplete(countryCodes, stateCodes)}"
-              (click)="editParent(parent)"
-              *ngIf="parent.isVerified">
-        Update {{parent.firstName}}'s Contact Information
-      </button>
+      <div *ngIf="!inEditMode">
+        <button class="btn"
+                [ngClass]="{'btn-ghost': parent.isComplete(countryCodes, stateCodes), 'btn-primary': !parent.isComplete(countryCodes, stateCodes)}"
+                (click)="editParent(parent)"
+                *ngIf="parent.isVerified">
+          Update {{parent.firstName}}'s Contact Information
+        </button>
+      </div>
+      <div *ngIf="inEditMode">
+        <button class="btn"
+                [ngClass]="{'btn-ghost': parent.isComplete(countryCodes, stateCodes), 'btn-primary': !parent.isComplete(countryCodes, stateCodes)}"
+                *ngIf="parent.isVerified"
+                disabled>
+          Update {{parent.firstName}}'s Contact Information
+        </button>
+      </div>
       <button class="btn btn-default" (click)="reSendVerification(parent)"
               *ngIf="parent && !parent.isVerified">Re-send Verification
       </button>
       <span *ngIf="!isDisable" >
-      <a class="mx-3" href="javascript:void(0);" *ngIf="canRemoveParent(parent)"
-         [ngClass]="{disabled: isSaving || parent.isSaving}"
-         (click)="removeParent(parent.contactId)">Remove</a>
-         </span>
-         <span *ngIf="isDisable" >
-          <a class="disabled mx-3" href="javascript:void(0);" *ngIf="canRemoveParent(parent)"
-          disabled="true">Remove</a>
-         </span>
-
+        <a class="mx-3" href="javascript:void(0);" *ngIf="canRemoveParent(parent)"
+           [ngClass]="{disabled: isSaving || parent.isSaving}"
+           (click)="removeParent(parent.contactId)">Remove</a>
+      </span>
+      <span *ngIf="isDisable" >
+        <a class="disabled mx-3" href="javascript:void(0);" *ngIf="canRemoveParent(parent)" disabled="true">Remove</a>
+      </span>
 
       <span *ngIf="parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Deleting</span>
       <span *ngIf="(isSaving || parent.isSaving) && !parent.isDeleting"><i class="fa fa-spinner fa-fw fa-pulse"></i> Saving</span>
