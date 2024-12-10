@@ -44,6 +44,10 @@ export class ParentComponent implements OnInit {
     });
   }
 
+  cannotEditParent(): boolean {
+    return this.parents.filter(con => con.isEditing).length > 0;
+  }
+
   editParent(parent: Parent): void {
     parent.isEditing = true;
   }
