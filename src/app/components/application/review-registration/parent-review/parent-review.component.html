@@ -58,7 +58,7 @@
       <div class="col-7 hideOverflow" *ngIf="parent.mobilePhone">{{parent.mobilePhone}}</div>
     </div>
 
-    <div class="review my-1 row">
+    <div class="review my-1 row" *ngIf="parent.mobilePhone">
       <div class="col-5 hideOverflow">Text Updates</div>
       <div class="col-7 hideOverflow" *ngIf="!parent.optIn">No</div>
       <div class="col-7 hideOverflow" *ngIf="parent.optIn">Yes</div>
