@@ -32,7 +32,6 @@ export class ParentComponent implements OnInit {
   deletingParentId = 'none';
   isSaving = false;
   isDisable = false;
-  inEditMode = false;
 
   constructor(private appDataService: AppDataService) {
   }
@@ -45,9 +44,12 @@ export class ParentComponent implements OnInit {
     });
   }
 
+  cannotEditParent(): boolean {
+    return this.parents.filter(con => con.isEditing).length > 0;
+  }
+
   editParent(parent: Parent): void {
     parent.isEditing = true;
-    this.inEditMode = true;
   }
 
   canRemoveParent(parent: Parent) {
@@ -101,7 +103,6 @@ export class ParentComponent implements OnInit {
             // console.log('no parent found, creating new one.');
             const emptyParent = Parent.createFromVerificationData(this.parentVerification);
             emptyParent.isEditing = true;
-            this.inEditMode = true;
             emptyParent.verification = 'Verified';
             this.parents.push(emptyParent);
             this.parentNotFound = true;
