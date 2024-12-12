@@ -21,8 +21,8 @@
   </div>
 </div>
 
-<label for="parentHomePhone" class="mt-4 {{homeRequired}}">Home Phone</label>
-<div class="default {{homeRequired}}">
+<label for="parentHomePhone" class="mt-4" [ngClass]="{required: parent.preferredPhone === 'Home'}">Home Phone</label>
+<div class="default" [ngClass]="{required: parent.preferredPhone === 'Home'}">
   <input type="tel" class="w-100"
          [(ngModel)]="parent.homePhone"
          name="parentHomePhone"
@@ -30,8 +30,8 @@
          id="parentHomePhone"/>
 </div>
 
-<label for="parentMobilePhone" class="mt-4 {{mobileRequired}}">Mobile Phone</label>
-<div class="default {{mobileRequired}}">
+<label for="parentMobilePhone" class="mt-4" [ngClass]="{required: parent.preferredPhone === 'Mobile' || parent.optIn}">Mobile Phone</label>
+<div class="default" [ngClass]="{required: parent.preferredPhone === 'Mobile' || parent.optIn}">
   <input type="tel" class="w-100"
          [(ngModel)]="parent.mobilePhone"
          name="parentMobilePhone"
@@ -40,7 +40,7 @@
 </div>
 
 <div class="row mt-3">
-  <div class="col-2 col-md-1 d-flex align-items-center flex-row-reverse">
+  <div class="col-2 col-md-1 align-items-center">
     <div class="check">
       <input type="checkbox"
              id="parentOptIn"
@@ -54,7 +54,7 @@
   </div>
 
   <div class="col-10 col-md-11 mt-1 ps-0">
-    <label class="required">Check here to receive application updates via text message</label>
+    <label>Check here to receive application updates via text message</label>
   </div>
 </div>
 
