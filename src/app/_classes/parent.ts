@@ -9,6 +9,8 @@ export class Parent {
   firstName: string;
   lastName: string;
   email: string;
+  preferredPhone: string;
+  homePhone: string;
   mobilePhone: string;
   mailingAddress: Address;
   isEditing = false; // used to display/hide this parent's info form
@@ -16,6 +18,7 @@ export class Parent {
   isDeleting = false; // used to prevent saves from re-adding deleting parents
   verification: string;
   verificationSent: boolean;
+  optIn: boolean;
 
   public static createFromNestedJson(json: any): Parent {
     const parent = new Parent();
@@ -55,7 +58,15 @@ export class Parent {
     const countryCode = this.getCountryCode(countryCodes);
     const states = this.getStates(countryCode, stateCodes);
 
-    return !!this.email && this.mailingAddress && this.mailingAddress.isComplete(countryCode, states);
+    let phoneComplete = true;
+    if (!this.preferredPhone) {
+      phoneComplete = false;
+    } else {
+      phoneComplete = (this.preferredPhone === 'Home' && !!this.homePhone) || (this.preferredPhone === 'Mobile' && !!this.mobilePhone);
+    }
+    phoneComplete = phoneComplete && (!this.optIn || this.optIn && !!this.mobilePhone);
+
+    return !!this.email && phoneComplete && this.mailingAddress && this.mailingAddress.isComplete(countryCode, states);
   }
 
   public get isVerified(): boolean {

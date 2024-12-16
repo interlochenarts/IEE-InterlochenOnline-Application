@@ -42,6 +42,12 @@
 </div>
 
 <div class="review my-1 row">
+  <div class="col-5 hideOverflow">Text Updates</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.optIn">No</div>
+  <div class="col-7 hideOverflow" *ngIf="student.optIn">Yes</div>
+</div>
+
+<div class="review my-1 row">
   <div class="col-5 hideOverflow">Street</div>
   <div class="col-7 hideOverflow" *ngIf="!student.mailingAddress || !student.mailingAddress.street">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>

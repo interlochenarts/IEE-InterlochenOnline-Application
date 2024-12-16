@@ -24,6 +24,12 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   showError:boolean = false;
   parentState:string = '';
 
+  preferredPhoneOptions = [
+    {label: '', value: null},
+    {label: 'Home', value: 'Home'},
+    {label: 'Mobile', value: 'Mobile'}
+  ];
+
   @ViewChild('countryAutocompleteComponent') countryAutocomplete: any;
   @ViewChild('stateAutocompleteComponent') stateAutocomplete: any;
 
@@ -40,6 +46,14 @@ export class ParentInfoComponent implements OnInit, OnChanges {
       this.filterStates(this.parent?.mailingAddress?.country);
       this.parentState = this.getState(this.parent?.mailingAddress?.stateProvince)
     });
+
+    this.setRequiredPhones();
+  }
+
+  setRequiredPhones(): void {
+    if (this.parent.preferredPhone === 'null') {
+      this.parent.preferredPhone = null;
+    }
   }
 
   ngOnChanges(): void {

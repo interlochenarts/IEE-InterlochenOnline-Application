@@ -35,6 +35,36 @@
     </div>
 
     <div class="review my-1 row">
+      <div class="col-5 hideOverflow">Preferred Phone</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.preferredPhone">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow" *ngIf="parent.preferredPhone">{{parent.preferredPhone}}</div>
+    </div>
+
+    <div class="review my-1 row" *ngIf="(parent.preferredPhone && parent.preferredPhone === 'Home') || parent.homePhone">
+      <div class="col-5 hideOverflow">Home Phone</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.homePhone">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow" *ngIf="parent.homePhone">{{parent.homePhone}}</div>
+    </div>
+
+    <div class="review my-1 row" *ngIf="(parent.preferredPhone && parent.preferredPhone === 'Mobile') || parent.optIn || parent.mobilePhone">
+      <div class="col-5 hideOverflow">Mobile Phone</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.mobilePhone">
+        <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+      </div>
+      <div class="col-7 hideOverflow" *ngIf="parent.mobilePhone">{{parent.mobilePhone}}</div>
+    </div>
+
+    <div class="review my-1 row" *ngIf="parent.mobilePhone">
+      <div class="col-5 hideOverflow">Text Updates</div>
+      <div class="col-7 hideOverflow" *ngIf="!parent.optIn">No</div>
+      <div class="col-7 hideOverflow" *ngIf="parent.optIn">Yes</div>
+    </div>
+
+    <div class="review my-1 row">
       <div class="col-5 hideOverflow">Street</div>
       <div class="col-7 hideOverflow" *ngIf="!parent.mailingAddress || !parent.mailingAddress.street">
         <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>

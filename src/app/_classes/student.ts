@@ -10,6 +10,7 @@ export class Student {
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
+  optIn: boolean;
 
   genderIdentity: string;
   genderIdentityDetails: string;
