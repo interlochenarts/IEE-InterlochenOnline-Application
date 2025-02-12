@@ -112,7 +112,6 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           program.lessonCount = result.lessonCount;
 
           let pgmCopy: Program = Program.duplicateMe(program);
-          console.dir(pgmCopy);
           this.appData.acProgramData.privateLessons.push(pgmCopy);
           this.appDataService.saveProgram(pgmCopy);
           program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
