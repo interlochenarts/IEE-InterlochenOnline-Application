@@ -1,5 +1,4 @@
 import {
-  afterNextRender,
   Component,
   ElementRef,
   Input,
@@ -108,10 +107,12 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           if (this.isMusic) {
             program.selectedInstrument = result.instrument;
             program.selectedInstrumentOther = result.otherInstrument;
+            program.isRegistered = false;
           }
           program.lessonCount = result.lessonCount;
 
           let pgmCopy: Program = Program.duplicateMe(program);
+          console.dir(pgmCopy);
           this.appData.acProgramData.privateLessons.push(pgmCopy);
           this.appDataService.saveProgram(pgmCopy);
           program.isSelected = !this.isMusic; // if private lesson, set music selected to false.
