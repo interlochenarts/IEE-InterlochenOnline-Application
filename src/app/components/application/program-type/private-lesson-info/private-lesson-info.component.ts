@@ -1,5 +1,4 @@
 import {
-  afterNextRender,
   Component,
   ElementRef,
   Input,
@@ -108,6 +107,7 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           if (this.isMusic) {
             program.selectedInstrument = result.instrument;
             program.selectedInstrumentOther = result.otherInstrument;
+            program.isRegistered = false;
           }
           program.lessonCount = result.lessonCount;
 
