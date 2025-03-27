@@ -46,11 +46,5 @@ deploy=("${SF}" project deploy start --target-org="${SANDBOX}" --metadata-dir="S
 
 echo -e "${deploy[@]}"
 
-# LOOP FOR TIMING IF NECESSARY
-#for i in {1..10}; do
-#  echo -e "${i}"
-#  { time "${deploy[@]}"; } 2>> "${SANDBOX}".time.txt
-#done;
-
 # NON-LOOPED DEPLOY
 "${deploy[@]}"
