@@ -33,7 +33,7 @@ export class Address {
       false);
   }
 
-  getIncomplete(countryCodes: CountryCode[], states: StateCode[]) {
+  getIncomplete(countryCodes: CountryCode[], stateCodes: StateCode[]) {
     let failedValues = [];
 
     if (!this.street) {
@@ -45,13 +45,14 @@ export class Address {
     }
 
     if (this.country) {
-      if (states.length > 0 && !this.stateProvince) {
-        failedValues.push({label: 'Mailing State', value: 'MailingState'});
-      }
-
       let countryCode = countryCodes.find(c => c.name === this.country);
       if (countryCode && countryCode.zipRequired && !this.zipPostalCode) {
         failedValues.push({label: 'Mailing Postal Code', value: 'MailingPostalCode'});
+      }
+
+      let states = stateCodes.filter(s => s.countryId === countryCode.id);
+      if (states.length > 0 && !this.stateProvince) {
+        failedValues.push({label: 'Mailing State', value: 'MailingState'});
       }
     } else {
       failedValues.push({label: 'Mailing Country', value: 'MailingCountry'});
