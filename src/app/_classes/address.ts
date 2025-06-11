@@ -32,4 +32,32 @@ export class Address {
       (countryCode.zipRequired ? !!this.zipPostalCode : true) :
       false);
   }
+
+  getIncomplete(countryCodes: CountryCode[], stateCodes: StateCode[]) {
+    let failedValues = [];
+
+    if (!this.street) {
+      failedValues.push({label: 'Mailing Street', value: 'MailingStreet'});
+    }
+
+    if (!this.city) {
+      failedValues.push({label: 'Mailing City', value: 'MailingCity'});
+    }
+
+    if (this.country) {
+      let countryCode = countryCodes.find(c => c.name === this.country);
+      if (countryCode && countryCode.zipRequired && !this.zipPostalCode) {
+        failedValues.push({label: 'Mailing Postal Code', value: 'MailingPostalCode'});
+      }
+
+      let states = stateCodes.filter(s => s.countryId === countryCode.id);
+      if (states.length > 0 && !this.stateProvince) {
+        failedValues.push({label: 'Mailing State', value: 'MailingState'});
+      }
+    } else {
+      failedValues.push({label: 'Mailing Country', value: 'MailingCountry'});
+    }
+
+    return failedValues;
+  }
 }
