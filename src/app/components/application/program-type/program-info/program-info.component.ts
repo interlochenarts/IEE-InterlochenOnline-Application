@@ -1,13 +1,4 @@
-import {
-  afterNextRender,
-  Component,
-  ElementRef,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 import {ApplicationData} from '../../../../_classes/application-data';
 import {AppDataService} from '../../../../services/app-data.service';
 import {Program} from '../../../../_classes/program';
@@ -32,7 +23,7 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   modalInstrumentChoice: string;
   modalList: ListTypes; // the list (registered, selected, filtered) the modal was invoked from; for setting titles
   isMusic: boolean;
-  isRegistered: boolean;
+  isParent: boolean = true;
   selectedProgramInstruments: Array<SalesforceOption> = [];
   @ViewChild('selectedCoursesContainer') selectedContainerRef: ElementRef;
 
@@ -46,6 +37,13 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
     this.appDataService.daysSelectedBySession.asObservable().subscribe(daysSelected => {
       if (daysSelected) {
         this.daysSelectedBySession = daysSelected;
+      }
+    });
+
+    this.appDataService.getUserContactId();
+    this.appDataService.userContactId.asObservable().subscribe(userContactId => {
+      if (this.appData.student.contactId === userContactId) {
+        this.isParent = false;
       }
     });
   }
@@ -62,7 +60,14 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
   }
 
   get divisionPrograms(): Array<Program> {
-    return this.appData.programData.programs.filter(p => p.division === this.ageGroup);
+    const registeredProgramIds = this.registeredPrograms.map(program => program.id);
+
+    const programs = this.appData.programData.programs.filter(p => p.division === this.ageGroup);
+    programs.forEach(p => {
+      p.isRegistered = registeredProgramIds.includes(p.id);
+    });
+
+    return programs;
   }
 
   get filteredPrograms(): Array<Program> {
@@ -70,19 +75,19 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
       return this.divisionPrograms.filter(p => !p.isSelected &&
         ((this.selectedSession ? p.sessionName === this.selectedSession : true) &&
           (this.selectedArtsArea ? p.artsAreaList.indexOf(this.selectedArtsArea) > -1 : true)))
-        .sort(Program.sortBySessionStartNullsLast)
-        .sort(Program.sortByName);
+        .toSorted(Program.sortBySessionStartNullsLast)
+        .toSorted(Program.sortByName);
     }
 
     return [];
   }
 
   get selectedPrograms(): Array<Program> {
-    return this.appData.acProgramData.programs.filter(p => (p.isSelected && !p.isRegistered && p.sessionId));
+    return this.appData.acProgramData.programs.filter(p => p.isSelected && !p.isRegistered && p.sessionId);
   }
 
   get registeredPrograms(): Array<Program> {
-    return this.appData.acProgramData.programs.filter(p => (p.isSelected && p.isRegistered && p.sessionId));
+    return this.appData.acProgramData.programs.filter(p => p.isRegistered);
   }
 
   updateAreasOfStudy(): void {
@@ -178,7 +183,6 @@ export class ProgramInfoComponent implements OnInit, OnChanges {
         // clean up
         delete this.modalInstrumentChoice;
         delete this.isMusic;
-        delete this.isRegistered;
         delete this.modalList;
       } else {
         // remove program from 'selected' list in memory
