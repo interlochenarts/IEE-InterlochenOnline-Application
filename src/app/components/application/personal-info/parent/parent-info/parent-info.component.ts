@@ -23,6 +23,8 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   keyword = 'name'
   showError:boolean = false;
   parentState:string = '';
+  missingValues:{label: string, value: string}[] = [{label: '', value: null}];
+  showErrors:boolean = false;
 
   preferredPhoneOptions = [
     {label: '', value: null},
@@ -70,6 +72,10 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     }
   }
 
+  stateRequired(): boolean {
+    return this.filteredStates && this.filteredStates.length > 0;
+  }
+
   zipRequired(): boolean {
     const countryCode = this.countryCodes?.find(c => c.name === this.parent?.mailingAddress?.country);
     return countryCode?.zipRequired;
@@ -97,6 +103,12 @@ export class ParentInfoComponent implements OnInit, OnChanges {
   }
 
   save(): void {
+    this.missingValues = this.parent.mailingAddress.getIncomplete(this.countryCodes, this.stateCodes);
+    this.showErrors = !!this.missingValues && this.missingValues.length > 0;
+    if (this.showErrors) {
+      return;
+    }
+
     this.parent.isEditing = false;
     this.parent.isSaving = true;
 
@@ -148,7 +160,7 @@ export class ParentInfoComponent implements OnInit, OnChanges {
     return this.parent.mailingAddress.street && this.parent.mailingAddress.street !== '' &&
       this.parent.mailingAddress.city && this.parent.mailingAddress.city !== '' &&
       this.parent.mailingAddress.country && this.parent.mailingAddress.country !== '' &&
-      this.parent.mailingAddress.stateProvince && this.parent.mailingAddress.stateProvince !== '' &&
-      this.parent.mailingAddress.zipPostalCode && this.parent.mailingAddress.zipPostalCode !== '';
+      (!this.stateRequired() || this.parent.mailingAddress.stateProvince && this.parent.mailingAddress.stateProvince !== '') &&
+      (!this.zipRequired() || this.parent.mailingAddress.zipPostalCode && this.parent.mailingAddress.zipPostalCode !== '');
   }
 }
