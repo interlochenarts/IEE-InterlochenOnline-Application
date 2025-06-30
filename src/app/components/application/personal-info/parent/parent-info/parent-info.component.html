@@ -149,6 +149,13 @@
          id="parentMailingPostalCode"/>
 </div>
 
+<div class="alert alert-danger mt-3" *ngIf="showErrors">
+  <p>Fill out the following fields:</p>
+  <div *ngFor="let error of missingValues" >
+    {{error.label}},
+  </div>
+</div>
+
 <div class="my-3">
   <button class="btn btn-default" (click)="save()" [disabled]="parent.isSaving || isSaving">Save parent or guardian</button>
   <span *ngIf="parent.isSaving || isSaving"><i class="fa fa-spinner fa-pulse fa-fw"></i> Saving</span>
