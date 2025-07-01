@@ -7,6 +7,7 @@ export class CertificateGroup {
   discount: number;
   courses: Array<Course>;
   isSelected: boolean;
+  isRegistered: boolean;
   isSaving: boolean;
   bundleSize: number;
   /**
