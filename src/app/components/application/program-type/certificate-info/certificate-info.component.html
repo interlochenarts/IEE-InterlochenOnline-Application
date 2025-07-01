@@ -16,6 +16,7 @@
       </div>
       <div>
         <h4 class="m-0">{{ group.name }}</h4>
+        <h6><span *ngIf="group.isRegistered" class="reviewError">You have already registered for this certificate program.</span></h6>
       </div>
     </div>
     <hr>
