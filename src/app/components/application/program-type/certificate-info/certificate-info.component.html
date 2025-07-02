@@ -5,7 +5,7 @@
   </div>
   <div *ngFor="let group of appData.programData.selectedCertificates" class="checkbox-container col-12 p-4 my-3" id="cg_{{group.id}}">
     <div class="d-flex align-items-end">
-      <div class="checkbox col-2 col-xl-1" *ngIf="!group.isSaving" (click)="removeCertificate(group)">
+      <div class="checkbox col-2 col-xl-1" *ngIf="!(group.isSaving || group.isRegistered)" (click)="removeCertificate(group)">
         <input type="checkbox" [id]="group.id" [name]="group.name" [checked]="group.isSelected">
         <label class="clickable">
           <i class="fa fa-check ps-4"></i>
@@ -16,6 +16,7 @@
       </div>
       <div>
         <h4 class="m-0">{{ group.name }}</h4>
+        <h6><span *ngIf="group.isRegistered" class="reviewError">You have already registered for this certificate program.</span></h6>
       </div>
     </div>
     <hr>
@@ -29,7 +30,7 @@
       </ul>
     </div>
     <div class="col-12">
-      <a href="javascript:void(0);" (click)="addOrEditCertificate(group, certificateModal)"><i
+      <a href="javascript:void(0);" *ngIf="!group.isRegistered" (click)="addOrEditCertificate(group, certificateModal)"><i
         class="fa fa-pencil"></i> Edit</a>
     </div>
   </div>
