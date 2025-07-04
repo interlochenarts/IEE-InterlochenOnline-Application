@@ -29,7 +29,7 @@ export class AddLessonModalComponent implements OnInit {
   protected readonly ListTypes = ListTypes;
 
   get invalidLessonCount(): boolean {
-    return this.data.lessonCountAdd < 1 || this.data.lessonCountAdd > 99 || !this.lessonCountAddRef?.nativeElement.checkValidity();
+    return this.data.lessonCountAdd < 0 || this.data.lessonCountAdd > 99 || !this.lessonCountAddRef?.nativeElement.checkValidity();
   }
 
   ngOnInit() {
