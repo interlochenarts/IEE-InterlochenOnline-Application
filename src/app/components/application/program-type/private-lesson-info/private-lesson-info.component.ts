@@ -92,7 +92,7 @@ export class PrivateLessonInfoComponent implements OnInit, OnChanges {
           // disable instruments from list if they exist in currently selected courses selected instrument, but only for private lessons.
           this.selectedProgramInstruments.forEach((option: SalesforceOption) => {
             this.appData.acProgramData.privateLessons.forEach(p => {
-              if (p.isPrivateLesson && p.selectedInstrument === option.value) {
+              if (p.isPrivateLesson && p.selectedInstrument === option.value && p.division === this.appData.ageGroup) {
                 option.disabled = true;
               }
             });
