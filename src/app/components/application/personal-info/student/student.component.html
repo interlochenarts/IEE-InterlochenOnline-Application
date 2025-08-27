@@ -146,19 +146,26 @@
 
   <hr class="my-4">
 
-  <p>Interlochen is committed to inclusion, non-discrimination and creating a safe environment for everyone
-    in our community.</p>
-  <label class="required">Gender Identity</label>
+  <label class="required">Sex at Birth</label>
   <div class="default required">
-    <div class="form-check form-check-inline" *ngFor="let option of genderIdentityOptions; let i = index">
+    <div class="form-check form-check-inline" *ngFor="let option of genderOptions; let i = index">
       <input type="radio"
              class="form-check-input"
-             [(ngModel)]="student.genderIdentity"
-             name="genderIdentity"
-             id="genderIdentity{{i}}"
+             [(ngModel)]="student.gender"
+             name="gender"
+             id="gender{{i}}"
              value="{{option.value}}"/>
-      <label for="genderIdentity{{i}}" class="form-check-label">{{option.label}}</label>
+      <label for="gender{{i}}" class="form-check-label">{{option.label}}</label>
     </div>
+  </div>
+
+  <label for="genderVariantDetails" class="mt-4">If you'd like to provide further detail regarding the applicant's sex at birth, please do so here. (OPTIONAL)</label>
+  <div class="default">
+    <input type="text" class="w-100"
+           [(ngModel)]="student.genderVariantDetails"
+           name="genderVariantDetails"
+           id="genderVariantDetails"
+           maxlength="255"/>
   </div>
 
   <div *ngIf="!isAdultApplicant">

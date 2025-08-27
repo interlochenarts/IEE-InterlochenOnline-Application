@@ -88,11 +88,11 @@
 </div>
 
 <div class="review my-1 row">
-  <div class="col-5 hideOverflow">Gender Identity</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.genderIdentity">
+  <div class="col-5 hideOverflow">Sex at Birth</div>
+  <div class="col-7 hideOverflow" *ngIf="!student.gender">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
   </div>
-  <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
+  <div class="col-7 hideOverflow" *ngIf="student.gender">{{student.gender}}</div>
 </div>
 
 <div class="review my-1 row" *ngIf="!isAdultApplicant">

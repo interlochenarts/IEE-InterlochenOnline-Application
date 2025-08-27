@@ -53,10 +53,9 @@ export class StudentComponent implements OnInit, OnChanges {
     {label: 'No', value: 'No'}
   ];
 
-  genderIdentityOptions = [
+  genderOptions = [
     {label: 'Female', value: 'Female'},
-    {label: 'Male', value: 'Male'},
-    {label: 'Non-Binary', value: 'Non-Binary'}
+    {label: 'Male', value: 'Male'}
   ];
 
   constructor(private appDataService: AppDataService) {

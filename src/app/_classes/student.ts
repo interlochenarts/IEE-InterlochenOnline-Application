@@ -12,8 +12,8 @@ export class Student {
   mailingAddress: Address;
   optIn: boolean;
 
-  genderIdentity: string;
-  genderIdentityDetails: string;
+  gender: string;
+  genderVariantDetails: string;
 
   birthdateYear: string;
   birthdateMonth: string;
@@ -56,7 +56,7 @@ export class Student {
       !!this.email &&
       !!this.mobilePhone &&
       (!!this.mailingAddress && this.mailingAddress.isComplete(countryCode, states)) &&
-      !!this.genderIdentity &&
+      !!this.gender &&
       (!!this.birthdate || this.isAdult);
   }
 
