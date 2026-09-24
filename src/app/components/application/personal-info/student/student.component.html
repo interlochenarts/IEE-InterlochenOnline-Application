@@ -11,6 +11,15 @@
            maxlength="25"/>
   </div>
 
+  <label for="middleName" class="mt-4 required">What is {{isAdultApplicant ? 'your' : 'the students'}} middle name?</label>
+  <div class="default required">
+    <input type="text" class="w-100"
+           [(ngModel)]="student.middleName"
+           name="nickName"
+           id="middleName"
+           maxlength="25"/>
+  </div>
+
   <label for="email" class="mt-4 required">{{isAdultApplicant ? '' : 'Student’s '}}Email</label>
   <div class="default required">
     <input type="text" class="w-100"
@@ -161,33 +170,31 @@
     </div>
   </div>
 
-  <div *ngIf="!isAdultApplicant">
-    <label class="mt-4 required">Birth Date</label>
-    <div class="default required">
-      <div class="form-group row">
-        <div class="col-12 col-md-4">
-          <label for="birthdate_year">Year</label>
-          <div class="select">
-            <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
-              <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
-            </select>
-          </div>
+  <label class="mt-4 required">Birth Date</label>
+  <div class="default required">
+    <div class="form-group row">
+      <div class="col-12 col-md-4">
+        <label for="birthdate_year">Year</label>
+        <div class="select">
+          <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
+            <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
+          </select>
         </div>
-        <div class="col-12 col-md-4">
-          <label for="birthdate_month">Month</label>
-          <div class="select">
-            <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
-              <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
-            </select>
-          </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_month">Month</label>
+        <div class="select">
+          <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
+            <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
+          </select>
         </div>
-        <div class="col-12 col-md-4">
-          <label for="birthdate_day">Day</label>
-          <div class="select">
-            <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
-              <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
-            </select>
-          </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="birthdate_day">Day</label>
+        <div class="select">
+          <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
+            <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
+          </select>
         </div>
       </div>
     </div>
