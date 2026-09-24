@@ -8,7 +8,7 @@
            name="nickName"
            id="preferredName"
            autocomplete="off_preferredName"
-           maxlength="25"/>
+           maxlength="40"/>
   </div>
 
   <label for="middleName" class="mt-4 required">What is {{isAdultApplicant ? 'your' : 'the students'}} middle name?</label>
@@ -17,7 +17,7 @@
            [(ngModel)]="student.middleName"
            name="nickName"
            id="middleName"
-           maxlength="25"/>
+           maxlength="40"/>
   </div>
 
   <label for="email" class="mt-4 required">{{isAdultApplicant ? '' : 'Student’s '}}Email</label>
