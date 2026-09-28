@@ -7,6 +7,7 @@ export class Student {
   firstName: string;
   lastName: string;
   preferredName: string;
+  middleName: string;
   email: string;
   mobilePhone: string;
   mailingAddress: Address;
@@ -57,7 +58,7 @@ export class Student {
       !!this.mobilePhone &&
       (!!this.mailingAddress && this.mailingAddress.isComplete(countryCode, states)) &&
       !!this.genderIdentity &&
-      (!!this.birthdate || this.isAdult);
+      !!this.birthdate;
   }
 
   private getCountryCode(countryCodes: Array<CountryCode>): CountryCode {
