@@ -54,7 +54,6 @@ export class Student {
     const states = this.getStates(countryCode, stateCodes);
 
     return !!this.preferredName &&
-      !!this.middleName &&
       !!this.email &&
       !!this.mobilePhone &&
       (!!this.mailingAddress && this.mailingAddress.isComplete(countryCode, states)) &&
