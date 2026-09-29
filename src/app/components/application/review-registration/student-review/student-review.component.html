@@ -27,10 +27,7 @@
 
 <div class="review my-1 row">
   <div class="col-5 hideOverflow">Middle Name</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.middleName">
-    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
-  </div>
-  <div class="col-7 hideOverflow" *ngIf="student.middleName">{{student.middleName}}</div>
+  <div class="col-7 hideOverflow">{{student.middleName}}</div>
 </div>
 
 <div class="review my-1 row">
@@ -103,11 +100,13 @@
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
 </div>
 
-<div class="col-5 hideOverflow">Birth Date</div>
-<div class="col-7 hideOverflow" *ngIf="!formattedBirthdate">
-  <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+<div class="review my-1 row">
+  <div class="col-5 hideOverflow">Birth Date</div>
+  <div class="col-7 hideOverflow" *ngIf="!formattedBirthdate">
+    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
+  </div>
+  <div class="col-7 hideOverflow" *ngIf="formattedBirthdate">{{formattedBirthdate}}</div>
 </div>
-<div class="col-7 hideOverflow" *ngIf="formattedBirthdate">{{formattedBirthdate}}</div>
 
 <div class="review my-1 row" *ngIf="isAdultApplicant">
   <div class="col-5 hideOverflow">I am over 18</div>
