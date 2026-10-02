@@ -20,6 +20,7 @@ export class Student {
   birthdateMonth: string;
   birthdateDay: string;
   birthdate: string;
+  birthdateReadOnly: boolean;
 
   // Demographics
   race: string;
@@ -35,6 +36,7 @@ export class Student {
       student.birthdateDay = dateSplit[2];
       student.birthdateMonth = dateSplit[1];
       student.birthdateYear = dateSplit[0];
+      student.birthdateReadOnly = true;
     }
     student.mailingAddress = Address.createFromJson(json?.mailingAddress);
 
