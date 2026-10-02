@@ -121,7 +121,7 @@ export class StudentComponent implements OnInit, OnChanges {
       end = 16;
     } else {
       start = 18;
-      end = 90;
+      end = 100;
     }
 
     const options = new Array<SalesforceOption>();
