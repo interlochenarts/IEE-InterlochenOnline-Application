@@ -172,12 +172,13 @@
   </div>
 
   <label class="mt-4 required">Birth Date</label>
-  <div class="default required">
+  <div class="default required" [ngClass]="{disabledDiv: student.birthdateReadOnly}">
     <div class="form-group row">
       <div class="col-12 col-md-4">
         <label for="birthdate_year">Year</label>
         <div class="select">
-          <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()">
+          <select id="birthdate_year" class="w-100" [(ngModel)]="student.birthdateYear" (change)="student.updateBirthdate(); updateDayOptions()"
+                  [disabled]="student.birthdateReadOnly" [ngClass]="{disabled: student.birthdateReadOnly}">
             <option *ngFor="let year of yearOptions" [value]="year.value">{{year.label}}</option>
           </select>
         </div>
@@ -185,7 +186,8 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_month">Month</label>
         <div class="select">
-          <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()">
+          <select id="birthdate_month" class="w-100" [(ngModel)]="student.birthdateMonth" (change)="student.updateBirthdate(); updateDayOptions()"
+                  [disabled]="student.birthdateReadOnly" [ngClass]="{disabled: student.birthdateReadOnly}">
             <option *ngFor="let month of monthOptions" [value]="month.value">{{month.label}}</option>
           </select>
         </div>
@@ -193,7 +195,8 @@
       <div class="col-12 col-md-4">
         <label for="birthdate_day">Day</label>
         <div class="select">
-          <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()">
+          <select id="birthdate_day" class="w-100" [(ngModel)]="student.birthdateDay" (change)="student.updateBirthdate()"
+                  [disabled]="student.birthdateReadOnly" [ngClass]="{disabled: student.birthdateReadOnly}">
             <option *ngFor="let day of dayOptions" [value]="day.value">{{day.label}}</option>
           </select>
         </div>
