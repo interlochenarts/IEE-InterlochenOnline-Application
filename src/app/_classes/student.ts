@@ -39,6 +39,8 @@ export class Student {
       student.birthdateYear = dateSplit[0];
       student.birthdateReadOnly = true;
       student.birthdatePretty = `${student.birthdateMonth}/${student.birthdateDay}/${student.birthdateYear}`;
+    } else {
+      student.birthdateReadOnly = false;
     }
     student.mailingAddress = Address.createFromJson(json?.mailingAddress);
 
