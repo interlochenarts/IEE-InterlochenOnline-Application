@@ -177,7 +177,6 @@
            [(ngModel)]="student.birthdatePretty"
            name="birthdateDisabled"/>
     <p class="mt-2"><i class="fa fa-info-circle"></i>If this birth date is incorrect, please <a [href]="student.requestEditLink" target="_blank">contact us.</a></p>
-    <p>{{student.requestEditLink}}</p>
   </div>
   <div class="default required" *ngIf="student.birthdateReadOnly === false">
     <div class="form-group row">
