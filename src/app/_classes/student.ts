@@ -22,6 +22,7 @@ export class Student {
   birthdate: string;
   birthdatePretty: string;
   birthdateReadOnly: boolean;
+  requestEditLink: string;
 
   // Demographics
   race: string;
@@ -39,6 +40,7 @@ export class Student {
       student.birthdateYear = dateSplit[0];
       student.birthdateReadOnly = true;
       student.birthdatePretty = `${student.birthdateMonth}/${student.birthdateDay}/${student.birthdateYear}`;
+      student.requestEditLink = `mailto:support@interlochen.org?subject=${student.preferredName}-%20${student.contactId}%20Info%20Corrections%20Needed&body=Tell us what needs to be changed for ${student.preferredName} ${student.lastName}`;
     } else {
       student.birthdateReadOnly = false;
     }
