@@ -25,6 +25,11 @@
   <div class="col-7 hideOverflow" *ngIf="student.preferredName">{{student.preferredName}}</div>
 </div>
 
+<div class="review my-1 row" *ngIf="student.middleName">
+  <div class="col-5 hideOverflow">Middle Name</div>
+  <div class="col-7 hideOverflow" *ngIf="student.middleName">{{student.middleName}}</div>
+</div>
+
 <div class="review my-1 row">
   <div class="col-5 hideOverflow">Email</div>
   <div class="col-7 hideOverflow" *ngIf="!student.email">
@@ -95,7 +100,7 @@
   <div class="col-7 hideOverflow" *ngIf="student.genderIdentity">{{student.genderIdentity}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="!isAdultApplicant">
+<div class="review my-1 row">
   <div class="col-5 hideOverflow">Birth Date</div>
   <div class="col-7 hideOverflow" *ngIf="!formattedBirthdate">
     <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
