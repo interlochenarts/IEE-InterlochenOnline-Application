@@ -108,14 +108,6 @@
   <div class="col-7 hideOverflow" *ngIf="formattedBirthdate">{{formattedBirthdate}}</div>
 </div>
 
-<div class="review my-1 row" *ngIf="isAdultApplicant">
-  <div class="col-5 hideOverflow">I am over 18</div>
-  <div class="col-7 hideOverflow" *ngIf="!student.isAdult">
-    <i class="fa fa-warning" style="color:red"></i><span class="reviewError"> Not Provided</span>
-  </div>
-  <div class="col-7 hideOverflow" *ngIf="student.isAdult">Yes</div>
-</div>
-
 <div class="review my-1 row" *ngIf="student.race">
   <div class="col-5 hideOverflow">Race</div>
   <div class="col-7 hideOverflow" *ngIf="student.race">{{student.race}}</div>
