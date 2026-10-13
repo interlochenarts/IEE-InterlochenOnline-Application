@@ -116,7 +116,7 @@ export class StudentComponent implements OnInit, OnChanges {
   getYearOptions(): Array<SalesforceOption> {
     let start:number;
     let end:number;
-    if (this.isAdultApplicant) {
+    if (!this.isAdultApplicant) {
       start = 4;
       end = 16;
     } else {
