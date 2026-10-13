@@ -60,7 +60,7 @@ export class StudentComponent implements OnInit, OnChanges {
   ];
 
   constructor(private appDataService: AppDataService) {
-    this.yearOptions = this.getYearOptions();
+
   }
 
   ngOnInit(): void {
@@ -75,6 +75,8 @@ export class StudentComponent implements OnInit, OnChanges {
 
       this.studentState = this.getState(this.student?.mailingAddress?.stateProvince);
     });
+
+    this.yearOptions = this.getYearOptions();
 
     this.loadEthnicityOptions();
   }
